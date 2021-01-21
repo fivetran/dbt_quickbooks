@@ -28,8 +28,11 @@ vars:
     department:           "{{ ref('stg_quickbooks__department') }}"
     deposit_line:         "{{ ref('stg_quickbooks__deposit_line') }}"
     deposit:              "{{ ref('stg_quickbooks__deposit') }}"
+    estimate:             "{{ ref('stg_quickbooks__estimate') }}"
+    estimate_line:        "{{ ref('stg_quickbooks__estimate_line') }}"
     invoice_line:         "{{ ref('stg_quickbooks__invoice_line') }}"
     invoice_line_bundle:  "{{ ref('stg_quickbooks__invoice_line_bundle') }}"
+    invoice_linked_txn:   "{{ ref('stg_quickbooks__invoice_linked_txn') }}"
     invoice:              "{{ ref('stg_quickbooks__invoice') }}"
     item:                 "{{ ref('stg_quickbooks__item') }}"
     journal_entry_line:   "{{ ref('stg_quickbooks__journal_entry_line') }}"
@@ -55,10 +58,11 @@ vars:
     using_credit_memo:    True
     using_department:     True
     using_deposit:        True
+    using_estimate:       True
     using_invoice:        True
     using_invoice_bundle: True
     using_journal_entry:  True
-    using_payment:        True 
+    using_payment:        True
     using_purchase:       True
     using_purchase_order: True
     using_refund_receipt: True

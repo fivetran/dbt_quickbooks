@@ -1,4 +1,4 @@
---To enable this model, set the using_invoice variable within your dbt_project.yml file to True.
+--To disable this model, set the using_invoice variable within your dbt_project.yml file to False.
 {{ config(enabled=var('using_invoice', True)) }}
 
 with invoices as (
