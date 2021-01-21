@@ -69,6 +69,7 @@ invoice_link as (
 final as (
     select
         invoice_link.invoice_id,
+        invoice_link.estimate_id,
         invoice_link.department_id,
         invoice_link.customer_id,
         invoice_link.billing_address_id,
@@ -95,7 +96,7 @@ final as (
         on payments.payment_id = payment_lines_payment.payment_id
             and invoice_link.invoice_id = payment_lines_payment.invoice_id
     
-    group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
+    group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
 
 )
 

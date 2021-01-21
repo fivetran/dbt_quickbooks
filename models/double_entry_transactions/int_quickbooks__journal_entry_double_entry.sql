@@ -23,6 +23,8 @@ final as (
 
     inner join journal_entry_lines
         on journal_entries.journal_entry_id = journal_entry_lines.journal_entry_id
+
+    where journal_entry_lines.amount is not null
 )
 
 select *

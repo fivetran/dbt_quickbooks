@@ -38,7 +38,7 @@ invoice_join as (
 
         {% if var('using_invoice_bundle', True) %}
         case when invoice_lines.bundle_id is not null
-            then cast(invoice_bundles.account_id as string)
+            then coalesce(cast(bundle_items.asset_account_id as string), cast(invoice_bundles.account_id as string), cast(bundle_items.income_account_id as string), cast(bundle_items.expense_account_id as string))
         when invoice_lines.bundle_id is null and invoice_lines.account_id is null
             then coalesce(items.income_account_id, items.asset_account_id, items.expense_account_id)
             else cast(invoice_lines.account_id as string)
@@ -61,12 +61,16 @@ invoice_join as (
     {% if var('using_invoice_bundle', True) %}
     left join invoice_bundles
         on invoice_lines.invoice_id = invoice_bundles.invoice_id
-            and invoice_lines.bundle_quantity = invoice_bundles.quantity
             and invoice_lines.amount = invoice_bundles.amount
+            and coalesce(invoice_lines.index,0) = coalesce(invoice_bundles.invoice_line_index,0)
+            and invoice_bundles.amount > 0
     {% endif %}
 
     left join items
         on invoice_lines.sales_item_item_id = items.item_id
+
+    left join items as bundle_items
+        on cast(invoice_bundles.sales_item_item_id as string) = bundle_items.item_id
 
     where coalesce(invoice_lines.bundle_id, cast(invoice_lines.account_id as string), invoice_lines.sales_item_account_id, invoice_lines.sales_item_item_id) is not null
 ),

@@ -26,6 +26,7 @@ customers as (
 final as (
     select
         invoice_join.invoice_id,
+        invoice_join.estimate_id,
         {% if var('using_department', True) %}
         departments.fully_qualified_name as department_name,
         {% endif %}
