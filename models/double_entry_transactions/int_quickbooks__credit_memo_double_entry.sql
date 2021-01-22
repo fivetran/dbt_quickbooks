@@ -37,7 +37,7 @@ credit_memo_join as (
         case when credit_memo_lines.sales_item_account_id is null and  credit_memo_lines.sales_item_item_id is null
             then credit_memo_lines.discount_account_id
         when credit_memo_lines.discount_account_id is null and credit_memo_lines.sales_item_account_id is null
-            then coalesce(items.income_account_id, items.asset_account_id, items.expense_account_id)
+            then coalesce(items.income_account_id, items.expense_account_id) --maybe add parent
             else credit_memo_lines.sales_item_account_id
                 end as account_id
     from credit_memos
@@ -56,6 +56,7 @@ final as (
         transaction_id,
         transaction_date,
         amount * -1 as amount,
+        --amount as amount,
         account_id,
         'credit' as transaction_type,
         'credit_memo' as transaction_source
@@ -67,6 +68,7 @@ final as (
         transaction_id,
         transaction_date,
         amount * -1 as amount,
+        --amount as amount,
         df_accounts.account_id,
         'debit' as transaction_type,
         'credit_memo' as transaction_source

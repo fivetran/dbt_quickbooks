@@ -51,7 +51,7 @@ final as (
         transaction_id,
         transaction_date,
         amount,
-        ar_accounts.account_id,
+        coalesce(receivable_account_id, ar_accounts.account_id) as account_id,
         'credit' as transaction_type,
         'payment' as transaction_source
     from payment_join

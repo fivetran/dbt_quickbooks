@@ -22,7 +22,7 @@ bill_join as (
         bills.transaction_date,
         bill_lines.amount,
         case when bill_lines.account_expense_account_id is null
-            then coalesce(items.income_account_id, items.asset_account_id, items.expense_account_id)
+            then coalesce(items.expense_account_id, items.income_account_id) --maybe add parent item
             else bill_lines.account_expense_account_id
                 end as payed_to_account_id,
         bills.payable_account_id

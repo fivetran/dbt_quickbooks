@@ -23,7 +23,7 @@ vendor_credit_join as (
         vendor_credit_lines.amount,
         vendor_credits.payable_account_id as debit_to_account_id,
         case when vendor_credit_lines.account_expense_account_id is null
-            then coalesce(items.income_account_id, items.asset_account_id, items.expense_account_id)
+            then coalesce(items.expense_account_id, items.income_account_id) --maybe add parent
             else vendor_credit_lines.account_expense_account_id
                 end as credit_account_id
     from vendor_credits

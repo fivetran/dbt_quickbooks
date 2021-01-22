@@ -22,6 +22,8 @@ vars:
     bill_payment_line:    "{{ ref('stg_quickbooks__bill_payment_line') }}"
     bill_payment:         "{{ ref('stg_quickbooks__bill_payment') }}"
     bill:                 "{{ ref('stg_quickbooks__bill') }}"
+    bundle_item:          "{{ ref('stg_quickbooks__bundle_item') }}"
+    bundle:               "{{ ref('stg_quickbooks__bundle') }}"
     credit_memo_line:     "{{ ref('stg_quickbooks__credit_memo_line') }}"
     credit_memo:          "{{ ref('stg_quickbooks__credit_memo') }}"
     customer:             "{{ ref('stg_quickbooks__customer') }}"

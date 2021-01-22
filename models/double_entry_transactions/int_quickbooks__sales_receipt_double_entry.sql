@@ -28,7 +28,7 @@ sales_receipt_join as (
         sales_receipt_lines.amount,
         sales_receipts.deposit_to_account_id as debit_to_account_id,
         case when sales_receipt_lines.discount_account_id is null
-            then coalesce(items.income_account_id, items.asset_account_id, items.expense_account_id)
+            then coalesce(sales_receipt_lines.sales_item_account_id, items.income_account_id)
             else sales_receipt_lines.discount_account_id
                 end as credit_to_account_id,
     from sales_receipts
@@ -39,6 +39,7 @@ sales_receipt_join as (
     left join items
         on sales_receipt_lines.sales_item_item_id = items.item_id
 
+    where coalesce(sales_receipt_lines.discount_account_id, sales_receipt_lines.sales_item_account_id, sales_receipt_lines.sales_item_item_id) is not null
 ),
 
 final as (

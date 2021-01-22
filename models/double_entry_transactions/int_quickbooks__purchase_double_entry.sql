@@ -16,19 +16,13 @@ items as (
     from {{ref('stg_quickbooks__item')}}
 ),
 
-
-accounts as (
-    select *
-    from {{ ref('stg_quickbooks__account') }}
-),
-
 purchase_join as (
     select
         purchases.purchase_id as transaction_id,
         purchases.transaction_date,
         purchase_lines.amount,
         case when purchase_lines.account_expense_account_id is null
-            then coalesce(items.income_account_id, items.asset_account_id, items.expense_account_id)
+            then coalesce(items.expense_account_id, items.income_account_id) --maybe add parent
             else purchase_lines.account_expense_account_id
                 end as payed_to_account_id,
         purchases.account_id as payed_from_account_id,

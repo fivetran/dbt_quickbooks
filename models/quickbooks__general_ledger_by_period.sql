@@ -26,12 +26,7 @@ net_income_loss as (
     cross join expense_starter
 ),
 
-final as (
-    select * 
-    from general_ledger_balances
-
-    union all 
-
+retained_earnings as (
     select
         '9999' as account_id,
         'Net Income / Retained Earnings' as account_name,
@@ -42,10 +37,20 @@ final as (
         cast({{ dbt_utils.date_trunc("year", "current_date") }} as date) as date_year,
         cast({{ dbt_utils.date_trunc("month", "current_date") }} as date)  as period_first_day,
         last_day(cast(current_date as date)) as period_last_day,
-        (revenue_net_change - expense_net_change) as period_net_change,
+        round((cast(revenue_net_change as decimal) - cast(expense_net_change as decimal)),2) as period_net_change,
         0 as period_beginning_balance,
-        (revenue_net_change - expense_net_change) as period_ending_balance,
+        round((cast(revenue_net_change as decimal) - cast(expense_net_change as decimal)),2) as period_ending_balance,
     from net_income_loss
+),
+
+final as (
+    select * 
+    from general_ledger_balances
+
+    union all 
+
+    select *
+    from retained_earnings
 )
 
 select *

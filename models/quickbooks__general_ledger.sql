@@ -72,12 +72,7 @@ with gl_union as (
     from {{ref('int_quickbooks__sales_receipt_double_entry')}}
     {% endif %}
 
-    {% if var('using_transfer', True) %}
-    union all
 
-    select *
-    from {{ref('int_quickbooks__transfer_double_entry')}}
-    {% endif %}
 
     {% if var('using_vendor_credit', True) %}
     union all
@@ -98,20 +93,20 @@ adjusted_gl as (
         gl_union.transaction_id,
         row_number() over(partition by gl_union.transaction_id order by gl_union.transaction_date) as transaction_index,
         gl_union.transaction_date,
-        gl_union.amount,
+        cast(gl_union.amount as decimal) as amount,
         gl_union.account_id,
         accounts.name as account_name,
         accounts.account_type,
         accounts.account_sub_type,
         accounts.financial_statement_helper,
         accounts.balance as account_current_balance,
-        accounts.classification as account_class,
+        accounts.classification as account_class, 
         gl_union.transaction_type,
         gl_union.transaction_source,
         accounts.transaction_type as account_transaction_type,
         case when accounts.transaction_type = gl_union.transaction_type
-            then gl_union.amount
-            else gl_union.amount * -1
+            then cast(gl_union.amount as decimal)
+            else cast(gl_union.amount as decimal) * -1
                 end as adjusted_amount
     from gl_union
 
