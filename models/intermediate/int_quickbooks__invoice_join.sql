@@ -68,18 +68,19 @@ invoice_link as (
 
 final as (
     select
-        invoice_link.invoice_id,
+        'invoice' as transaction_type,
+        invoice_link.invoice_id as transaction_id,
         invoice_link.estimate_id,
         invoice_link.department_id,
-        invoice_link.customer_id,
+        invoice_link.customer_id as customer_id,
         invoice_link.billing_address_id,
         invoice_link.shipping_address_id,
         invoice_link.delivery_type,
-        invoice_link.total_amount as invoice_total_amount,
-        invoice_link.balance as invoice_current_balance,
+        invoice_link.total_amount as total_amount,
+        invoice_link.balance as current_balance,
         coalesce(estimates.total_amount, 0) as estimate_total_amount,
         estimates.transaction_status as estimate_status,
-        invoice_link.due_date as invoice_due_date,
+        invoice_link.due_date as due_date,
         min(payments.transaction_date) as initial_payment_date,
         max(payments.transaction_date) as recent_payment_date,
         sum(coalesce(payment_lines_payment.amount, 0)) as total_current_payment
@@ -96,7 +97,7 @@ final as (
         on payments.payment_id = payment_lines_payment.payment_id
             and invoice_link.invoice_id = payment_lines_payment.invoice_id
     
-    group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+    group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 
 )
 

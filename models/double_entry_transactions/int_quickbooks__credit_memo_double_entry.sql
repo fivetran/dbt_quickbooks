@@ -34,12 +34,14 @@ credit_memo_join as (
         credit_memos.credit_memo_id as transaction_id,
         credit_memos.transaction_date,
         credit_memo_lines.amount,
-        case when credit_memo_lines.sales_item_account_id is null and  credit_memo_lines.sales_item_item_id is null
-            then credit_memo_lines.discount_account_id
-        when credit_memo_lines.discount_account_id is null and credit_memo_lines.sales_item_account_id is null
-            then coalesce(items.income_account_id, items.expense_account_id) --maybe add parent
-            else credit_memo_lines.sales_item_account_id
-                end as account_id
+        -- case when credit_memo_lines.sales_item_account_id is null and  credit_memo_lines.sales_item_item_id is null
+        --     then credit_memo_lines.discount_account_id
+        -- when credit_memo_lines.discount_account_id is null and credit_memo_lines.sales_item_account_id is null
+        --     then coalesce(items.income_account_id, items.expense_account_id, items.asset_account_id) --tried asset
+        --     else credit_memo_lines.sales_item_account_id
+                -- end as account_id
+        coalesce(credit_memo_lines.sales_item_account_id, items.income_account_id) as account_id
+                
     from credit_memos
 
     inner join credit_memo_lines

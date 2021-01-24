@@ -22,10 +22,13 @@ vendor_credit_join as (
         vendor_credits.transaction_date,
         vendor_credit_lines.amount,
         vendor_credits.payable_account_id as debit_to_account_id,
-        case when vendor_credit_lines.account_expense_account_id is null
-            then coalesce(items.expense_account_id, items.income_account_id) --maybe add parent
-            else vendor_credit_lines.account_expense_account_id
-                end as credit_account_id
+        -- case when vendor_credit_lines.account_expense_account_id is null and items.type = 'Inventory'
+        --     then items.asset_account_id
+        -- when vendor_credit_lines.account_expense_account_id is null and items.type != 'Inventory'
+        --     then coalesce(items.income_account_id, items.expense_account_id) --testing asset
+        --     else vendor_credit_lines.account_expense_account_id
+        --         end as credit_account_id
+        coalesce(vendor_credit_lines.account_expense_account_id, items.expense_account_id) as credit_account_id
     from vendor_credits
     
     inner join vendor_credit_lines 

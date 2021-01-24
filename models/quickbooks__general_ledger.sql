@@ -43,6 +43,14 @@ with gl_union as (
     from {{ref('int_quickbooks__invoice_double_entry')}}
     {% endif %}
 
+----------------------------------------
+    {% if var('using_transfer', True) %}
+    union all
+
+    select *
+    from {{ref('int_quickbooks__transfer_double_entry')}}
+    {% endif %}
+----------------------------------------
 
     {% if var('using_journal_entry', True) %}
     union all
@@ -71,8 +79,6 @@ with gl_union as (
     select *
     from {{ref('int_quickbooks__sales_receipt_double_entry')}}
     {% endif %}
-
-
 
     {% if var('using_vendor_credit', True) %}
     union all

@@ -64,16 +64,33 @@ bundle_income_account as (
 invoice_join as (
     select
         invoices.invoice_id as transaction_id,
-        invoices.transaction_date,
-        invoice_lines.amount,
+        invoices.transaction_date as transaction_date,
+        case when invoice_lines.bundle_id is not null
+            then coalesce(invoice_bundles.amount, 0)
+            else invoice_lines.amount
+                end as amount,
 
         {% if var('using_invoice_bundle', True) %}
-        case when invoice_lines.bundle_id is not null
-            then coalesce(bundle_income_account.income_account_id)--, bundle_income_account.income_account_id)--, cast(bundle_items.income_account_id as string))
-        when invoice_lines.bundle_id is null and invoice_lines.account_id is null
-            then coalesce(items.income_account_id, items.parent_income_account_id)
-            else cast(invoice_lines.account_id as string)
-                end as account_id
+        -- case when invoice_lines.bundle_id is not null and bundle_item_catch.type != 'Service'
+        --     then bundle_item_catch.asset_account_id--new bundle account
+        -- when invoice_lines.bundle_id is not null and bundle_item_catch.type = 'Service'
+        --     then coalesce(bundle_item_catch.income_account_id, bundle_item_catch.expense_account_id)
+        -- when invoice_lines.bundle_id is null and invoice_lines.account_id is null and items.type != 'Service' --Clean this code up with coalesce
+        --     then items.asset_account_id
+        -- when invoice_lines.bundle_id is null and invoice_lines.account_id is null and items.type = 'Service'
+        --     then coalesce(items.income_account_id, items.parent_income_account_id)
+        --     else cast(invoice_lines.account_id as string)
+        --         end as account_id
+
+        -- case when invoice_lines.account_id is not null
+        --     then cast(invoice_lines.account_id as string)
+        -- when invoice_lines.account_id is null and coalesce(bundle_item_catch.type, items.type) = 'Inventory'
+        --     then coalesce(bundle_item_catch.asset_account_id, items.asset_account_id)
+        -- --when coalesce(bundle_item_catch.type, items.type) != 'Inventory'
+        --     else coalesce(bundle_item_catch.income_account_id, items.income_account_id, items.expense_account_id)--, items.parent_income_account_id)
+                -- end as account_id,
+
+        coalesce(cast(invoice_lines.account_id as string), bundle_item_catch.income_account_id, items.income_account_id) as account_id,
 
         {% else %}
 
@@ -90,13 +107,24 @@ invoice_join as (
         on invoices.invoice_id = invoice_lines.invoice_id
 
     {% if var('using_invoice_bundle', True) %}
-    left join bundle_income_account
-        on bundle_income_account.bundle_id = invoice_lines.bundle_id
+    -- left join bundle_income_account
+    --     on bundle_income_account.bundle_id = invoice_lines.bundle_id
     -- left join invoice_bundles
     --     on invoice_lines.invoice_id = invoice_bundles.invoice_id
     --         and invoice_lines.amount = invoice_bundles.amount
     --         and coalesce(invoice_lines.index,0) = coalesce(invoice_bundles.invoice_line_index,0)
     --         and invoice_bundles.amount > 0
+
+    left join bundle_items
+        on invoice_lines.bundle_id = bundle_items.bundle_id
+
+    left join invoice_bundles
+        on invoice_bundles.invoice_id = invoice_lines.invoice_id and bundle_items.item_id = invoice_bundles.item_id
+
+    left join items as bundle_item_catch
+        on bundle_item_catch.item_id = invoice_bundles.item_id
+
+
     {% endif %}
 
     left join items
@@ -105,7 +133,9 @@ invoice_join as (
     -- left join items as bundle_items
     --     on cast(invoice_bundles.sales_item_item_id as string) = bundle_items.item_id
 
-    where coalesce(invoice_lines.bundle_id, cast(invoice_lines.account_id as string), invoice_lines.sales_item_account_id, invoice_lines.sales_item_item_id, cast(invoice_lines.item_id as string)) is not null
+    where coalesce(invoice_lines.bundle_id, cast(invoice_lines.account_id as string), invoice_lines.sales_item_account_id, invoice_lines.sales_item_item_id, cast(invoice_lines.item_id as string)) is not null 
+        and coalesce(invoice_bundles.item_id, invoice_lines.sales_item_item_id, cast(invoice_lines.item_id as string)) is not null
+        --and invoice_bundles.amount = invoice_lines.amount
 ),
 
 final as (

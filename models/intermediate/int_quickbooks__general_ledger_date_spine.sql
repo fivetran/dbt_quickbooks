@@ -11,10 +11,19 @@ with spine as (
     {% else %} {% set first_date = "'2015-01-01'" %}
     {% endif %}
 
+    {% if execute %}
+    {% set last_date_query %}
+        select  max( transaction_date ) as max_date from {{ ref('quickbooks__general_ledger') }}
+    {% endset %}
+    {% set last_date = run_query(last_date_query).columns[0][0]|string %}
+
+    {% else %} {% set last_date = "current_date" %}
+    {% endif %}
+
     {{ dbt_utils.date_spine(
         datepart="month",
         start_date="'" ~ first_date[0:10] ~ "'",
-        end_date=dbt_utils.dateadd("month", 1, "current_date")
+        end_date=dbt_utils.dateadd("month", 1, "'" ~ last_date[0:10] ~ "'")
         )
     }}
 ),
