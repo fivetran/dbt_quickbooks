@@ -9,7 +9,7 @@ The main focus of this package is to provide users insights into their QuickBook
   - Pairing all expense and sales transactions in one table with accompanying data to provide enhanced analysis.
 
 ## Compatibility
-> Please be aware the [dbt_quickbooks](https://github.com/fivetran/dbt_quickbooks) and [dbt_quickbooks_source](https://github.com/fivetran/dbt_quickbooks_source) packages were developed with single currency company data. As such, the package models will not reflect accurate totals if your QuickBooks account as Multi-Currency enabled.
+> Please be aware the [dbt_quickbooks](https://github.com/fivetran/dbt_quickbooks) and [dbt_quickbooks_source](https://github.com/fivetran/dbt_quickbooks_source) packages were developed with single currency company data. As such, the package models will not reflect accurate totals if your QuickBooks account has Multi-Currency enabled.
 
 ## Models
 This package contains transformation models, designed to work simultaneously with our [quickbooks source package](https://github.com/fivetran/dbt_quickbooks_source). A dependency on the source package is declared in this package's `packages.yml` file, so it will automatically download when you run `dbt deps`. The primary outputs of this package are described below. Intermediate models are used to create these output models.

@@ -16,13 +16,13 @@ values prior to using this package, we encourage you to use the compiled sql pro
 ## SQL Compile Instructions
 Leveraging the above sql is made possible by the [analysis functionality of dbt](https://docs.getdbt.com/docs/building-a-dbt-project/analyses/). In order to
 compile the sql, you will perform the following steps:
-    - Execute `dbt run` to create the package models.
-    - Execute `dbt compile` to generate the target specific sql.
-    - Navigate to your project's `/target/compiled/quickbooks/analysis` directory.
-    - Copy the `quickbooks__balance_sheet` code and run in your data warehouse.
-    - Confirm the balance sheet totals match your expected results.
-    - Copy the `quickbooks__income_statement` code and run in your data warehouse.
-    - Confirm the income statement totals match your expected results.
+- Execute `dbt run` to create the package models.
+- Execute `dbt compile` to generate the target specific sql.
+- Navigate to your project's `/target/compiled/quickbooks/analysis` directory.
+- Copy the `quickbooks__balance_sheet` code and run in your data warehouse.
+- Confirm the balance sheet totals match your expected results.
+- Copy the `quickbooks__income_statement` code and run in your data warehouse.
+- Confirm the income statement totals match your expected results.
 
 ## Contributions
 Don't see a compiled sql statement you would have liked to be included? Notice any bugs when compiling
