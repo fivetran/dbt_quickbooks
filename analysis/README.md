@@ -1,6 +1,6 @@
 # QuickBooks Analysis
 > Note: The compiled sql within the analysis folder references the final model [quickbooks__general_ledger_by_period](https://github.com/fivetran/dbt_quickbooks/blob/master/models/quickbooks__general_ledger_by_period.sql). As such, prior to 
-compiling the provided sql to test financial statement accuracy, you must first execute `dbt run`.)
+compiling the provided sql to test financial statement accuracy, you must first execute `dbt run`.
 
 The Fivetran dbt package was designed to provide users insights into their QuickBooks data that can be used for financial statement reporting and deeper analysis. 
 While our aim of this package is to allow users to gain additional insights on top of their base financial statements, it is also imperative that base financial
@@ -18,8 +18,10 @@ Leveraging the above sql is made possible by the [analysis functionality of dbt]
 compile the sql, you will perform the following steps:
     - Execute `dbt run` to create the package models.
     - Execute `dbt compile` to generate the target specific sql.
-    - Copy the code and run in your data warehouse.
+    - Navigate to your project's `/target/compiled/quickbooks/analysis` directory.
+    - Copy the `quickbooks__balance_sheet` code and run in your data warehouse.
     - Confirm the balance sheet totals match your expected results.
+    - Copy the `quickbooks__income_statement` code and run in your data warehouse.
     - Confirm the income statement totals match your expected results.
 
 ## Contributions

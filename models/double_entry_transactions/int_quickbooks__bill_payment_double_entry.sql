@@ -33,13 +33,9 @@ bill_payment_join as (
         bill_payments.bill_payment_id as transaction_id,
         bill_payments.transaction_date,
         bill_payments.total_amount as amount,
-        --coalesce(bill_payments.total_amount, bill_payment_lines.amount) as amount,
         coalesce(bill_payments.credit_card_account_id,bill_payments.check_bank_account_id) as payment_account_id,
         ap_accounts.account_id
     from bill_payments
-    
-    -- left join bill_payment_lines
-    --     on bill_payments.bill_payment_id = bill_payment_lines.bill_payment_id
 
     cross join ap_accounts
 

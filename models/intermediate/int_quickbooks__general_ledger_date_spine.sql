@@ -15,9 +15,17 @@ with spine as (
     {% set last_date_query %}
         select  max( transaction_date ) as max_date from {{ ref('quickbooks__general_ledger') }}
     {% endset %}
+
+    {% set current_date_query %}
+        select current_date
+    {% endset %}
+
+    {% if run_query(current_date_query).columns[0][0]|string < run_query(last_date_query).columns[0][0]|string %}
+
     {% set last_date = run_query(last_date_query).columns[0][0]|string %}
 
-    {% else %} {% set last_date = "current_date" %}
+    {% else %} {% set last_date = run_query(current_date_query).columns[0][0]|string %}
+    {% endif %}
     {% endif %}
 
     {{ dbt_utils.date_spine(

@@ -95,7 +95,7 @@ invoice_join as (
                 -- end as account_id,
 
         -- coalesce(cast(invoice_lines.account_id as string), bundle_item_catch.income_account_id, items.income_account_id) as account_id,
-        coalesce(invoice_lines.account_id, bundle_item_catch.income_account_id, items.income_account_id) as account_id
+        coalesce(invoice_lines.account_id, bundle_item_catch.income_account_id, items.income_account_id, items.expense_account_id) as account_id
 
         {% else %}
 

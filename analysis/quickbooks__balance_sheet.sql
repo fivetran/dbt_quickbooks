@@ -36,7 +36,7 @@ equity_date as (
     group by 1
 ),
 
-liab as (
+liability as (
     select 
         ld.account_id, 
         l.period_ending_balance

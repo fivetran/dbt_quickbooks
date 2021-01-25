@@ -44,7 +44,7 @@ credit_memo_join as (
         --     then coalesce(items.income_account_id, items.expense_account_id, items.asset_account_id) --tried asset
         --     else credit_memo_lines.sales_item_account_id
                 -- end as account_id
-        coalesce(credit_memo_lines.sales_item_account_id, items.income_account_id) as account_id
+        coalesce(credit_memo_lines.sales_item_account_id, items.income_account_id, items.expense_account_id) as account_id
                 
     from credit_memos
 

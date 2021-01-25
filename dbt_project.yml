@@ -13,7 +13,7 @@ models:
     transactional_models:
       materialized: ephemeral
     intermediate:
-      materialized: ephemeral
+      materialized: view
 
 vars:
   quickbooks:
@@ -71,6 +71,8 @@ vars:
     using_sales_receipt:  True
     using_transfer:       True
     using_vendor_credit:  True
+
+analysis-paths: ["analysis"]
 
 clean-targets:
     - target

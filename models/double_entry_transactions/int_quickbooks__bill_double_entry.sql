@@ -31,7 +31,7 @@ bill_join as (
         --     then coalesce(items.expense_account_id, items.income_account_id) --Just switched these to test
         --     else bill_lines.account_expense_account_id
         --         end as payed_to_account_id,
-        coalesce(bill_lines.account_expense_account_id, items.expense_account_id) as payed_to_account_id,
+        coalesce(bill_lines.account_expense_account_id, items.income_account_id, items.expense_account_id) as payed_to_account_id,
         bills.payable_account_id
     from bills
 
