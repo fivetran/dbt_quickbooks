@@ -49,21 +49,21 @@ ar_accounts as (
     where account_type = 'Accounts Receivable'
 ),
 
-bundle_income_account as (
-    select 
-        bundles.bundle_id, 
-        max(items.income_account_id) as income_account_id,
-        max(items.asset_account_id) as asset_account_id
-    from bundles
+-- bundle_income_account as (
+--     select 
+--         bundles.bundle_id, 
+--         max(items.income_account_id) as income_account_id,
+--         max(items.asset_account_id) as asset_account_id
+--     from bundles
 
-    left join bundle_items
-        on bundles.bundle_id = bundle_items.bundle_id
-    left join items
-        on items.item_id = bundle_items.item_id
-    where items.inventory_start_date is not null
+--     left join bundle_items
+--         on bundles.bundle_id = bundle_items.bundle_id
+--     left join items
+--         on items.item_id = bundle_items.item_id
+--     where items.inventory_start_date is not null
 
-    group by 1
-),
+--     group by 1
+-- ),
 
 invoice_join as (
     select
