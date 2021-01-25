@@ -11,9 +11,9 @@ models:
     double_entry_transactions:
       materialized: ephemeral
     transactional_models:
-      materialized: ephemeral
+      materialized: table
     intermediate:
-      materialized: ephemeral
+      materialized: table
 
 vars:
   quickbooks:

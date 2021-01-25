@@ -94,6 +94,7 @@ seeds:
       bill_line_data:
         +column_types:
           item_expense_billable_status: "{{ 'varchar(25)' if target.name == 'redshift' else 'string' }}"
+          account_expense_billable_status: "{{ 'varchar(25)' if target.name == 'redshift' else 'string' }}"
       bill_linked_txn_data:
       bill_payment_line_data:
       bill_payment_data:
@@ -126,7 +127,7 @@ seeds:
           account_expense_account_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
       purchase_data:
         +column_types:
-          credit: bool
+          credit: "{{ 'boolean' if target.name == 'snowflake' else 'bool' }}"
           transaction_date: date
       refund_receipt_line_data:
       refund_receipt_data:
@@ -140,6 +141,7 @@ seeds:
       vendor_credit_line_data:
         +column_types:
           item_expense_billable_status: "{{ 'varchar(25)' if target.name == 'redshift' else 'string' }}"
+          account_expense_billable_status: "{{ 'varchar(25)' if target.name == 'redshift' else 'string' }}"
       vendor_credit_data:
       vendor_data:
         +column_types: 

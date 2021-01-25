@@ -5,4 +5,4 @@ packages:
   - git: https://github.com/fivetran/dbt_quickbooks_source.git
     warn-unpinned: false
 
-  # - local: ../../dbt_quickbooks_source
+  # - local: ../dbt_quickbooks_source

@@ -22,9 +22,6 @@ final as (
         vendor_credit_lines.index as transaction_line_id,
         'vendor_credit' as transaction_type,
         vendor_credits.transaction_date,
-        -- vendor_credit_lines.item_expense_item_id as item_id,
-        -- vendor_credit_lines.item_expense_quantity as item_quantity,
-        -- vendor_credit_lines.item_expense_unit_price as item_unit_price,
         case when vendor_credit_lines.account_expense_account_id is null
             then items.asset_account_id
             else vendor_credit_lines.account_expense_account_id

@@ -5,7 +5,21 @@ with accounts as (
 
 classification_fix as (
     select 
-        {{ dbt_utils.star(from=ref('stg_quickbooks__account'), except=["classification"]) }},
+        account_id,
+        account_number,
+        is_sub_account,
+        parent_account_id,
+        name,
+        account_type,
+        account_sub_type,
+        balance,
+        balance_with_sub_accounts,
+        is_active,
+        created_at,
+        currency_id,
+        description,
+        fully_qualified_name,
+        updated_at,
         case when classification is not null
             then classification
             when classification is null and account_type in ('Bank', 'Other Current Asset', 'Fixed Asset', 'Other Asset', 'Accounts Receivable')

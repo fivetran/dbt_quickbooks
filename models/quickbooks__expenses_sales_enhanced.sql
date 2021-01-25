@@ -15,60 +15,60 @@ sales as (
 
 final as (
     select
-        'expense' as transaction_source,
-        transaction_id,
-        transaction_line_id,
-        transaction_type,
-        transaction_date,
-        cast(null as {{ 'int64' if target.name == 'bigquery' else 'bigint' }} ) as item_id,
-        cast(null as decimal) as item_quantity,
-        cast(null as decimal) as item_unit_price,
-        account_id,
-        account_name,
-        account_sub_type,
-        class_id,
-        department_id,
-        {% if var('using_department', True) %}
-        department_name,
-        {% endif %}
-        customer_id,
-        customer_name,
-        vendor_id,
-        vendor_name,
-        billable_status,
-        description,
-        amount,
-        total_amount
+        'expense' as transaction_source
+        -- transaction_id,
+        -- transaction_line_id,
+        -- transaction_type,
+        -- transaction_date,
+        -- cast(null as {{ 'int64' if target.name == 'bigquery' else 'bigint' }} ) as item_id,
+        -- cast(null as decimal) as item_quantity,
+        -- cast(null as decimal) as item_unit_price,
+        -- account_id,
+        -- account_name,
+        -- account_sub_type,
+        -- class_id,
+        -- department_id,
+        -- {% if var('using_department', True) %}
+        -- department_name,
+        -- {% endif %}
+        -- customer_id,
+        -- customer_name,
+        -- vendor_id,
+        -- vendor_name,
+        -- billable_status,
+        -- description,
+        -- amount,
+        -- total_amount
     from expenses
 
     {% if var('using_invoice', True) %}
     union all
 
     select 
-        'sale' as transaction_source,
-        transaction_id,
-        transaction_line_id,
-        transaction_type,
-        transaction_date,
-        item_id,
-        item_quantity,
-        item_unit_price,
-        account_id,
-        account_name,
-        account_sub_type,
-        class_id,
-        department_id,
-        {% if var('using_department', True) %}
-        department_name,
-        {% endif %}
-        customer_id,
-        customer_name,
-        vendor_id,
-        vendor_name,
-        billable_status,
-        description,
-        amount,
-        total_amount
+        'sale' as transaction_source
+        -- transaction_id,
+        -- transaction_line_id,
+        -- transaction_type,
+        -- transaction_date,
+        -- item_id,
+        -- item_quantity,
+        -- item_unit_price,
+        -- account_id,
+        -- account_name,
+        -- account_sub_type,
+        -- class_id,
+        -- department_id,
+        -- {% if var('using_department', True) %}
+        -- department_name,
+        -- {% endif %}
+        -- customer_id,
+        -- customer_name,
+        -- vendor_id,
+        -- vendor_name,
+        -- billable_status,
+        -- description,
+        -- amount,
+        -- total_amount
     from sales
     {% endif %}
 )

@@ -17,15 +17,12 @@ final as (
         journal_entry_lines.index as transaction_line_id,
         'journal_entry' as transaction_type,
         journal_entries.transaction_date,
-        -- cast(null as string) as item_id,
-        -- cast(null as string) as item_quantity,
-        -- cast(null as string) as item_unit_price,
         journal_entry_lines.account_id,
         journal_entry_lines.class_id,
         journal_entry_lines.department_id,
         journal_entry_lines.customer_id,
         journal_entry_lines.vendor_id,
-        journal_entry_lines.billable_status as billable_status,
+        cast(journal_entry_lines.billable_status as {{ 'varchar(25)' if target.name == 'redshift' else 'string' }} ) as billable_status,
         journal_entry_lines.description,
         case when lower(journal_entry_lines.posting_type) = 'credit'
             then journal_entry_lines.amount * -1 
