@@ -3,10 +3,10 @@
 This package models quickbooks data from [Fivetran's connector](https://fivetran.com/docs/applications/quickbooks). It uses data in the format described by [this ERD](https://fivetran.com/docs/applications/quickbooks-suiteanalytics#schemainformation).
 
 The main focus of this package is to provide users insights into their QuickBooks data that can be used for financial statement reporting and deeper analysis. The package achieves this by:
-    - Creating a comprehensive general ledger which can be used to create financial statements with additional flexibility.
-    - Providing historical general ledger month beginning balances, ending balances, and net change for each account.
-    - Enhancing Accounts Payable and Accounts Receivables data by providing past and present aging of bills and invoices.
-    - Pairing all expense and sales transactions in one table with accompanying data to provide enhanced analysis.
+  - Creating a comprehensive general ledger which can be used to create financial statements with additional flexibility.
+  - Providing historical general ledger month beginning balances, ending balances, and net change for each account.
+  - Enhancing Accounts Payable and Accounts Receivables data by providing past and present aging of bills and invoices.
+  - Pairing all expense and sales transactions in one table with accompanying data to provide enhanced analysis.
 
 ## Models
 This package contains transformation models, designed to work simultaneously with our [quickbooks source package](https://github.com/fivetran/dbt_quickbooks_source). A dependency on the source package is declared in this package's `packages.yml` file, so it will automatically download when you run `dbt deps`. The primary outputs of this package are described below. Intermediate models are used to create these output models.
