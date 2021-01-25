@@ -16,15 +16,22 @@ with expense_union as (
     union all
 
     select *
-    from {{ ref('int_quickbooks__journal_entry_transactions') }}
+    from {{ref('int_quickbooks__journal_entry_transactions')}}
     {% endif %} 
 
     {% if var('using_deposit', True) %}
     union all
 
     select *
-    from {{ ref('int_quickbooks__deposit_transactions') }}
+    from {{ref('int_quickbooks__deposit_transactions')}}
     {% endif %} 
+
+    {% if var('using_vendor_credit', True) %}
+    union all
+
+    select *
+    from {{ ref('int_quickbooks__vendor_credit_transactions') }}
+    {% endif %}
 ),
 
 customers as (

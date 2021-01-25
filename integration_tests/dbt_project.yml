@@ -1,0 +1,150 @@
+name: 'quickbooks_integration_tests'
+version: '0.1.0'
+profile: 'integration_tests'
+config-version: 2
+
+models: 
+  quickbooks_source:
+    materialized: table
+    tmp:
+      materialized: view
+
+vars:
+  quickbooks:
+    account:              "{{ ref('stg_quickbooks__account') }}"
+    address:              "{{ ref('stg_quickbooks__address') }}"
+    bill_line:            "{{ ref('stg_quickbooks__bill_line') }}"
+    bill_linked_txn:      "{{ ref('stg_quickbooks__bill_linked_txn') }}"
+    bill_payment_line:    "{{ ref('stg_quickbooks__bill_payment_line') }}"
+    bill_payment:         "{{ ref('stg_quickbooks__bill_payment') }}"
+    bill:                 "{{ ref('stg_quickbooks__bill') }}"
+    bundle_item:          "{{ ref('stg_quickbooks__bundle_item') }}"
+    bundle:               "{{ ref('stg_quickbooks__bundle') }}"
+    credit_memo_line:     "{{ ref('stg_quickbooks__credit_memo_line') }}"
+    credit_memo:          "{{ ref('stg_quickbooks__credit_memo') }}"
+    customer:             "{{ ref('stg_quickbooks__customer') }}"
+    department:           "{{ ref('stg_quickbooks__department') }}"
+    deposit_line:         "{{ ref('stg_quickbooks__deposit_line') }}"
+    deposit:              "{{ ref('stg_quickbooks__deposit') }}"
+    estimate:             "{{ ref('stg_quickbooks__estimate') }}"
+    estimate_line:        "{{ ref('stg_quickbooks__estimate_line') }}"
+    invoice_line:         "{{ ref('stg_quickbooks__invoice_line') }}"
+    invoice_line_bundle:  "{{ ref('stg_quickbooks__invoice_line_bundle') }}"
+    invoice_linked_txn:   "{{ ref('stg_quickbooks__invoice_linked_txn') }}"
+    invoice:              "{{ ref('stg_quickbooks__invoice') }}"
+    item:                 "{{ ref('stg_quickbooks__item') }}"
+    journal_entry_line:   "{{ ref('stg_quickbooks__journal_entry_line') }}"
+    journal_entry:        "{{ ref('stg_quickbooks__journal_entry') }}"
+    payment_line:         "{{ ref('stg_quickbooks__payment_line') }}"
+    payment:              "{{ ref('stg_quickbooks__payment') }}"
+    purchase_line:        "{{ ref('stg_quickbooks__purchase_line') }}"
+    purchase:             "{{ ref('stg_quickbooks__purchase') }}"
+    refund_receipt_line:  "{{ ref('stg_quickbooks__refund_receipt_line') }}"
+    refund_receipt:       "{{ ref('stg_quickbooks__refund_receipt') }}"
+    sales_receipt_line:   "{{ ref('stg_quickbooks__sales_receipt_line') }}"
+    sales_receipt:        "{{ ref('stg_quickbooks__sales_receipt') }}"
+    transfer:             "{{ ref('stg_quickbooks__transfer') }}"
+    vendor_credit_line:   "{{ ref('stg_quickbooks__vendor_credit_line') }}"
+    vendor_credit:        "{{ ref('stg_quickbooks__vendor_credit') }}"
+    vendor:               "{{ ref('stg_quickbooks__vendor') }}"
+
+  quickbooks_source:
+    account:              "{{ ref('account_data') }}"
+    address:              "{{ ref('address_data') }}"
+    bill_line:            "{{ ref('bill_line_data') }}"
+    bill_linked_txn:      "{{ ref('bill_linked_txn_data') }}"
+    bill_payment_line:    "{{ ref('bill_payment_line_data') }}"
+    bill_payment:         "{{ ref('bill_payment_data') }}"
+    bill:                 "{{ ref('bill_data') }}"
+    bundle_item:          "{{ ref('bundle_item_data') }}"
+    bundle:               "{{ ref('bundle_data') }}"
+    credit_memo:          "{{ ref('credit_memo_data') }}"
+    credit_memo_line:     "{{ ref('credit_memo_line_data') }}"
+    customer:             "{{ ref('customer_data') }}"
+    department:           "{{ ref('department_data') }}"
+    deposit_line:         "{{ ref('deposit_line_data') }}"
+    deposit:              "{{ ref('deposit_data') }}"
+    estimate:             "{{ ref('estimate_data') }}"
+    estimate_line:        "{{ ref('estimate_line_data') }}"
+    invoice:              "{{ ref('invoice_data') }}"
+    invoice_line:         "{{ ref('invoice_line_data') }}"
+    invoice_line_bundle:  "{{ ref('invoice_line_bundle_data') }}"
+    invoice_linked_txn:   "{{ ref('invoice_linked_txn_data') }}"
+    item:                 "{{ ref('item_data') }}"
+    journal_entry_line:   "{{ ref('journal_entry_line_data') }}"
+    journal_entry:        "{{ ref('journal_entry_data') }}"
+    payment:              "{{ ref('payment_data') }}"
+    payment_line:         "{{ ref('payment_line_data') }}"
+    purchase_line:        "{{ ref('purchase_line_data') }}"
+    purchase:             "{{ ref('purchase_data') }}"
+    refund_receipt_line:  "{{ ref('refund_receipt_line_data') }}"
+    refund_receipt:       "{{ ref('refund_receipt_data') }}"
+    sales_receipt_line:   "{{ ref('sales_receipt_line_data') }}"
+    sales_receipt:        "{{ ref('sales_receipt_data') }}"
+    transfer:             "{{ ref('transfer_data') }}"    
+    vendor_credit_line:   "{{ ref('vendor_credit_line_data') }}"
+    vendor_credit:        "{{ ref('vendor_credit_data') }}"
+    vendor:               "{{ ref('vendor_data') }}"
+    
+seeds:
+    +quote_columns: "{{ true if target.type == 'redshift' else false }}"
+    quickbooks_integration_tests:
+      account_data:
+      address_data:
+      bill_line_data:
+        +column_types:
+          item_expense_billable_status: "{{ 'varchar(25)' if target.name == 'redshift' else 'string' }}"
+      bill_linked_txn_data:
+      bill_payment_line_data:
+      bill_payment_data:
+      bill_data:
+      bundle_item_data:
+      bundle_data:
+      credit_memo_data:
+      credit_memo_line_data:
+      customer_data:
+      department_data:
+      deposit_line_data:
+        +column_types:
+          deposit_account_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
+          deposit_class_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
+      deposit_data:
+      estimate_data:
+      estimate_line_data:
+      incoice_data:
+      invoice_line_data:
+      invoice_line_bundle_data:
+      invoice_linked_txn_data:
+      item_data:
+      journal_entry_line_data:
+      journal_entry_data:
+      payment_data:
+      payment_line_data:
+      purchase_line_data:
+        +column_types:
+          item_expense_billable_status: "{{ 'varchar(25)' if target.name == 'redshift' else 'string' }}"
+          account_expense_account_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
+      purchase_data:
+        +column_types:
+          credit: bool
+          transaction_date: date
+      refund_receipt_line_data:
+      refund_receipt_data:
+        +column_types:
+          transaction_date: date
+      sales_receipt_line_data:
+      sales_receipt_data:
+        +column_types:
+          transaction_date: date
+      transfer_data:      
+      vendor_credit_line_data:
+        +column_types:
+          item_expense_billable_status: "{{ 'varchar(25)' if target.name == 'redshift' else 'string' }}"
+      vendor_credit_data:
+      vendor_data:
+        +column_types: 
+          id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
+
+clean-targets:
+    - target
+    - dbt_modules

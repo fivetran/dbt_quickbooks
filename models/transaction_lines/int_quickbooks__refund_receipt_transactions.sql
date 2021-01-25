@@ -19,7 +19,7 @@ items as (
 final as (
     select
         refund_receipts.refund_id as transaction_id,
-        concat(refund_receipt_lines.refund_id, '-', refund_receipt_lines.index) as transaction_line_id,
+        refund_receipt_lines.index as transaction_line_id,
         'refund_receipt' as transaction_type,
         refund_receipts.transaction_date,
         refund_receipt_lines.sales_item_item_id as item_id,
@@ -32,8 +32,8 @@ final as (
         refund_receipts.class_id,
         refund_receipts.department_id,
         refund_receipts.customer_id,
-        cast(null as string) as vendor_id,
-        cast(null as string) as billable_status,
+        cast(null as {{ 'int64' if target.name == 'bigquery' else 'bigint' }} ) as vendor_id,
+        cast(null as {{ 'varchar(25)' if target.name == 'redshift' else 'string' }} ) as billable_status,
         refund_receipt_lines.description,
         refund_receipt_lines.amount * -1 as amount,
         refund_receipts.total_amount * -1 as total_amount

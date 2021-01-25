@@ -19,12 +19,12 @@ items as (
 final as (
     select
         vendor_credits.vendor_credit_id as transaction_id,
-        concat(vendor_credit_lines.vendor_credit_id, '-', vendor_credit_lines.index) as transaction_line_id,
+        vendor_credit_lines.index as transaction_line_id,
         'vendor_credit' as transaction_type,
         vendor_credits.transaction_date,
-        vendor_credit_lines.item_expense_item_id as item_id,
-        vendor_credit_lines.item_expense_quantity as item_quantity,
-        vendor_credit_lines.item_expense_unit_price as item_unit_price,
+        -- vendor_credit_lines.item_expense_item_id as item_id,
+        -- vendor_credit_lines.item_expense_quantity as item_quantity,
+        -- vendor_credit_lines.item_expense_unit_price as item_unit_price,
         case when vendor_credit_lines.account_expense_account_id is null
             then items.asset_account_id
             else vendor_credit_lines.account_expense_account_id
@@ -33,7 +33,7 @@ final as (
         vendor_credits.department_id,
         coalesce(vendor_credit_lines.account_expense_customer_id, vendor_credit_lines.item_expense_customer_id) as customer_id,
         vendor_credits.vendor_id,
-        coalesce(account_expense_billable_status, item_expense_billable_status) as billable_status,
+        coalesce(vendor_credit_lines.account_expense_billable_status, vendor_credit_lines.item_expense_billable_status) as billable_status,
         vendor_credit_lines.description,
         vendor_credit_lines.amount * -1 as amount,
         vendor_credits.total_amount * -1 as total_amount

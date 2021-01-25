@@ -8,10 +8,12 @@ require-dbt-version: [">=0.18.0", "<0.19.0"]
 models:
   quickbooks:
     materialized: table
+    double_entry_transactions:
+      materialized: ephemeral
     transactional_models:
-      materialized: table
+      materialized: ephemeral
     intermediate:
-      materialized: table
+      materialized: ephemeral
 
 vars:
   quickbooks:
@@ -42,8 +44,6 @@ vars:
     payment_line:         "{{ ref('stg_quickbooks__payment_line') }}"
     payment:              "{{ ref('stg_quickbooks__payment') }}"
     purchase_line:        "{{ ref('stg_quickbooks__purchase_line') }}"
-    purchase_order_line:  "{{ ref('stg_quickbooks__purchase_order_line') }}"
-    purchase_order:       "{{ ref('stg_quickbooks__purchase_order') }}"
     purchase:             "{{ ref('stg_quickbooks__purchase') }}"
     refund_receipt_line:  "{{ ref('stg_quickbooks__refund_receipt_line') }}"
     refund_receipt:       "{{ ref('stg_quickbooks__refund_receipt') }}"
@@ -54,7 +54,7 @@ vars:
     vendor_credit:        "{{ ref('stg_quickbooks__vendor_credit') }}"
     vendor:               "{{ ref('stg_quickbooks__vendor') }}"
     
-    # #Variables if your company utilizes the below parent and child transactional tables.
+    #Variables if your company utilizes the below parent and child transactional tables.
     using_bill:           True
     using_bill_payment:   True
     using_credit_memo:    True

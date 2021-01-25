@@ -1,3 +1,7 @@
+/*
+Table that creates a debit record to the specified asset account and a credit record the specified cash account.
+*/
+
 --To disable this model, set the using_refund_receipt variable within your dbt_project.yml file to False.
 {{ config(enabled=var('using_refund_receipt', True)) }}
 

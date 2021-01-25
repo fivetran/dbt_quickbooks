@@ -1,3 +1,7 @@
+/*
+Table that creates a debit record to the receiveing account and a credit record to the sending account.
+*/
+
 --To disable this model, set the using_transfer variable within your dbt_project.yml file to False.
 {{ config(enabled=var('using_transfer', True)) }}
 

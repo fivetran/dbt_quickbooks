@@ -14,15 +14,18 @@ deposit_lines as (
 final as (
     select
         deposits.deposit_id as transaction_id,
-        concat(deposit_lines.deposit_id, '-', deposit_lines.index) as transaction_line_id,
+        deposit_lines.index as transaction_line_id,
         'deposit' as transaction_type,
         deposits.transaction_date,
+        -- cast(null as string) as item_id,
+        -- cast(null as string) as item_quantity,
+        -- cast(null as string) as item_unit_price,
         deposit_lines.deposit_account_id as account_id,
         deposit_lines.deposit_class_id as class_id,
         deposits.department_id,
         deposit_lines.deposit_customer_id as customer_id,
-        cast(null as string) as vendor_id,
-        cast(null as string) as billable_status,
+        cast(null as {{ 'int64' if target.name == 'bigquery' else 'bigint' }} ) as vendor_id,
+        cast(null as {{ 'varchar(25)' if target.name == 'redshift' else 'string' }} ) as billable_status,
         deposit_lines.description,
         deposit_lines.amount,
         deposits.total_amount

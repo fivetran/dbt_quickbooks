@@ -1,3 +1,7 @@
+/*
+Table that creates a debit record to the specified expense account and credit record to accounts payable for each bill transaction.
+*/
+
 --To disable this model, set the using_bill variable within your dbt_project.yml file to False.
 {{ config(enabled=var('using_bill', True)) }}
 

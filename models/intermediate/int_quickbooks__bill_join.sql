@@ -28,26 +28,6 @@ bill_payment_lines as (
     where bill_id is not null
 ),
 
-bill_transactions as (
-    select 
-        bills.bill_id,
-        bills.balance,
-        bills.total_amount,
-        bills.department_id,
-        bills.due_date_at,
-        bills.transaction_date,
-        bills.payable_account_id,
-        bills.vendor_id,
-        coalesce(bill_lines.account_expense_billable_status, bill_lines.item_expense_billable_status) as billable_status,
-        coalesce(bill_lines.account_expense_customer_id, bill_lines.item_expense_customer_id) as customer_id,
-        bill_lines.amount,
-        bill_lines.description
-    from bills
-    
-    inner join bill_lines
-        on bills.bill_id = bill_lines.bill_id
-),
-
 bill_pay as (
     select
         bills.bill_id,
@@ -74,17 +54,11 @@ final as (
     select
         'bill' as transaction_type,
         bill_link.bill_id as transaction_id,
-        --estimate_id
         bill_link.department_id,
         bill_link.vendor_id as vendor_id,
         bill_link.payable_account_id,
-        --bill_link.billing_address_id, --N/A
-        --bill_link.shipping_address_id, --N/A
-        --bill_link.delivery_type, --N/A
         bill_link.total_amount as total_amount,
         bill_link.balance as current_balance,
-        --estimate_amount
-        --estimate_status
         bill_link.due_date_at as due_date,
         min(bill_payments.transaction_date) as initial_payment_date,
         max(bill_payments.transaction_date) as recent_payment_date,

@@ -1,3 +1,7 @@
+/*
+Table that creates a debit record to the specified cash account and a credit record to the specified asset account.
+*/
+
 --To disable this model, set the using_sales_receipt variable within your dbt_project.yml file to False.
 {{ config(enabled=var('using_sales_receipt', True)) }}
 

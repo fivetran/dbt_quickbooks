@@ -1,3 +1,7 @@
+/*
+Table that creates a debit record to accounts payable and a credit record to the specified cash account.
+*/
+
 --To disable this model, set the using_bill_payment variable within your dbt_project.yml file to False.
 {{ config(enabled=var('using_bill_payment', True)) }}
 

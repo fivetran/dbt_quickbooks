@@ -123,7 +123,7 @@ adjusted_gl as (
 final as (
     select
         *,
-        round(cast(sum(adjusted_amount) over (partition by account_id order by transaction_date) as decimal),2) as running_balance
+        round(cast(sum(adjusted_amount) over (partition by account_id order by transaction_date, account_id rows unbounded preceding) as decimal),2) as running_balance
     from adjusted_gl
 )
 

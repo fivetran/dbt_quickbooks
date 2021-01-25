@@ -1,3 +1,8 @@
+/*
+Table that creates a debit record to the specified cash account and a credit record to either undeposited funds or a 
+specific other account indicated in the deposit line.
+*/
+
 --To disable this model, set the using_deposit variable within your dbt_project.yml file to False.
 {{ config(enabled=var('using_deposit', True)) }}
 

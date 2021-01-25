@@ -1,3 +1,7 @@
+/*
+Table that creates a debit record to either undeposited funds or a specified cash account and a credit record to accounts receivable.
+*/
+
 --To disable this model, set the using_payment variable within your dbt_project.yml file to False.
 {{ config(enabled=var('using_payment', True)) }}
 

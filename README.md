@@ -1,18 +1,22 @@
-# IN PROGRESS
 # QuickBooks ([docs](https://dbt-quickbooks.netlify.app/))
 
 This package models quickbooks data from [Fivetran's connector](https://fivetran.com/docs/applications/quickbooks). It uses data in the format described by [this ERD](https://fivetran.com/docs/applications/quickbooks-suiteanalytics#schemainformation).
 
-The main focus of this package is to enable users to insights into their quickbooks data that can be used for financial statement reporting and deeper analysis.
+The main focus of this package is to provide users insights into their QuickBooks data that can be used for financial statement reporting and deeper analysis. The package achieves this by:
+    - Creating a comprehensive general ledger which can be used to create financial statements with additional flexibility.
+    - Providing historical general ledger month beginning balances, ending balances, and net change for each account.
+    - Enhancing Accounts Payable and Accounts Receivables data by providing past and present aging of bills and invoices.
+    - Pairing all expense and sales transactions in one table with accompanying data to provide enhanced analysis.
 
 ## Models
 This package contains transformation models, designed to work simultaneously with our [quickbooks source package](https://github.com/fivetran/dbt_quickbooks_source). A dependency on the source package is declared in this package's `packages.yml` file, so it will automatically download when you run `dbt deps`. The primary outputs of this package are described below. Intermediate models are used to create these output models.
 
 | **model**                | **description**                                                                                                                                |
 | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-|  |  |
-|  |  |
-|  |  |
+| [quickbooks__general_ledger](https://github.com/fivetran/dbt_quickbooks/blob/master/models/quickbooks__general_ledger.sql) | Table containing a comprehensive list of all transactions with offsetting debit and credit entries to accounts. |
+| [quickbooks__general_ledger_by_period](https://github.com/fivetran/dbt_quickbooks/blob/master/models/quickbooks__general_ledger_by_period.sql) | Table containing the beginning balance, ending balance, and net change of the dollar amount for each month since the first transaction. This table can be used to generate a balance sheet and income statement for your business. |
+| [quickbooks__ap_ar_enhanced](https://github.com/fivetran/dbt_quickbooks/blob/master/models/quickbooks__ap_ar_enhanced.sql) | Table which provides the amount, amount paid, due date, and days overdue of all bills and invoices your company has received and paid along with customer, vendor, department, and address information for each invoice or bill. |
+| [quickbooks__expenses_sales_enhanced](https://github.com/fivetran/dbt_quickbooks/blob/master/models/quickbooks__expenses_sales.sql) | Table which provides enhanced customer, vendor, and account detail for each expense and sale transaction. |
 
 ## Installation Instructions
 Check [dbt Hub](https://hub.getdbt.com/) for the latest installation instructions, or [read the dbt docs](https://docs.getdbt.com/docs/package-management) for more information on installing packages.
@@ -31,6 +35,57 @@ vars:
     connector_database: your_database_name
     connector_schema: your_schema_name
 ```
+
+This package takes into consideration that not every QuickBooks account utilizes the same transactional tables. As such, each transactional object 
+(combination of parent and child transaction tables) is declared as a variable within the `dbt_project.yml` file to either be enabled or disabled. 
+See below for this package's default QuickBooks configuration of transactional objects. If your use case is different, you may simply change the 
+variable of the transactional object(s) within your own `dbt_project.yml` file as `true` or `false` to enable or disable the transactional 
+tables upstream respectively. Be sure to change the both the quickbooks and quickbooks_source variables. See below for an example.
+
+```yml
+# dbt_project.yml
+
+...
+vars:
+  quickbooks:
+    using_bill:           True
+    using_bill_payment:   True
+    using_credit_memo:    True
+    using_department:     True
+    using_deposit:        True
+    using_estimate:       True
+    using_invoice:        True
+    using_invoice_bundle: True
+    using_journal_entry:  True
+    using_payment:        True
+    using_purchase:       True
+    using_purchase_order: True
+    using_refund_receipt: True
+    using_sales_receipt:  True
+    using_transfer:       True
+    using_vendor_credit:  True
+
+  quickbooks_source:
+    using_bill:           True
+    using_bill_payment:   True
+    using_credit_memo:    True
+    using_department:     True
+    using_deposit:        True
+    using_estimate:       True
+    using_invoice:        True
+    using_invoice_bundle: True
+    using_journal_entry:  True
+    using_payment:        True
+    using_purchase:       True
+    using_purchase_order: True
+    using_refund_receipt: True
+    using_sales_receipt:  True
+    using_transfer:       True
+    using_vendor_credit:  True
+```
+
+## Analysis
+After running the models within this package, if you would like to confirm baseline financial statement totals from the data provided vs. what you expect you can make use of the [analysis functionality of dbt](https://docs.getdbt.com/docs/building-a-dbt-project/analyses/) and run pre-written sql to test these values. The sql within the [analysis](https://github.com/fivetran/dbt_quickbooks/blob/master/analysis) folder contains sql you may compile to generate balance sheet and income statement values which you can tie to your expected values and confirm the values provided in this package are accurate.
 
 ## Contributions
 Don't see a model or specific metric you would have liked to be included? Notice any bugs when installing 

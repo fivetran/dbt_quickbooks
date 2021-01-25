@@ -28,7 +28,7 @@ gl_cumulative_balance as (
     select
         *,
         case when financial_statement_helper = 'balance_sheet'
-            then round(sum(period_balance) over (partition by account_id order by date_month),2) 
+            then round(sum(period_balance) over (partition by account_id order by date_month, account_id rows unbounded preceding),2) 
             else 0
                 end as cumulative_balance
     from gl_period_balance
@@ -101,11 +101,9 @@ final as (
         date_year,
         period_first_day,
         period_last_day,
-        -- period_beginning_balance as og_beg_bal,
-        -- period_ending_balance as og_end_bal,
         coalesce(period_net_change,0) as period_net_change,
-        coalesce(period_beginning_balance_starter, last_value(period_ending_balance_starter ignore nulls) over (partition by account_id order by date_year, period_first_day)) as period_beginning_balance,
-        coalesce(period_ending_balance_starter, last_value(period_ending_balance_starter ignore nulls) over (partition by account_id order by date_year, period_first_day)) as period_ending_balance
+        coalesce(period_beginning_balance_starter, last_value(period_ending_balance_starter ignore nulls) over (partition by account_id order by date_year, period_first_day, account_id rows unbounded preceding)) as period_beginning_balance,
+        coalesce(period_ending_balance_starter, last_value(period_ending_balance_starter ignore nulls) over (partition by account_id order by date_year, period_first_day, account_id rows unbounded preceding)) as period_ending_balance
     from missing_period_starter
 )
 

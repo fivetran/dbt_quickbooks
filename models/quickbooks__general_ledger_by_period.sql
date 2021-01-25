@@ -28,7 +28,7 @@ net_income_loss as (
 
 retained_earnings as (
     select
-        '9999' as account_id,
+        9999 as account_id,
         'Net Income / Retained Earnings' as account_name,
         'Equity' as account_type,
         'RetainedEarnings' as account_sub_type,
@@ -39,7 +39,7 @@ retained_earnings as (
         last_day(cast(current_date as date)) as period_last_day,
         round((cast(revenue_net_change as decimal) - cast(expense_net_change as decimal)),2) as period_net_change,
         0 as period_beginning_balance,
-        round((cast(revenue_net_change as decimal) - cast(expense_net_change as decimal)),2) as period_ending_balance,
+        round((cast(revenue_net_change as decimal) - cast(expense_net_change as decimal)),2) as period_ending_balance
     from net_income_loss
 ),
 

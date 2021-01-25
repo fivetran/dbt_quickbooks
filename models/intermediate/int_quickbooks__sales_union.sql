@@ -1,15 +1,22 @@
 --To disable this model, set the using_invoice variable within your dbt_project.yml file to False.
-{{ config(enabled=var('using_invoice', True)) }}
+{{ config(enabled=var('using_sales_receipt', True)) }}
  
 with sales_union as (
     select *
-    from {{ ref('int_quickbooks__invoice_transactions') }}
+    from {{ ref('int_quickbooks__sales_receipt_transactions') }}
 
-    {% if var('using_sales_receipts', True) %}
+    {% if var('using_invoice', True) %}
     union all
 
     select *
-    from {{ ref('int_quickbooks__sales_receipt_transactions') }}
+    from {{ ref('int_quickbooks__invoice_transactions') }}
+    {% endif %}
+
+    {% if var('using_refund_receipt', True) %}
+    union all
+
+    select *
+    from {{ ref('int_quickbooks__refund_receipt_transactions') }}
     {% endif %}
 
     {% if var('using_credit_memo', True) %}
@@ -37,9 +44,10 @@ vendors as (
     from {{ ref('stg_quickbooks__vendor') }}
 ),
 
-accounts as (
+income_accounts as (
     select *
     from {{ ref('int_quickbooks__account_classifications') }}
+    where account_type = 'Income'
 ),
 
 final as (
@@ -52,8 +60,8 @@ final as (
         sales_union.item_quantity,
         sales_union.item_unit_price,
         sales_union.account_id,
-        accounts.name as account_name,
-        accounts.account_sub_type as account_sub_type,
+        income_accounts.name as account_name,
+        income_accounts.account_sub_type as account_sub_type,
         sales_union.class_id,
         sales_union.department_id,
         {% if var('using_department', True) %}
@@ -69,8 +77,8 @@ final as (
         sales_union.total_amount
     from sales_union
 
-    left join accounts
-        on sales_union.account_id = accounts.account_id
+    inner join income_accounts
+        on sales_union.account_id = income_accounts.account_id
 
     left join customers
         on customers.customer_id = sales_union.customer_id

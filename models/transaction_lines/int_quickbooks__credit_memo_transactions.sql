@@ -19,7 +19,7 @@ items as (
 final as (
     select
         credit_memos.credit_memo_id as transaction_id,
-        concat(credit_memo_lines.credit_memo_id, '-', credit_memo_lines.index) as transaction_line_id,
+        credit_memo_lines.index as transaction_line_id,
         'credit_memo' as transaction_type,
         credit_memos.transaction_date,
         credit_memo_lines.sales_item_item_id as item_id,
@@ -31,9 +31,9 @@ final as (
                 end as account_id,
         credit_memos.class_id,
         credit_memos.department_id,
-        credit_memos.customer_id,
-        cast(null as string) as vendor_id,
-        cast(null as string) as billable_status,
+        credit_memos.customer_id, 
+        cast(null as {{ 'int64' if target.name == 'bigquery' else 'bigint' }} ) as vendor_id,
+        cast(null as {{ 'varchar(25)' if target.name == 'redshift' else 'string' }} ) as billable_status,
         credit_memo_lines.description,
         credit_memo_lines.amount * -1 as amount,
         credit_memos.total_amount * -1 as total_amount

@@ -1,3 +1,7 @@
+/*
+Table that creates a debit record to accounts receivable and a credit record to a specified revenue account indicated on the invoice line.
+*/
+
 --To disable this model, set the using_invoice variable within your dbt_project.yml file to False.
 {{ config(enabled=var('using_invoice', True)) }}
 
@@ -90,7 +94,8 @@ invoice_join as (
         --     else coalesce(bundle_item_catch.income_account_id, items.income_account_id, items.expense_account_id)--, items.parent_income_account_id)
                 -- end as account_id,
 
-        coalesce(cast(invoice_lines.account_id as string), bundle_item_catch.income_account_id, items.income_account_id) as account_id,
+        -- coalesce(cast(invoice_lines.account_id as string), bundle_item_catch.income_account_id, items.income_account_id) as account_id,
+        coalesce(invoice_lines.account_id, bundle_item_catch.income_account_id, items.income_account_id) as account_id
 
         {% else %}
 
@@ -128,13 +133,15 @@ invoice_join as (
     {% endif %}
 
     left join items
-        on coalesce(invoice_lines.sales_item_item_id, cast(invoice_lines.item_id as string)) = items.item_id
+        on coalesce(invoice_lines.sales_item_item_id, invoice_lines.item_id) = items.item_id
 
     -- left join items as bundle_items
     --     on cast(invoice_bundles.sales_item_item_id as string) = bundle_items.item_id
 
-    where coalesce(invoice_lines.bundle_id, cast(invoice_lines.account_id as string), invoice_lines.sales_item_account_id, invoice_lines.sales_item_item_id, cast(invoice_lines.item_id as string)) is not null 
-        and coalesce(invoice_bundles.item_id, invoice_lines.sales_item_item_id, cast(invoice_lines.item_id as string)) is not null
+  where coalesce(invoice_lines.bundle_id, invoice_lines.account_id, invoice_lines.sales_item_account_id, invoice_lines.sales_item_item_id, invoice_lines.item_id) is not null 
+        and coalesce(invoice_bundles.item_id, invoice_lines.sales_item_item_id, invoice_lines.item_id) is not null
+    -- where coalesce(invoice_lines.bundle_id, cast(invoice_lines.account_id as string), invoice_lines.sales_item_account_id, invoice_lines.sales_item_item_id, cast(invoice_lines.item_id as string)) is not null 
+    --     and coalesce(invoice_bundles.item_id, invoice_lines.sales_item_item_id, cast(invoice_lines.item_id as string)) is not null
         --and invoice_bundles.amount = invoice_lines.amount
 ),
 

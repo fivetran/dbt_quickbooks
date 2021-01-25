@@ -1,3 +1,7 @@
+/*
+Table that creates a debit record to a specified expense account and a credit record to the payment account.
+*/
+
 --To disable this model, set the using_purchase variable within your dbt_project.yml file to False.
 {{ config(enabled=var('using_purchase', True)) }}
 
@@ -29,8 +33,8 @@ purchase_join as (
         --         end as payed_to_account_id,
         coalesce(purchase_lines.account_expense_account_id, items.expense_account_id) as payed_to_account_id,
         purchases.account_id as payed_from_account_id,
-        case ifnull(purchases.credit, false) when true then 'debit' else 'credit' end as payed_from_transaction_type,
-        case ifnull(purchases.credit, false) when true then 'credit' else 'debit' end as payed_to_transaction_type
+        case when coalesce(purchases.credit, false) = true then 'debit' else 'credit' end as payed_from_transaction_type,
+        case when coalesce(purchases.credit, false) = true then 'credit' else 'debit' end as payed_to_transaction_type
     from purchases
     
     inner join purchase_lines

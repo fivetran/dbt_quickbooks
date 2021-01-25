@@ -1,3 +1,7 @@
+/*
+Table that creates a debit record to Discounts Refunds Given and a credit record to the specified income account.
+*/
+
 --To disable this model, set the using_credit_memo variable within your dbt_project.yml file to False.
 {{ config(enabled=var('using_credit_memo', True)) }}
 
