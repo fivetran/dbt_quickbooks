@@ -93,8 +93,8 @@ seeds:
       address_data:
       bill_line_data:
         +column_types:
-          item_expense_billable_status: "{{ 'varchar(25)' if target.name == 'redshift' else 'string' }}"
-          account_expense_billable_status: "{{ 'varchar(25)' if target.name == 'redshift' else 'string' }}"
+          item_expense_billable_status: "{{ 'varchar(100)' if target.name == 'redshift' else 'string' }}"
+          account_expense_billable_status: "{{ 'varchar(100)' if target.name == 'redshift' else 'string' }}"
       bill_linked_txn_data:
       bill_payment_line_data:
       bill_payment_data:
@@ -123,7 +123,7 @@ seeds:
       payment_line_data:
       purchase_line_data:
         +column_types:
-          item_expense_billable_status: "{{ 'varchar(25)' if target.name == 'redshift' else 'string' }}"
+          item_expense_billable_status: "{{ 'varchar(100)' if target.name == 'redshift' else 'string' }}"
           account_expense_account_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
       purchase_data:
         +column_types:
@@ -140,8 +140,8 @@ seeds:
       transfer_data:      
       vendor_credit_line_data:
         +column_types:
-          item_expense_billable_status: "{{ 'varchar(25)' if target.name == 'redshift' else 'string' }}"
-          account_expense_billable_status: "{{ 'varchar(25)' if target.name == 'redshift' else 'string' }}"
+          item_expense_billable_status: "{{ 'varchar(100)' if target.name == 'redshift' else 'string' }}"
+          account_expense_billable_status: "{{ 'varchar(100)' if target.name == 'redshift' else 'string' }}"
       vendor_credit_data:
       vendor_data:
         +column_types: 

@@ -1,8 +1,8 @@
 packages:
   ## Will change to release version before publishing to dbt hub
   # - package: fivetran/quickbooks_source
-  #   version: 0.1.0
-  - git: https://github.com/fivetran/dbt_quickbooks_source.git
-    warn-unpinned: false
+  # #   version: 0.1.0
+  # - git: https://github.com/fivetran/dbt_quickbooks_source.git
+  #   warn-unpinned: false
 
-  # - local: ../dbt_quickbooks_source
+  - local: ../../dbt_quickbooks_source
