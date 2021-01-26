@@ -25,12 +25,6 @@ purchase_join as (
         purchases.purchase_id as transaction_id,
         purchases.transaction_date,
         purchase_lines.amount,
-        -- case when purchase_lines.account_expense_account_id is null and items.type = 'Inventory'
-        --     then items.asset_account_id
-        -- when purchase_lines.account_expense_account_id is null and items.type != 'Inventory'
-        --     then coalesce(items.income_account_id, items.expense_account_id) --added asset to test
-        --     else purchase_lines.account_expense_account_id
-        --         end as payed_to_account_id,
         coalesce(purchase_lines.account_expense_account_id, items.expense_account_id) as payed_to_account_id,
         purchases.account_id as payed_from_account_id,
         case when coalesce(purchases.credit, false) = true then 'debit' else 'credit' end as payed_from_transaction_type,

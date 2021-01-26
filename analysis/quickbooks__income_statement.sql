@@ -10,7 +10,7 @@ revenue as (
     from general_ledger_by_period
 
     where account_class = 'Revenue'
-        and period_first_day between '2020-01-01' and '2020-12-31' 
+        and period_first_day between '2020-01-01' and '2020-12-31' --Update to be your desired date period.
 
     group by 1
 ),
@@ -22,7 +22,7 @@ expense as (
     from general_ledger_by_period
 
     where account_class = 'Expense'
-        and period_first_day between '2020-01-01' and '2020-12-31' 
+        and period_first_day between '2020-01-01' and '2020-12-31' --Update to be your desired date period.
 
     group by 1
 ),

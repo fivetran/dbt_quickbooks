@@ -1,6 +1,7 @@
 with general_ledger_by_period as (
     select * 
     from {{ ref('quickbooks__general_ledger_by_period') }}
+    where period_first_day <= '2021-02-01' --Update to be your desired ending date.
 ),
 
 liability_date as (

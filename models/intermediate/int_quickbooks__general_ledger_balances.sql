@@ -89,7 +89,7 @@ missing_period_starter as (
                 end as period_ending_balance_starter
     from gl_patch
 ),
-
+ 
 final as (
     select
         account_id,

@@ -1,6 +1,6 @@
 # QuickBooks ([docs](https://dbt-quickbooks.netlify.app/))
 
-This package models quickbooks data from [Fivetran's connector](https://fivetran.com/docs/applications/quickbooks). It uses data in the format described by [this ERD](https://fivetran.com/docs/applications/quickbooks-suiteanalytics#schemainformation).
+This package models quickbooks data from [Fivetran's connector](https://fivetran.com/docs/applications/quickbooks). It uses data in the format described by [this ERD](https://fivetran.com/docs/applications/quickbooks#schemainformation).
 
 The main focus of this package is to provide users insights into their QuickBooks data that can be used for financial statement reporting and deeper analysis. The package achieves this by:
   - Creating a comprehensive general ledger which can be used to create financial statements with additional flexibility.

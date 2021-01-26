@@ -25,13 +25,7 @@ bill_join as (
         bills.bill_id as transaction_id, 
         bills.transaction_date,
         bill_lines.amount,
-        -- case when bill_lines.account_expense_account_id is null and items.type = 'Inventory'
-        --     then items.asset_account_id
-        -- when bill_lines.account_expense_account_id is null and items.type != 'Inventory'
-        --     then coalesce(items.expense_account_id, items.income_account_id) --Just switched these to test
-        --     else bill_lines.account_expense_account_id
-        --         end as payed_to_account_id,
-        coalesce(bill_lines.account_expense_account_id, items.income_account_id, items.expense_account_id) as payed_to_account_id,
+        coalesce(bill_lines.account_expense_account_id,items.expense_account_id, items.income_account_id) as payed_to_account_id,
         bills.payable_account_id
     from bills
 
