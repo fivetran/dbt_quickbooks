@@ -45,7 +45,7 @@ vars:
 
 ### Disabling models
 
-This package takes into consideration that not every QuickBooks account utilizes the same transactional tables, and allows you to disable the corresponding functionality. By default, all variables are assumed to be `false`.  Add variables for only the tables you would like to disable: 
+This package takes into consideration that not every QuickBooks account utilizes the same transactional tables, and allows you to disable the corresponding functionality. By default, all variables are assumed to be `true`.  Add variables for only the tables you would like to disable: 
 
 ```yml
 # dbt_project.yml
