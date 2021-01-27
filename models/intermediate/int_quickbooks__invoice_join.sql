@@ -1,5 +1,5 @@
 --To disable this model, set the using_invoice variable within your dbt_project.yml file to False.
-{{ config(enabled=var('using_invoice', True)) }}
+{{ config(enabled=var('using_invoice')) }}
 
 with invoices as (
     select *
@@ -11,10 +11,12 @@ invoice_linked as (
     from {{ref('stg_quickbooks__invoice_linked_txn')}}
 ),
 
+{% if var('using_estimate', True) %}
 estimates as (
     select *
     from {{ref('stg_quickbooks__estimate')}}
 ),
+{% endif %}
 
 payments as (
     select *
@@ -78,8 +80,12 @@ final as (
         invoice_link.delivery_type,
         invoice_link.total_amount as total_amount,
         invoice_link.balance as current_balance,
+
+        {% if var('using_estimate', True) %}
         coalesce(estimates.total_amount, 0) as estimate_total_amount,
         estimates.transaction_status as estimate_status,
+        {% endif %}
+
         invoice_link.due_date as due_date,
         min(payments.transaction_date) as initial_payment_date,
         max(payments.transaction_date) as recent_payment_date,
@@ -87,8 +93,10 @@ final as (
 
     from invoice_link
 
+    {% if var('using_estimate', True) %}
     left join estimates
         on invoice_link.estimate_id = estimates.estimate_id
+    {% endif %}
 
     left join payments
         on invoice_link.payment_id = payments.payment_id
@@ -97,7 +105,14 @@ final as (
         on payments.payment_id = payment_lines_payment.payment_id
             and invoice_link.invoice_id = payment_lines_payment.invoice_id
     
+    {% if var('using_estimate', True) %}
     group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
+
+    {% else %}
+
+    group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
+
+    {% endif %}
 
 )
 

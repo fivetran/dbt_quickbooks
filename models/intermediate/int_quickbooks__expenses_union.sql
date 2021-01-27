@@ -1,6 +1,3 @@
---To disable this model, set the using_purchase variable within your dbt_project.yml file to False.
-{{ config(enabled=var('using_purchase', True)) }}
-
 with expense_union as (
     select *
     from {{ ref('int_quickbooks__purchase_transactions') }}

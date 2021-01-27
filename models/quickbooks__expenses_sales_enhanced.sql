@@ -1,6 +1,3 @@
---To disable this model, set the using_purchase variable within your dbt_project.yml file to False.
-{{ config(enabled=var('using_purchase', True)) }}
-
 with expenses as (
     select *
     from {{ ref('int_quickbooks__expenses_union') }}
@@ -28,9 +25,11 @@ final as (
         account_sub_type,
         class_id,
         department_id,
+
         {% if var('using_department', True) %}
         department_name,
         {% endif %}
+        
         customer_id,
         customer_name,
         vendor_id,
@@ -58,9 +57,11 @@ final as (
         account_sub_type,
         class_id,
         department_id,
+
         {% if var('using_department', True) %}
         department_name,
         {% endif %}
+
         customer_id,
         customer_name,
         vendor_id,

@@ -33,7 +33,7 @@ net_income_loss as (
         using (period_first_day)
 ),
 
-retained_earnings_helper as (
+retained_earnings_starter as (
     select
         9999 as account_id,
         'Net Income / Retained Earnings Adjustment' as account_name,
@@ -48,12 +48,12 @@ retained_earnings_helper as (
     from net_income_loss
 ),
 
+
 retained_earnings_beginning as (
     select
         *,
-        round(cast(sum(period_net_change) over (partition by account_id order by date_year, period_first_day, account_id rows unbounded preceding) as decimal),2) as period_ending_balance
-
-    from retained_earnings_helper
+        round(sum(period_net_change) over (order by period_first_day, account_id rows unbounded preceding),2) as period_ending_balance
+    from retained_earnings_starter
 ),
 
 retained_earnings as (
@@ -68,7 +68,7 @@ retained_earnings as (
         period_first_day,
         period_last_day,
         period_net_change,
-        round(cast(coalesce(lag(period_ending_balance) over (partition by account_id order by date_year, period_first_day),0) as decimal),2) as period_beginning_balance,
+        round(cast(lag(period_ending_balance) over (order by date_year, period_first_day) as decimal),2) as period_beginning_balance,
         period_ending_balance
     from retained_earnings_beginning
 ),

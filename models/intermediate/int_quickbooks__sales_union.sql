@@ -1,6 +1,3 @@
---To disable this model, set the using_invoice variable within your dbt_project.yml file to False.
-{{ config(enabled=var('using_sales_receipt', True)) }}
- 
 with sales_union as (
     select *
     from {{ ref('int_quickbooks__sales_receipt_transactions') }}

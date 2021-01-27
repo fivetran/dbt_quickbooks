@@ -3,7 +3,7 @@ Table that creates a debit record to accounts payable and a credit record to the
 */
 
 --To disable this model, set the using_bill_payment variable within your dbt_project.yml file to False.
-{{ config(enabled=var('using_bill_payment', True)) }}
+{{ config(enabled=var('using_bill', True)) }}
 
 with bill_payments as (
     select *

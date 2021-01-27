@@ -52,10 +52,19 @@ invoice_join as (
     select
         invoices.invoice_id as transaction_id,
         invoices.transaction_date as transaction_date,
+
+        {% if var('using_invoice_bundle', True) %}
         case when invoice_lines.bundle_id is not null
             then coalesce(invoice_bundles.amount, 0)
             else invoice_lines.amount
                 end as amount,
+        {% else %}
+
+        invoice_lines.amount,
+
+        {% endif %}
+
+
 
         {% if var('using_invoice_bundle', True) %}
         coalesce(invoice_lines.account_id, bundle_item_catch.income_account_id, items.income_account_id, items.expense_account_id) as account_id

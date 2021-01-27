@@ -8,14 +8,17 @@ with gl_union as (
         transaction_source
     from {{ref('int_quickbooks__purchase_double_entry')}}
 
-    {% if var('using_bill_payment', True) %}
+    union all
+
+    select *
+    from {{ref('int_quickbooks__sales_receipt_double_entry')}}
+
+    {% if var('using_bill', True) %}
     union all
 
     select *
     from {{ref('int_quickbooks__bill_payment_double_entry')}}
-    {% endif %} 
 
-    {% if var('using_bill', True) %}
     union all
 
     select *
@@ -69,13 +72,6 @@ with gl_union as (
 
     select *
     from {{ref('int_quickbooks__refund_receipt_double_entry')}}
-    {% endif %}
-
-    {% if var('using_sales_receipt', True) %}
-    union all
-
-    select *
-    from {{ref('int_quickbooks__sales_receipt_double_entry')}}
     {% endif %}
 
     {% if var('using_vendor_credit', True) %}
