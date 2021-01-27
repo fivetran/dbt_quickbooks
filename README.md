@@ -10,7 +10,7 @@ The main focus of this package is to provide users insights into their QuickBook
 
 ## Compatibility
 
-> Please be aware that the [dbt_QuickBooks](https://github.com/fivetran/dbt_quickbooks) and [dbt_QuickBooks_source](https://github.com/fivetran/dbt_quickbooks_source) packages were developed with single currency company data. As such, the package models will not reflect accurate totals if your QuickBooks account has Multi-Currency enabled.
+> Please be aware that the [dbt_quickbooks](https://github.com/fivetran/dbt_quickbooks) and [dbt_quickbooks_source](https://github.com/fivetran/dbt_quickbooks_source) packages were developed with single currency company data. As such, the package models will not reflect accurate totals if your QuickBooks account has Multi-Currency enabled.
 
 ## Models
 
@@ -39,15 +39,13 @@ If this is not where your QuickBooks data is, add the below configuration to you
 config-version: 2
 
 vars:
-    connector_database: your_database_name
-    connector_schema: your_schema_name
+    quickbooks_database: your_database_name
+    quickbooks_schema: your_schema_name
 ```
 
-This package takes into consideration that not every QuickBooks account utilizes the same transactional tables. As such, each transactional object 
-(combination of parent and child transaction tables) is declared as a variable within the `dbt_project.yml` file to either be enabled or disabled. 
-See below for this package's default QuickBooks configuration of transactional objects. If your use case is different, you may simply change the 
-value(s) of the transactional object variable(s) within your own `dbt_project.yml` file to `true` or `false` to enable or disable the transactional 
-tables upstream, respectively. Be sure to change the both the `quickbooks` and `quickbooks_source` variables. See below for an example.
+### Disabling models
+
+This package takes into consideration that not every QuickBooks account utilizes the same transactional tables, and allows you to disable the corresponding functionality. By default, all variables are assumed to be `false`.  Add variables for only the tables you would like to disable: 
 
 ```yml
 # dbt_project.yml
@@ -55,40 +53,32 @@ tables upstream, respectively. Be sure to change the both the `quickbooks` and `
 ...
 vars:
   quickbooks:
-    using_bill:           True
-    using_bill_payment:   True
-    using_credit_memo:    True
-    using_department:     True
-    using_deposit:        True
-    using_estimate:       True
-    using_invoice:        True
-    using_invoice_bundle: True
-    using_journal_entry:  True
-    using_payment:        True
-    using_purchase:       True
-    using_purchase_order: True
-    using_refund_receipt: True
-    using_sales_receipt:  True
-    using_transfer:       True
-    using_vendor_credit:  True
+    using_bill:           false         #disable if you don't have bils or bill payments in Quickbooks
+    using_credit_memo:    false         #disable if you don't have credit memos in Quickbooks
+    using_department:     false         #disable if you don't have departments in Quickbooks
+    using_deposit:        false         #disable if you don't have deposits in Quickbooks
+    using_estimate:       false         #disable if you don't have estimates in Quickbooks
+    using_invoice:        false         #disable if you don't have invoices in Quickbooks
+    using_invoice_bundle: false         #disable if you don't have invoice bundles in Quickbooks
+    using_journal_entry:  false         #disable if you don't have journal entries in Quickbooks
+    using_payment:        false         #disable if you don't have payments in Quickbooks
+    using_refund_receipt: false         #disable if you don't have refund receipts in Quickbooks
+    using_transfer:       false         #disable if you don't have transfers in Quickbooks
+    using_vendor_credit:  false         #disable if you don't have vendor credits in Quickbooks
 
   quickbooks_source:
-    using_bill:           True
-    using_bill_payment:   True
-    using_credit_memo:    True
-    using_department:     True
-    using_deposit:        True
-    using_estimate:       True
-    using_invoice:        True
-    using_invoice_bundle: True
-    using_journal_entry:  True
-    using_payment:        True
-    using_purchase:       True
-    using_purchase_order: True
-    using_refund_receipt: True
-    using_sales_receipt:  True
-    using_transfer:       True
-    using_vendor_credit:  True
+    using_bill:           false         #disable if you don't have bils or bill payments in Quickbooks
+    using_credit_memo:    false         #disable if you don't have credit memos in Quickbooks
+    using_department:     false         #disable if you don't have departments in Quickbooks
+    using_deposit:        false         #disable if you don't have deposits in Quickbooks
+    using_estimate:       false         #disable if you don't have estimates in Quickbooks
+    using_invoice:        false         #disable if you don't have invoices in Quickbooks
+    using_invoice_bundle: false         #disable if you don't have invoice bundles in Quickbooks
+    using_journal_entry:  false         #disable if you don't have journal entries in Quickbooks
+    using_payment:        false         #disable if you don't have payments in Quickbooks
+    using_refund_receipt: false         #disable if you don't have refund receipts in Quickbooks
+    using_transfer:       false         #disable if you don't have transfers in Quickbooks
+    using_vendor_credit:  false         #disable if you don't have vendor credits in Quickbooks
 ```
 
 ## Analysis
