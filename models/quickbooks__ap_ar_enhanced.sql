@@ -40,7 +40,7 @@ final as (
         transaction_type,
         transaction_id,
         doc_number,
-        null as estimate_id,
+        cast(null as {{ 'int64' if target.name == 'bigquery' else 'bigint' }} ) as estimate_id, 
         {% if var('using_department', True) %}
         departments.fully_qualified_name as department_name,
         {% endif %}
@@ -51,10 +51,10 @@ final as (
         billing_address.country as customer_vendor_address_country,
         vendors.web_url as customer_vendor_webiste,
         concat(billing_address.address_1, billing_address.address_2) as customer_vendor_address_line,
-        null as delivery_type,
-        null as estimate_status,
+        cast(null as {{ 'varchar(25)' if target.name == 'redshift' else 'string' }} ) as delivery_type,
+        cast(null as {{ 'varchar(25)' if target.name == 'redshift' else 'string' }} ) as estimate_status,
         total_amount,
-        null as estimate_amount,
+        cast(null as decimal) as estimate_amount,
         current_balance,
         total_current_payment,
         due_date,
