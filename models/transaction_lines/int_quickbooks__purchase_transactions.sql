@@ -15,6 +15,7 @@ final as (
     select
         purchases.purchase_id as transaction_id,
         purchase_lines.index as transaction_line_id,
+        purchases.doc_number,
         'purchase' as transaction_type,
         purchases.transaction_date,
         purchase_lines.account_expense_account_id as account_id,

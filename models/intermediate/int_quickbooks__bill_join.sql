@@ -54,6 +54,7 @@ final as (
     select
         'bill' as transaction_type,
         bill_link.bill_id as transaction_id,
+        bill_link.doc_number,
         bill_link.department_id,
         bill_link.vendor_id as vendor_id,
         bill_link.payable_account_id,
@@ -73,7 +74,7 @@ final as (
         on bill_payments.bill_payment_id = bill_payment_lines.bill_payment_id
             and bill_link.bill_id = bill_payment_lines.bill_id
     
-    group by 1, 2, 3, 4, 5, 6, 7, 8
+    group by 1, 2, 3, 4, 5, 6, 7, 8, 9
 )
 
 select * 

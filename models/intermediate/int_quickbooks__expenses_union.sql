@@ -56,10 +56,15 @@ expense_accounts as (
 
 final as (
     select 
+        'expense' as transaction_source,
         expense_union.transaction_id,
         expense_union.transaction_line_id,
+        expense_union.doc_number,
         expense_union.transaction_type,
         expense_union.transaction_date,
+        cast(null as {{ 'int64' if target.name == 'bigquery' else 'bigint' }} ) as item_id,
+        cast(null as decimal) as item_quantity,
+        cast(null as decimal) as item_unit_price,
         expense_union.account_id,
         expense_accounts.name as account_name,
         expense_accounts.account_sub_type as account_sub_type,
@@ -70,6 +75,7 @@ final as (
         {% endif %}
         expense_union.customer_id,
         customers.fully_qualified_name as customer_name,
+        customers.website as customer_website,
         expense_union.vendor_id,
         vendors.display_name as vendor_name,
         expense_union.billable_status,

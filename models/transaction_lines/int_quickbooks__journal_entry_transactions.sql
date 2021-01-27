@@ -15,6 +15,7 @@ final as (
     select
         journal_entries.journal_entry_id as transaction_id,
         journal_entry_lines.index as transaction_line_id,
+        journal_entries.doc_number,
         'journal_entry' as transaction_type,
         journal_entries.transaction_date,
         journal_entry_lines.account_id,

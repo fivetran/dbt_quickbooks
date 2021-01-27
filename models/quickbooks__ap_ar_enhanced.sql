@@ -39,6 +39,7 @@ final as (
     select
         transaction_type,
         transaction_id,
+        doc_number,
         null as estimate_id,
         {% if var('using_department', True) %}
         departments.fully_qualified_name as department_name,
@@ -48,6 +49,7 @@ final as (
         vendors.balance as customer_vendor_balance,
         billing_address.city as customer_vendor_address_city,
         billing_address.country as customer_vendor_address_country,
+        vendors.web_url as customer_vendor_webiste,
         concat(billing_address.address_1, billing_address.address_2) as customer_vendor_address_line,
         null as delivery_type,
         null as estimate_status,
@@ -85,6 +87,7 @@ final as (
     select 
         invoice_join.transaction_type,
         invoice_join.transaction_id,
+        doc_number,
         invoice_join.estimate_id,
         {% if var('using_department', True) %}
         departments.fully_qualified_name as department_name,
@@ -94,6 +97,7 @@ final as (
         customers.balance as customer_vendor_current_balance,
         billing_address.city as customer_vendor_address_city,
         billing_address.country as customer_vendor_address_country,
+        customers.website as customer_vendor_webiste,
         concat(billing_address.address_1, billing_address.address_2) as customer_vendor_address_line,
         invoice_join.delivery_type,
         invoice_join.estimate_status,

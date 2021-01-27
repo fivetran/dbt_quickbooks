@@ -15,6 +15,7 @@ final as (
     select
         bills.bill_id as transaction_id,
         bill_lines.index as transaction_line_id,
+        bills.doc_number,
         'bill' as transaction_type,
         bills.transaction_date,
         bill_lines.account_expense_account_id as account_id,

@@ -20,6 +20,7 @@ final as (
     select
         refund_receipts.refund_id as transaction_id,
         refund_receipt_lines.index as transaction_line_id,
+        refund_receipts.doc_number,
         'refund_receipt' as transaction_type,
         refund_receipts.transaction_date,
         refund_receipt_lines.sales_item_item_id as item_id,

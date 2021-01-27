@@ -72,6 +72,7 @@ final as (
     select
         'invoice' as transaction_type,
         invoice_link.invoice_id as transaction_id,
+        invoice_link.doc_number,
         invoice_link.estimate_id,
         invoice_link.department_id,
         invoice_link.customer_id as customer_id,
@@ -106,11 +107,11 @@ final as (
             and invoice_link.invoice_id = payment_lines_payment.invoice_id
     
     {% if var('using_estimate', True) %}
-    group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
+    group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14
 
     {% else %}
 
-    group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
+    group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
 
     {% endif %}
 

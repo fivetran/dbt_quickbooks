@@ -49,8 +49,10 @@ income_accounts as (
 
 final as (
     select 
+        'sales' as transaction_source,
         sales_union.transaction_id,
         sales_union.transaction_line_id,
+        sales_union.doc_number,
         sales_union.transaction_type,
         sales_union.transaction_date,
         sales_union.item_id,
@@ -66,6 +68,7 @@ final as (
         {% endif %}
         sales_union.customer_id,
         customers.fully_qualified_name as customer_name,
+        customers.website as customer_website,
         sales_union.vendor_id,
         vendors.display_name as vendor_name,
         sales_union.billable_status,

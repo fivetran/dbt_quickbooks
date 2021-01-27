@@ -15,6 +15,7 @@ final as (
     select
         deposits.deposit_id as transaction_id,
         deposit_lines.index as transaction_line_id,
+        cast(null as {{ 'varchar(25)' if target.name == 'redshift' else 'string' }} ) as doc_number,
         'deposit' as transaction_type,
         deposits.transaction_date,
         deposit_lines.deposit_account_id as account_id,

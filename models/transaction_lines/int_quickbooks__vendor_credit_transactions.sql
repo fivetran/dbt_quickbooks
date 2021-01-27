@@ -20,6 +20,7 @@ final as (
     select
         vendor_credits.vendor_credit_id as transaction_id,
         vendor_credit_lines.index as transaction_line_id,
+        vendor_credits.doc_number,
         'vendor_credit' as transaction_type,
         vendor_credits.transaction_date,
         case when vendor_credit_lines.account_expense_account_id is null
