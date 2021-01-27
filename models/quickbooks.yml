@@ -39,75 +39,82 @@ models:
     description: Table that creates a debit record to payable account and a credit record to the expense account.
 
   - name: int_quickbooks__bill_transactions
-    description: Table which joins the bill and corresponding bill lines into a single bill transactions table.
+    description: Table that joins the bill and corresponding bill lines into a single bill transactions table.
 
   - name: int_quickbooks__credit_memo_transactions
-    description: Table which joins the credit memo and credit memo lines into a single credit memo transactions table.
+    description: Table that joins the credit memo and credit memo lines into a single credit memo transactions table.
 
   - name: int_quickbooks__deposit_transactions
-    description: Table which joins the deposit and corresponding deposit lines into a single deposit transactions table.
+    description: Table that joins the deposit and corresponding deposit lines into a single deposit transactions table.
 
   - name: int_quickbooks__journal_entry_transactions
-    description: Table which joins the journal entry and corresponding journal entry lines into a single journal entry transactions table.
+    description: Table that joins the journal entry and corresponding journal entry lines into a single journal entry transactions table.
 
   - name: int_quickbooks__purchase_transactions
-    description: Table which joins the purchase and corresponding purchase lines into a single purchase transactions table.
+    description: Table that joins the purchase and corresponding purchase lines into a single purchase transactions table.
 
   - name: int_quickbooks__refund_receipt_transactions
-    description: Table which joins the refund receipt and corresponding refund receipt lines into a single refund receipt transactions table.
+    description: Table that joins the refund receipt and corresponding refund receipt lines into a single refund receipt transactions table.
 
   - name: int_quickbooks__sales_receipt_transactions
-    description: Table which joins the sales receipt and corresponding sales receipt lines into a single sales receipt transactions table.
+    description: Table that joins the sales receipt and corresponding sales receipt lines into a single sales receipt transactions table.
 
   - name: int_quickbooks__vendor_credit_transactions
-    description: Table which joins the vendor credit and corresponding vendor credit lines into a single vendor credit transactions table.
+    description: Table that joins the vendor credit and corresponding vendor credit lines into a single vendor credit transactions table.
 
   - name: int_quickbooks__account_classifications
     description: >
-      Table which adds missing detail to the account table. This table adds the following:
+      Table that adds missing detail to the account table. This table adds the following:
 
-      A financial statement helper field which specifies the account as either a balance sheet or income statement account.
+      A financial statement helper field that specifies the account as either a balance sheet or income statement account.
 
-      Adds a transaction type to the specified account. The transaction type (debit or credit) is the type of transaction which increases
+      Adds a transaction type to the specified account. The transaction type (debit or credit) is the type of transaction that increases
       the account.
 
       Adds a multiplier of -1 to Liability and Equity accounts to offset the account balance so liability and equity accounts do not show up as
       negative balances.
 
-      Creates a new classification field which fills in the gaps if classifications were incorrectly set on certain account_types. For more information 
+      Creates a new classification field that fills in the gaps if classifications were incorrectly set on certain account_types. For more information 
       on how these classifications were determined you can refer to the 
-      [QuickBooks API Docs](https://developer.intuit.com/app/developer/qbo/docs/api/accounting/all-entities/account) which was used as reference.
+      [QuickBooks API Docs](https://developer.intuit.com/app/developer/qbo/docs/api/accounting/all-entities/account) that was used as reference.
 
   - name: int_quickbooks__bill_join
-    description: Table which joins a single bill transaction with the corresponding bill payment (if paid).
+    description: Table that joins a single bill transaction with the corresponding bill payment (if paid).
 
   - name: int_quickbooks__expenses_union
     description: >
-      Table which unions transactional tables that are representative of an expense. The expense transactional tables included are:
+      Table that unions transactional tables that are representative of an expense. The expense transactional tables included are:
       int_quickbooks__purchase_transactions, int_quickbooks__bill_transactions, int_quickbooks_journal_entry_transactions, int_quickbooks__deposit_transactions,
       int_quickbooks__vendor_credit_transactions. Additionally, while some transactions included in the previously mentioned transaction tables 
       contain non-expense transactions an inner join on accounts with the sub_type equal to Expense is applied.
 
   - name: int_quickbooks__general_ledger_balances
     description: >
-      Table which aggregates quickbooks__general_ledger account level transactions per period into a period_beginning_balance, period_ending_balance, and period_net_change 
+      Table that aggregates quickbooks__general_ledger account level transactions per period into a period_beginning_balance, period_ending_balance, and period_net_change 
       for each period through the use of the int_quickbooks__general_ledger_date_spine model. Further, period balances are only applied to balance
       sheet accounts while income statement accounts do not have a persisting balance rather a period net change. Please note, a period equates to one month. 
 
   - name: int_quickbooks__general_ledger_date_spine
     description: >
-      Table which creates a date spine by month with the first date being the minimum transaction date from the quickbooks__general_ledger
+      Table that creates a date spine by month with the first date being the minimum transaction date from the quickbooks__general_ledger
       model and the last date being one month after the last transaction date from the quickbooks__general_ledger model.
 
   - name: int_quickbooks__invoice_join
-    description: Table which joins a single invoice transactions with the corresponding payment (if paid) and corresponding estimate (if provided).
+    description: Table that joins a single invoice transactions with the corresponding payment (if paid) and corresponding estimate (if provided).
 
   - name: int_quickbooks__sales_union
     description: >
-      Table which unions transactional tables that are representative of a sale. The sale transactional tables are: int_quickbooks__sales_receipt_transactions
+      Table that unions transactional tables that are representative of a sale. The sale transactional tables are: int_quickbooks__sales_receipt_transactions
       int_quickbooks__invoice_transactions, int_quickbooks__credit_memo_transactions, int_quickbooks__refund_receipt_transactions, int_quickbooks__journal_entry_transactions,
       int_quickbooks__deposit_transactions. Additionally, while some transactions included in the previously mentioned transaction tables 
       contain non-income transactions an inner join on accounts with the sub_type equal to Income is applied.
+
+  - name: int_quickbooks__retained_earnings
+    description: >
+      Table that creates an adjusting entry for retained earnings each month. The retained earnings account is created as account_id 9999 and is listed as an Equity class. 
+      This table generates the retained earnings period beginning balance, ending balance, and net change by adding the period revenues and subtracting by the period 
+      expenses. This total is set as the period ending balance. From the period ending balance the net change and beginning balances are calculated. This is table
+      is then unioned with in_quickbooks__general_ledger_balances.
 
   - name: quickbooks__ap_ar_enhanced
     description: >
@@ -218,7 +225,7 @@ models:
       - name: transaction_index
         description: Unique identifier of the individual debit and credit records of the transaction.
       - name: transaction_date
-        description: Timestamp of the date which the transaction occurred.
+        description: Timestamp of the date that the transaction occurred.
       - name: amount
         description: Monetary amount of the transaction line.
       - name: account_id
@@ -230,7 +237,7 @@ models:
       - name: account_sub_type
         description: Account sub type of the account associated with the transaction line.
       - name: financial_statement_helper
-        description: Either 'balance sheet' or 'income statement' and is used to determine which financial statement the account impacts.
+        description: Either 'balance sheet' or 'income statement' and is used to determine that financial statement the account impacts.
       - name: account_current_balance
         description: Total current balance of the account associated with the transaction line.
       - name: account_class
@@ -242,15 +249,15 @@ models:
       - name: account_transaction_type
         description: Identifier of whether the account is increased by either a debit or credit entry.
       - name: adjusted_amount
-        description: The amount which impacts the account. If the transaction_type = account_transaction_type then the impact will increase, otherwise it will decrease the account.
+        description: The amount that impacts the account. If the transaction_type = account_transaction_type then the impact will increase, otherwise it will decrease the account.
   
   - name: quickbooks__general_ledger_by_period
     description: >
-      Table which pulls general ledger account level balances per period from int_quickbooks__general_ledger_balances while also creating an offsetting
+      Table that pulls general ledger account level balances per period from int_quickbooks__general_ledger_balances while also creating an offsetting
       Retained Earnings entry for Revenue - Expenses per year to be added as single Equity line balance per year.
     columns:
       - name: account_id
-        description: Reference to the account which the period balances are associated.
+        description: Reference to the account that the period balances are associated.
       - name: account_name
         description: Name of the account associated with the period balances.
       - name: account_type
