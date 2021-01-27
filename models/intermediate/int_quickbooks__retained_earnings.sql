@@ -54,7 +54,8 @@ retained_earnings_beginning as (
         *,
         round(sum(coalesce(period_net_change,0)) over (order by period_first_day, period_first_day rows unbounded preceding),2) as period_ending_balance
     from retained_earnings_starter
-),
+)
+,
 
 final as (
     select

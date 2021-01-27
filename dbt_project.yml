@@ -13,7 +13,7 @@ models:
     transactional_models:
       materialized: ephemeral
     intermediate:
-      materialized: view
+      materialized: table
 
 vars:
   quickbooks:
@@ -56,7 +56,6 @@ vars:
     
     #Variables if your company utilizes the below parent and child transactional tables.
     using_bill:           True
-    using_bill_payment:   True
     using_credit_memo:    True
     using_department:     True
     using_deposit:        True
@@ -65,10 +64,7 @@ vars:
     using_invoice_bundle: True
     using_journal_entry:  True
     using_payment:        True
-    using_purchase:       True
-    using_purchase_order: True
     using_refund_receipt: True
-    using_sales_receipt:  True
     using_transfer:       True
     using_vendor_credit:  True
 
