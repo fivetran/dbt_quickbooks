@@ -4,6 +4,15 @@ profile: 'integration_tests'
 config-version: 2
 
 models: 
+  quickbooks:
+    materialized: table
+    double_entry_transactions:
+      materialized: table
+    transaction_lines:
+      materialized: table
+    intermediate:
+      materialized: table
+
   quickbooks_source:
     materialized: table
     tmp:
