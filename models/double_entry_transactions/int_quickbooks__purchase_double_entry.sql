@@ -12,8 +12,13 @@ purchase_lines as (
 ),
 
 items as (
-    select *
-    from {{ref('stg_quickbooks__item')}}
+    select 
+        item.*, 
+        parent.expense_account_id as parent_expense_account_id
+    from {{ref('stg_quickbooks__item')}} item
+
+    left join {{ref('stg_quickbooks__item')}} parent
+        on item.parent_item_id = parent.item_id
 ),
 
 purchase_join as (
@@ -21,7 +26,7 @@ purchase_join as (
         purchases.purchase_id as transaction_id,
         purchases.transaction_date,
         purchase_lines.amount,
-        coalesce(purchase_lines.account_expense_account_id, items.expense_account_id) as payed_to_account_id,
+        coalesce(purchase_lines.account_expense_account_id, items.parent_expense_account_id, items.expense_account_id) as payed_to_account_id,
         purchases.account_id as payed_from_account_id,
         case when coalesce(purchases.credit, false) = true then 'debit' else 'credit' end as payed_from_transaction_type,
         case when coalesce(purchases.credit, false) = true then 'credit' else 'debit' end as payed_to_transaction_type

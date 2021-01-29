@@ -11,6 +11,7 @@ gl_accounting_periods as (
 gl_period_balance as (
     select
         account_id,
+        account_number,
         account_name,
         account_type,
         account_sub_type,
@@ -21,7 +22,7 @@ gl_period_balance as (
         round(sum(adjusted_amount),2) as period_balance
     from general_ledger
 
-    group by 1, 2, 3, 4, 5, 6, 7, 8
+    group by 1, 2, 3, 4, 5, 6, 7, 8, 9
 ),
 
 gl_cumulative_balance as (
@@ -37,6 +38,7 @@ gl_cumulative_balance as (
 gl_beginning_balance as (
     select
         account_id,
+        account_number,
         account_name,
         account_type,
         account_sub_type,
@@ -56,6 +58,7 @@ gl_beginning_balance as (
 gl_patch as (
     select 
         coalesce(gl_beginning_balance.account_id, gl_accounting_periods.account_id) as account_id,
+        coalesce(gl_beginning_balance.account_number, gl_accounting_periods.account_number) as account_number,
         coalesce(gl_beginning_balance.account_name, gl_accounting_periods.account_name) as account_name,
         coalesce(gl_beginning_balance.account_type, gl_accounting_periods.account_type) as account_type,
         coalesce(gl_beginning_balance.account_sub_type, gl_accounting_periods.account_sub_type) as account_sub_type,
@@ -93,6 +96,7 @@ missing_period_starter as (
 final as (
     select
         account_id,
+        account_number,
         account_name,
         account_type,
         account_sub_type,

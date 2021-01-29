@@ -95,6 +95,7 @@ adjusted_gl as (
         gl_union.transaction_date,
         cast(gl_union.amount as decimal) as amount,
         gl_union.account_id,
+        accounts.account_number,
         accounts.name as account_name,
         accounts.account_type,
         accounts.account_sub_type,

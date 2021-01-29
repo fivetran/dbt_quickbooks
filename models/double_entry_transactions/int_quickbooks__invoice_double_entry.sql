@@ -16,11 +16,18 @@ invoice_lines as (
 ),
 
 items as (
-    select item.*, parent.income_account_id as parent_income_account_id
+    select 
+        item.*, 
+        parent.income_account_id as parent_income_account_id
     from {{ref('stg_quickbooks__item')}} item
 
     left join {{ref('stg_quickbooks__item')}} parent
         on item.parent_item_id = parent.item_id
+),
+
+accounts as (
+    select *
+    from {{ref('stg_quickbooks__account')}}
 ),
 
 
@@ -36,8 +43,33 @@ bundles as (
 ),
 
 bundle_items as (
-    select *
+    select 
+        *
     from {{ref('stg_quickbooks__bundle_item')}}
+),
+
+income_accounts as (
+    select * 
+    from accounts
+
+    where account_sub_type = 'SalesOfProductIncome'
+),
+
+bundle_income_accounts as (
+    select distinct
+        income_accounts.account_id,
+        parent.income_account_id as parent_income_account_id,
+        bundle_items.bundle_id
+    from items 
+
+    left join items as parent
+        on items.parent_item_id = parent.item_id
+
+    inner join income_accounts 
+        on income_accounts.account_id = items.income_account_id
+
+    inner join bundle_items 
+        on bundle_items.item_id = items.item_id
 ),
 {% endif %}
 
@@ -52,26 +84,17 @@ invoice_join as (
     select
         invoices.invoice_id as transaction_id,
         invoices.transaction_date as transaction_date,
-
-        {% if var('using_invoice_bundle', True) %}
-        case when invoice_lines.bundle_id is not null
-            then coalesce(invoice_bundles.amount, 0)
-            else invoice_lines.amount
+        case when invoices.total_amount != 0
+            then invoice_lines.amount
+            else invoices.total_amount
                 end as amount,
-        {% else %}
-
-        invoice_lines.amount,
-
-        {% endif %}
-
-
 
         {% if var('using_invoice_bundle', True) %}
-        coalesce(invoice_lines.account_id, bundle_item_catch.income_account_id, items.income_account_id, items.expense_account_id) as account_id
+        coalesce(invoice_lines.account_id, items.parent_income_account_id, items.income_account_id, bundle_income_accounts.parent_income_account_id, bundle_income_accounts.account_id) as account_id
 
         {% else %}
+        coalesce(invoice_lines.account_id, items.income_account_id) as account_id
 
-        coalesce(invoice_lines.account_id, items.income_account_id, items.expense_account_id) as account_id
         {% endif %}
 
     from invoices
@@ -79,24 +102,18 @@ invoice_join as (
     inner join invoice_lines
         on invoices.invoice_id = invoice_lines.invoice_id
 
-    {% if var('using_invoice_bundle', True) %}
-    left join bundle_items
-        on invoice_lines.bundle_id = bundle_items.bundle_id
-
-    left join invoice_bundles
-        on invoice_bundles.invoice_id = invoice_lines.invoice_id and bundle_items.item_id = invoice_bundles.item_id
-
-    left join items as bundle_item_catch
-        on bundle_item_catch.item_id = invoice_bundles.item_id
-    {% endif %}
-
     left join items
         on coalesce(invoice_lines.sales_item_item_id, invoice_lines.item_id) = items.item_id
 
-    where coalesce(invoice_lines.bundle_id, invoice_lines.account_id, invoice_lines.sales_item_account_id, invoice_lines.sales_item_item_id, invoice_lines.item_id) is not null 
-    
     {% if var('using_invoice_bundle', True) %}
-        and coalesce(invoice_bundles.item_id, invoice_lines.sales_item_item_id, invoice_lines.item_id) is not null
+    left join bundle_income_accounts
+        on bundle_income_accounts.bundle_id = invoice_lines.bundle_id
+
+    where coalesce(invoice_lines.account_id, invoice_lines.sales_item_account_id, invoice_lines.sales_item_item_id, invoice_lines.item_id, bundle_income_accounts.account_id) is not null         
+
+    {% else %}
+        where coalesce(invoice_lines.account_id, invoice_lines.sales_item_account_id, invoice_lines.sales_item_item_id, invoice_lines.item_id) is not null 
+
     {% endif %}
 ),
 

@@ -33,8 +33,8 @@ final as (
         credit_memos.class_id,
         credit_memos.department_id,
         credit_memos.customer_id, 
-        cast(null as {{ 'int64' if target.name == 'bigquery' else 'bigint' }} ) as vendor_id,
-        cast(null as {{ 'varchar(25)' if target.name == 'redshift' else 'string' }} ) as billable_status,
+        cast(null as {{ dbt_utils.type_int() }}) as vendor_id,
+        cast(null as {{ dbt_utils.type_string() }}) as billable_status,
         credit_memo_lines.description,
         credit_memo_lines.amount * -1 as amount,
         credit_memos.total_amount * -1 as total_amount

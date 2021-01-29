@@ -30,8 +30,8 @@ final as (
         sales_receipts.class_id,
         sales_receipts.department_id,
         sales_receipts.customer_id,
-        cast(null as {{ 'int64' if target.name == 'bigquery' else 'bigint' }} ) as vendor_id,
-        cast(null as {{ 'varchar(25)' if target.name == 'redshift' else 'string' }} ) as billable_status,
+        cast(null as {{ dbt_utils.type_int() }}) as vendor_id,
+        cast(null as {{ dbt_utils.type_string() }}) as billable_status,
         sales_receipt_lines.description,
         sales_receipt_lines.amount,
         sales_receipts.total_amount

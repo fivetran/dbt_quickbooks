@@ -36,6 +36,7 @@ net_income_loss as (
 retained_earnings_starter as (
     select
         9999 as account_id,
+        '9999-00' as account_number,
         'Net Income / Retained Earnings Adjustment' as account_name,
         'Equity' as account_type,
         'RetainedEarnings' as account_sub_type,
@@ -60,6 +61,7 @@ retained_earnings_beginning as (
 final as (
     select
         account_id,
+        account_number,
         account_name,
         account_type,
         account_sub_type,

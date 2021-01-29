@@ -30,7 +30,7 @@ df_accounts as (
         max(account_id) as account_id
     from accounts
 
-    where account_sub_type = 'DiscountsRefundsGiven'
+    where account_type = 'Accounts Receivable'
 ),
 
 credit_memo_join as (
@@ -56,7 +56,6 @@ final as (
         transaction_id,
         transaction_date,
         amount * -1 as amount,
-        --amount as amount,
         account_id,
         'credit' as transaction_type,
         'credit_memo' as transaction_source

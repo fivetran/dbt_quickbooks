@@ -16,8 +16,13 @@ refund_receipt_lines as (
 ),
 
 items as (
-    select *
-    from {{ref('stg_quickbooks__item')}}
+    select 
+        item.*, 
+        parent.income_account_id as parent_income_account_id
+    from {{ref('stg_quickbooks__item')}} item
+
+    left join {{ref('stg_quickbooks__item')}} parent
+        on item.parent_item_id = parent.item_id
 ),
 
 accounts as (
@@ -31,7 +36,7 @@ refund_receipt_join as (
         refund_receipts.transaction_date,
         refund_receipt_lines.amount,
         refund_receipts.deposit_to_account_id as credit_to_account_id,
-        coalesce(refund_receipt_lines.discount_account_id, refund_receipt_lines.sales_item_account_id, items.income_account_id) as debit_account_id
+        coalesce(refund_receipt_lines.discount_account_id, refund_receipt_lines.sales_item_account_id, items.parent_income_account_id, items.income_account_id) as debit_account_id
     from refund_receipts
 
     inner join refund_receipt_lines

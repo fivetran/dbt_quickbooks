@@ -33,8 +33,8 @@ final as (
         coalesce(invoice_lines.discount_class_id, invoice_lines.sales_item_class_id) as class_id,
         invoices.department_id,
         invoices.customer_id,
-        cast(null as {{ 'int64' if target.name == 'bigquery' else 'bigint' }} ) as vendor_id,
-        cast(null as {{ 'varchar(25)' if target.name == 'redshift' else 'string' }} ) as billable_status,
+        cast(null as {{ dbt_utils.type_int() }}) as vendor_id,
+        cast(null as {{ dbt_utils.type_string() }}) as billable_status,
         invoice_lines.description,
         invoice_lines.amount,
         invoices.total_amount

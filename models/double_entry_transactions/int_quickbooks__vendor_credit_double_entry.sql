@@ -16,8 +16,13 @@ vendor_credit_lines as (
 ),
 
 items as (
-    select *
-    from {{ref('stg_quickbooks__item')}}
+    select 
+        item.*, 
+        parent.income_account_id as parent_income_account_id
+    from {{ref('stg_quickbooks__item')}} item
+
+    left join {{ref('stg_quickbooks__item')}} parent
+        on item.parent_item_id = parent.item_id
 ),
 
 vendor_credit_join as (
@@ -26,7 +31,7 @@ vendor_credit_join as (
         vendor_credits.transaction_date,
         vendor_credit_lines.amount,
         vendor_credits.payable_account_id as debit_to_account_id,
-        coalesce(vendor_credit_lines.account_expense_account_id, items.income_account_id, items.expense_account_id) as credit_account_id
+        coalesce(vendor_credit_lines.account_expense_account_id, items.parent_income_account_id, items.income_account_id, items.expense_account_id) as credit_account_id
     from vendor_credits
     
     inner join vendor_credit_lines 
