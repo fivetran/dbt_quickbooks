@@ -49,7 +49,7 @@ final as (
         vendors.balance as customer_vendor_balance,
         billing_address.city as customer_vendor_address_city,
         billing_address.country as customer_vendor_address_country,
-        vendors.web_url as customer_vendor_webiste,
+        vendors.web_url as customer_vendor_website,
         concat(billing_address.address_1, billing_address.address_2) as customer_vendor_address_line,
         cast(null as {{ dbt_utils.type_string() }}) as delivery_type,
         cast(null as {{ dbt_utils.type_string() }}) as estimate_status,

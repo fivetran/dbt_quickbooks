@@ -126,6 +126,8 @@ models:
         description: Set to 'bill' of the transaction is a bill and 'invoice' if the transaction is an invoice.
       - name: transaction_id
         description: Unique identifier of the bill or invoice.
+      - name: doc_number
+        description: The QuickBooks document number reference.
       - name: estimate_id
         description: Unique identifier of the estimate associated with the invoice.
       - name: department_name
@@ -134,7 +136,7 @@ models:
         description: Set to 'vendor' if the transaction type is a bill and 'customer' if the transaction type is an invoice.
       - name: customer_vendor_name
         description: Full name of the vendor (if a bill) or the customer (if an invoice).
-      - name: customer_vendor_current_balance
+      - name: customer_vendor_balance
         description: Total current account balance of the vendor (if a bill) or the customer (if an invoice).
       - name: customer_vendor_address_city
         description: City of the vendor (if a bill) or the customer (if an invoice).
@@ -142,13 +144,15 @@ models:
         description: Country of the vendor (if a bill) or the customer (if an invoice).
       - name: customer_vendor_address_line
         description: Address line of the vendor (if a bill) or the customer (if an invoice).
+      - name: customer_vendor_website
+        description: The website url of the customer or vendor.
       - name: delivery_type
         description: How the invoice was delivered to the customer.
       - name: estimate_status
         description: The status of the invoice estimate (if applicable).
       - name: total_amount
         description: The total monetary amount of the invoice or bill.
-      - name: estimate_total_amount
+      - name: estimate_amount
         description: The total amount estimated of the bill or invoice (if applicable).
       - name: current_balance
         description: The bill or invoice defined remaining balance of the bill or invoice.
@@ -176,6 +180,8 @@ models:
         description: Unique identifier of either the expense or sale transactions.
       - name: transaction_line_id
         description: Unique identifier of either the expense or sale line item.
+      - name: doc_number
+        description: The QuickBooks document number reference.
       - name: transaction_type
         description: Specifies the expense or sale transaction type (ie. invoice, sales_receipt, deposit, journal entry, etc.).
       - name: transaction_date
@@ -202,6 +208,8 @@ models:
         description: Reference to the customer associated with either the expense or sale.
       - name: customer_name
         description: Name of the customer associated with either the expense or sale.
+      - name: customer_website
+        description: The website url of the customer.
       - name: vendor_id
         description: Reference to the vendor associated with either the expense or sale.
       - name: vendor_name
@@ -252,6 +260,8 @@ models:
         description: Identifier of whether the account is increased by either a debit or credit entry.
       - name: adjusted_amount
         description: The amount that impacts the account. If the transaction_type = account_transaction_type then the impact will increase, otherwise it will decrease the account.
+      - name: running_balance
+        description: The running balance of the account by each individual day.
   
   - name: quickbooks__general_ledger_by_period
     description: >
