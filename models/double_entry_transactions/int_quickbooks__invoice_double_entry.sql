@@ -112,7 +112,7 @@ invoice_join as (
     where coalesce(invoice_lines.account_id, invoice_lines.sales_item_account_id, invoice_lines.sales_item_item_id, invoice_lines.item_id, bundle_income_accounts.account_id) is not null         
 
     {% else %}
-        where coalesce(invoice_lines.account_id, invoice_lines.sales_item_account_id, invoice_lines.sales_item_item_id, invoice_lines.item_id) is not null 
+    where coalesce(invoice_lines.account_id, invoice_lines.sales_item_account_id, invoice_lines.sales_item_item_id, invoice_lines.item_id) is not null 
 
     {% endif %}
 ),
