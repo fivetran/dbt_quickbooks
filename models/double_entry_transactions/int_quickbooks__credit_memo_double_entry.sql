@@ -67,7 +67,6 @@ final as (
         transaction_id,
         transaction_date,
         amount * -1 as amount,
-        --amount as amount,
         df_accounts.account_id,
         'debit' as transaction_type,
         'credit_memo' as transaction_source
