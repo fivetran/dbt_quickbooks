@@ -1,3 +1,6 @@
 packages:
-  - package: fivetran/quickbooks_source
-    version: 0.1.1
+  # - package: fivetran/quickbooks_source
+  #   version: 0.1.1
+    - git: https://github.com/fivetran/dbt_quickbooks_source.git
+      revision: sales_receipt_var
+      warn-unpinned: false

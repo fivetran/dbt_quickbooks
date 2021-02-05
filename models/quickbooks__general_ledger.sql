@@ -8,10 +8,12 @@ with gl_union as (
         transaction_source
     from {{ref('int_quickbooks__purchase_double_entry')}}
 
+    {% if var('using_sales_receipt', True) %}
     union all
 
     select *
     from {{ref('int_quickbooks__sales_receipt_double_entry')}}
+    {% endif %}
 
     {% if var('using_bill', True) %}
     union all
