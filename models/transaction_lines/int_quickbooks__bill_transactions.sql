@@ -11,6 +11,11 @@ bill_lines as (
     from {{ ref('stg_quickbooks__bill_line') }}
 ),
 
+items as (
+    select *
+    from {{ref('stg_quickbooks__item')}}
+),
+
 final as (
     select
         bills.bill_id as transaction_id,
@@ -18,19 +23,22 @@ final as (
         bills.doc_number,
         'bill' as transaction_type,
         bills.transaction_date,
-        bill_lines.account_expense_account_id as account_id,
+        coalesce(bill_lines.account_expense_account_id, items.expense_account_id) as account_id,
         bill_lines.account_expense_class_id as class_id,
         bills.department_id,
         coalesce(bill_lines.account_expense_customer_id, bill_lines.item_expense_customer_id) as customer_id,
         bills.vendor_id,
         coalesce(bill_lines.account_expense_billable_status, bill_lines.item_expense_billable_status) as billable_status,
-        bill_lines.description,
+        coalesce(bill_lines.description, items.name) as description,
         bill_lines.amount,
         bills.total_amount
     from bills
 
     inner join bill_lines 
         on bills.bill_id = bill_lines.bill_id
+
+    left join items
+        on bill_lines.item_expense_item_id = items.item_id
 )
 
 select *

@@ -24,7 +24,7 @@ final as (
         'vendor_credit' as transaction_type,
         vendor_credits.transaction_date,
         case when vendor_credit_lines.account_expense_account_id is null
-            then items.asset_account_id
+            then items.expense_account_id
             else vendor_credit_lines.account_expense_account_id
                 end as account_id,
         coalesce(vendor_credit_lines.account_expense_class_id, vendor_credit_lines.item_expense_class_id) as class_id,
