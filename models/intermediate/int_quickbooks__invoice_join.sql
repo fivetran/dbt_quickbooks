@@ -85,6 +85,11 @@ final as (
         {% if var('using_estimate', True) %}
         coalesce(estimates.total_amount, 0) as estimate_total_amount,
         estimates.transaction_status as estimate_status,
+
+        {% else %}
+        cast(null as decimal) as estimate_total_amount,
+        cast(null as {{ dbt_utils.type_string() }}) as estimate_status,
+
         {% endif %}
 
         invoice_link.due_date as due_date,
@@ -105,16 +110,8 @@ final as (
     left join payment_lines_payment
         on payments.payment_id = payment_lines_payment.payment_id
             and invoice_link.invoice_id = payment_lines_payment.invoice_id
-    
-    {% if var('using_estimate', True) %}
+
     group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14
-
-    {% else %}
-
-    group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
-
-    {% endif %}
-
 )
 
 select * 
