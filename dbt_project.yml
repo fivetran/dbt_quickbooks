@@ -1,7 +1,7 @@
 config-version: 2
 
 name: 'quickbooks'
-version: '0.1.1'
+version: '0.1.2'
 
 require-dbt-version: [">=0.18.0", "<0.20.0"]
 
@@ -67,6 +67,7 @@ vars:
     using_refund_receipt: True
     using_transfer:       True
     using_vendor_credit:  True
+    using_sales_receipt:  True
 
 analysis-paths: ["analysis"]
 

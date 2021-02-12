@@ -3,7 +3,7 @@ with expenses as (
     from {{ ref('int_quickbooks__expenses_union') }}
 ),
 
-{% if var('using_invoice', True) %}
+{% if fivetran_utils.enabled_vars_one_true(['using_sales_receipt','using_invoice']) %}
 sales as (
     select *
     from {{ ref('int_quickbooks__sales_union') }}
@@ -14,7 +14,7 @@ final as (
     select *
     from expenses
 
-    {% if var('using_invoice', True) %}
+    {% if fivetran_utils.enabled_vars_one_true(['using_sales_receipt','using_invoice']) %}
     union all
 
     select *

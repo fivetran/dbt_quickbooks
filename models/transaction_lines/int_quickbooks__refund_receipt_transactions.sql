@@ -43,7 +43,7 @@ final as (
     inner join refund_receipt_lines
         on refund_receipts.refund_id = refund_receipt_lines.refund_id
 
-     left join items
+    left join items
         on refund_receipt_lines.sales_item_item_id = items.item_id
 )
 
