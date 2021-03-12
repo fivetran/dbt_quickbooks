@@ -5,9 +5,9 @@ with general_ledger_by_period as (
 
 ), final as (
     select
-        {% if target.type in ('bigquery') %}
+        {% if target.type == 'bigquery' %}
             cast(format_date("%Y", date_year) as {{ dbt_utils.type_string() }}) as calendar_year,
-            cast(format_date("%b", period_last_day) as calendar_month,
+            cast(format_date("%b", period_last_day) as {{ dbt_utils.type_string() }}) as calendar_month,
 
         {% else %}
             cast(date_part(y, date_year) as {{ dbt_utils.type_string() }}) as calendar_year,
