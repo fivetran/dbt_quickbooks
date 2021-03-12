@@ -3,6 +3,12 @@ with accounts as (
     from {{ ref('stg_quickbooks__account') }}
 ),
 
+parent_accounts as (
+    select *
+    from accounts
+    where not is_sub_account
+),
+
 classification_fix as (
     select 
         account_id,
@@ -56,11 +62,28 @@ classification_add as (
     from classification_fix
 ),
 
-final as (
+adjusted_balances as (
     select 
         *,
         round(balance * multiplier, 2) as adjusted_balance
     from classification_add
+),
+
+final as (
+    select
+        adjusted_balances.*,
+        case when adjusted_balances.is_sub_account
+            then parent_accounts.account_number
+            else adjusted_balances.account_number
+                end as parent_account_number,
+        case when adjusted_balances.is_sub_account
+            then parent_accounts.fully_qualified_name
+            else adjusted_balances.fully_qualified_name
+                end as parent_account_name
+    from adjusted_balances
+
+    left join parent_accounts
+        on parent_accounts.account_id = adjusted_balances.parent_account_id
 )
 
 select *

@@ -242,6 +242,12 @@ models:
         description: The user defined account number associated with the account.
       - name: account_name
         description: Name of the account associated with the transaction line.
+      - name: is_sub_account
+        description: Boolean indicating whether the account is a sub account (true) or a parent account (false).
+      - name: parent_account_number
+        description: The parent account number. If the account is the parent account then the account number is recorded.
+      - name: parent_account_name
+        description: The parent account name. If the account is the parent account then the account name is recorded.
       - name: account_type
         description: Type of the account associated with the transaction line.
       - name: account_sub_type
@@ -274,6 +280,12 @@ models:
         description: The user defined account number associated with the account.
       - name: account_name
         description: Name of the account associated with the period balances.
+      - name: is_sub_account
+        description: Boolean indicating whether the account is a sub account (true) or a parent account (false).
+      - name: parent_account_number
+        description: The parent account number. If the account is the parent account then the account number is recorded.
+      - name: parent_account_name
+        description: The parent account name. If the account is the parent account then the account name is recorded.
       - name: account_type
         description: Type of account associated with the period balances.
       - name: account_sub_type
@@ -294,3 +306,59 @@ models:
         description: Balance of the account as of the first date of the period. 
       - name: period_ending_balance
         description: Sum of all transaction line adjusted_balances of the account for the period.
+
+  - name: quickbooks__profit_and_loss
+    description: >
+      Table containing all revenue and expense account classes by calendar year and month enriched with account type, class, and parent information.
+    columns:
+      - name: calendar_year
+        description: The calendar year in the YYYY format.
+      - name: calendar_month
+        description: The calendar month in the MMM format.
+      - name: account_class
+        description: The account classification.
+      - name: is_sub_account
+        description: Boolean indicating whether the account is a sub account (true) or a parent account (false).
+      - name: parent_account_number
+        description: The parent account number. If the account is the parent account then the account number is recorded.
+      - name: parent_account_name
+        description: The parent account name. If the account is the parent account then the account name is recorded.
+      - name: account_type
+        description: The type of the account.
+      - name: account_sub_type
+        description: Sub type of the account.
+      - name: account_number
+        description: User defined number of the account.
+      - name: account_name
+        description: The name of the account.
+      - name: amount
+        description: The total period net change for the period.
+
+  - name: quickbooks__balance_sheet
+    description: >
+      Table containing all asset, liability, and equity account classes by calendar year and month enriched with account type, class, and parent information.
+    columns:
+      - name: calendar_year
+        description: The calendar year in the YYYY format.
+      - name: calendar_month
+        description: The calendar month in the MMM format.
+      - name: account_class
+        description: The account classification.
+      - name: is_sub_account
+        description: Boolean indicating whether the account is a sub account (true) or a parent account (false).
+      - name: parent_account_number
+        description: The parent account number. If the account is the parent account then the account number is recorded.
+      - name: parent_account_name
+        description: The parent account name. If the account is the parent account then the account name is recorded.
+      - name: account_type
+        description: The type of the account.
+      - name: account_sub_type
+        description: Sub type of the account.
+      - name: account_number
+        description: User defined number of the account.
+      - name: account_name
+        description: The name of the account.
+      - name: amount
+        description: The total ending period balance.
+
+     

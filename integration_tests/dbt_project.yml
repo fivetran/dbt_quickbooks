@@ -1,5 +1,5 @@
 name: 'quickbooks_integration_tests'
-version: '0.1.0'
+version: '0.2.0'
 profile: 'integration_tests'
 config-version: 2
 
@@ -20,6 +20,7 @@ models:
 
 vars:
   quickbooks:
+    using_purchase_order: True
     account:              "{{ ref('stg_quickbooks__account') }}"
     address:              "{{ ref('stg_quickbooks__address') }}"
     bill_line:            "{{ ref('stg_quickbooks__bill_line') }}"
