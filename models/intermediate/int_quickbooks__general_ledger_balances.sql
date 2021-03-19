@@ -25,7 +25,7 @@ gl_period_balance as (
         round(sum(adjusted_amount),2) as period_balance
     from general_ledger
 
-    group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+    {{ dbt_utils.group_by(12) }}
 ),
 
 gl_cumulative_balance as (

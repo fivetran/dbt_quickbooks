@@ -45,6 +45,19 @@ vars:
     quickbooks_schema: your_schema_name
 ```
 
+### Changing the Build Schema
+By default this package will build the QuickBooks staging models within a schema titled (<target_schema> + `_quickbooks_staging`) and QuickBooks final models within a schema titled (<target_schema> + `_quickbooks`) in your target database. If this is not where you would like your modeled QuickBooks data to be written to, add the following configuration to your `dbt_project.yml` file:
+
+```yml
+# dbt_project.yml
+
+...
+models:
+    quickbooks:
+      +schema: my_new_schema_name # leave blank for just the target_schema
+    quickbooks_source:
+      +schema: my_new_schema_name # leave blank for just the target_schema
+```
 ### Disabling models
 
 This package takes into consideration that not every QuickBooks account utilizes the same transactional tables, and allows you to disable the corresponding functionality. By default, most variables' values are assumed to be `true` (with exception of purchase orders). Add variables for only the tables you want to disable or enable respectively:

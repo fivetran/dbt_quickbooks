@@ -3,12 +3,6 @@ with accounts as (
     from {{ ref('stg_quickbooks__account') }}
 ),
 
-parent_accounts as (
-    select *
-    from accounts
-    where not is_sub_account
-),
-
 classification_fix as (
     select 
         account_id,
@@ -82,7 +76,7 @@ final as (
                 end as parent_account_name
     from adjusted_balances
 
-    left join parent_accounts
+    left join accounts as parent_accounts
         on parent_accounts.account_id = adjusted_balances.parent_account_id
 )
 
