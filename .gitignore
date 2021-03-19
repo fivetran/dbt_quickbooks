@@ -2,3 +2,5 @@
 target/
 dbt_modules/
 logs/
+.DS_Store
+integration_test/.DS_Store

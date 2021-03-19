@@ -20,6 +20,8 @@ This package contains transformation models designed to work simultaneously with
 | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- |
 | [quickbooks__general_ledger](https://github.com/fivetran/dbt_quickbooks/blob/master/models/quickbooks__general_ledger.sql) | Table containing a comprehensive list of all transactions with offsetting debit and credit entries to accounts. |
 | [quickbooks__general_ledger_by_period](https://github.com/fivetran/dbt_quickbooks/blob/master/models/quickbooks__general_ledger_by_period.sql) | Table containing the beginning balance, ending balance, and net change of the dollar amount for each month since the first transaction. This table can be used to generate a balance sheet and income statement for your business. |
+| [quickbooks__profit_and_loss](https://github.com/fivetran/dbt_quickbooks/blob/master/models/quickbooks__profit_and_loss.sql) | Table containing all revenue and expense account classes by calendar year and month enriched with account type, class, and parent information. |
+| [quickbooks__balance_sheet](https://github.com/fivetran/dbt_quickbooks/blob/master/models/quickbooks__balance_sheet.sql) | Table containing all asset, liability, and equity account classes by calendar year and month enriched with account type, class, and parent information. |
 | [quickbooks__ap_ar_enhanced](https://github.com/fivetran/dbt_quickbooks/blob/master/models/quickbooks__ap_ar_enhanced.sql) | Table providing the amount, amount paid, due date, and days overdue of all bills and invoices your company has received and paid along with customer, vendor, department, and address information for each invoice or bill. |
 | [quickbooks__expenses_sales_enhanced](https://github.com/fivetran/dbt_quickbooks/blob/master/models/quickbooks__expenses_sales.sql) | Table providing enhanced customer, vendor, and account details for each expense and sale transaction. |
 
@@ -43,6 +45,19 @@ vars:
     quickbooks_schema: your_schema_name
 ```
 
+### Changing the Build Schema
+By default this package will build the QuickBooks staging models within a schema titled (<target_schema> + `_quickbooks_staging`) and QuickBooks final models within a schema titled (<target_schema> + `_quickbooks`) in your target database. If this is not where you would like your modeled QuickBooks data to be written to, add the following configuration to your `dbt_project.yml` file:
+
+```yml
+# dbt_project.yml
+
+...
+models:
+    quickbooks:
+      +schema: my_new_schema_name # leave blank for just the target_schema
+    quickbooks_source:
+      +schema: my_new_schema_name # leave blank for just the target_schema
+```
 ### Disabling models
 
 This package takes into consideration that not every QuickBooks account utilizes the same transactional tables, and allows you to disable the corresponding functionality. By default, most variables' values are assumed to be `true` (with exception of purchase orders). Add variables for only the tables you want to disable or enable respectively:
@@ -52,36 +67,20 @@ This package takes into consideration that not every QuickBooks account utilizes
 
 ...
 vars:
-  quickbooks:
-    using_bill:           false         #disable if you don't have bils or bill payments in Quickbooks
-    using_credit_memo:    false         #disable if you don't have credit memos in Quickbooks
-    using_department:     false         #disable if you don't have departments in Quickbooks
-    using_deposit:        false         #disable if you don't have deposits in Quickbooks
-    using_estimate:       false         #disable if you don't have estimates in Quickbooks
-    using_invoice:        false         #disable if you don't have invoices in Quickbooks
-    using_invoice_bundle: false         #disable if you don't have invoice bundles in Quickbooks
-    using_journal_entry:  false         #disable if you don't have journal entries in Quickbooks
-    using_payment:        false         #disable if you don't have payments in Quickbooks
-    using_refund_receipt: false         #disable if you don't have refund receipts in Quickbooks
-    using_transfer:       false         #disable if you don't have transfers in Quickbooks
-    using_vendor_credit:  false         #disable if you don't have vendor credits in Quickbooks
-    using_sales_receipt:  false         #disable if you don't have sales receipts in QuickBooks
-
-  quickbooks_source:
-    using_bill:           false         #disable if you don't have bils or bill payments in Quickbooks
-    using_credit_memo:    false         #disable if you don't have credit memos in Quickbooks
-    using_department:     false         #disable if you don't have departments in Quickbooks
-    using_deposit:        false         #disable if you don't have deposits in Quickbooks
-    using_estimate:       false         #disable if you don't have estimates in Quickbooks
-    using_invoice:        false         #disable if you don't have invoices in Quickbooks
-    using_invoice_bundle: false         #disable if you don't have invoice bundles in Quickbooks
-    using_journal_entry:  false         #disable if you don't have journal entries in Quickbooks
-    using_payment:        false         #disable if you don't have payments in Quickbooks
-    using_refund_receipt: false         #disable if you don't have refund receipts in Quickbooks
-    using_transfer:       false         #disable if you don't have transfers in Quickbooks
-    using_vendor_credit:  false         #disable if you don't have vendor credits in Quickbooks
-    using_sales_receipt:  false         #disable if you don't have sales receipts in QuickBooks
-    using_purchase_order: true          #enable if you want to include purchase orders in your staging models
+  using_bill:           false         #disable if you don't have bills or bill payments in Quickbooks
+  using_credit_memo:    false         #disable if you don't have credit memos in Quickbooks
+  using_department:     false         #disable if you don't have departments in Quickbooks
+  using_deposit:        false         #disable if you don't have deposits in Quickbooks
+  using_estimate:       false         #disable if you don't have estimates in Quickbooks
+  using_invoice:        false         #disable if you don't have invoices in Quickbooks
+  using_invoice_bundle: false         #disable if you don't have invoice bundles in Quickbooks
+  using_journal_entry:  false         #disable if you don't have journal entries in Quickbooks
+  using_payment:        false         #disable if you don't have payments in Quickbooks
+  using_refund_receipt: false         #disable if you don't have refund receipts in Quickbooks
+  using_transfer:       false         #disable if you don't have transfers in Quickbooks
+  using_vendor_credit:  false         #disable if you don't have vendor credits in Quickbooks
+  using_sales_receipt:  false         #disable if you don't have sales receipts in QuickBooks
+  using_purchase_order: true          #enable if you want to include purchase orders in your staging models
 ```
 
 ## Analysis
@@ -96,7 +95,7 @@ Please create issues or open PRs against `master`. Check out [this post](https:/
 
 ## Database Support
 
-This package has been tested on BigQuery, Snowflake and Redshift.
+This package has been tested on BigQuery, Snowflake, Redshift, and Postgres.
 
 ## Resources:
 
