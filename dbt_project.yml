@@ -1,20 +1,20 @@
 config-version: 2
 
 name: 'quickbooks'
-version: '0.2.0'
+version: '0.2.1'
 
 require-dbt-version: [">=0.18.0", "<0.20.0"]
 
 models:
   quickbooks:
-    materialized: table
+    +materialized: table
     +schema: quickbooks
     double_entry_transactions:
-      materialized: ephemeral
+      +materialized: ephemeral
     transaction_lines:
-      materialized: ephemeral
+      +materialized: ephemeral
     intermediate:
-      materialized: ephemeral
+      +materialized: ephemeral
 
 vars:
   quickbooks:

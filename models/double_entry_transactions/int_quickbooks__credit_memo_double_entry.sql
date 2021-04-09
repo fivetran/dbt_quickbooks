@@ -27,10 +27,11 @@ accounts as (
 
 df_accounts as (
     select
-        max(account_id) as account_id
+        account_id as account_id
     from accounts
 
     where account_type = 'Accounts Receivable'
+        and is_active
 ),
 
 credit_memo_join as (

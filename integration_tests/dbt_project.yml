@@ -1,22 +1,22 @@
 name: 'quickbooks_integration_tests'
-version: '0.2.0'
+version: '0.2.1'
 profile: 'integration_tests'
 config-version: 2
 
 models: 
   quickbooks:
-    materialized: table
+    +materialized: table
     double_entry_transactions:
-      materialized: table
+      +materialized: table
     transaction_lines:
-      materialized: table
+      +materialized: table
     intermediate:
-      materialized: table
+      +materialized: table
 
   quickbooks_source:
-    materialized: table
+    +materialized: table
     tmp:
-      materialized: view
+      +materialized: view
 
 vars:
   quickbooks:
