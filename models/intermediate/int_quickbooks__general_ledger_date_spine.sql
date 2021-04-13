@@ -16,7 +16,7 @@ with spine as (
 
         {% endif %}
 
-    {% else %} {% set first_date_adjust = "2000-01-01" %}
+    {% else %} {% set first_date_adjust = "'2000-01-01'" %}
     {% endif %}
 
     {% if execute %}
@@ -42,8 +42,6 @@ with spine as (
         {% set last_date_adjust = "'" ~ last_date[0:10] ~ "'" %}
 
     {% endif %}
-
-    {% else %} {% set last_date_adjust = "2000-01-01" %}
     {% endif %}
 
     {{ dbt_utils.date_spine(
