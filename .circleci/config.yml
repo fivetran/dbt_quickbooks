@@ -12,9 +12,6 @@ jobs:
           run: setup_creds
           command: |
             echo $GCLOUD_SERVICE_KEY | base64 --decode --ignore-garbage > ${HOME}/gcloud-service-key.json
-      - restore_cache:
-          key: deps2-{{ .Branch }}
-
       - run:
           name: "Setup dbt"
           command: |
@@ -31,9 +28,21 @@ jobs:
             echo `pwd`
             cd integration_tests
             dbt deps
-            dbt seed --target redshift
+            dbt seed --target redshift --full-refresh
             dbt run --target redshift --full-refresh
+            dbt run  --vars '{using_address: false, using_bill: false, using_credit_memo: false, using_department: false, using_deposit: false, using_estimate: false, using_invoice: false, using_invoice_bundle: false, using_journal_entry: false, using_payment: false, using_refund_receipt: false, using_transfer: false, using_vendor_credit: false, using_sales_receipt: false}' --target redshift --full-refresh
             dbt test --target redshift
+      - run:
+          name: "Run Tests - Postgres"
+          command: |
+            . venv/bin/activate
+            echo `pwd`
+            cd integration_tests
+            dbt deps
+            dbt seed --target postgres --full-refresh
+            dbt run --target postgres --full-refresh
+            dbt run  --vars '{using_address: false, using_bill: false, using_credit_memo: false, using_department: false, using_deposit: false, using_estimate: false, using_invoice: false, using_invoice_bundle: false, using_journal_entry: false, using_payment: false, using_refund_receipt: false, using_transfer: false, using_vendor_credit: false, using_sales_receipt: false}' --target postgres --full-refresh
+            dbt test --target postgres
       - run:
           name: "Run Tests - Snowflake"
           command: |
@@ -41,8 +50,9 @@ jobs:
             echo `pwd`
             cd integration_tests
             dbt deps
-            dbt seed --target snowflake
+            dbt seed --target snowflake --full-refresh
             dbt run --target snowflake --full-refresh
+            dbt run  --vars '{using_address: false, using_bill: false, using_credit_memo: false, using_department: false, using_deposit: false, using_estimate: false, using_invoice: false, using_invoice_bundle: false, using_journal_entry: false, using_payment: false, using_refund_receipt: false, using_transfer: false, using_vendor_credit: false, using_sales_receipt: false}' --target snowflake --full-refresh
             dbt test --target snowflake
       - run:
           name: "Run Tests - BigQuery"
@@ -54,8 +64,9 @@ jobs:
             echo `pwd`
             cd integration_tests
             dbt deps
-            dbt seed --target bigquery
+            dbt seed --target bigquery --full-refresh
             dbt run --target bigquery --full-refresh
+            dbt run  --vars '{using_address: false, using_bill: false, using_credit_memo: false, using_department: false, using_deposit: false, using_estimate: false, using_invoice: false, using_invoice_bundle: false, using_journal_entry: false, using_payment: false, using_refund_receipt: false, using_transfer: false, using_vendor_credit: false, using_sales_receipt: false}' --target bigquery --full-refresh
             dbt test --target bigquery
       - save_cache:
           key: deps2-{{ .Branch }}
