@@ -114,7 +114,7 @@ seeds:
       purchase_data:
         +column_types:
           credit: "{{ 'boolean' if target.name == 'snowflake' else 'bool' }}"
-          transaction_date: date
+          transaction_date: timestamp
       refund_receipt_data:
         +column_types:
           transaction_date: date
