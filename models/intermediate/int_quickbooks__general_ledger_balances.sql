@@ -79,7 +79,15 @@ gl_patch as (
         gl_accounting_periods.period_index,
         gl_beginning_balance.period_net_change,
         gl_beginning_balance.period_beginning_balance,
-        gl_beginning_balance.period_ending_balance
+        gl_beginning_balance.period_ending_balance,
+        case when gl_beginning_balance.period_beginning_balance is null and period_index = 1
+            then 0
+            else gl_beginning_balance.period_beginning_balance
+                end as period_beginning_balance_starter,
+        case when gl_beginning_balance.period_ending_balance is null and period_index = 1
+            then 0
+            else gl_beginning_balance.period_ending_balance
+                end as period_ending_balance_starter
     from gl_accounting_periods
 
     left join gl_beginning_balance
@@ -88,18 +96,15 @@ gl_patch as (
             and gl_beginning_balance.date_year = gl_accounting_periods.date_year
 ),
 
-missing_period_starter as (
-    select 
+gl_value_partion as (
+    select
         *,
-        case when period_beginning_balance is null and period_index = 1
-            then 0
-            else period_beginning_balance
-                end as period_beginning_balance_starter,
-        case when period_ending_balance is null and period_index = 1
-            then 0
-            else period_ending_balance
-                end as period_ending_balance_starter
+        sum(case when period_ending_balance_starter is null 
+            then 0 
+            else 1 
+                end) over (order by account_id, period_last_day rows unbounded preceding) as gl_partition
     from gl_patch
+
 ),
  
 final as (
@@ -118,9 +123,12 @@ final as (
         period_first_day,
         period_last_day,
         coalesce(period_net_change,0) as period_net_change,
-        coalesce(period_beginning_balance_starter, last_value(period_ending_balance_starter ignore nulls) over (partition by account_id order by date_year, period_first_day, account_id rows unbounded preceding)) as period_beginning_balance,
-        coalesce(period_ending_balance_starter, last_value(period_ending_balance_starter ignore nulls) over (partition by account_id order by date_year, period_first_day, account_id rows unbounded preceding)) as period_ending_balance
-    from missing_period_starter
+        coalesce(period_beginning_balance_starter,
+            first_value(period_ending_balance_starter) over (partition by gl_partition order by period_last_day rows unbounded preceding)) as period_beginning_balance,
+        coalesce(period_ending_balance_starter,
+            first_value(period_ending_balance_starter) over (partition by gl_partition order by period_last_day rows unbounded preceding)) as period_ending_balance
+    from gl_value_partion
+
 )
 
 select *

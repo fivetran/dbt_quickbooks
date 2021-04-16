@@ -47,7 +47,7 @@ retained_earnings_starter as (
         'balance_sheet' as financial_statement_helper,
         cast({{ dbt_utils.date_trunc("year", "period_first_day") }} as date) as date_year,
         cast(period_first_day as date) as period_first_day,
-        last_day(period_first_day) as period_last_day,
+        {{ dbt_utils.last_day("period_first_day", "month") }} as period_last_day,
         round((revenue_net_change - expense_net_change),2) as period_net_change
     from net_income_loss
 ),

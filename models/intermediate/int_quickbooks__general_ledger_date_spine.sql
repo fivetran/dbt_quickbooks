@@ -7,8 +7,16 @@ with spine as (
         select  min( transaction_date ) as min_date from {{ ref('quickbooks__general_ledger') }}
     {% endset %}
     {% set first_date = run_query(first_date_query).columns[0][0]|string %}
+    
+        {% if target.type == 'postgres' %}
+            {% set first_date_adjust = "cast('" ~ first_date[0:10] ~ "' as date)" %}
 
-    {% else %} {% set first_date = "'2015-01-01'" %}
+        {% else %}
+            {% set first_date_adjust = "'" ~ first_date[0:10] ~ "'" %}
+
+        {% endif %}
+
+    {% else %} {% set first_date_adjust = "'2000-01-01'" %}
     {% endif %}
 
     {% if execute %}
@@ -26,12 +34,20 @@ with spine as (
 
     {% else %} {% set last_date = run_query(current_date_query).columns[0][0]|string %}
     {% endif %}
+        
+    {% if target.type == 'postgres' %}
+        {% set last_date_adjust = "cast('" ~ last_date[0:10] ~ "' as date)" %}
+
+    {% else %}
+        {% set last_date_adjust = "'" ~ last_date[0:10] ~ "'" %}
+
+    {% endif %}
     {% endif %}
 
     {{ dbt_utils.date_spine(
         datepart="month",
-        start_date="'" ~ first_date[0:10] ~ "'",
-        end_date=dbt_utils.dateadd("month", 1, "'" ~ last_date[0:10] ~ "'")
+        start_date=first_date_adjust,
+        end_date=dbt_utils.dateadd("month", 1, last_date_adjust)
         )
     }}
 ),
@@ -45,7 +61,7 @@ date_spine as (
     select
         cast({{ dbt_utils.date_trunc("year", "date_month") }} as date) as date_year,
         cast({{ dbt_utils.date_trunc("month", "date_month") }} as date) as period_first_day,
-        last_day(cast(date_month as date)) as period_last_day,
+        {{ dbt_utils.last_day("date_month", "month") }} as period_last_day,
         row_number() over (order by cast({{ dbt_utils.date_trunc("month", "date_month") }} as date)) as period_index
     from spine
 ),
