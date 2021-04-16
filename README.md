@@ -29,6 +29,14 @@ This package contains transformation models designed to work simultaneously with
 
 Check [dbt Hub](https://hub.getdbt.com/) for the latest installation instructions, or [read the dbt docs](https://docs.getdbt.com/docs/package-management) for more information on installing packages.
 
+```yml
+# packages.yml
+
+packages:
+  - package: fivetran/quickbooks
+    version: [">=0.2.0", "<0.3.0"]
+```
+
 ## Configuration
 
 By default, this package looks for your QuickBooks data in the `quickbooks` schema of your [target database](https://docs.getdbt.com/docs/running-a-dbt-project/using-the-command-line-interface/configure-your-profile). 
