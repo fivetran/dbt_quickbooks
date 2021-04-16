@@ -25,11 +25,6 @@ items as (
         on item.parent_item_id = parent.item_id
 ),
 
-accounts as (
-    select *
-    from {{ ref('stg_quickbooks__account') }}
-),
-
 sales_receipt_join as (
     select
         sales_receipts.sales_receipt_id as transaction_id,

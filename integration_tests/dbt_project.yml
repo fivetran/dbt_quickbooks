@@ -5,18 +5,18 @@ config-version: 2
 
 models: 
   quickbooks:
-    materialized: table
+    +materialized: table
     double_entry_transactions:
-      materialized: table
+      +materialized: table
     transaction_lines:
-      materialized: table
+      +materialized: table
     intermediate:
-      materialized: table
+      +materialized: table
 
   quickbooks_source:
-    materialized: table
+    +materialized: table
     tmp:
-      materialized: view
+      +materialized: view
 
 vars:
   quickbooks:

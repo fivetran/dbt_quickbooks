@@ -26,6 +26,7 @@ ap_accounts as (
     from accounts
     
     where account_type = 'Accounts Payable'
+        and is_active
 ),
 
 bill_payment_join as (
