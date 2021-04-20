@@ -59,7 +59,7 @@ classification_add as (
 adjusted_balances as (
     select 
         *,
-        round(balance * multiplier, 2) as adjusted_balance
+        round(balance::numeric * multiplier::numeric, 2) as adjusted_balance
     from classification_add
 ),
 
