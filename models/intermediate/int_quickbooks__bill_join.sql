@@ -63,7 +63,7 @@ final as (
         bill_link.due_date_at as due_date,
         min(bill_payments.transaction_date) as initial_payment_date,
         max(bill_payments.transaction_date) as recent_payment_date,
-        round(sum(coalesce(bill_payment_lines.amount, 0)),2) as total_current_payment
+        sum(coalesce(bill_payment_lines.amount, 0)) as total_current_payment
 
     from bill_link
 

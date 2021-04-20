@@ -1,5 +1,5 @@
 name: 'quickbooks_integration_tests'
-version: '0.2.1'
+version: '0.2.2'
 profile: 'integration_tests'
 config-version: 2
 
