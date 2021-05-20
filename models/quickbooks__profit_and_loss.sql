@@ -13,6 +13,7 @@ with general_ledger_by_period as (
         account_type,
         account_sub_type,
         account_number,
+        account_id,
         account_name,
         period_net_change as amount
     from general_ledger_by_period
