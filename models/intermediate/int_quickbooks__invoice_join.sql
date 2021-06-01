@@ -87,7 +87,7 @@ final as (
         estimates.transaction_status as estimate_status,
 
         {% else %}
-        cast(null as {{ dbt_utils.type_int() }}) as estimate_total_amount,
+        cast(null as {{ dbt_utils.type_numeric() }}) as estimate_total_amount,
         cast(null as {{ dbt_utils.type_string() }}) as estimate_status,
 
         {% endif %}
