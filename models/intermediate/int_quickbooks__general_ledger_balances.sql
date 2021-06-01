@@ -22,7 +22,7 @@ gl_period_balance as (
         account_class,
         cast({{ dbt_utils.date_trunc("year", "transaction_date") }} as date) as date_year,
         cast({{ dbt_utils.date_trunc("month", "transaction_date") }} as date) as date_month,
-        round(sum(adjusted_amount),2) as period_balance
+        sum(adjusted_amount) as period_balance
     from general_ledger
 
     {{ dbt_utils.group_by(12) }}
@@ -32,7 +32,7 @@ gl_cumulative_balance as (
     select
         *,
         case when financial_statement_helper = 'balance_sheet'
-            then round(sum(period_balance) over (partition by account_id order by date_month, account_id rows unbounded preceding),2) 
+            then sum(period_balance) over (partition by account_id order by date_month, account_id rows unbounded preceding) 
             else 0
                 end as cumulative_balance
     from gl_period_balance
@@ -54,10 +54,10 @@ gl_beginning_balance as (
         date_month, 
         period_balance as period_net_change,
         case when financial_statement_helper = 'balance_sheet'
-            then round((cumulative_balance - period_balance),2) 
+            then (cumulative_balance - period_balance) 
             else 0
                 end as period_beginning_balance,
-        round(cumulative_balance,2) as period_ending_balance  
+        cumulative_balance as period_ending_balance  
     from gl_cumulative_balance
 ),
 

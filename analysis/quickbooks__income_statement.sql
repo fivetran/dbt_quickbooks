@@ -30,14 +30,14 @@ expense as (
 revenue_total as (
     select 
         'revenue' as income_statement_type, 
-        round(sum(ending_balance),2) 
+        sum(ending_balance) 
     from revenue
 ),
 
 expense_total as (
     select 
         'expene' as income_statement_type, 
-        round(sum(ending_balance),2) 
+        sum(ending_balance) 
     from expense
 )
 

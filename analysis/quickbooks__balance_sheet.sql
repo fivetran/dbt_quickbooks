@@ -66,19 +66,19 @@ equity as (
 
 select 
     "liability" as balance_sheet_type, 
-    round(sum(period_ending_balance),2) as balance 
+    sum(period_ending_balance) as balance 
 from liability
 
 union all
 
 select 
     "asset" as balance_sheet_type, 
-    round(sum(period_ending_balance),2) as balance 
+    sum(period_ending_balance) as balance 
 from asset
 
 union all 
 
 select 
     'equity' as balance_sheet_type, 
-    round(sum(period_ending_balance),2) as balance 
+    sum(period_ending_balance) as balance 
 from equity
