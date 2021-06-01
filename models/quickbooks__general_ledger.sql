@@ -95,7 +95,7 @@ adjusted_gl as (
         gl_union.transaction_id,
         row_number() over(partition by gl_union.transaction_id order by gl_union.transaction_date) as transaction_index,
         gl_union.transaction_date,
-        cast(gl_union.amount as decimal) as amount,
+        gl_union.amount,
         gl_union.account_id,
         accounts.account_number,
         accounts.name as account_name,
@@ -111,8 +111,8 @@ adjusted_gl as (
         gl_union.transaction_source,
         accounts.transaction_type as account_transaction_type,
         case when accounts.transaction_type = gl_union.transaction_type
-            then cast(gl_union.amount as decimal)
-            else cast(gl_union.amount as decimal) * -1
+            then gl_union.amount
+            else gl_union.amount * -1
                 end as adjusted_amount
     from gl_union
 
@@ -123,7 +123,7 @@ adjusted_gl as (
 final as (
     select
         *,
-        round(cast(sum(adjusted_amount) over (partition by account_id order by transaction_date, account_id rows unbounded preceding) as decimal),2) as running_balance
+        sum(adjusted_amount) over (partition by account_id order by transaction_date, account_id rows unbounded preceding) as running_balance
     from adjusted_gl
 )
 
