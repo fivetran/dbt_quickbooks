@@ -48,7 +48,7 @@ retained_earnings_starter as (
         cast({{ dbt_utils.date_trunc("year", "period_first_day") }} as date) as date_year,
         cast(period_first_day as date) as period_first_day,
         {{ dbt_utils.last_day("period_first_day", "month") }} as period_last_day,
-        round((revenue_net_change - expense_net_change),2) as period_net_change
+        (revenue_net_change - expense_net_change) as period_net_change
     from net_income_loss
 ),
 
@@ -56,7 +56,7 @@ retained_earnings_starter as (
 retained_earnings_beginning as (
     select
         *,
-        round(sum(coalesce(period_net_change,0)) over (order by period_first_day, period_first_day rows unbounded preceding),2) as period_ending_balance
+        sum(coalesce(period_net_change,0)) over (order by period_first_day, period_first_day rows unbounded preceding) as period_ending_balance
     from retained_earnings_starter
 )
 ,
@@ -77,7 +77,7 @@ final as (
         period_first_day,
         period_last_day,
         period_net_change,
-        round(lag(coalesce(period_ending_balance,0)) over (order by period_first_day),2) as period_beginning_balance,
+        lag(coalesce(period_ending_balance,0)) over (order by period_first_day) as period_beginning_balance,
         period_ending_balance
     from retained_earnings_beginning
 )

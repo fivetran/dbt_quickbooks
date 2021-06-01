@@ -62,7 +62,7 @@ final as (
         cast(null as {{ dbt_utils.type_string() }}) as delivery_type,
         cast(null as {{ dbt_utils.type_string() }}) as estimate_status,
         total_amount,
-        cast(null as decimal) as estimate_amount,
+        cast(null as {{ dbt_utils.type_numeric() }}) as estimate_amount,
         current_balance,
         total_current_payment,
         due_date,
