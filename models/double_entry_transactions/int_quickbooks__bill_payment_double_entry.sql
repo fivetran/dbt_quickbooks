@@ -35,7 +35,8 @@ bill_payment_join as (
         bill_payments.transaction_date,
         bill_payments.total_amount as amount,
         coalesce(bill_payments.credit_card_account_id,bill_payments.check_bank_account_id) as payment_account_id,
-        ap_accounts.account_id
+        ap_accounts.account_id,
+        bill_payments.vendor_id
     from bill_payments
 
     cross join ap_accounts
@@ -46,6 +47,8 @@ final as (
     select
         transaction_id,
         transaction_date,
+        null as customer_id,
+        vendor_id,
         amount,
         payment_account_id as account_id,
         'credit' as transaction_type,
@@ -57,6 +60,8 @@ final as (
     select
         transaction_id,
         transaction_date,
+        null as customer_id,
+        vendor_id,
         amount,
         account_id,
         'debit' as transaction_type,

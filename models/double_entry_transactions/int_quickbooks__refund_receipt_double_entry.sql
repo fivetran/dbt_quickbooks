@@ -31,7 +31,8 @@ refund_receipt_join as (
         refund_receipts.transaction_date,
         refund_receipt_lines.amount,
         refund_receipts.deposit_to_account_id as credit_to_account_id,
-        coalesce(refund_receipt_lines.discount_account_id, refund_receipt_lines.sales_item_account_id, items.parent_income_account_id, items.income_account_id) as debit_account_id
+        coalesce(refund_receipt_lines.discount_account_id, refund_receipt_lines.sales_item_account_id, items.parent_income_account_id, items.income_account_id) as debit_account_id,
+        refund_receipts.customer_id,
     from refund_receipts
 
     inner join refund_receipt_lines
@@ -47,6 +48,8 @@ final as (
     select
         transaction_id,
         transaction_date,
+        customer_id,
+        null as vendor_id,
         amount,
         credit_to_account_id as account_id,
         'credit' as transaction_type,
@@ -58,6 +61,8 @@ final as (
     select
         transaction_id,
         transaction_date,
+        customer_id,
+        null as vendor_id,
         amount,
         debit_account_id as account_id,
         'debit' as transaction_type,

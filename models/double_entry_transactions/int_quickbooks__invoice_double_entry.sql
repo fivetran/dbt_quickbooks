@@ -90,12 +90,13 @@ invoice_join as (
                 end as amount,
 
         {% if var('using_invoice_bundle', True) %}
-        coalesce(invoice_lines.account_id, items.parent_income_account_id, items.income_account_id, bundle_income_accounts.parent_income_account_id, bundle_income_accounts.account_id) as account_id
+        coalesce(invoice_lines.account_id, items.parent_income_account_id, items.income_account_id, bundle_income_accounts.parent_income_account_id, bundle_income_accounts.account_id) as account_id,
 
         {% else %}
-        coalesce(invoice_lines.account_id, items.income_account_id) as account_id
+        coalesce(invoice_lines.account_id, items.income_account_id) as account_id,
 
         {% endif %}
+        invoices.customer_id
 
     from invoices
 
@@ -121,6 +122,8 @@ final as (
     select
         transaction_id,
         transaction_date,
+        customer_id,
+        null as vendor_id,
         amount,
         account_id,
         'credit' as transaction_type,
@@ -132,6 +135,8 @@ final as (
     select
         transaction_id,
         transaction_date,
+        customer_id,
+        null as vendor_id,
         amount,
         ar_accounts.account_id,
         'debit' as transaction_type,

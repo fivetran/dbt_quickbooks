@@ -36,7 +36,8 @@ deposit_join as (
         deposits.transaction_date,
         deposit_lines.amount,
         deposits.account_id as deposit_to_acct_id,
-        coalesce(deposit_lines.deposit_account_id, uf_accounts.account_id) as deposit_from_acct_id
+        coalesce(deposit_lines.deposit_account_id, uf_accounts.account_id) as deposit_from_acct_id,
+        deposit_customer_id as customer_id
     from deposits
     
     inner join deposit_lines 
@@ -50,6 +51,8 @@ final as (
     select
         transaction_id,
         transaction_date,
+        customer_id,
+        null as vendor_id,
         amount,
         deposit_to_acct_id as account_id,
         'debit' as transaction_type,
@@ -61,6 +64,8 @@ final as (
     select
         transaction_id,
         transaction_date,
+        customer_id,
+        null as vendor_id,
         amount,
         deposit_from_acct_id as account_id,
         'credit' as transaction_type,

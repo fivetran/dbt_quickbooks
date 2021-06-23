@@ -2,6 +2,8 @@ with gl_union as (
     select
         transaction_id,
         transaction_date,
+        customer_id,
+        vendor_id,
         amount,
         account_id,
         transaction_type,
@@ -95,6 +97,8 @@ adjusted_gl as (
         gl_union.transaction_id,
         row_number() over(partition by gl_union.transaction_id order by gl_union.transaction_date) as transaction_index,
         gl_union.transaction_date,
+        gl_union.customer_id,
+        gl_union.vendor_id,
         gl_union.amount,
         gl_union.account_id,
         accounts.account_number,

@@ -31,7 +31,9 @@ vendor_credit_join as (
         vendor_credits.transaction_date,
         vendor_credit_lines.amount,
         vendor_credits.payable_account_id as debit_to_account_id,
-        coalesce(vendor_credit_lines.account_expense_account_id, items.parent_income_account_id, items.income_account_id, items.expense_account_id) as credit_account_id
+        coalesce(vendor_credit_lines.account_expense_account_id, items.parent_income_account_id, items.income_account_id, items.expense_account_id) as credit_account_id,
+        coalesce(account_expense_customer_id, item_expense_customer_id) as customer_id,
+        vendor_credits.vendor_id
     from vendor_credits
     
     inner join vendor_credit_lines 
@@ -45,6 +47,8 @@ final as (
     select 
         transaction_id,
         transaction_date,
+        customer_id,
+        vendor_id,
         amount,
         credit_account_id as account_id,
         'credit' as transaction_type,
@@ -56,6 +60,8 @@ final as (
     select 
         transaction_id,
         transaction_date,
+        customer_id,
+        vendor_id,
         amount,
         debit_to_account_id as account_id,
         'debit' as transaction_type,
