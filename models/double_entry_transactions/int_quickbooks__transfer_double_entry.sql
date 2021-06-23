@@ -24,8 +24,8 @@ final as (
     select 
         transaction_id,
         transaction_date,
-        null as customer_id,
-        null as vendor_id,
+        cast(null as {{ dbt_utils.type_int() }}) as customer_id,
+        cast(null as {{ dbt_utils.type_int() }}) as vendor_id,
         amount,
         credit_to_account_id as account_id,
         'credit' as transaction_type,
@@ -37,8 +37,8 @@ final as (
     select 
         transaction_id,
         transaction_date,
-        null as customer_id,
-        null as vendor_id,
+        cast(null as {{ dbt_utils.type_int() }}) as customer_id,
+        cast(null as {{ dbt_utils.type_int() }}) as vendor_id,
         amount,
         debit_to_account_id as account_id,
         'debit' as transaction_type,
