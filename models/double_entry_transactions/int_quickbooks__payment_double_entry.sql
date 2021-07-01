@@ -35,7 +35,8 @@ payment_join as (
         payments.transaction_date,
         payments.total_amount as amount,
         payments.deposit_to_account_id,
-        payments.receivable_account_id
+        payments.receivable_account_id,
+        payments.customer_id
     from payments
 
 ),
@@ -44,6 +45,8 @@ final as (
     select
         transaction_id,
         transaction_date,
+        customer_id,
+        cast(null as {{ dbt_utils.type_int() }}) as vendor_id,
         amount,
         deposit_to_account_id as account_id,
         'debit' as transaction_type,
@@ -55,6 +58,8 @@ final as (
     select
         transaction_id,
         transaction_date,
+        customer_id,
+        cast(null as {{ dbt_utils.type_int() }}) as vendor_id,
         amount,
         coalesce(receivable_account_id, ar_accounts.account_id) as account_id,
         'credit' as transaction_type,

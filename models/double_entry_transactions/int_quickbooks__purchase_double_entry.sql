@@ -29,7 +29,9 @@ purchase_join as (
         coalesce(purchase_lines.account_expense_account_id, items.parent_expense_account_id, items.expense_account_id) as payed_to_account_id,
         purchases.account_id as payed_from_account_id,
         case when coalesce(purchases.credit, false) = true then 'debit' else 'credit' end as payed_from_transaction_type,
-        case when coalesce(purchases.credit, false) = true then 'credit' else 'debit' end as payed_to_transaction_type
+        case when coalesce(purchases.credit, false) = true then 'credit' else 'debit' end as payed_to_transaction_type,
+        purchases.customer_id,
+        purchases.vendor_id
     from purchases
     
     inner join purchase_lines
@@ -43,6 +45,8 @@ final as (
     select
         transaction_id,
         transaction_date,
+        customer_id,
+        vendor_id,
         amount,
         payed_from_account_id as account_id,
         payed_from_transaction_type as transaction_type,
@@ -54,6 +58,8 @@ final as (
     select
         transaction_id,
         transaction_date,
+        customer_id,
+        vendor_id,
         amount,
         payed_to_account_id as account_id,
         payed_to_transaction_type as transaction_type,

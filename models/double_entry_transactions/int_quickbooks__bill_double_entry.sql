@@ -32,7 +32,9 @@ bill_join as (
         bills.transaction_date,
         bill_lines.amount,
         coalesce(bill_lines.account_expense_account_id, items.expense_account_id, items.parent_expense_account_id, items.expense_account_id, items.parent_income_account_id, items.income_account_id) as payed_to_account_id,
-        bills.payable_account_id
+        bills.payable_account_id,
+        coalesce(bill_lines.account_expense_customer_id, bill_lines.item_expense_customer_id) as customer_id,
+        bills.vendor_id
     from bills
 
     inner join bill_lines 
@@ -46,6 +48,8 @@ final as (
     select 
         transaction_id,
         transaction_date,
+        customer_id,
+        vendor_id,
         amount,
         payed_to_account_id as account_id,
         'debit' as transaction_type,
@@ -57,6 +61,8 @@ final as (
     select
         transaction_id,
         transaction_date,
+        customer_id,
+        vendor_id,
         amount,
         payable_account_id as account_id,
         'credit' as transaction_type,

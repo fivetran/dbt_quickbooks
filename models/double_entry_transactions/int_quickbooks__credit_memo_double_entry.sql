@@ -39,8 +39,8 @@ credit_memo_join as (
         credit_memos.credit_memo_id as transaction_id,
         credit_memos.transaction_date,
         credit_memo_lines.amount,
-        coalesce(credit_memo_lines.sales_item_account_id, items.income_account_id, items.expense_account_id) as account_id
-                
+        coalesce(credit_memo_lines.sales_item_account_id, items.income_account_id, items.expense_account_id) as account_id,
+        credit_memos.customer_id
     from credit_memos
 
     inner join credit_memo_lines
@@ -56,6 +56,8 @@ final as (
     select
         transaction_id,
         transaction_date,
+        customer_id,
+        cast(null as {{ dbt_utils.type_int() }}) as vendor_id,
         amount * -1 as amount,
         account_id,
         'credit' as transaction_type,
@@ -67,6 +69,8 @@ final as (
     select 
         transaction_id,
         transaction_date,
+        customer_id,
+        cast(null as {{ dbt_utils.type_int() }}) as vendor_id,
         amount * -1 as amount,
         df_accounts.account_id,
         'debit' as transaction_type,

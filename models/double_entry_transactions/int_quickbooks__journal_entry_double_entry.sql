@@ -19,6 +19,8 @@ final as (
     select
         journal_entries.journal_entry_id as transaction_id,
         journal_entries.transaction_date,
+        journal_entry_lines.customer_id,
+        journal_entry_lines.vendor_id,
         journal_entry_lines.amount,
         journal_entry_lines.account_id,
         lower(journal_entry_lines.posting_type) as transaction_type,
