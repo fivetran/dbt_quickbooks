@@ -1,9 +1,9 @@
 config-version: 2
 
 name: 'quickbooks'
-version: '0.2.4'
+version: '0.3.0'
 
-require-dbt-version: [">=0.18.0", "<0.20.0"]
+require-dbt-version: ">=0.20.0"
 
 models:
   quickbooks:
