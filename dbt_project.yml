@@ -1,9 +1,9 @@
 config-version: 2
 
 name: 'quickbooks'
-version: '0.3.0'
+version: '0.4.0'
 
-require-dbt-version: ">=0.20.0"
+require-dbt-version: [">=1.0.0", "<2.0.0"]
 
 models:
   quickbooks:
@@ -18,61 +18,62 @@ models:
 
 vars:
   quickbooks:
-    account:              "{{ ref('stg_quickbooks__account') }}"
-    address:              "{{ ref('stg_quickbooks__address') }}"
-    bill_line:            "{{ ref('stg_quickbooks__bill_line') }}"
-    bill_linked_txn:      "{{ ref('stg_quickbooks__bill_linked_txn') }}"
-    bill_payment_line:    "{{ ref('stg_quickbooks__bill_payment_line') }}"
-    bill_payment:         "{{ ref('stg_quickbooks__bill_payment') }}"
-    bill:                 "{{ ref('stg_quickbooks__bill') }}"
-    bundle_item:          "{{ ref('stg_quickbooks__bundle_item') }}"
-    bundle:               "{{ ref('stg_quickbooks__bundle') }}"
-    credit_memo_line:     "{{ ref('stg_quickbooks__credit_memo_line') }}"
-    credit_memo:          "{{ ref('stg_quickbooks__credit_memo') }}"
-    customer:             "{{ ref('stg_quickbooks__customer') }}"
-    department:           "{{ ref('stg_quickbooks__department') }}"
-    deposit_line:         "{{ ref('stg_quickbooks__deposit_line') }}"
-    deposit:              "{{ ref('stg_quickbooks__deposit') }}"
-    estimate:             "{{ ref('stg_quickbooks__estimate') }}"
-    estimate_line:        "{{ ref('stg_quickbooks__estimate_line') }}"
-    invoice_line:         "{{ ref('stg_quickbooks__invoice_line') }}"
-    invoice_line_bundle:  "{{ ref('stg_quickbooks__invoice_line_bundle') }}"
-    invoice_linked_txn:   "{{ ref('stg_quickbooks__invoice_linked_txn') }}"
-    invoice:              "{{ ref('stg_quickbooks__invoice') }}"
-    item:                 "{{ ref('stg_quickbooks__item') }}"
-    journal_entry_line:   "{{ ref('stg_quickbooks__journal_entry_line') }}"
-    journal_entry:        "{{ ref('stg_quickbooks__journal_entry') }}"
-    payment_line:         "{{ ref('stg_quickbooks__payment_line') }}"
-    payment:              "{{ ref('stg_quickbooks__payment') }}"
-    purchase_line:        "{{ ref('stg_quickbooks__purchase_line') }}"
-    purchase:             "{{ ref('stg_quickbooks__purchase') }}"
-    refund_receipt_line:  "{{ ref('stg_quickbooks__refund_receipt_line') }}"
-    refund_receipt:       "{{ ref('stg_quickbooks__refund_receipt') }}"
-    sales_receipt_line:   "{{ ref('stg_quickbooks__sales_receipt_line') }}"
-    sales_receipt:        "{{ ref('stg_quickbooks__sales_receipt') }}"
-    transfer:             "{{ ref('stg_quickbooks__transfer') }}"
-    vendor_credit_line:   "{{ ref('stg_quickbooks__vendor_credit_line') }}"
-    vendor_credit:        "{{ ref('stg_quickbooks__vendor_credit') }}"
-    vendor:               "{{ ref('stg_quickbooks__vendor') }}"
-    
+    account: "{{ ref('stg_quickbooks__account') }}"
+    address: "{{ ref('stg_quickbooks__address') }}"
+    bill_line: "{{ ref('stg_quickbooks__bill_line') }}"
+    bill_linked_txn: "{{ ref('stg_quickbooks__bill_linked_txn') }}"
+    bill_payment_line: "{{ ref('stg_quickbooks__bill_payment_line') }}"
+    bill_payment: "{{ ref('stg_quickbooks__bill_payment') }}"
+    bill: "{{ ref('stg_quickbooks__bill') }}"
+    bundle_item: "{{ ref('stg_quickbooks__bundle_item') }}"
+    bundle: "{{ ref('stg_quickbooks__bundle') }}"
+    credit_memo_line: "{{ ref('stg_quickbooks__credit_memo_line') }}"
+    credit_memo: "{{ ref('stg_quickbooks__credit_memo') }}"
+    customer: "{{ ref('stg_quickbooks__customer') }}"
+    department: "{{ ref('stg_quickbooks__department') }}"
+    deposit_line: "{{ ref('stg_quickbooks__deposit_line') }}"
+    deposit: "{{ ref('stg_quickbooks__deposit') }}"
+    estimate: "{{ ref('stg_quickbooks__estimate') }}"
+    estimate_line: "{{ ref('stg_quickbooks__estimate_line') }}"
+    invoice_line: "{{ ref('stg_quickbooks__invoice_line') }}"
+    invoice_line_bundle: "{{ ref('stg_quickbooks__invoice_line_bundle') }}"
+    invoice_linked_txn: "{{ ref('stg_quickbooks__invoice_linked_txn') }}"
+    invoice: "{{ ref('stg_quickbooks__invoice') }}"
+    item: "{{ ref('stg_quickbooks__item') }}"
+    journal_entry_line: "{{ ref('stg_quickbooks__journal_entry_line') }}"
+    journal_entry: "{{ ref('stg_quickbooks__journal_entry') }}"
+    payment_line: "{{ ref('stg_quickbooks__payment_line') }}"
+    payment: "{{ ref('stg_quickbooks__payment') }}"
+    purchase_line: "{{ ref('stg_quickbooks__purchase_line') }}"
+    purchase: "{{ ref('stg_quickbooks__purchase') }}"
+    refund_receipt_line: "{{ ref('stg_quickbooks__refund_receipt_line') }}"
+    refund_receipt: "{{ ref('stg_quickbooks__refund_receipt') }}"
+    sales_receipt_line: "{{ ref('stg_quickbooks__sales_receipt_line') }}"
+    sales_receipt: "{{ ref('stg_quickbooks__sales_receipt') }}"
+    transfer: "{{ ref('stg_quickbooks__transfer') }}"
+    vendor_credit_line: "{{ ref('stg_quickbooks__vendor_credit_line') }}"
+    vendor_credit: "{{ ref('stg_quickbooks__vendor_credit') }}"
+    vendor: "{{ ref('stg_quickbooks__vendor') }}"
+
     #Variables if your company utilizes the below parent and child transactional tables.
-    using_address:        True
-    using_bill:           True
-    using_credit_memo:    True
-    using_department:     True
-    using_deposit:        True
-    using_estimate:       True
-    using_invoice:        True
-    using_invoice_bundle: True
-    using_journal_entry:  True
-    using_payment:        True
-    using_refund_receipt: True
-    using_transfer:       True
-    using_vendor_credit:  True
-    using_sales_receipt:  True
+    using_address: true
+    using_bill: true
+    using_credit_memo: true
+    using_department: true
+    using_deposit: true
+    using_estimate: true
+    using_invoice: true
+    using_invoice_bundle: true
+    using_journal_entry: true
+    using_payment: true
+    using_refund_receipt: true
+    using_transfer: true
+    using_vendor_credit: true
+    using_sales_receipt: true
 
 analysis-paths: ["analysis"]
 
 clean-targets:
-    - target
-    - dbt_modules
+- target
+- dbt_modules
+- dbt_packages
