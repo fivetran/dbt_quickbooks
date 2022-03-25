@@ -70,7 +70,7 @@ invoice_link as (
 
 final as (
     select
-        'invoice' as transaction_type,
+        cast('invoice' as {{ dbt_utils.type_string() }}) as transaction_type,
         invoice_link.invoice_id as transaction_id,
         invoice_link.doc_number,
         invoice_link.estimate_id,

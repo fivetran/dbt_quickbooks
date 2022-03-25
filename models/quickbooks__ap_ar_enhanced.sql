@@ -42,7 +42,7 @@ final as (
         transaction_type,
         transaction_id,
         doc_number,
-        cast(null as {{ dbt_utils.type_int() }}) as estimate_id, 
+        cast(null as {{ dbt_utils.type_string() }}) as estimate_id, 
 
         {% if var('using_department', True) %}
         departments.fully_qualified_name as department_name,

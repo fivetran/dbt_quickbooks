@@ -30,7 +30,7 @@ final as (
         sales_receipts.class_id,
         sales_receipts.department_id,
         sales_receipts.customer_id,
-        cast(null as {{ dbt_utils.type_int() }}) as vendor_id,
+        cast(null as {{ dbt_utils.type_string() }}) as vendor_id,
         cast(null as {{ dbt_utils.type_string() }}) as billable_status,
         sales_receipt_lines.description,
         sales_receipt_lines.amount,

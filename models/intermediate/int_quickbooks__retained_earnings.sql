@@ -35,7 +35,7 @@ net_income_loss as (
 
 retained_earnings_starter as (
     select
-        9999 as account_id,
+        '9999' as account_id,
         '9999-00' as account_number,
         'Net Income / Retained Earnings Adjustment' as account_name,
         false as is_sub_account,

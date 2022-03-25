@@ -47,7 +47,7 @@ final as (
     select
         transaction_id,
         transaction_date,
-        cast(null as {{ dbt_utils.type_int() }}) as customer_id,
+        cast(null as {{ dbt_utils.type_string() }}) as customer_id,
         vendor_id,
         amount,
         payment_account_id as account_id,
@@ -60,7 +60,7 @@ final as (
     select
         transaction_id,
         transaction_date,
-        cast(null as {{ dbt_utils.type_int() }}) as customer_id,
+        cast(null as {{ dbt_utils.type_string() }}) as customer_id,
         vendor_id,
         amount,
         account_id,
