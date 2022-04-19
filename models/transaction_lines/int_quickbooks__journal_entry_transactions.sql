@@ -29,11 +29,13 @@ final as (
             then journal_entry_lines.amount * -1
             else journal_entry_lines.amount
                 end as amount,
-        journal_entries.total_amount
+        journal_entries.total_amount,
+        journal_entries.source_relation
     from journal_entries
 
     inner join journal_entry_lines
-        on journal_entries.journal_entry_id = journal_entry_lines.journal_entry_id
+        on (journal_entries.journal_entry_id = journal_entry_lines.journal_entry_id
+        and journal_entries.source_relation = journal_entry_lines.source_relation)
 )
 
 select *

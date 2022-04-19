@@ -33,11 +33,13 @@ payment_lines_payment as (
 invoice_est as (
     select
         invoices.invoice_id,
-        invoice_linked.estimate_id
+        invoice_linked.estimate_id,
+        invoices.source_relation
     from invoices
 
     left join invoice_linked
         on invoices.invoice_id = invoice_linked.invoice_id
+            and invoices.source_relation = invoice_linked.source_relation
 
     where invoice_linked.estimate_id is not null
 ),
@@ -45,11 +47,13 @@ invoice_est as (
 invoice_pay as (
     select
         invoices.invoice_id,
-        invoice_linked.payment_id
+        invoice_linked.payment_id,
+        invoices.source_relation
     from invoices
 
     left join invoice_linked
         on invoices.invoice_id = invoice_linked.invoice_id
+            and invoices.source_relation = invoice_linked.source_relation
 
     where invoice_linked.payment_id is not null
 ),
@@ -63,9 +67,11 @@ invoice_link as (
 
     left join invoice_est
         on invoices.invoice_id = invoice_est.invoice_id
+            and invoices.source_relation = invoice_est.source_relation
 
     left join invoice_pay
         on invoices.invoice_id = invoice_pay.invoice_id
+            and invoices.source_relation = invoice_pay.source_relation
 ),
 
 final as (
@@ -93,6 +99,7 @@ final as (
         {% endif %}
 
         invoice_link.due_date as due_date,
+        invoice_link.source_relation,
         min(payments.transaction_date) as initial_payment_date,
         max(payments.transaction_date) as recent_payment_date,
         sum(coalesce(payment_lines_payment.amount, 0)) as total_current_payment
@@ -102,16 +109,19 @@ final as (
     {% if var('using_estimate', True) %}
     left join estimates
         on invoice_link.estimate_id = estimates.estimate_id
+            and invoice_link.source_relation = estimates.source_relation
     {% endif %}
 
     left join payments
         on invoice_link.payment_id = payments.payment_id
+            and invoice_link.source_relation = payments.source_relation
 
     left join payment_lines_payment
         on payments.payment_id = payment_lines_payment.payment_id
             and invoice_link.invoice_id = payment_lines_payment.invoice_id
+            and invoice_link.source_relation = payment_lines_payment.source_relation
 
-    group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14
+    group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
 )
 
 select *

@@ -81,22 +81,27 @@ final as (
         expense_union.billable_status,
         expense_union.description,
         expense_union.amount,
-        expense_union.total_amount
+        expense_union.total_amount,
+        expense_union.source_relation
 
     from expense_union
 
     inner join expense_accounts
-        on expense_union.account_id = expense_accounts.account_id
+        on (expense_union.account_id = expense_accounts.account_id
+        and expense_union.source_relation = expense_accounts.source_relation)
 
     left join customers
-        on customers.customer_id = expense_union.customer_id
+        on (customers.customer_id = expense_union.customer_id
+        and customers.source_relation = expense_union.source_relation)
 
     left join vendors
-        on vendors.vendor_id = expense_union.vendor_id
+        on (vendors.vendor_id = expense_union.vendor_id
+        and vendors.source_relation = expense_union.source_relation)
 
     {% if var('using_department', True) %}
     left join departments
-        on departments.department_id = expense_union.department_id
+        on (departments.department_id = expense_union.department_id
+        and departments.source_relation = expense_union.source_relation)
     {% endif %}
 )
 

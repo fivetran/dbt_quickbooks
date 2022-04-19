@@ -31,14 +31,17 @@ final as (
         coalesce(purchase_lines.account_expense_billable_status, purchase_lines.item_expense_billable_status) as billable_status,
         purchase_lines.description,
         purchase_lines.amount,
-        purchases.total_amount
+        purchases.total_amount,
+        purchases.source_relation
     from purchases
 
     inner join purchase_lines
-        on purchases.purchase_id = purchase_lines.purchase_id
+        on (purchases.purchase_id = purchase_lines.purchase_id
+        and purchases.source_relation = purchase_lines.source_relation)
 
     left join items
-        on purchase_lines.item_expense_item_id = items.item_id
+        on (purchase_lines.item_expense_item_id = items.item_id
+        and purchase_lines.source_relation = items.source_relation)
 )
 
 select *

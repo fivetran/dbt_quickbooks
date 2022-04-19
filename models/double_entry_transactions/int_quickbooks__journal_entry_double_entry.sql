@@ -24,11 +24,13 @@ final as (
         journal_entry_lines.amount,
         journal_entry_lines.account_id,
         lower(journal_entry_lines.posting_type) as transaction_type,
-        'journal_entry' as transaction_source
+        'journal_entry' as transaction_source,
+        journal_entries.source_relation
     from journal_entries
 
     inner join journal_entry_lines
-        on journal_entries.journal_entry_id = journal_entry_lines.journal_entry_id
+        on (journal_entries.journal_entry_id = journal_entry_lines.journal_entry_id
+        and journal_entries.source_relation = journal_entry_lines.source_relation)
 
     where journal_entry_lines.amount is not null
 )

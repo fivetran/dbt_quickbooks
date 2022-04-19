@@ -31,11 +31,13 @@ bill_payment_lines as (
 bill_pay as (
     select
         bills.bill_id,
-        bills_linked.bill_payment_id
+        bills_linked.bill_payment_id,
+        bills.source_relation
     from bills
 
     left join bills_linked
         on bills.bill_id = bills_linked.bill_id
+          and bills.source_relation = bills_linked.source_relation
 
     where bills_linked.bill_payment_id is not null
 ),
@@ -48,6 +50,7 @@ bill_link as (
 
     left join bill_pay
         on bills.bill_id = bill_pay.bill_id
+          and bills.source_relation = bill_pay.source_relation
 ),
 
 final as (
@@ -61,6 +64,7 @@ final as (
         bill_link.total_amount as total_amount,
         bill_link.balance as current_balance,
         bill_link.due_date_at as due_date,
+        bill_link.source_relation as source_relation,
         min(bill_payments.transaction_date) as initial_payment_date,
         max(bill_payments.transaction_date) as recent_payment_date,
         sum(coalesce(bill_payment_lines.amount, 0)) as total_current_payment
@@ -69,12 +73,14 @@ final as (
 
     left join bill_payments
         on bill_link.bill_payment_id = bill_payments.bill_payment_id
+            and bill_link.source_relation = bill_payments.source_relation
 
     left join bill_payment_lines
         on bill_payments.bill_payment_id = bill_payment_lines.bill_payment_id
             and bill_link.bill_id = bill_payment_lines.bill_id
+            and bill_link.source_relation = bill_payment_lines.source_relation
 
-    group by 1, 2, 3, 4, 5, 6, 7, 8, 9
+    group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
 )
 
 select *

@@ -22,7 +22,8 @@ items as (
     from {{ref('stg_quickbooks__item')}} item
 
     left join {{ref('stg_quickbooks__item')}} parent
-        on item.parent_item_id = parent.item_id
+        on (item.parent_item_id = parent.item_id
+        and item.source_relation = parent.source_relation)
 ),
 
 refund_receipt_join as (
@@ -32,14 +33,17 @@ refund_receipt_join as (
         refund_receipt_lines.amount,
         refund_receipts.deposit_to_account_id as credit_to_account_id,
         coalesce(refund_receipt_lines.discount_account_id, refund_receipt_lines.sales_item_account_id, items.parent_income_account_id, items.income_account_id) as debit_account_id,
-        refund_receipts.customer_id
+        refund_receipts.customer_id,
+        refund_receipts.source_relation
     from refund_receipts
 
     inner join refund_receipt_lines
-        on refund_receipts.refund_id = refund_receipt_lines.refund_id
+        on (refund_receipts.refund_id = refund_receipt_lines.refund_id
+        and refund_receipts.source_relation = refund_receipt_lines.source_relation)
 
     left join items
-        on refund_receipt_lines.sales_item_item_id = items.item_id
+        on (refund_receipt_lines.sales_item_item_id = items.item_id
+        and refund_receipt_lines.source_relation = items.source_relation)
 
     where coalesce(refund_receipt_lines.discount_account_id, refund_receipt_lines.sales_item_account_id, refund_receipt_lines.sales_item_item_id) is not null
 ),
@@ -53,7 +57,8 @@ final as (
         amount,
         credit_to_account_id as account_id,
         'credit' as transaction_type,
-        'refund_receipt' as transaction_source
+        'refund_receipt' as transaction_source,
+        source_relation
     from refund_receipt_join
 
     union all
@@ -66,7 +71,8 @@ final as (
         amount,
         debit_account_id as account_id,
         'debit' as transaction_type,
-        'refund_receipt' as transaction_source
+        'refund_receipt' as transaction_source,
+        source_relation
     from refund_receipt_join
 )
 

@@ -26,11 +26,13 @@ final as (
         cast(null as {{ dbt_utils.type_string() }}) as billable_status,
         deposit_lines.description,
         deposit_lines.amount,
-        deposits.total_amount
+        deposits.total_amount,
+        deposits.source_relation
     from deposits
 
     inner join deposit_lines
-        on deposits.deposit_id = deposit_lines.deposit_id
+        on (deposits.deposit_id = deposit_lines.deposit_id
+        and deposits.source_relation = deposit_lines.source_relation)
 )
 
 select *

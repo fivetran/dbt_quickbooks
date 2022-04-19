@@ -22,7 +22,8 @@ accounts as (
 
 ar_accounts as (
     select
-        account_id
+        account_id,
+        source_relation
     from accounts
 
     where account_type = 'Accounts Receivable'
@@ -36,7 +37,8 @@ payment_join as (
         payments.total_amount as amount,
         payments.deposit_to_account_id,
         payments.receivable_account_id,
-        payments.customer_id
+        payments.customer_id,
+        payments.source_relation
     from payments
 
 ),
@@ -50,7 +52,8 @@ final as (
         amount,
         deposit_to_account_id as account_id,
         'debit' as transaction_type,
-        'payment' as transaction_source
+        'payment' as transaction_source,
+        source_relation
     from payment_join
 
     union all
@@ -63,10 +66,12 @@ final as (
         amount,
         coalesce(receivable_account_id, ar_accounts.account_id) as account_id,
         'credit' as transaction_type,
-        'payment' as transaction_source
+        'payment' as transaction_source,
+        payment_join.source_relation
     from payment_join
 
-    cross join ar_accounts
+    full outer join ar_accounts
+        on payment_join.source_relation = ar_accounts.source_relation
 )
 
 select *

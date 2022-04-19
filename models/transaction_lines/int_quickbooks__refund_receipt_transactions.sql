@@ -37,14 +37,17 @@ final as (
         cast(null as {{ dbt_utils.type_string() }}) as billable_status,
         refund_receipt_lines.description,
         refund_receipt_lines.amount * -1 as amount,
-        refund_receipts.total_amount * -1 as total_amount
+        refund_receipts.total_amount * -1 as total_amount,
+        refund_receipts.source_relation
     from refund_receipts
 
     inner join refund_receipt_lines
-        on refund_receipts.refund_id = refund_receipt_lines.refund_id
+        on (refund_receipts.refund_id = refund_receipt_lines.refund_id
+        and refund_receipts.source_relation = refund_receipt_lines.source_relation)
 
     left join items
-        on refund_receipt_lines.sales_item_item_id = items.item_id
+        on (refund_receipt_lines.sales_item_item_id = items.item_id
+        and refund_receipt_lines.source_relation = items.source_relation)
 )
 
 select *

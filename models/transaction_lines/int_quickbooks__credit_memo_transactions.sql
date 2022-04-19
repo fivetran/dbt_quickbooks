@@ -37,14 +37,17 @@ final as (
         cast(null as {{ dbt_utils.type_string() }}) as billable_status,
         credit_memo_lines.description,
         credit_memo_lines.amount * -1 as amount,
-        credit_memos.total_amount * -1 as total_amount
+        credit_memos.total_amount * -1 as total_amount,
+        credit_memos.source_relation
     from credit_memos
 
     inner join credit_memo_lines
-        on credit_memos.credit_memo_id = credit_memo_lines.credit_memo_id
+        on (credit_memos.credit_memo_id = credit_memo_lines.credit_memo_id
+        and credit_memos.source_relation = credit_memo_lines.source_relation)
 
      left join items
-        on credit_memo_lines.sales_item_item_id = items.item_id
+        on (credit_memo_lines.sales_item_item_id = items.item_id
+        and credit_memo_lines.source_relation = items.source_relation)
 )
 
 select *

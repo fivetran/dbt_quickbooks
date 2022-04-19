@@ -18,7 +18,8 @@ items as (
     from {{ref('stg_quickbooks__item')}} item
 
     left join {{ref('stg_quickbooks__item')}} parent
-        on item.parent_item_id = parent.item_id
+        on (item.parent_item_id = parent.item_id
+        and item.source_relation = parent.source_relation)
 ),
 
 purchase_join as (
@@ -31,14 +32,17 @@ purchase_join as (
         case when coalesce(purchases.credit, false) = true then 'debit' else 'credit' end as payed_from_transaction_type,
         case when coalesce(purchases.credit, false) = true then 'credit' else 'debit' end as payed_to_transaction_type,
         purchases.customer_id,
-        purchases.vendor_id
+        purchases.vendor_id,
+        purchases.source_relation
     from purchases
 
     inner join purchase_lines
-        on purchases.purchase_id = purchase_lines.purchase_id
+        on (purchases.purchase_id = purchase_lines.purchase_id
+        and purchases.source_relation = purchase_lines.source_relation)
 
     left join items
-        on purchase_lines.item_expense_item_id = items.item_id
+        on (purchase_lines.item_expense_item_id = items.item_id
+        and purchase_lines.source_relation = items.source_relation)
 ),
 
 final as (
@@ -50,7 +54,8 @@ final as (
         amount,
         payed_from_account_id as account_id,
         payed_from_transaction_type as transaction_type,
-        'purchase' as transaction_source
+        'purchase' as transaction_source,
+        source_relation
     from purchase_join
 
     union all
@@ -63,7 +68,8 @@ final as (
         amount,
         payed_to_account_id as account_id,
         payed_to_transaction_type as transaction_type,
-        'purchase' as transaction_source
+        'purchase' as transaction_source,
+        source_relation
     from purchase_join
 )
 

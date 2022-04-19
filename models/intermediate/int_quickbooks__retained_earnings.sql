@@ -6,23 +6,25 @@ with general_ledger_balances as (
 revenue_starter as (
     select
         period_first_day,
+        source_relation,
         sum(period_net_change) as revenue_net_change
     from general_ledger_balances
 
     where account_class = 'Revenue'
 
-    group by 1
+    group by 1, 2
 ),
 
 expense_starter as (
     select
         period_first_day,
+        source_relation,
         sum(period_net_change) as expense_net_change
     from general_ledger_balances
 
     where account_class = 'Expense'
 
-    group by 1
+    group by 1, 2
 ),
 
 net_income_loss as (
@@ -30,7 +32,9 @@ net_income_loss as (
     from revenue_starter
 
     join expense_starter
-        using (period_first_day)
+        using (period_first_day, source_relation)
+        -- on (revenue_starter.period_first_day = expense_starter.period_first_day
+        -- and revenue_starter.source_relation = expense_starter.source_relation)
 ),
 
 retained_earnings_starter as (
@@ -48,6 +52,7 @@ retained_earnings_starter as (
         cast({{ dbt_utils.date_trunc("year", "period_first_day") }} as date) as date_year,
         cast(period_first_day as date) as period_first_day,
         {{ dbt_utils.last_day("period_first_day", "month") }} as period_last_day,
+        source_relation,
         (revenue_net_change - expense_net_change) as period_net_change
     from net_income_loss
 ),
@@ -56,7 +61,7 @@ retained_earnings_starter as (
 retained_earnings_beginning as (
     select
         *,
-        sum(coalesce(period_net_change,0)) over (order by period_first_day, period_first_day rows unbounded preceding) as period_ending_balance
+        sum(coalesce(period_net_change,0)) over (partition by source_relation order by period_first_day, period_first_day rows unbounded preceding) as period_ending_balance
     from retained_earnings_starter
 )
 ,
@@ -76,8 +81,9 @@ final as (
         date_year,
         period_first_day,
         period_last_day,
+        source_relation,
         period_net_change,
-        lag(coalesce(period_ending_balance,0)) over (order by period_first_day) as period_beginning_balance,
+        lag(coalesce(period_ending_balance,0)) over (partition by source_relation order by period_first_day) as period_beginning_balance,
         period_ending_balance
     from retained_earnings_beginning
 )

@@ -7,7 +7,8 @@ with gl_union as (
         amount,
         account_id,
         transaction_type,
-        transaction_source
+        transaction_source,
+        source_relation
     from {{ref('int_quickbooks__purchase_double_entry')}}
 
     {% if var('using_sales_receipt', True) %}
@@ -117,17 +118,19 @@ adjusted_gl as (
         case when accounts.transaction_type = gl_union.transaction_type
             then gl_union.amount
             else gl_union.amount * -1
-                end as adjusted_amount
+                end as adjusted_amount,
+        gl_union.source_relation
     from gl_union
 
     left join accounts
-        on gl_union.account_id = accounts.account_id
+        on (gl_union.account_id = accounts.account_id
+        and gl_union.source_relation = accounts.source_relation)
 ),
 
 final as (
     select
         *,
-        sum(adjusted_amount) over (partition by account_id order by transaction_date, account_id rows unbounded preceding) as running_balance
+        sum(adjusted_amount) over (partition by source_relation, account_id order by transaction_date, source_relation, account_id rows unbounded preceding) as running_balance
     from adjusted_gl
 )
 

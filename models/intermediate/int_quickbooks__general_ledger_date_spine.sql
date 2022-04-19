@@ -52,9 +52,9 @@ with spine as (
     }}
 ),
 
-general_ledger as (
+accounts as (
     select *
-    from {{ ref('quickbooks__general_ledger') }}
+    from {{ ref('int_quickbooks__account_classifications') }}
 ),
 
 date_spine as (
@@ -67,22 +67,23 @@ date_spine as (
 ),
 
 final as (
-    select distinct
-        general_ledger.account_id,
-        general_ledger.account_number,
-        general_ledger.account_name,
-        general_ledger.is_sub_account,
-        general_ledger.parent_account_number,
-        general_ledger.parent_account_name,
-        general_ledger.account_type,
-        general_ledger.account_sub_type,
-        general_ledger.account_class,
-        general_ledger.financial_statement_helper,
+    select
+        accounts.account_id,
+        accounts.account_number,
+        accounts.account_name,
+        accounts.is_sub_account,
+        accounts.parent_account_number,
+        accounts.parent_account_name,
+        accounts.account_type,
+        accounts.account_sub_type,
+        accounts.account_class,
+        accounts.financial_statement_helper,
+        accounts.source_relation,
         date_spine.date_year,
         date_spine.period_first_day,
         date_spine.period_last_day,
         date_spine.period_index
-    from general_ledger
+    from accounts
 
     cross join date_spine
 )

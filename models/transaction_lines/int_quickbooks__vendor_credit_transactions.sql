@@ -34,14 +34,17 @@ final as (
         coalesce(vendor_credit_lines.account_expense_billable_status, vendor_credit_lines.item_expense_billable_status) as billable_status,
         vendor_credit_lines.description,
         vendor_credit_lines.amount * -1 as amount,
-        vendor_credits.total_amount * -1 as total_amount
+        vendor_credits.total_amount * -1 as total_amount,
+        vendor_credits.source_relation
     from vendor_credits
 
     inner join vendor_credit_lines
-        on vendor_credits.vendor_credit_id = vendor_credit_lines.vendor_credit_id
+        on (vendor_credits.vendor_credit_id = vendor_credit_lines.vendor_credit_id
+        and vendor_credits.source_relation = vendor_credit_lines.source_relation)
 
     left join items
-        on vendor_credit_lines.item_expense_item_id = items.item_id
+        on (vendor_credit_lines.item_expense_item_id = items.item_id
+        and vendor_credit_lines.source_relation = items.source_relation)
 )
 
 select *

@@ -86,21 +86,26 @@ final as (
         sales_union.billable_status,
         sales_union.description,
         sales_union.amount,
-        sales_union.total_amount
+        sales_union.total_amount,
+        sales_union.source_relation
     from sales_union
 
     inner join income_accounts
-        on sales_union.account_id = income_accounts.account_id
+        on (sales_union.account_id = income_accounts.account_id
+        and sales_union.source_relation = income_accounts.source_relation)
 
     left join customers
-        on customers.customer_id = sales_union.customer_id
+        on (customers.customer_id = sales_union.customer_id
+        and customers.source_relation = sales_union.source_relation)
 
     left join vendors
-        on vendors.vendor_id = sales_union.vendor_id
+        on (vendors.vendor_id = sales_union.vendor_id
+        and vendors.source_relation = sales_union.source_relation)
 
     {% if var('using_department', True) %}
     left join departments
-        on departments.department_id = sales_union.department_id
+        on (departments.department_id = sales_union.department_id
+        and departments.source_relation = sales_union.source_relation)
     {% endif %}
 )
 

@@ -75,20 +75,24 @@ final as (
             else 0
                 end as days_overdue,
         initial_payment_date,
-        recent_payment_date
+        recent_payment_date,
+        bill_join.source_relation
     from bill_join
 
     {% if var('using_department', True) %}
     left join departments
-        on bill_join.department_id = departments.department_id
+        on (bill_join.department_id = departments.department_id
+        and bill_join.source_relation = departments.source_relation)
     {% endif %}
 
     left join vendors
-        on bill_join.vendor_id = vendors.vendor_id
+        on (bill_join.vendor_id = vendors.vendor_id
+        and bill_join.source_relation = vendors.source_relation)
 
     {% if var('using_address', True) %}
     left join addresses as billing_address
-        on vendors.billing_address_id = billing_address.address_id
+        on (vendors.billing_address_id = billing_address.address_id
+        and vendors.source_relation = billing_address.source_relation)
     {% endif %}
 
     {% if var('using_invoice', True) %}
@@ -131,21 +135,25 @@ final as (
             else 0
                 end as days_overdue,
         invoice_join.initial_payment_date,
-        invoice_join.recent_payment_date
+        invoice_join.recent_payment_date,
+        invoice_join.source_relation
     from invoice_join
 
     {% if var('using_department', True) %}
     left join departments
-        on invoice_join.department_id = departments.department_id
+        on (invoice_join.department_id = departments.department_id
+        and invoice_join.source_relation = departments.source_relation)
     {% endif %}
 
     {% if var('using_address', True) %}
     left join addresses as billing_address
-        on invoice_join.billing_address_id = billing_address.address_id
+        on (invoice_join.billing_address_id = billing_address.address_id
+        and invoice_join.source_relation = billing_address.source_relation)
     {% endif %}
 
     left join customers
-        on invoice_join.customer_id = customers.customer_id
+        on (invoice_join.customer_id = customers.customer_id
+        and invoice_join.source_relation = customers.source_relation)
 
     {% endif %}
 )

@@ -23,7 +23,8 @@ accounts as (
 
 uf_accounts as (
     select
-        account_id
+        account_id,
+        source_relation
     from accounts
 
     where account_sub_type = 'UndepositedFunds'
@@ -37,13 +38,16 @@ deposit_join as (
         deposit_lines.amount,
         deposits.account_id as deposit_to_acct_id,
         coalesce(deposit_lines.deposit_account_id, uf_accounts.account_id) as deposit_from_acct_id,
-        deposit_customer_id as customer_id
+        deposit_customer_id as customer_id,
+        deposits.source_relation
     from deposits
 
     inner join deposit_lines
-        on deposits.deposit_id = deposit_lines.deposit_id
+        on (deposits.deposit_id = deposit_lines.deposit_id
+        and deposits.source_relation = deposit_lines.source_relation)
 
-    cross join uf_accounts
+    full outer join uf_accounts
+        on deposits.source_relation = uf_accounts.source_relation
 
 ),
 
@@ -56,7 +60,8 @@ final as (
         amount,
         deposit_to_acct_id as account_id,
         'debit' as transaction_type,
-        'deposit' as transaction_source
+        'deposit' as transaction_source,
+        source_relation
     from deposit_join
 
     union all
@@ -69,7 +74,8 @@ final as (
         amount,
         deposit_from_acct_id as account_id,
         'credit' as transaction_type,
-        'deposit' as transaction_source
+        'deposit' as transaction_source,
+        source_relation
     from deposit_join
 )
 

@@ -22,17 +22,18 @@ gl_period_balance as (
         account_class,
         cast({{ dbt_utils.date_trunc("year", "transaction_date") }} as date) as date_year,
         cast({{ dbt_utils.date_trunc("month", "transaction_date") }} as date) as date_month,
+        source_relation,
         sum(adjusted_amount) as period_balance
     from general_ledger
 
-    {{ dbt_utils.group_by(12) }}
+    {{ dbt_utils.group_by(13) }}
 ),
 
 gl_cumulative_balance as (
     select
         *,
         case when financial_statement_helper = 'balance_sheet'
-            then sum(period_balance) over (partition by account_id order by date_month, account_id rows unbounded preceding)
+            then sum(period_balance) over (partition by source_relation, account_id order by date_month, source_relation, account_id rows unbounded preceding)
             else 0
                 end as cumulative_balance
     from gl_period_balance
@@ -52,6 +53,7 @@ gl_beginning_balance as (
         account_class,
         date_year,
         date_month,
+        source_relation,
         period_balance as period_net_change,
         case when financial_statement_helper = 'balance_sheet'
             then (cumulative_balance - period_balance)
@@ -74,6 +76,7 @@ gl_patch as (
         coalesce(gl_beginning_balance.account_class, gl_accounting_periods.account_class) as account_class,
         coalesce(gl_beginning_balance.financial_statement_helper, gl_accounting_periods.financial_statement_helper) as financial_statement_helper,
         coalesce(gl_beginning_balance.date_year, gl_accounting_periods.date_year) as date_year,
+        coalesce(gl_beginning_balance.source_relation, gl_accounting_periods.source_relation) as source_relation,
         gl_accounting_periods.period_first_day,
         gl_accounting_periods.period_last_day,
         gl_accounting_periods.period_index,
@@ -94,6 +97,7 @@ gl_patch as (
         on gl_beginning_balance.account_id = gl_accounting_periods.account_id
             and gl_beginning_balance.date_month = gl_accounting_periods.period_first_day
             and gl_beginning_balance.date_year = gl_accounting_periods.date_year
+            and gl_beginning_balance.source_relation = gl_accounting_periods.source_relation
 ),
 
 gl_value_partion as (
@@ -102,7 +106,7 @@ gl_value_partion as (
         sum(case when period_ending_balance_starter is null
             then 0
             else 1
-                end) over (order by account_id, period_last_day rows unbounded preceding) as gl_partition
+                end) over (order by source_relation, account_id, period_last_day rows unbounded preceding) as gl_partition
     from gl_patch
 
 ),
@@ -122,6 +126,7 @@ final as (
         date_year,
         period_first_day,
         period_last_day,
+        source_relation,
         coalesce(period_net_change,0) as period_net_change,
         coalesce(period_beginning_balance_starter,
             first_value(period_ending_balance_starter) over (partition by gl_partition order by period_last_day rows unbounded preceding)) as period_beginning_balance,

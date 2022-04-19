@@ -15,6 +15,7 @@ with general_ledger_by_period as (
         account_number,
         account_id,
         account_name,
+        source_relation,
         period_net_change as amount
     from general_ledger_by_period
 )

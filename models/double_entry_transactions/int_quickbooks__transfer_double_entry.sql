@@ -16,7 +16,8 @@ transfer_body as (
         transaction_date,
         amount,
         from_account_id as credit_to_account_id,
-        to_account_id as debit_to_account_id
+        to_account_id as debit_to_account_id,
+        source_relation
     from transfers
 ),
 
@@ -29,7 +30,8 @@ final as (
         amount,
         credit_to_account_id as account_id,
         'credit' as transaction_type,
-        'transfer' as transaction_source
+        'transfer' as transaction_source,
+        source_relation
     from transfer_body
 
     union all
@@ -42,7 +44,8 @@ final as (
         amount,
         debit_to_account_id as account_id,
         'debit' as transaction_type,
-        'transfer' as transaction_source
+        'transfer' as transaction_source,
+        source_relation
     from transfer_body
 )
 

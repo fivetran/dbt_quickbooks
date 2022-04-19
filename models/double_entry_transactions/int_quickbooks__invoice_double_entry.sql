@@ -22,7 +22,8 @@ items as (
     from {{ref('stg_quickbooks__item')}} item
 
     left join {{ref('stg_quickbooks__item')}} parent
-        on item.parent_item_id = parent.item_id
+        on (item.parent_item_id = parent.item_id
+        and item.source_relation = parent.source_relation)
 ),
 
 accounts as (
@@ -59,17 +60,21 @@ bundle_income_accounts as (
     select distinct
         income_accounts.account_id,
         parent.income_account_id as parent_income_account_id,
-        bundle_items.bundle_id
+        bundle_items.bundle_id,
+        items.source_relation
     from items
 
     left join items as parent
-        on items.parent_item_id = parent.item_id
+        on (items.parent_item_id = parent.item_id
+        and items.source_relation = parent.source_relation)
 
     inner join income_accounts
-        on income_accounts.account_id = items.income_account_id
+        on (income_accounts.account_id = items.income_account_id
+        and income_accounts.source_relation = items.source_relation)
 
     inner join bundle_items
-        on bundle_items.item_id = items.item_id
+        on (bundle_items.item_id = items.item_id
+        and bundle_items.source_relation = items.source_relation)
 ),
 {% endif %}
 
@@ -96,19 +101,23 @@ invoice_join as (
         coalesce(invoice_lines.account_id, items.income_account_id) as account_id,
 
         {% endif %}
-        invoices.customer_id
+        invoices.customer_id,
+        invoices.source_relation
 
     from invoices
 
     inner join invoice_lines
-        on invoices.invoice_id = invoice_lines.invoice_id
+        on (invoices.invoice_id = invoice_lines.invoice_id
+        and invoices.source_relation = invoice_lines.source_relation)
 
     left join items
-        on coalesce(invoice_lines.sales_item_item_id, invoice_lines.item_id) = items.item_id
+        on (coalesce(invoice_lines.sales_item_item_id, invoice_lines.item_id) = items.item_id
+        and invoice_lines.source_relation = items.source_relation)
 
     {% if var('using_invoice_bundle', True) %}
     left join bundle_income_accounts
-        on bundle_income_accounts.bundle_id = invoice_lines.bundle_id
+        on (bundle_income_accounts.bundle_id = invoice_lines.bundle_id
+        and bundle_income_accounts.source_relation = invoice_lines.source_relation)
 
     where coalesce(invoice_lines.account_id, invoice_lines.sales_item_account_id, invoice_lines.sales_item_item_id, invoice_lines.item_id, bundle_income_accounts.account_id) is not null
 
@@ -127,7 +136,8 @@ final as (
         amount,
         account_id,
         'credit' as transaction_type,
-        'invoice' as transaction_source
+        'invoice' as transaction_source,
+        source_relation
     from invoice_join
 
     union all
@@ -140,10 +150,12 @@ final as (
         amount,
         ar_accounts.account_id,
         'debit' as transaction_type,
-        'invoice' as transaction_source
+        'invoice' as transaction_source,
+        invoice_join.source_relation
     from invoice_join
 
-    cross join ar_accounts
+    full outer join ar_accounts
+        on invoice_join.source_relation = ar_accounts.source_relation
 )
 
 select *

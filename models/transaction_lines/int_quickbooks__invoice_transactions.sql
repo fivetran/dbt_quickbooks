@@ -37,14 +37,17 @@ final as (
         cast(null as {{ dbt_utils.type_string() }}) as billable_status,
         invoice_lines.description,
         invoice_lines.amount,
-        invoices.total_amount
+        invoices.total_amount,
+        invoices.source_relation
     from invoices
 
     inner join invoice_lines
-        on invoices.invoice_id = invoice_lines.invoice_id
+        on (invoices.invoice_id = invoice_lines.invoice_id
+        and invoices.source_relation = invoice_lines.source_relation)
 
     left join items
-        on coalesce(invoice_lines.sales_item_item_id, invoice_lines.item_id) = items.item_id
+        on (coalesce(invoice_lines.sales_item_item_id, invoice_lines.item_id) = items.item_id
+        and invoice_lines.source_relation = items.source_relation)
 )
 
 select *

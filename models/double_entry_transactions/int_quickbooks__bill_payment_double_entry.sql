@@ -22,7 +22,8 @@ accounts as (
 
 ap_accounts as (
     select
-        account_id
+        account_id,
+        source_relation
     from accounts
 
     where account_type = 'Accounts Payable'
@@ -36,11 +37,12 @@ bill_payment_join as (
         bill_payments.total_amount as amount,
         coalesce(bill_payments.credit_card_account_id,bill_payments.check_bank_account_id) as payment_account_id,
         ap_accounts.account_id,
-        bill_payments.vendor_id
+        bill_payments.vendor_id,
+        bill_payments.source_relation
     from bill_payments
 
-    cross join ap_accounts
-
+    full outer join ap_accounts
+        on bill_payments.source_relation = ap_accounts.source_relation
 ),
 
 final as (
@@ -52,7 +54,8 @@ final as (
         amount,
         payment_account_id as account_id,
         'credit' as transaction_type,
-        'bill payment' as transaction_source
+        'bill payment' as transaction_source,
+        source_relation
     from bill_payment_join
 
     union all
@@ -65,7 +68,8 @@ final as (
         amount,
         account_id,
         'debit' as transaction_type,
-        'bill payment' as transaction_source
+        'bill payment' as transaction_source,
+        source_relation
     from bill_payment_join
 )
 

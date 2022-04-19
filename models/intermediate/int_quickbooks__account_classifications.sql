@@ -32,7 +32,8 @@ classification_fix as (
                 then 'Liability'
             when classification is null and account_type in ('Income', 'Other Income')
                 then 'Revenue'
-                    end as classification
+                    end as classification,
+        source_relation
     from accounts
 ),
 
@@ -77,7 +78,8 @@ final as (
     from adjusted_balances
 
     left join accounts as parent_accounts
-        on parent_accounts.account_id = adjusted_balances.parent_account_id
+        on (parent_accounts.account_id = adjusted_balances.parent_account_id
+        and parent_accounts.source_relation = adjusted_balances.source_relation)
 )
 
 select *
