@@ -34,7 +34,7 @@ Include in your `packages.yml`
 ```yaml
 packages:
   - package: fivetran/quickbooks
-    version: [">=0.5.0", "<0.4.0"]
+    version: [">=0.5.0", "<0.6.0"]
 ```
 
 ## Configuration
