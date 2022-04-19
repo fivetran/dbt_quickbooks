@@ -22,7 +22,7 @@ final as (
         deposit_lines.deposit_class_id as class_id,
         deposits.department_id,
         deposit_lines.deposit_customer_id as customer_id,
-        cast(null as {{ dbt_utils.type_int() }}) as vendor_id,
+        cast(null as {{ dbt_utils.type_string() }}) as vendor_id,
         cast(null as {{ dbt_utils.type_string() }}) as billable_status,
         deposit_lines.description,
         deposit_lines.amount,

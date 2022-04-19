@@ -62,7 +62,7 @@ final as (
         expense_union.doc_number,
         expense_union.transaction_type,
         expense_union.transaction_date,
-        cast(null as {{ dbt_utils.type_int() }}) as item_id,
+        cast(null as {{ dbt_utils.type_string() }}) as item_id,
         cast(null as {{ dbt_utils.type_numeric() }}) as item_quantity,
         cast(null as {{ dbt_utils.type_numeric() }}) as item_unit_price,
         expense_union.account_id,

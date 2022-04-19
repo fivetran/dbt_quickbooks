@@ -33,7 +33,7 @@ final as (
         credit_memos.class_id,
         credit_memos.department_id,
         credit_memos.customer_id, 
-        cast(null as {{ dbt_utils.type_int() }}) as vendor_id,
+        cast(null as {{ dbt_utils.type_string() }}) as vendor_id,
         cast(null as {{ dbt_utils.type_string() }}) as billable_status,
         credit_memo_lines.description,
         credit_memo_lines.amount * -1 as amount,
