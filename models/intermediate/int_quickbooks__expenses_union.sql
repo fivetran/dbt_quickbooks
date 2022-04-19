@@ -7,21 +7,21 @@ with expense_union as (
 
     select *
     from {{ ref('int_quickbooks__bill_transactions') }}
-    {% endif %} 
+    {% endif %}
 
     {% if var('using_journal_entry', True) %}
     union all
 
     select *
     from {{ref('int_quickbooks__journal_entry_transactions')}}
-    {% endif %} 
+    {% endif %}
 
     {% if var('using_deposit', True) %}
     union all
 
     select *
     from {{ref('int_quickbooks__deposit_transactions')}}
-    {% endif %} 
+    {% endif %}
 
     {% if var('using_vendor_credit', True) %}
     union all
@@ -37,7 +37,7 @@ customers as (
 ),
 
 {% if var('using_department', True) %}
-departments as ( 
+departments as (
     select *
     from {{ ref('stg_quickbooks__department') }}
 ),
@@ -55,7 +55,7 @@ expense_accounts as (
 ),
 
 final as (
-    select 
+    select
         'expense' as transaction_source,
         expense_union.transaction_id,
         expense_union.transaction_line_id,

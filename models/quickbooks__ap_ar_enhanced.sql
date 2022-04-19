@@ -14,7 +14,7 @@ invoice_join as (
 {% endif %}
 
 {% if var('using_department', True) %}
-departments as ( 
+departments as (
     select *
     from {{ ref('stg_quickbooks__department') }}
 ),
@@ -42,7 +42,7 @@ final as (
         transaction_type,
         transaction_id,
         doc_number,
-        cast(null as {{ dbt_utils.type_string() }}) as estimate_id, 
+        cast(null as {{ dbt_utils.type_string() }}) as estimate_id,
 
         {% if var('using_department', True) %}
         departments.fully_qualified_name as department_name,
@@ -57,7 +57,7 @@ final as (
         billing_address.country as customer_vendor_address_country,
         concat(billing_address.address_1, billing_address.address_2) as customer_vendor_address_line,
         {% endif %}
-        
+
         vendors.web_url as customer_vendor_website,
         cast(null as {{ dbt_utils.type_string() }}) as delivery_type,
         cast(null as {{ dbt_utils.type_string() }}) as estimate_status,
@@ -79,22 +79,22 @@ final as (
     from bill_join
 
     {% if var('using_department', True) %}
-    left join departments  
+    left join departments
         on bill_join.department_id = departments.department_id
     {% endif %}
 
     left join vendors
         on bill_join.vendor_id = vendors.vendor_id
-    
+
     {% if var('using_address', True) %}
     left join addresses as billing_address
         on vendors.billing_address_id = billing_address.address_id
     {% endif %}
-    
+
     {% if var('using_invoice', True) %}
     union all
 
-    select 
+    select
         invoice_join.transaction_type,
         invoice_join.transaction_id,
         doc_number,
@@ -135,7 +135,7 @@ final as (
     from invoice_join
 
     {% if var('using_department', True) %}
-    left join departments  
+    left join departments
         on invoice_join.department_id = departments.department_id
     {% endif %}
 
@@ -150,5 +150,5 @@ final as (
     {% endif %}
 )
 
-select * 
+select *
 from final

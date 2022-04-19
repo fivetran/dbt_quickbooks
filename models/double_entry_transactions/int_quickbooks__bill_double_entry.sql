@@ -16,8 +16,8 @@ bill_lines as (
 ),
 
 items as (
-    select 
-        item.*, 
+    select
+        item.*,
         parent.expense_account_id as parent_expense_account_id,
         parent.income_account_id as parent_income_account_id
     from {{ref('stg_quickbooks__item')}} item
@@ -28,7 +28,7 @@ items as (
 
 bill_join as (
     select
-        bills.bill_id as transaction_id, 
+        bills.bill_id as transaction_id,
         bills.transaction_date,
         bill_lines.amount,
         coalesce(bill_lines.account_expense_account_id, items.expense_account_id, items.parent_expense_account_id, items.expense_account_id, items.parent_income_account_id, items.income_account_id) as payed_to_account_id,
@@ -37,7 +37,7 @@ bill_join as (
         bills.vendor_id
     from bills
 
-    inner join bill_lines 
+    inner join bill_lines
         on bills.bill_id = bill_lines.bill_id
 
     left join items
@@ -45,7 +45,7 @@ bill_join as (
 ),
 
 final as (
-    select 
+    select
         transaction_id,
         transaction_date,
         customer_id,

@@ -12,7 +12,7 @@ final as (
     select *
     from general_ledger_balances
 
-    union all 
+    union all
 
     select *
     from retained_earnings

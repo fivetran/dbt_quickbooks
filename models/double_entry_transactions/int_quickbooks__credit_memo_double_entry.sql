@@ -66,7 +66,7 @@ final as (
 
     union all
 
-    select 
+    select
         transaction_id,
         transaction_date,
         customer_id,

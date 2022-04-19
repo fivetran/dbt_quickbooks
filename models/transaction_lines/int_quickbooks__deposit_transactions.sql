@@ -4,7 +4,7 @@
 with deposits as (
     select *
     from {{ref('stg_quickbooks__deposit')}}
-), 
+),
 
 deposit_lines as (
     select *
@@ -28,8 +28,8 @@ final as (
         deposit_lines.amount,
         deposits.total_amount
     from deposits
-    
-    inner join deposit_lines 
+
+    inner join deposit_lines
         on deposits.deposit_id = deposit_lines.deposit_id
 )
 

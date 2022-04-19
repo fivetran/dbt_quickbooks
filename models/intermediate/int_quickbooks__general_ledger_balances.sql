@@ -32,7 +32,7 @@ gl_cumulative_balance as (
     select
         *,
         case when financial_statement_helper = 'balance_sheet'
-            then sum(period_balance) over (partition by account_id order by date_month, account_id rows unbounded preceding) 
+            then sum(period_balance) over (partition by account_id order by date_month, account_id rows unbounded preceding)
             else 0
                 end as cumulative_balance
     from gl_period_balance
@@ -51,18 +51,18 @@ gl_beginning_balance as (
         financial_statement_helper,
         account_class,
         date_year,
-        date_month, 
+        date_month,
         period_balance as period_net_change,
         case when financial_statement_helper = 'balance_sheet'
-            then (cumulative_balance - period_balance) 
+            then (cumulative_balance - period_balance)
             else 0
                 end as period_beginning_balance,
-        cumulative_balance as period_ending_balance  
+        cumulative_balance as period_ending_balance
     from gl_cumulative_balance
 ),
 
 gl_patch as (
-    select 
+    select
         coalesce(gl_beginning_balance.account_id, gl_accounting_periods.account_id) as account_id,
         coalesce(gl_beginning_balance.account_number, gl_accounting_periods.account_number) as account_number,
         coalesce(gl_beginning_balance.account_name, gl_accounting_periods.account_name) as account_name,
@@ -99,14 +99,14 @@ gl_patch as (
 gl_value_partion as (
     select
         *,
-        sum(case when period_ending_balance_starter is null 
-            then 0 
-            else 1 
+        sum(case when period_ending_balance_starter is null
+            then 0
+            else 1
                 end) over (order by account_id, period_last_day rows unbounded preceding) as gl_partition
     from gl_patch
 
 ),
- 
+
 final as (
     select
         account_id,

@@ -16,8 +16,8 @@ invoice_lines as (
 ),
 
 items as (
-    select 
-        item.*, 
+    select
+        item.*,
         parent.income_account_id as parent_income_account_id
     from {{ref('stg_quickbooks__item')}} item
 
@@ -43,13 +43,13 @@ bundles as (
 ),
 
 bundle_items as (
-    select 
+    select
         *
     from {{ref('stg_quickbooks__bundle_item')}}
 ),
 
 income_accounts as (
-    select * 
+    select *
     from accounts
 
     where account_sub_type = 'SalesOfProductIncome'
@@ -60,15 +60,15 @@ bundle_income_accounts as (
         income_accounts.account_id,
         parent.income_account_id as parent_income_account_id,
         bundle_items.bundle_id
-    from items 
+    from items
 
     left join items as parent
         on items.parent_item_id = parent.item_id
 
-    inner join income_accounts 
+    inner join income_accounts
         on income_accounts.account_id = items.income_account_id
 
-    inner join bundle_items 
+    inner join bundle_items
         on bundle_items.item_id = items.item_id
 ),
 {% endif %}
@@ -110,10 +110,10 @@ invoice_join as (
     left join bundle_income_accounts
         on bundle_income_accounts.bundle_id = invoice_lines.bundle_id
 
-    where coalesce(invoice_lines.account_id, invoice_lines.sales_item_account_id, invoice_lines.sales_item_item_id, invoice_lines.item_id, bundle_income_accounts.account_id) is not null         
+    where coalesce(invoice_lines.account_id, invoice_lines.sales_item_account_id, invoice_lines.sales_item_item_id, invoice_lines.item_id, bundle_income_accounts.account_id) is not null
 
     {% else %}
-    where coalesce(invoice_lines.account_id, invoice_lines.sales_item_account_id, invoice_lines.sales_item_item_id, invoice_lines.item_id) is not null 
+    where coalesce(invoice_lines.account_id, invoice_lines.sales_item_account_id, invoice_lines.sales_item_item_id, invoice_lines.item_id) is not null
 
     {% endif %}
 ),
@@ -146,5 +146,5 @@ final as (
     cross join ar_accounts
 )
 
-select * 
+select *
 from final

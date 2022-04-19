@@ -8,18 +8,18 @@ revenue_starter as (
         period_first_day,
         sum(period_net_change) as revenue_net_change
     from general_ledger_balances
-    
+
     where account_class = 'Revenue'
 
     group by 1
 ),
 
 expense_starter as (
-    select 
+    select
         period_first_day,
-        sum(period_net_change) as expense_net_change 
+        sum(period_net_change) as expense_net_change
     from general_ledger_balances
-    
+
     where account_class = 'Expense'
 
     group by 1
@@ -29,7 +29,7 @@ net_income_loss as (
     select *
     from revenue_starter
 
-    join expense_starter 
+    join expense_starter
         using (period_first_day)
 ),
 

@@ -27,7 +27,7 @@ final as (
         refund_receipt_lines.sales_item_quantity as item_quantity,
         refund_receipt_lines.sales_item_unit_price as item_unit_price,
         case when refund_receipt_lines.sales_item_account_id is null
-            then coalesce(items.asset_account_id, items.income_account_id, items.expense_account_id) 
+            then coalesce(items.asset_account_id, items.income_account_id, items.expense_account_id)
             else refund_receipt_lines.sales_item_account_id
                 end as account_id,
         refund_receipts.class_id,

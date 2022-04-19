@@ -3,7 +3,7 @@
 
 with bills as (
     select *
-    from {{ ref('stg_quickbooks__bill') }} 
+    from {{ ref('stg_quickbooks__bill') }}
 ),
 
 bill_lines as (
@@ -34,7 +34,7 @@ final as (
         bills.total_amount
     from bills
 
-    inner join bill_lines 
+    inner join bill_lines
         on bills.bill_id = bill_lines.bill_id
 
     left join items

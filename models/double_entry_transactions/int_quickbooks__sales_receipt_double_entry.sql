@@ -16,8 +16,8 @@ sales_receipt_lines as (
 ),
 
 items as (
-    select 
-        item.*, 
+    select
+        item.*,
         parent.income_account_id as parent_income_account_id
     from {{ref('stg_quickbooks__item')}} item
 

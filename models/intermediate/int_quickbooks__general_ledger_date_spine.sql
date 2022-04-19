@@ -7,7 +7,7 @@ with spine as (
         select  min( transaction_date ) as min_date from {{ ref('quickbooks__general_ledger') }}
     {% endset %}
     {% set first_date = run_query(first_date_query).columns[0][0]|string %}
-    
+
         {% if target.type == 'postgres' %}
             {% set first_date_adjust = "cast('" ~ first_date[0:10] ~ "' as date)" %}
 
@@ -34,7 +34,7 @@ with spine as (
 
     {% else %} {% set last_date = run_query(current_date_query).columns[0][0]|string %}
     {% endif %}
-        
+
     {% if target.type == 'postgres' %}
         {% set last_date_adjust = "cast('" ~ last_date[0:10] ~ "' as date)" %}
 

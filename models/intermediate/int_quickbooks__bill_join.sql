@@ -73,9 +73,9 @@ final as (
     left join bill_payment_lines
         on bill_payments.bill_payment_id = bill_payment_lines.bill_payment_id
             and bill_link.bill_id = bill_payment_lines.bill_id
-    
+
     group by 1, 2, 3, 4, 5, 6, 7, 8, 9
 )
 
-select * 
+select *
 from final

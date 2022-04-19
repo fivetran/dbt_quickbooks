@@ -65,7 +65,7 @@ final as (
         'credit' as transaction_type,
         'payment' as transaction_source
     from payment_join
-    
+
     cross join ar_accounts
 )
 

@@ -110,7 +110,7 @@ adjusted_gl as (
         accounts.account_sub_type,
         accounts.financial_statement_helper,
         accounts.balance as account_current_balance,
-        accounts.classification as account_class, 
+        accounts.classification as account_class,
         gl_union.transaction_type,
         gl_union.transaction_source,
         accounts.transaction_type as account_transaction_type,

@@ -21,7 +21,7 @@ transfer_body as (
 ),
 
 final as (
-    select 
+    select
         transaction_id,
         transaction_date,
         cast(null as {{ dbt_utils.type_string() }}) as customer_id,
@@ -34,7 +34,7 @@ final as (
 
     union all
 
-    select 
+    select
         transaction_id,
         transaction_date,
         cast(null as {{ dbt_utils.type_string() }}) as customer_id,

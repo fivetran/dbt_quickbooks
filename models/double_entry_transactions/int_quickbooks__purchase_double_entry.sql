@@ -12,8 +12,8 @@ purchase_lines as (
 ),
 
 items as (
-    select 
-        item.*, 
+    select
+        item.*,
         parent.expense_account_id as parent_expense_account_id
     from {{ref('stg_quickbooks__item')}} item
 
@@ -33,7 +33,7 @@ purchase_join as (
         purchases.customer_id,
         purchases.vendor_id
     from purchases
-    
+
     inner join purchase_lines
         on purchases.purchase_id = purchase_lines.purchase_id
 

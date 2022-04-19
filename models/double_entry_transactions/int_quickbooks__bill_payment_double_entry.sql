@@ -24,7 +24,7 @@ ap_accounts as (
     select
         account_id
     from accounts
-    
+
     where account_type = 'Accounts Payable'
         and is_active
 ),

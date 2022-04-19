@@ -34,7 +34,7 @@ final as (
         purchases.total_amount
     from purchases
 
-    inner join purchase_lines 
+    inner join purchase_lines
         on purchases.purchase_id = purchase_lines.purchase_id
 
     left join items

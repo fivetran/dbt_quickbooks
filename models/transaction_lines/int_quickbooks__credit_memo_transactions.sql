@@ -27,12 +27,12 @@ final as (
         credit_memo_lines.sales_item_quantity as item_quantity,
         credit_memo_lines.sales_item_unit_price as item_unit_price,
         case when credit_memo_lines.sales_item_account_id is null
-            then coalesce(items.income_account_id, items.asset_account_id, items.expense_account_id) 
+            then coalesce(items.income_account_id, items.asset_account_id, items.expense_account_id)
             else credit_memo_lines.sales_item_account_id
                 end as account_id,
         credit_memos.class_id,
         credit_memos.department_id,
-        credit_memos.customer_id, 
+        credit_memos.customer_id,
         cast(null as {{ dbt_utils.type_string() }}) as vendor_id,
         cast(null as {{ dbt_utils.type_string() }}) as billable_status,
         credit_memo_lines.description,

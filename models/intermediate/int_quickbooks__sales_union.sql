@@ -17,8 +17,8 @@ with sales_union as (
         {% if var('using_invoice', True) %}
         select *
         from {{ ref('int_quickbooks__invoice_transactions') }}
-        {% endif %}   
-        
+        {% endif %}
+
     {% endif %}
 
     {% if var('using_refund_receipt', True) %}
@@ -42,7 +42,7 @@ customers as (
 ),
 
 {% if var('using_department', True) %}
-departments as ( 
+departments as (
     select *
     from {{ ref('stg_quickbooks__department') }}
 ),
@@ -60,7 +60,7 @@ income_accounts as (
 ),
 
 final as (
-    select 
+    select
         'sales' as transaction_source,
         sales_union.transaction_id,
         sales_union.transaction_line_id,
