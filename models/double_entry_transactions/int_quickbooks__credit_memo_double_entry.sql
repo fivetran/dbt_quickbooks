@@ -50,8 +50,9 @@ credit_memo_join as (
         credit_memo_lines.amount,
         coalesce(credit_memo_lines.sales_item_account_id, items.income_account_id, items.expense_account_id) as account_id,
         credit_memos.customer_id,
-        coalesce(credit_memo_lines.sales_item_class_id, credit_memo_lines.discount_class_id, credit_memos.class_id) as class_id
-    
+        coalesce(credit_memo_lines.sales_item_class_id, credit_memo_lines.discount_class_id, credit_memos.class_id) as class_id,
+        credit_memos.department_id
+
     from credit_memos
 
     inner join credit_memo_lines
@@ -77,13 +78,14 @@ final as (
         amount * -1 as amount,
         account_id,
         class_id,
+        department_id,
         'credit' as transaction_type,
         'credit_memo' as transaction_source
     from credit_memo_join
 
     union all
 
-    select 
+    select
         transaction_id,
         source_relation,
         index,
@@ -93,6 +95,7 @@ final as (
         amount * -1 as amount,
         df_accounts.account_id,
         class_id,
+        department_id,
         'debit' as transaction_type,
         'credit_memo' as transaction_source
     from credit_memo_join

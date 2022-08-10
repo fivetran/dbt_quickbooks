@@ -15,8 +15,8 @@ purchase_lines as (
 
 items as (
 
-    select 
-        item.*, 
+    select
+        item.*,
         parent.expense_account_id as parent_expense_account_id
     from {{ ref('stg_quickbooks__item') }} item
 
@@ -38,9 +38,10 @@ purchase_join as (
         case when coalesce(purchases.credit, false) = true then 'credit' else 'debit' end as payed_to_transaction_type,
         purchases.customer_id,
         coalesce(purchase_lines.item_expense_class_id, purchase_lines.account_expense_class_id) as class_id,
-        purchases.vendor_id
+        purchases.vendor_id,
+        purchases.department_id
     from purchases
-    
+
     inner join purchase_lines
         on purchases.purchase_id = purchase_lines.purchase_id
         and purchases.source_relation = purchase_lines.source_relation
@@ -62,6 +63,7 @@ final as (
         amount,
         payed_from_account_id as account_id,
         class_id,
+        department_id,
         payed_from_transaction_type as transaction_type,
         'purchase' as transaction_source
     from purchase_join
@@ -78,6 +80,7 @@ final as (
         amount,
         payed_to_account_id as account_id,
         class_id,
+        department_id,
         payed_to_transaction_type as transaction_type,
         'purchase' as transaction_source
     from purchase_join
