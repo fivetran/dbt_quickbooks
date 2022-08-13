@@ -28,6 +28,7 @@ items as (
 sales_receipt_join as (
     select
         sales_receipts.sales_receipt_id as transaction_id,
+        sales_receipt_lines.index,
         sales_receipts.transaction_date,
         sales_receipt_lines.amount,
         sales_receipts.deposit_to_account_id as debit_to_account_id,
@@ -47,6 +48,7 @@ sales_receipt_join as (
 final as (
     select
         transaction_id,
+        index,
         transaction_date,
         customer_id,
         cast(null as {{ dbt_utils.type_string() }}) as vendor_id,
@@ -60,6 +62,7 @@ final as (
 
     select
         transaction_id,
+        index,
         transaction_date,
         customer_id,
         cast(null as {{ dbt_utils.type_string() }}) as vendor_id,

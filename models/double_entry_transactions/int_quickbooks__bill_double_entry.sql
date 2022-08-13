@@ -29,6 +29,7 @@ items as (
 bill_join as (
     select
         bills.bill_id as transaction_id, 
+        bill_lines.index,
         bills.transaction_date,
         bill_lines.amount,
         coalesce(bill_lines.account_expense_account_id, items.expense_account_id, items.parent_expense_account_id, items.expense_account_id, items.parent_income_account_id, items.income_account_id) as payed_to_account_id,
@@ -47,6 +48,7 @@ bill_join as (
 final as (
     select 
         transaction_id,
+        index,
         transaction_date,
         customer_id,
         vendor_id,
@@ -60,6 +62,7 @@ final as (
 
     select
         transaction_id,
+        index,
         transaction_date,
         customer_id,
         vendor_id,

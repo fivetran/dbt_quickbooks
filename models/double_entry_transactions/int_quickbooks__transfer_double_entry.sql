@@ -23,6 +23,7 @@ transfer_body as (
 final as (
     select 
         transaction_id,
+        row_number() over(partition by transaction_id order by transaction_date) - 1 as index,
         transaction_date,
         cast(null as {{ dbt_utils.type_string() }}) as customer_id,
         cast(null as {{ dbt_utils.type_string() }}) as vendor_id,
@@ -36,6 +37,7 @@ final as (
 
     select 
         transaction_id,
+        row_number() over(partition by transaction_id order by transaction_date) - 1 as index,
         transaction_date,
         cast(null as {{ dbt_utils.type_string() }}) as customer_id,
         cast(null as {{ dbt_utils.type_string() }}) as vendor_id,

@@ -28,6 +28,7 @@ items as (
 vendor_credit_join as (
     select
         vendor_credits.vendor_credit_id as transaction_id,
+        vendor_credit_lines.index,
         vendor_credits.transaction_date,
         vendor_credit_lines.amount,
         vendor_credits.payable_account_id as debit_to_account_id,
@@ -46,6 +47,7 @@ vendor_credit_join as (
 final as (
     select 
         transaction_id,
+        index,
         transaction_date,
         customer_id,
         vendor_id,
@@ -59,6 +61,7 @@ final as (
 
     select 
         transaction_id,
+        index,
         transaction_date,
         customer_id,
         vendor_id,

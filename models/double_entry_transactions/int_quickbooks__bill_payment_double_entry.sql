@@ -32,12 +32,16 @@ ap_accounts as (
 bill_payment_join as (
     select
         bill_payments.bill_payment_id as transaction_id,
+        bill_payment_lines.index,
         bill_payments.transaction_date,
-        bill_payments.total_amount as amount,
+        bill_payment_lines.net_amount as amount,
         coalesce(bill_payments.credit_card_account_id,bill_payments.check_bank_account_id) as payment_account_id,
         ap_accounts.account_id,
         bill_payments.vendor_id
     from bill_payments
+
+    inner join bill_payment_lines 
+        on bill_payments.bill_payment_id = bill_payment_lines.bill_payment_id   
 
     cross join ap_accounts
 
@@ -46,6 +50,7 @@ bill_payment_join as (
 final as (
     select
         transaction_id,
+        index,
         transaction_date,
         cast(null as {{ dbt_utils.type_string() }}) as customer_id,
         vendor_id,
@@ -59,6 +64,7 @@ final as (
 
     select
         transaction_id,
+        index,
         transaction_date,
         cast(null as {{ dbt_utils.type_string() }}) as customer_id,
         vendor_id,
