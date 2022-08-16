@@ -42,5 +42,5 @@ integration_tests:
       role: "{{ env_var('CI_SNOWFLAKE_DBT_ROLE') }}"
       database: "{{ env_var('CI_SNOWFLAKE_DBT_DATABASE') }}"
       warehouse: "{{ env_var('CI_SNOWFLAKE_DBT_WAREHOUSE') }}"
-      schema: quickbooks_integration_tests
+      schema: quickbooks_integration_tests_update
       threads: 8
