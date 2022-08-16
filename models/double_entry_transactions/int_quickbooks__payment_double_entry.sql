@@ -32,15 +32,13 @@ ar_accounts as (
 payment_join as (
     select
         payments.payment_id as transaction_id,
-        payment_lines.index,
+        row_number() over(partition by payments.payment_id order by payments.transaction_date) - 1 as index,
         payments.transaction_date,
-        payment_lines.amount,
+        payments.total_amount as amount,
         payments.deposit_to_account_id,
         payments.receivable_account_id,
         payments.customer_id
     from payments
-
-    inner join payment_lines on payments.payment_id = payment_lines.payment_id
 ),
 
 final as (

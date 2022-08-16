@@ -8,7 +8,7 @@ require-dbt-version: [">=1.0.0", "<2.0.0"]
 models:
   quickbooks:
     +materialized: table
-    +schema: quickbooks_original
+    +schema: quickbooks_dev
     double_entry_transactions:
       +materialized: ephemeral
     transaction_lines:
