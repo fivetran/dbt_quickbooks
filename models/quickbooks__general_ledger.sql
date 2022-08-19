@@ -97,6 +97,7 @@ adjusted_gl as (
     select
         gl_union.transaction_id,
         index as transaction_index,
+        {{ dbt_utils.surrogate_key('gl_union.transaction_id', 'gl_union.index', 'accounts.name') }} as unique_id, 
         gl_union.transaction_date,
         gl_union.customer_id,
         gl_union.vendor_id,

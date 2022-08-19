@@ -18,8 +18,7 @@ models:
     tmp:
       +materialized: view
 
-vars:
-  quickbooks_schema: quickbooks_integration_tests
+vars: 
   quickbooks:
     using_purchase_order: True
     account:              "{{ ref('stg_quickbooks__account') }}"
