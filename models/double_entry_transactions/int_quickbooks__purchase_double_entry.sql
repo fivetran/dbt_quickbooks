@@ -24,6 +24,7 @@ items as (
 purchase_join as (
     select
         purchases.purchase_id as transaction_id,
+        purchase_lines.index,
         purchases.transaction_date,
         purchase_lines.amount,
         coalesce(purchase_lines.account_expense_account_id, items.parent_expense_account_id, items.expense_account_id) as payed_to_account_id,
@@ -44,6 +45,7 @@ purchase_join as (
 final as (
     select
         transaction_id,
+        index,
         transaction_date,
         customer_id,
         vendor_id,
@@ -57,6 +59,7 @@ final as (
 
     select
         transaction_id,
+        index,
         transaction_date,
         customer_id,
         vendor_id,

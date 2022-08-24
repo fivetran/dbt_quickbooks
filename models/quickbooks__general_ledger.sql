@@ -1,6 +1,7 @@
 with gl_union as (
     select
         transaction_id,
+        index,
         transaction_date,
         customer_id,
         vendor_id,
@@ -94,8 +95,8 @@ accounts as (
 
 adjusted_gl as (
     select
-        gl_union.transaction_id,
-        row_number() over(partition by gl_union.transaction_id order by gl_union.transaction_date) as transaction_index,
+        {{ dbt_utils.surrogate_key('gl_union.transaction_id', 'gl_union.index', 'accounts.name', ' gl_union.transaction_type') }} as unique_id,
+        gl_union.index as transaction_index,
         gl_union.transaction_date,
         gl_union.customer_id,
         gl_union.vendor_id,

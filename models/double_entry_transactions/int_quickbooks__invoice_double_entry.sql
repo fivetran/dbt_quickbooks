@@ -57,8 +57,7 @@ income_accounts as (
 
 bundle_income_accounts as (
     select distinct
-        income_accounts.account_id,
-        parent.income_account_id as parent_income_account_id,
+        coalesce(parent.income_account_id, income_accounts.account_id) as account_id,
         bundle_items.bundle_id
     from items 
 
@@ -83,6 +82,7 @@ ar_accounts as (
 invoice_join as (
     select
         invoices.invoice_id as transaction_id,
+        invoice_lines.index, 
         invoices.transaction_date as transaction_date,
         case when invoices.total_amount != 0
             then invoice_lines.amount
@@ -90,7 +90,7 @@ invoice_join as (
                 end as amount,
 
         {% if var('using_invoice_bundle', True) %}
-        coalesce(invoice_lines.account_id, items.parent_income_account_id, items.income_account_id, bundle_income_accounts.parent_income_account_id, bundle_income_accounts.account_id) as account_id,
+        coalesce(invoice_lines.account_id, items.parent_income_account_id, items.income_account_id, bundle_income_accounts.account_id) as account_id,
 
         {% else %}
         coalesce(invoice_lines.account_id, items.income_account_id) as account_id,
@@ -121,6 +121,7 @@ invoice_join as (
 final as (
     select
         transaction_id,
+        index,
         transaction_date,
         customer_id,
         cast(null as {{ dbt_utils.type_string() }}) as vendor_id,
@@ -134,6 +135,7 @@ final as (
 
     select
         transaction_id,
+        index,
         transaction_date,
         customer_id,
         cast(null as {{ dbt_utils.type_string() }}) as vendor_id,

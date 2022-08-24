@@ -1,3 +1,8 @@
+# dbt_quickbooks v0.5.1
+## Bug Fixes 🐛🪛
+- Created indices for `double_entry_transactions` models. Used row_number functions for `payment`, `bill_payment` and `transfer` models. ([#41](https://github.com/fivetran/dbt_quickbooks/pull/41))
+- Removed transaction index on final `quickbooks__general_ledger` model, replaced by the newer indices in the sub-ledgers. ([#41](https://github.com/fivetran/dbt_quickbooks/pull/41))
+- Adjusted the `bundle_income_accounts` cte within the `int_quickbooks__invoice_double_entry` models to coalesce the parent and sub account id. This correctly removes any duplicate records caused from this cte in a downstream join. ([#42](https://github.com/fivetran/dbt_quickbooks/pull/42))
 # dbt_quickbooks v0.5.0
 ## 🚨 Breaking Changes 🚨
 - It was discovered that IDs from the source tables can sometimes be strings. The previous build of the package interpreted all IDs as integers. To ensure the package operates as intended, the package has been updated to cast all IDs to the string datatype. If you were leveraging the end models in downstream analysis, this change could break your join conditions. Be sure to be aware of any join conditions you may have downstream before upgrading your QuickBooks package. (#36)[https://github.com/fivetran/dbt_quickbooks/pull/36]

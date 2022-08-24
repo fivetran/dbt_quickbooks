@@ -37,6 +37,7 @@ df_accounts as (
 credit_memo_join as (
     select
         credit_memos.credit_memo_id as transaction_id,
+        credit_memo_lines.index,
         credit_memos.transaction_date,
         credit_memo_lines.amount,
         coalesce(credit_memo_lines.sales_item_account_id, items.income_account_id, items.expense_account_id) as account_id,
@@ -55,6 +56,7 @@ credit_memo_join as (
 final as (
     select
         transaction_id,
+        index,
         transaction_date,
         customer_id,
         cast(null as {{ dbt_utils.type_string() }}) as vendor_id,
@@ -68,6 +70,7 @@ final as (
 
     select 
         transaction_id,
+        index,
         transaction_date,
         customer_id,
         cast(null as {{ dbt_utils.type_string() }}) as vendor_id,

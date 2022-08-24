@@ -33,6 +33,7 @@ uf_accounts as (
 deposit_join as (
     select
         deposits.deposit_id as transaction_id,
+        deposit_lines.index,
         deposits.transaction_date,
         deposit_lines.amount,
         deposits.account_id as deposit_to_acct_id,
@@ -50,6 +51,7 @@ deposit_join as (
 final as (
     select
         transaction_id,
+        index,
         transaction_date,
         customer_id,
         cast(null as {{ dbt_utils.type_string() }}) as vendor_id,
@@ -63,6 +65,7 @@ final as (
 
     select
         transaction_id,
+        index,
         transaction_date,
         customer_id,
         cast(null as {{ dbt_utils.type_string() }}) as vendor_id,

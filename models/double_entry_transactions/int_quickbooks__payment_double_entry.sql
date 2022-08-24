@@ -32,18 +32,19 @@ ar_accounts as (
 payment_join as (
     select
         payments.payment_id as transaction_id,
+        row_number() over(partition by payments.payment_id order by payments.transaction_date) - 1 as index,
         payments.transaction_date,
         payments.total_amount as amount,
         payments.deposit_to_account_id,
         payments.receivable_account_id,
         payments.customer_id
     from payments
-
 ),
 
 final as (
     select
         transaction_id,
+        index,
         transaction_date,
         customer_id,
         cast(null as {{ dbt_utils.type_string() }}) as vendor_id,
@@ -57,6 +58,7 @@ final as (
 
     select
         transaction_id,
+        index,
         transaction_date,
         customer_id,
         cast(null as {{ dbt_utils.type_string() }}) as vendor_id,

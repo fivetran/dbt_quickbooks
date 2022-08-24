@@ -18,6 +18,7 @@ journal_entry_lines as (
 final as (
     select
         journal_entries.journal_entry_id as transaction_id,
+        journal_entry_lines.index,
         journal_entries.transaction_date,
         journal_entry_lines.customer_id,
         journal_entry_lines.vendor_id,

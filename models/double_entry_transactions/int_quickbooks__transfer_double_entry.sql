@@ -13,6 +13,7 @@ with transfers as (
 transfer_body as (
     select
         transfer_id as transaction_id,
+        row_number() over(partition by transfer_id order by transaction_date) - 1 as index,
         transaction_date,
         amount,
         from_account_id as credit_to_account_id,
@@ -23,6 +24,7 @@ transfer_body as (
 final as (
     select 
         transaction_id,
+        index,
         transaction_date,
         cast(null as {{ dbt_utils.type_string() }}) as customer_id,
         cast(null as {{ dbt_utils.type_string() }}) as vendor_id,
@@ -36,6 +38,7 @@ final as (
 
     select 
         transaction_id,
+        index,
         transaction_date,
         cast(null as {{ dbt_utils.type_string() }}) as customer_id,
         cast(null as {{ dbt_utils.type_string() }}) as vendor_id,
