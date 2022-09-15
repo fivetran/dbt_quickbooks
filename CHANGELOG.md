@@ -1,3 +1,6 @@
+# dbt_quickbooks v0.5.2
+## Bug Fixes
+- Within the `v0.5.1` release, the `transaction_id` field was erroneously removed from the `quickbooks__general_ledger` model. This field has since been added back.
 # dbt_quickbooks v0.5.1
 ## Bug Fixes 🐛🪛
 - Created indices for `double_entry_transactions` models. Used row_number functions for `payment`, `bill_payment` and `transfer` models. ([#41](https://github.com/fivetran/dbt_quickbooks/pull/41))
