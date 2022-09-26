@@ -32,6 +32,7 @@ df_accounts as (
 
     where account_type = 'Accounts Receivable'
         and is_active
+        and not is_sub_account
 ),
 
 credit_memo_join as (

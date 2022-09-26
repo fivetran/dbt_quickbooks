@@ -28,6 +28,7 @@ uf_accounts as (
 
     where account_sub_type = 'UndepositedFunds'
         and is_active
+        and not is_sub_account
 ),
 
 deposit_join as (
