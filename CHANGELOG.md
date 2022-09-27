@@ -1,3 +1,7 @@
+# dbt_quickbooks_source v0.5.3
+## Features
+- Addition of the `credit_card_payment_txn` (enabled/disabled using the `using_credit_card_payment_txn` variable) source as well as the accompanying staging and intermediate models. This source includes all credit card payment transactions and will be used in downstream General Ledger generation to ensure accurate reporting of all transaction types.
+  >**Note**: the `credit_card_payment_txn` source and models are disabled by default. In order to enabled them, you will want to set the `using_credit_card_payment_txn` variable to `true` in your dbt_project.yml.
 # dbt_quickbooks v0.5.2
 ## Bug Fixes
 - Within the `v0.5.1` release, the `transaction_id` field was erroneously removed from the `quickbooks__general_ledger` model. This field has since been added back. ([#46](https://github.com/fivetran/dbt_quickbooks/pull/46))

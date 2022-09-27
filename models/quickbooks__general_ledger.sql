@@ -37,6 +37,13 @@ with gl_union as (
     from {{ref('int_quickbooks__credit_memo_double_entry')}}
     {% endif %}
 
+    {% if var('using_credit_card_payment_txn', False) %}
+    union all
+
+    select *
+    from {{ref('int_quickbooks__credit_card_pymt_double_entry')}}
+    {% endif %}
+
     {% if var('using_deposit', True) %}
     union all
 
