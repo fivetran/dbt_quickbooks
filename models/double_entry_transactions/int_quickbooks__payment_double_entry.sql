@@ -27,6 +27,7 @@ ar_accounts as (
 
     where account_type = 'Accounts Receivable'
         and is_active
+        and not is_sub_account
 ),
 
 payment_join as (

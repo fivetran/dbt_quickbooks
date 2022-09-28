@@ -1,5 +1,5 @@
 name: 'quickbooks_integration_tests'
-version: '0.5.2'
+version: '0.5.3'
 profile: 'integration_tests'
 config-version: 2
 
@@ -18,46 +18,8 @@ models:
     tmp:
       +materialized: view
 
-vars: 
-  quickbooks:
-    using_purchase_order: True
-    account:              "{{ ref('stg_quickbooks__account') }}"
-    address:              "{{ ref('stg_quickbooks__address') }}"
-    bill_line:            "{{ ref('stg_quickbooks__bill_line') }}"
-    bill_linked_txn:      "{{ ref('stg_quickbooks__bill_linked_txn') }}"
-    bill_payment_line:    "{{ ref('stg_quickbooks__bill_payment_line') }}"
-    bill_payment:         "{{ ref('stg_quickbooks__bill_payment') }}"
-    bill:                 "{{ ref('stg_quickbooks__bill') }}"
-    bundle_item:          "{{ ref('stg_quickbooks__bundle_item') }}"
-    bundle:               "{{ ref('stg_quickbooks__bundle') }}"
-    credit_memo_line:     "{{ ref('stg_quickbooks__credit_memo_line') }}"
-    credit_memo:          "{{ ref('stg_quickbooks__credit_memo') }}"
-    customer:             "{{ ref('stg_quickbooks__customer') }}"
-    department:           "{{ ref('stg_quickbooks__department') }}"
-    deposit_line:         "{{ ref('stg_quickbooks__deposit_line') }}"
-    deposit:              "{{ ref('stg_quickbooks__deposit') }}"
-    estimate:             "{{ ref('stg_quickbooks__estimate') }}"
-    estimate_line:        "{{ ref('stg_quickbooks__estimate_line') }}"
-    invoice_line:         "{{ ref('stg_quickbooks__invoice_line') }}"
-    invoice_line_bundle:  "{{ ref('stg_quickbooks__invoice_line_bundle') }}"
-    invoice_linked_txn:   "{{ ref('stg_quickbooks__invoice_linked_txn') }}"
-    invoice:              "{{ ref('stg_quickbooks__invoice') }}"
-    item:                 "{{ ref('stg_quickbooks__item') }}"
-    journal_entry_line:   "{{ ref('stg_quickbooks__journal_entry_line') }}"
-    journal_entry:        "{{ ref('stg_quickbooks__journal_entry') }}"
-    payment_line:         "{{ ref('stg_quickbooks__payment_line') }}"
-    payment:              "{{ ref('stg_quickbooks__payment') }}"
-    purchase_line:        "{{ ref('stg_quickbooks__purchase_line') }}"
-    purchase:             "{{ ref('stg_quickbooks__purchase') }}"
-    refund_receipt_line:  "{{ ref('stg_quickbooks__refund_receipt_line') }}"
-    refund_receipt:       "{{ ref('stg_quickbooks__refund_receipt') }}"
-    sales_receipt_line:   "{{ ref('stg_quickbooks__sales_receipt_line') }}"
-    sales_receipt:        "{{ ref('stg_quickbooks__sales_receipt') }}"
-    transfer:             "{{ ref('stg_quickbooks__transfer') }}"
-    vendor_credit_line:   "{{ ref('stg_quickbooks__vendor_credit_line') }}"
-    vendor_credit:        "{{ ref('stg_quickbooks__vendor_credit') }}"
-    vendor:               "{{ ref('stg_quickbooks__vendor') }}"
-
+vars:
+  quickbooks_schema: quickbooks_source_integrations_tests
   quickbooks_source:
     account:              "{{ ref('account_data') }}"
     address:              "{{ ref('address_data') }}"
