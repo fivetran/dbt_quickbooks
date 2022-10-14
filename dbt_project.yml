@@ -1,10 +1,7 @@
 config-version: 2
-
 name: 'quickbooks'
-version: '0.5.3'
-
-require-dbt-version: [">=1.0.0", "<2.0.0"]
-
+version: '0.6.0'
+require-dbt-version: [">=1.2.0", "<2.0.0"]
 models:
   quickbooks:
     +materialized: table
@@ -15,7 +12,6 @@ models:
       +materialized: ephemeral
     intermediate:
       +materialized: ephemeral
-
 vars:
   quickbooks:
     account: "{{ ref('stg_quickbooks__account') }}"
@@ -54,8 +50,6 @@ vars:
     vendor_credit_line: "{{ ref('stg_quickbooks__vendor_credit_line') }}"
     vendor_credit: "{{ ref('stg_quickbooks__vendor_credit') }}"
     vendor: "{{ ref('stg_quickbooks__vendor') }}"
-
-    #Variables if your company utilizes the below parent and child transactional tables.
     using_address: true
     using_bill: true
     using_credit_memo: true
@@ -70,9 +64,7 @@ vars:
     using_transfer: true
     using_vendor_credit: true
     using_sales_receipt: true
-
 analysis-paths: ["analysis"]
-
 clean-targets:
 - target
 - dbt_modules
