@@ -47,7 +47,7 @@ with spine as (
     {{ dbt_utils.date_spine(
         datepart="month",
         start_date=first_date_adjust,
-        end_date=dbt_utils.dateadd("month", 1, last_date_adjust)
+        end_date=dbt.dateadd("month", 1, last_date_adjust)
         )
     }}
 ),
@@ -59,10 +59,10 @@ general_ledger as (
 
 date_spine as (
     select
-        cast({{ dbt_utils.date_trunc("year", "date_month") }} as date) as date_year,
-        cast({{ dbt_utils.date_trunc("month", "date_month") }} as date) as period_first_day,
-        {{ dbt_utils.last_day("date_month", "month") }} as period_last_day,
-        row_number() over (order by cast({{ dbt_utils.date_trunc("month", "date_month") }} as date)) as period_index
+        cast({{ dbt.date_trunc("year", "date_month") }} as date) as date_year,
+        cast({{ dbt.date_trunc("month", "date_month") }} as date) as period_first_day,
+        {{ dbt.last_day("date_month", "month") }} as period_last_day,
+        row_number() over (order by cast({{ dbt.date_trunc("month", "date_month") }} as date)) as period_index
     from spine
 ),
 
