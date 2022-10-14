@@ -11,7 +11,7 @@ with credit_card_payments as (
     where is_most_recent_record
 ),
 
-credit_card_payment_join as (
+credit_card_payment_prep as (
     select
         credit_card_payments.credit_card_payment_id as transaction_id,
         row_number() over (partition by credit_card_payments.credit_card_payment_id order by credit_card_payments.transaction_date) - 1 as index,
@@ -35,7 +35,7 @@ final as (
         credit_card_account_id as account_id,
         'credit' as transaction_type,
         'credit card payment' as transaction_source
-    from credit_card_payment_join
+    from credit_card_payment_prep
 
     union all
 
@@ -49,7 +49,7 @@ final as (
         bank_account_id,
         'debit' as transaction_type,
         'credit card payment' as transaction_source
-    from credit_card_payment_join
+    from credit_card_payment_prep
 )
 
 select *
