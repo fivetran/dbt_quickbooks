@@ -1,5 +1,7 @@
 name: 'quickbooks_integration_tests'
+
 version: '0.6.0'
+
 profile: 'integration_tests'
 config-version: 2
 models:
@@ -15,6 +17,7 @@ models:
     +materialized: table
     tmp:
       +materialized: view
+      
 vars:
   quickbooks_schema: quickbooks_source_integrations_tests
   quickbooks_source:
@@ -54,6 +57,7 @@ vars:
     vendor_credit_line: "{{ ref('vendor_credit_line_data') }}"
     vendor_credit: "{{ ref('vendor_credit_data') }}"
     vendor: "{{ ref('vendor_data') }}"
+
 seeds:
   +quote_columns: "{{ true if target.type == 'redshift' else false }}"
   quickbooks_integration_tests:

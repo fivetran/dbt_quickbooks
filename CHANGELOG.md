@@ -1,9 +1,18 @@
+# dbt_quickbooks_source v0.6.0
+## Features
+- Addition of the `credit_card_payment_txn` (enabled/disabled using the `using_credit_card_payment_txn` variable) source as well as the accompanying staging and intermediate models. This source includes all credit card payment transactions and will be used in downstream General Ledger generation to ensure accurate reporting of all transaction types. ([#50](https://github.com/fivetran/dbt_quickbooks/pull/50))
+  >**Note**: the `credit_card_payment_txn` source and models are disabled by default. In order to enabled them, you will want to set the `using_credit_card_payment_txn` variable to `true` in your dbt_project.yml.
+
+## Contributors
+- [@mikerenderco](https://github.com/mikerenderco) ([#50](https://github.com/fivetran/dbt_quickbooks/pull/50))
+
 # dbt_quickbooks v0.5.3
 ## Bug Fixes
 - The `int_quickbooks__bill_payment_double_entry`, `int_quickbooks__credit_memo_double_entry`, `int_quickbooks__deposit_double_entry`, and `int_quickbooks__payment_double_entry` models perform a cross join on the `stg_quickbooks__accounts` model for the respective debit/credit account. However, if this cross join includes more than one record, it will result in duplicates. An additional filter to remove sub accounts has been added to ensure the output of the models do not have duplicates. ([#49](https://github.com/fivetran/dbt_quickbooks/pull/49))
 
 ## Under the Hood
 - A GitHub workflow has been added to ensure the dbt docs are regenerated before each merge to the `main` release branch. ([#49](https://github.com/fivetran/dbt_quickbooks/pull/49))
+
 # dbt_quickbooks v0.5.2
 ## Bug Fixes
 - Within the `v0.5.1` release, the `transaction_id` field was erroneously removed from the `quickbooks__general_ledger` model. This field has since been added back. ([#46](https://github.com/fivetran/dbt_quickbooks/pull/46))
