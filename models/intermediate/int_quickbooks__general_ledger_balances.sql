@@ -20,8 +20,8 @@ gl_period_balance as (
         account_sub_type,
         financial_statement_helper,
         account_class,
-        cast({{ dbt_utils.date_trunc("year", "transaction_date") }} as date) as date_year,
-        cast({{ dbt_utils.date_trunc("month", "transaction_date") }} as date) as date_month,
+        cast({{ dbt.date_trunc("year", "transaction_date") }} as date) as date_year,
+        cast({{ dbt.date_trunc("month", "transaction_date") }} as date) as date_month,
         sum(adjusted_amount) as period_balance
     from general_ledger
 

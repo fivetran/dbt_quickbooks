@@ -27,6 +27,7 @@ ap_accounts as (
     
     where account_type = 'Accounts Payable'
         and is_active
+        and not is_sub_account
 ),
 
 bill_payment_join as (
@@ -49,7 +50,7 @@ final as (
         transaction_id,
         index,
         transaction_date,
-        cast(null as {{ dbt_utils.type_string() }}) as customer_id,
+        cast(null as {{ dbt.type_string() }}) as customer_id,
         vendor_id,
         amount,
         payment_account_id as account_id,
@@ -63,7 +64,7 @@ final as (
         transaction_id,
         index,
         transaction_date,
-        cast(null as {{ dbt_utils.type_string() }}) as customer_id,
+        cast(null as {{ dbt.type_string() }}) as customer_id,
         vendor_id,
         amount,
         account_id,

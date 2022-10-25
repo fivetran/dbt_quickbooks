@@ -27,6 +27,7 @@ ar_accounts as (
 
     where account_type = 'Accounts Receivable'
         and is_active
+        and not is_sub_account
 ),
 
 payment_join as (
@@ -47,7 +48,7 @@ final as (
         index,
         transaction_date,
         customer_id,
-        cast(null as {{ dbt_utils.type_string() }}) as vendor_id,
+        cast(null as {{ dbt.type_string() }}) as vendor_id,
         amount,
         deposit_to_account_id as account_id,
         'debit' as transaction_type,
@@ -61,7 +62,7 @@ final as (
         index,
         transaction_date,
         customer_id,
-        cast(null as {{ dbt_utils.type_string() }}) as vendor_id,
+        cast(null as {{ dbt.type_string() }}) as vendor_id,
         amount,
         coalesce(receivable_account_id, ar_accounts.account_id) as account_id,
         'credit' as transaction_type,

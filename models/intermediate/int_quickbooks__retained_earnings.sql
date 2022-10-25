@@ -35,19 +35,19 @@ net_income_loss as (
 
 retained_earnings_starter as (
     select
-        cast('9999' as {{ dbt_utils.type_string() }}) as account_id,
-        cast('9999-00' as {{ dbt_utils.type_string() }}) as account_number,
-        cast('Net Income / Retained Earnings Adjustment' as {{ dbt_utils.type_string() }}) as account_name,
+        cast('9999' as {{ dbt.type_string() }}) as account_id,
+        cast('9999-00' as {{ dbt.type_string() }}) as account_number,
+        cast('Net Income / Retained Earnings Adjustment' as {{ dbt.type_string() }}) as account_name,
         false as is_sub_account,
-        cast(null as {{ dbt_utils.type_string() }}) as parent_account_number,
-        cast(null as {{ dbt_utils.type_string() }}) as parent_account_name,
-        cast('Equity' as {{ dbt_utils.type_string() }}) as account_type,
-        cast('RetainedEarnings' as {{ dbt_utils.type_string() }})as account_sub_type,
-        cast('Equity' as {{ dbt_utils.type_string() }}) as account_class,
-        cast('balance_sheet' as {{ dbt_utils.type_string() }}) as financial_statement_helper,
-        cast({{ dbt_utils.date_trunc("year", "period_first_day") }} as date) as date_year,
+        cast(null as {{ dbt.type_string() }}) as parent_account_number,
+        cast(null as {{ dbt.type_string() }}) as parent_account_name,
+        cast('Equity' as {{ dbt.type_string() }}) as account_type,
+        cast('RetainedEarnings' as {{ dbt.type_string() }})as account_sub_type,
+        cast('Equity' as {{ dbt.type_string() }}) as account_class,
+        cast('balance_sheet' as {{ dbt.type_string() }}) as financial_statement_helper,
+        cast({{ dbt.date_trunc("year", "period_first_day") }} as date) as date_year,
         cast(period_first_day as date) as period_first_day,
-        {{ dbt_utils.last_day("period_first_day", "month") }} as period_last_day,
+        {{ dbt.last_day("period_first_day", "month") }} as period_last_day,
         (revenue_net_change - expense_net_change) as period_net_change
     from net_income_loss
 ),
