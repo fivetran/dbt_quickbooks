@@ -1,4 +1,18 @@
-[![Apache License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) 
+<p align="center">
+    <a alt="License"
+        href="https://github.com/fivetran/dbt_quickbooks/blob/main/LICENSE">
+        <img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" /></a>
+    <a alt="Fivetran-Release"
+        href="https://fivetran.com/docs/getting-started/core-concepts#releasephases">
+        <img src="https://img.shields.io/badge/Fivetran Release Phase-_Beta-orange.svg" /></a>
+    <a alt="dbt-core">
+        <img src="https://img.shields.io/badge/dbt_Core™_version->=1.3.0_,<2.0.0-orange.svg" /></a>
+    <a alt="Maintained?">
+        <img src="https://img.shields.io/badge/Maintained%3F-yes-green.svg" /></a>
+    <a alt="PRs">
+        <img src="https://img.shields.io/badge/Contributions-welcome-blueviolet" /></a>
+</p>
+
 # QuickBooks ([docs](https://dbt-quickbooks.netlify.app/))
 
 This package models QuickBooks data from [Fivetran's connector](https://fivetran.com/docs/applications/quickbooks). It uses data in the format described by [this ERD](https://fivetran.com/docs/applications/quickbooks#schemainformation).
@@ -34,7 +48,7 @@ Include in your `packages.yml`
 ```yaml
 packages:
   - package: fivetran/quickbooks
-    version: [">=0.5.0", "<0.6.0"]
+    version: [">=0.6.0", "<0.7.0"]
 ```
 
 ## Configuration
@@ -68,7 +82,7 @@ models:
 ```
 ### Disabling models
 
-This package takes into consideration that not every QuickBooks account utilizes the same transactional tables, and allows you to disable the corresponding functionality. By default, most variables' values are assumed to be `true` (with exception of purchase orders). Add variables for only the tables you want to disable or enable respectively:
+This package takes into consideration that not every QuickBooks account utilizes the same transactional tables, and allows you to disable the corresponding functionality. By default, most variables' values are assumed to be `true` (with exception of purchase orders and credit card payment transactions). Add variables for only the tables you want to disable or enable respectively:
 
 ```yml
 # dbt_project.yml
@@ -90,6 +104,7 @@ vars:
   using_vendor_credit:  false         #disable if you don't have vendor credits in Quickbooks
   using_sales_receipt:  false         #disable if you don't have sales receipts in QuickBooks
   using_purchase_order: true          #enable if you want to include purchase orders in your staging models
+  using_credit_card_payment_txn: true #enable if you want to include credit card payment transactions in your staging models
 ```
 
 ## Analysis

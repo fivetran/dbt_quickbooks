@@ -19,7 +19,7 @@ models:
       +materialized: view
       
 vars:
-  quickbooks_schema: quickbooks_source_integrations_tests
+  quickbooks_schema: quickbooks_integrations_tests
   quickbooks_source:
     account: "{{ ref('account_data') }}"
     address: "{{ ref('address_data') }}"

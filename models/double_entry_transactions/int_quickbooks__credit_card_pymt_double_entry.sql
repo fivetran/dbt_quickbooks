@@ -19,8 +19,8 @@ credit_card_payment_prep as (
         credit_card_payments.amount,
         credit_card_payments.bank_account_id,
         credit_card_payments.credit_card_account_id,
-        cast(null as {{ dbt_utils.type_string() }}) as customer_id,
-        cast(null as {{ dbt_utils.type_string() }}) as vendor_id
+        cast(null as {{ dbt.type_string() }}) as customer_id,
+        cast(null as {{ dbt.type_string() }}) as vendor_id
     from credit_card_payments
 ),
 
