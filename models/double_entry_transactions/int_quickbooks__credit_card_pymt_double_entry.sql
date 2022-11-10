@@ -32,7 +32,7 @@ final as (
         customer_id,
         vendor_id,
         amount,
-        credit_card_account_id as account_id,
+        bank_account_id as account_id,
         'credit' as transaction_type,
         'credit card payment' as transaction_source
     from credit_card_payment_prep
@@ -46,7 +46,7 @@ final as (
         customer_id,
         vendor_id,
         amount,
-        bank_account_id,
+        credit_card_account_id as account_id,
         'debit' as transaction_type,
         'credit card payment' as transaction_source
     from credit_card_payment_prep
