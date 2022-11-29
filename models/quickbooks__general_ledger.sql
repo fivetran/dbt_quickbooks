@@ -7,6 +7,7 @@ with gl_union as (
         vendor_id,
         amount,
         account_id,
+        class_id,
         transaction_type,
         transaction_source
     from {{ref('int_quickbooks__purchase_double_entry')}}
@@ -110,6 +111,7 @@ adjusted_gl as (
         gl_union.vendor_id,
         gl_union.amount,
         gl_union.account_id,
+        gl_union.class_id,
         accounts.account_number,
         accounts.name as account_name,
         accounts.is_sub_account,

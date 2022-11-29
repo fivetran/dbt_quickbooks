@@ -30,6 +30,7 @@ final as (
         cast(null as {{ dbt.type_string() }}) as vendor_id,
         amount,
         credit_to_account_id as account_id,
+        cast(null as {{ dbt.type_string() }}) as class_id,
         'credit' as transaction_type,
         'transfer' as transaction_source
     from transfer_body
@@ -44,6 +45,7 @@ final as (
         cast(null as {{ dbt.type_string() }}) as vendor_id,
         amount,
         debit_to_account_id as account_id,
+        cast(null as {{ dbt.type_string() }}) as class_id,
         'debit' as transaction_type,
         'transfer' as transaction_source
     from transfer_body

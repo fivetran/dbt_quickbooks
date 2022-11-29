@@ -54,6 +54,7 @@ final as (
         vendor_id,
         amount,
         payment_account_id as account_id,
+        cast(null as {{ dbt.type_string() }}) as class_id,
         'credit' as transaction_type,
         'bill payment' as transaction_source
     from bill_payment_join
@@ -68,6 +69,7 @@ final as (
         vendor_id,
         amount,
         account_id,
+        cast(null as {{ dbt.type_string() }}) as class_id,
         'debit' as transaction_type,
         'bill payment' as transaction_source
     from bill_payment_join

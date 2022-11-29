@@ -33,7 +33,8 @@ refund_receipt_join as (
         refund_receipt_lines.amount,
         refund_receipts.deposit_to_account_id as credit_to_account_id,
         coalesce(refund_receipt_lines.discount_account_id, refund_receipt_lines.sales_item_account_id, items.parent_income_account_id, items.income_account_id) as debit_account_id,
-        refund_receipts.customer_id
+        refund_receipts.customer_id,
+        coalesce(refund_receipts.class_id, refund_receipt_lines.sales_item_class_id, refund_receipt_lines.discount_class_id) as class_id
     from refund_receipts
 
     inner join refund_receipt_lines
@@ -54,6 +55,7 @@ final as (
         cast(null as {{ dbt.type_string() }}) as vendor_id,
         amount,
         credit_to_account_id as account_id,
+        class_id,
         'credit' as transaction_type,
         'refund_receipt' as transaction_source
     from refund_receipt_join
@@ -68,6 +70,7 @@ final as (
         cast(null as {{ dbt.type_string() }}) as vendor_id,
         amount,
         debit_account_id as account_id,
+        class_id,
         'debit' as transaction_type,
         'refund_receipt' as transaction_source
     from refund_receipt_join

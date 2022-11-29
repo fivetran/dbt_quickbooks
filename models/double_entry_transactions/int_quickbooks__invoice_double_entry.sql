@@ -43,8 +43,7 @@ bundles as (
 ),
 
 bundle_items as (
-    select 
-        *
+    select *
     from {{ref('stg_quickbooks__bundle_item')}}
 ),
 
@@ -58,7 +57,8 @@ income_accounts as (
 bundle_income_accounts as (
     select distinct
         coalesce(parent.income_account_id, income_accounts.account_id) as account_id,
-        bundle_items.bundle_id
+        bundle_items.bundle_id,
+        bundle_items.class_id
     from items 
 
     left join items as parent
@@ -91,11 +91,17 @@ invoice_join as (
 
         {% if var('using_invoice_bundle', True) %}
         coalesce(invoice_lines.account_id, items.parent_income_account_id, items.income_account_id, bundle_income_accounts.account_id) as account_id,
-
         {% else %}
         coalesce(invoice_lines.account_id, items.income_account_id) as account_id,
-
         {% endif %}
+
+
+        {% if var('using_invoice_bundle', True) %}
+        coalesce(invoices.class_id, invoice_lines.sales_item_class_id, invoice_lines.discount_class_id, bundle_income_accounts.class_id) as class_id,
+        {% else %} 
+        coalesce(invoices.class_id, invoice_lines.sales_item_class_id, invoice_lines.discount_class_id) as class_id,
+        {% endif %}
+
         invoices.customer_id
 
     from invoices
@@ -127,6 +133,7 @@ final as (
         cast(null as {{ dbt.type_string() }}) as vendor_id,
         amount,
         account_id,
+        class_id,
         'credit' as transaction_type,
         'invoice' as transaction_source
     from invoice_join
@@ -141,6 +148,7 @@ final as (
         cast(null as {{ dbt.type_string() }}) as vendor_id,
         amount,
         ar_accounts.account_id,
+        class_id,
         'debit' as transaction_type,
         'invoice' as transaction_source
     from invoice_join

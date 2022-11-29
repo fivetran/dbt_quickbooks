@@ -24,6 +24,7 @@ final as (
         journal_entry_lines.vendor_id,
         journal_entry_lines.amount,
         journal_entry_lines.account_id,
+        class_id,
         lower(journal_entry_lines.posting_type) as transaction_type,
         'journal_entry' as transaction_source
     from journal_entries

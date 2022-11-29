@@ -42,7 +42,7 @@ retained_earnings_starter as (
         cast(null as {{ dbt.type_string() }}) as parent_account_number,
         cast(null as {{ dbt.type_string() }}) as parent_account_name,
         cast('Equity' as {{ dbt.type_string() }}) as account_type,
-        cast('RetainedEarnings' as {{ dbt.type_string() }})as account_sub_type,
+        cast('RetainedEarnings' as {{ dbt.type_string() }}) as account_sub_type,
         cast('Equity' as {{ dbt.type_string() }}) as account_class,
         cast('balance_sheet' as {{ dbt.type_string() }}) as financial_statement_helper,
         cast({{ dbt.date_trunc("year", "period_first_day") }} as date) as date_year,
