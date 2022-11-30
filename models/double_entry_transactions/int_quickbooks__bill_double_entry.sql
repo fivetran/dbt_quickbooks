@@ -20,9 +20,9 @@ items as (
         item.*, 
         parent.expense_account_id as parent_expense_account_id,
         parent.income_account_id as parent_income_account_id
-    from {{ref('stg_quickbooks__item')}} item
+    from {{ ref('stg_quickbooks__item') }} item
 
-    left join {{ref('stg_quickbooks__item')}} parent
+    left join {{ ref('stg_quickbooks__item') }} parent
         on item.parent_item_id = parent.item_id
 ),
 
@@ -35,7 +35,7 @@ bill_join as (
         coalesce(bill_lines.account_expense_account_id, items.expense_account_id, items.parent_expense_account_id, items.expense_account_id, items.parent_income_account_id, items.income_account_id) as payed_to_account_id,
         bills.payable_account_id,
         coalesce(bill_lines.account_expense_customer_id, bill_lines.item_expense_customer_id) as customer_id,
-        coalesce(bill_lines.account_expense_class_id, bill_lines.item_expense_class_id) as class_id,
+        coalesce(bill_lines.item_expense_class_id, bill_lines.account_expense_class_id) as class_id,
         bills.vendor_id
     from bills
 

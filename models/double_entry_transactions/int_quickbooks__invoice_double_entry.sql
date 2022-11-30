@@ -7,12 +7,12 @@ Table that creates a debit record to accounts receivable and a credit record to 
 
 with invoices as (
     select *
-    from {{ref('stg_quickbooks__invoice')}}
+    from {{ ref('stg_quickbooks__invoice') }}
 ),
 
 invoice_lines as (
     select *
-    from {{ref('stg_quickbooks__invoice_line')}}
+    from {{ ref('stg_quickbooks__invoice_line') }}
 ),
 
 items as (
@@ -32,6 +32,7 @@ accounts as (
 
 
 {% if var('using_invoice_bundle', True) %}
+
 invoice_bundles as (
     select *
     from {{ref('stg_quickbooks__invoice_line_bundle')}}
@@ -57,8 +58,8 @@ income_accounts as (
 bundle_income_accounts as (
     select distinct
         coalesce(parent.income_account_id, income_accounts.account_id) as account_id,
-        bundle_items.bundle_id,
-        bundle_items.class_id
+        bundle_items.bundle_id 
+
     from items 
 
     left join items as parent
@@ -95,12 +96,7 @@ invoice_join as (
         coalesce(invoice_lines.account_id, items.income_account_id) as account_id,
         {% endif %}
 
-
-        {% if var('using_invoice_bundle', True) %}
-        coalesce(invoices.class_id, invoice_lines.sales_item_class_id, invoice_lines.discount_class_id, bundle_income_accounts.class_id) as class_id,
-        {% else %} 
-        coalesce(invoices.class_id, invoice_lines.sales_item_class_id, invoice_lines.discount_class_id) as class_id,
-        {% endif %}
+        coalesce(invoice_lines.sales_item_class_id, invoice_lines.discount_class_id, invoices.class_id) as class_id,
 
         invoices.customer_id
 

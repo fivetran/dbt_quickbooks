@@ -7,7 +7,7 @@ Table that creates a debit record to the receiveing account and a credit record 
 
 with transfers as (
     select *
-    from {{ref('stg_quickbooks__transfer')}}
+    from {{ ref('stg_quickbooks__transfer') }}
 ),
 
 transfer_body as (

@@ -1,6 +1,6 @@
-# packages:
-#   - package: fivetran/quickbooks_source
-#     version: [">=0.6.0", "<0.7.0"]
+packages:
+  - package: fivetran/quickbooks_source
+    version: [">=0.6.0", "<0.7.0"]
  
-packages: 
-  - local: ../dbt_quickbooks_source
+# packages: 
+#   - local: ../dbt_quickbooks_source

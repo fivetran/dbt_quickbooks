@@ -7,12 +7,12 @@ Table that creates a debit record to either undeposited funds or a specified cas
 
 with payments as (
     select *
-    from {{ref('stg_quickbooks__payment')}}
+    from {{ ref('stg_quickbooks__payment') }}
 ),
 
 payment_lines as (
     select *
-    from {{ref('stg_quickbooks__payment_line')}}
+    from {{ ref('stg_quickbooks__payment_line') }}
 ),
 
 accounts as (

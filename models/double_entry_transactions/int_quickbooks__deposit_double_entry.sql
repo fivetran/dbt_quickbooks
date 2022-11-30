@@ -8,12 +8,12 @@ specific other account indicated in the deposit line.
 
 with deposits as (
     select *
-    from {{ref('stg_quickbooks__deposit')}}
+    from {{ ref('stg_quickbooks__deposit') }}
 ), 
 
 deposit_lines as (
     select *
-    from {{ref('stg_quickbooks__deposit_line')}}
+    from {{ ref('stg_quickbooks__deposit_line') }}
 ),
 
 accounts as (

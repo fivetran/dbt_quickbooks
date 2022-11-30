@@ -7,17 +7,17 @@ Table that creates a debit record to Discounts Refunds Given and a credit record
 
 with credit_memos as (
     select *
-    from {{ref('stg_quickbooks__credit_memo')}}
+    from {{ ref('stg_quickbooks__credit_memo') }}
 ),
 
 credit_memo_lines as (
     select *
-    from {{ref('stg_quickbooks__credit_memo_line')}}
+    from {{ ref('stg_quickbooks__credit_memo_line') }}
 ),
 
 items as (
     select *
-    from {{ref('stg_quickbooks__item')}}
+    from {{ ref('stg_quickbooks__item') }}
 ),
 
 accounts as (
@@ -43,7 +43,7 @@ credit_memo_join as (
         credit_memo_lines.amount,
         coalesce(credit_memo_lines.sales_item_account_id, items.income_account_id, items.expense_account_id) as account_id,
         credit_memos.customer_id,
-        coalesce(credit_memos.class_id, credit_memo_lines.sales_item_class_id, credit_memo_lines.discount_class_id) as class_id
+        coalesce(credit_memo_lines.sales_item_class_id, credit_memo_lines.discount_class_id, credit_memos.class_id) as class_id
     
     from credit_memos
 

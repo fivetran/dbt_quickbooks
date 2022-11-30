@@ -3,27 +3,27 @@
 
 with bills as (
     select *
-    from {{ref('stg_quickbooks__bill')}}
+    from {{ ref('stg_quickbooks__bill') }}
 ),
 
 bill_lines as (
     select *
-    from {{ref('stg_quickbooks__bill_line')}}
+    from {{ ref('stg_quickbooks__bill_line') }}
 ),
 
 bills_linked as (
     select *
-    from {{ref('stg_quickbooks__bill_linked_txn')}}
+    from {{ ref('stg_quickbooks__bill_linked_txn') }}
 ),
 
 bill_payments as (
     select *
-    from {{ref('stg_quickbooks__bill_payment')}}
+    from {{ ref('stg_quickbooks__bill_payment') }}
 ),
 
 bill_payment_lines as (
     select *
-    from {{ref('stg_quickbooks__bill_payment_line')}}
+    from {{ ref('stg_quickbooks__bill_payment_line') }}
 
     where bill_id is not null
 ),

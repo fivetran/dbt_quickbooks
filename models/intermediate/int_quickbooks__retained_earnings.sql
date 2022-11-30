@@ -1,6 +1,6 @@
 with general_ledger_balances as (
     select *
-    from {{ref('int_quickbooks__general_ledger_balances')}}
+    from {{ ref('int_quickbooks__general_ledger_balances') }}
 ),
 
 revenue_starter as (
@@ -44,6 +44,7 @@ retained_earnings_starter as (
         cast('Equity' as {{ dbt.type_string() }}) as account_type,
         cast('RetainedEarnings' as {{ dbt.type_string() }}) as account_sub_type,
         cast('Equity' as {{ dbt.type_string() }}) as account_class,
+        cast(null as {{ dbt.type_string() }}) as class_id,
         cast('balance_sheet' as {{ dbt.type_string() }}) as financial_statement_helper,
         cast({{ dbt.date_trunc("year", "period_first_day") }} as date) as date_year,
         cast(period_first_day as date) as period_first_day,
@@ -72,6 +73,7 @@ final as (
         account_type,
         account_sub_type,
         account_class,
+        class_id,
         financial_statement_helper,
         date_year,
         period_first_day,
