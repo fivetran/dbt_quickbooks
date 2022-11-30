@@ -81,13 +81,13 @@ ar_accounts as (
 
 invoice_lines_without_discount as (
     select
-	    invoices.invoice_id as transaction_id,
-	    invoice_lines.index,
-	    invoices.transaction_date as transaction_date,
-	    case when invoices.total_amount != 0
-	        then invoice_lines.amount
-	        else invoices.total_amount
-	            end as amount,
+        invoices.invoice_id as transaction_id,
+        invoice_lines.index,
+        invoices.transaction_date as transaction_date,
+        case when invoices.total_amount != 0
+            then invoice_lines.amount
+            else invoices.total_amount
+                end as amount,
 
         {% if var('using_invoice_bundle', True) %}
         coalesce(invoice_lines.account_id, items.parent_income_account_id, items.income_account_id, bundle_income_accounts.account_id) as account_id,
@@ -96,15 +96,15 @@ invoice_lines_without_discount as (
         coalesce(invoice_lines.account_id, items.income_account_id) as account_id,
 
         {% endif %}
-	    invoices.customer_id
+        invoices.customer_id
 
-	from invoices
+    from invoices
 
-	inner join invoice_lines
-	    on invoices.invoice_id = invoice_lines.invoice_id
+    inner join invoice_lines
+        on invoices.invoice_id = invoice_lines.invoice_id
 
-	left join items
-	    on coalesce(invoice_lines.sales_item_item_id, invoice_lines.item_id) = items.item_id
+    left join items
+        on coalesce(invoice_lines.sales_item_item_id, invoice_lines.item_id) = items.item_id
 
     {% if var('using_invoice_bundle', True) %}
     left join bundle_income_accounts
@@ -120,12 +120,12 @@ invoice_lines_without_discount as (
 
 invoice_discount as (
     select
-	    invoices.invoice_id as transaction_id,
-	    invoices.transaction_date as transaction_date,
-	    case when invoices.total_amount != 0
-	        then invoice_lines.amount
-	        else invoices.total_amount
-	            end as amount,
+        invoices.invoice_id as transaction_id,
+        invoices.transaction_date as transaction_date,
+        case when invoices.total_amount != 0
+            then invoice_lines.amount
+            else invoices.total_amount
+                end as amount,
 
 	    invoice_lines.discount_account_id as account_id,
 
@@ -134,12 +134,12 @@ invoice_discount as (
     from invoices
 
     inner join invoice_lines
-	    on invoices.invoice_id = invoice_lines.invoice_id
+        on invoices.invoice_id = invoice_lines.invoice_id
 
     left join items
-	    on coalesce(invoice_lines.sales_item_item_id, invoice_lines.item_id) = items.item_id
-    WHERE
-        invoice_lines.discount_account_id is not null
+        on coalesce(invoice_lines.sales_item_item_id, invoice_lines.item_id) = items.item_id
+
+    where invoice_lines.discount_account_id is not null
 ),
 
 ar_line_item as (
