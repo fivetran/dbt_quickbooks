@@ -8,12 +8,12 @@ specific other account indicated in the deposit line.
 
 with deposits as (
     select *
-    from {{ref('stg_quickbooks__deposit')}}
+    from {{ ref('stg_quickbooks__deposit') }}
 ), 
 
 deposit_lines as (
     select *
-    from {{ref('stg_quickbooks__deposit_line')}}
+    from {{ ref('stg_quickbooks__deposit_line') }}
 ),
 
 accounts as (
@@ -39,7 +39,9 @@ deposit_join as (
         deposit_lines.amount,
         deposits.account_id as deposit_to_acct_id,
         coalesce(deposit_lines.deposit_account_id, uf_accounts.account_id) as deposit_from_acct_id,
-        deposit_customer_id as customer_id
+        deposit_customer_id as customer_id,
+        deposit_lines.deposit_class_id as class_id
+
     from deposits
     
     inner join deposit_lines 
@@ -58,6 +60,7 @@ final as (
         cast(null as {{ dbt.type_string() }}) as vendor_id,
         amount,
         deposit_to_acct_id as account_id,
+        class_id,
         'debit' as transaction_type,
         'deposit' as transaction_source
     from deposit_join
@@ -72,6 +75,7 @@ final as (
         cast(null as {{ dbt.type_string() }}) as vendor_id,
         amount,
         deposit_from_acct_id as account_id,
+        class_id,
         'credit' as transaction_type,
         'deposit' as transaction_source
     from deposit_join

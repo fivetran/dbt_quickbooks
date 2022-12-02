@@ -7,12 +7,12 @@ Table that creates a debit record to either undeposited funds or a specified cas
 
 with payments as (
     select *
-    from {{ref('stg_quickbooks__payment')}}
+    from {{ ref('stg_quickbooks__payment') }}
 ),
 
 payment_lines as (
     select *
-    from {{ref('stg_quickbooks__payment_line')}}
+    from {{ ref('stg_quickbooks__payment_line') }}
 ),
 
 accounts as (
@@ -51,6 +51,7 @@ final as (
         cast(null as {{ dbt.type_string() }}) as vendor_id,
         amount,
         deposit_to_account_id as account_id,
+        cast(null as {{ dbt.type_string() }}) as class_id,
         'debit' as transaction_type,
         'payment' as transaction_source
     from payment_join
@@ -65,6 +66,7 @@ final as (
         cast(null as {{ dbt.type_string() }}) as vendor_id,
         amount,
         coalesce(receivable_account_id, ar_accounts.account_id) as account_id,
+        cast(null as {{ dbt.type_string() }}) as class_id,
         'credit' as transaction_type,
         'payment' as transaction_source
     from payment_join

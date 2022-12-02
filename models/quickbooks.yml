@@ -238,6 +238,8 @@ models:
         description: Monetary amount of the transaction line.
       - name: account_id
         description: Reference to the account associated with the transaction line.
+      - name: class_id
+        description: Reference to the class associated with the transaction line.
       - name: account_number
         description: The user defined account number associated with the account.
       - name: account_name
@@ -292,6 +294,8 @@ models:
         description: Sub type of the account associated with the period balances.
       - name: account_class
         description: Class of the account associated with the period balances.
+      - name: class_id
+        description: Reference to the transaction class that the period balances are associated.
       - name: financial_statement_helper
         description: Helper field identifying whether the account impacts the balances sheet or income statement.
       - name: date_year

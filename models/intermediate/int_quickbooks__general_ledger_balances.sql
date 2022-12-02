@@ -20,12 +20,13 @@ gl_period_balance as (
         account_sub_type,
         financial_statement_helper,
         account_class,
+        class_id,
         cast({{ dbt.date_trunc("year", "transaction_date") }} as date) as date_year,
         cast({{ dbt.date_trunc("month", "transaction_date") }} as date) as date_month,
         sum(adjusted_amount) as period_balance
     from general_ledger
 
-    {{ dbt_utils.group_by(12) }}
+    {{ dbt_utils.group_by(13) }}
 ),
 
 gl_cumulative_balance as (
@@ -50,6 +51,7 @@ gl_beginning_balance as (
         account_sub_type,
         financial_statement_helper,
         account_class,
+        class_id,
         date_year,
         date_month, 
         period_balance as period_net_change,
@@ -72,6 +74,7 @@ gl_patch as (
         coalesce(gl_beginning_balance.account_type, gl_accounting_periods.account_type) as account_type,
         coalesce(gl_beginning_balance.account_sub_type, gl_accounting_periods.account_sub_type) as account_sub_type,
         coalesce(gl_beginning_balance.account_class, gl_accounting_periods.account_class) as account_class,
+        coalesce(gl_beginning_balance.class_id, gl_accounting_periods.class_id) as class_id,
         coalesce(gl_beginning_balance.financial_statement_helper, gl_accounting_periods.financial_statement_helper) as financial_statement_helper,
         coalesce(gl_beginning_balance.date_year, gl_accounting_periods.date_year) as date_year,
         gl_accounting_periods.period_first_day,
@@ -118,6 +121,7 @@ final as (
         account_type,
         account_sub_type,
         account_class,
+        class_id,
         financial_statement_helper,
         date_year,
         period_first_day,

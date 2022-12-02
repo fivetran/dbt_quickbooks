@@ -7,12 +7,12 @@ Table that provides the debit and credit records of a journal entry transaction.
 
 with journal_entries as (
     select *
-    from {{ref('stg_quickbooks__journal_entry')}}
+    from {{ ref('stg_quickbooks__journal_entry') }}
 ),
 
 journal_entry_lines as (
     select *
-    from {{ref('stg_quickbooks__journal_entry_line')}}
+    from {{ ref('stg_quickbooks__journal_entry_line') }}
 ),
 
 final as (
@@ -24,6 +24,7 @@ final as (
         journal_entry_lines.vendor_id,
         journal_entry_lines.amount,
         journal_entry_lines.account_id,
+        class_id,
         lower(journal_entry_lines.posting_type) as transaction_type,
         'journal_entry' as transaction_source
     from journal_entries

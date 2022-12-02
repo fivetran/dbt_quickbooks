@@ -78,6 +78,7 @@ final as (
         general_ledger.account_sub_type,
         general_ledger.account_class,
         general_ledger.financial_statement_helper,
+        general_ledger.class_id,
         date_spine.date_year,
         date_spine.period_first_day,
         date_spine.period_last_day,

@@ -3,21 +3,21 @@ Table that creates a debit record to a specified expense account and a credit re
 */
 with purchases as (
     select *
-    from {{ref('stg_quickbooks__purchase')}}
+    from {{ ref('stg_quickbooks__purchase') }}
 ),
 
 purchase_lines as (
     select *
-    from {{ref('stg_quickbooks__purchase_line')}}
+    from {{ ref('stg_quickbooks__purchase_line') }}
 ),
 
 items as (
     select 
         item.*, 
         parent.expense_account_id as parent_expense_account_id
-    from {{ref('stg_quickbooks__item')}} item
+    from {{ ref('stg_quickbooks__item') }} item
 
-    left join {{ref('stg_quickbooks__item')}} parent
+    left join {{ ref('stg_quickbooks__item') }} parent
         on item.parent_item_id = parent.item_id
 ),
 
@@ -32,6 +32,7 @@ purchase_join as (
         case when coalesce(purchases.credit, false) = true then 'debit' else 'credit' end as payed_from_transaction_type,
         case when coalesce(purchases.credit, false) = true then 'credit' else 'debit' end as payed_to_transaction_type,
         purchases.customer_id,
+        coalesce(purchase_lines.item_expense_class_id, purchase_lines.account_expense_class_id) as class_id,
         purchases.vendor_id
     from purchases
     
@@ -51,6 +52,7 @@ final as (
         vendor_id,
         amount,
         payed_from_account_id as account_id,
+        class_id,
         payed_from_transaction_type as transaction_type,
         'purchase' as transaction_source
     from purchase_join
@@ -65,6 +67,7 @@ final as (
         vendor_id,
         amount,
         payed_to_account_id as account_id,
+        class_id,
         payed_to_transaction_type as transaction_type,
         'purchase' as transaction_source
     from purchase_join

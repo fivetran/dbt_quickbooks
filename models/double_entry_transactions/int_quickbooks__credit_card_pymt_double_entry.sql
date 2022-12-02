@@ -7,7 +7,7 @@ Table that creates a debit record to the associated bank account and a credit re
 
 with credit_card_payments as (
     select *
-    from {{ref('stg_quickbooks__credit_card_payment_txn')}}
+    from {{ ref('stg_quickbooks__credit_card_payment_txn') }}
     where is_most_recent_record
 ),
 
@@ -20,7 +20,8 @@ credit_card_payment_prep as (
         credit_card_payments.bank_account_id,
         credit_card_payments.credit_card_account_id,
         cast(null as {{ dbt.type_string() }}) as customer_id,
-        cast(null as {{ dbt.type_string() }}) as vendor_id
+        cast(null as {{ dbt.type_string() }}) as vendor_id,
+        cast(null as {{ dbt.type_string() }}) as class_id
     from credit_card_payments
 ),
 
@@ -33,6 +34,7 @@ final as (
         vendor_id,
         amount,
         credit_card_account_id as account_id,
+        class_id,
         'credit' as transaction_type,
         'credit card payment' as transaction_source
     from credit_card_payment_prep
@@ -46,7 +48,8 @@ final as (
         customer_id,
         vendor_id,
         amount,
-        bank_account_id,
+        bank_account_id as account_id,
+        class_id,   
         'debit' as transaction_type,
         'credit card payment' as transaction_source
     from credit_card_payment_prep
