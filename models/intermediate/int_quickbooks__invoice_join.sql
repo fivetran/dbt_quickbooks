@@ -70,7 +70,7 @@ invoice_link as (
 
 final as (
     select
-        cast('invoice' as {{ dbt.type_string() }}) as transaction_type,
+        cast('invoice' as {{ dbt_utils.type_string() }}) as transaction_type,
         invoice_link.invoice_id as transaction_id,
         invoice_link.doc_number,
         invoice_link.estimate_id,
@@ -87,8 +87,8 @@ final as (
         estimates.transaction_status as estimate_status,
 
         {% else %}
-        cast(null as {{ dbt.type_numeric() }}) as estimate_total_amount,
-        cast(null as {{ dbt.type_string() }}) as estimate_status,
+        cast(null as {{ dbt_utils.type_numeric() }}) as estimate_total_amount,
+        cast(null as {{ dbt_utils.type_string() }}) as estimate_status,
 
         {% endif %}
 

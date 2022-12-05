@@ -52,7 +52,7 @@ bill_link as (
 
 final as (
     select
-        cast('bill' as {{ dbt.type_string() }})  as transaction_type,
+        cast('bill' as {{ dbt_utils.type_string() }})  as transaction_type,
         bill_link.bill_id as transaction_id,
         bill_link.doc_number,
         bill_link.department_id,

@@ -66,6 +66,8 @@ vars:
     using_transfer: true
     using_vendor_credit: true
     using_sales_receipt: true
+    using_credit_card_payment_txn: false
+
 analysis-paths: ["analysis"]
 clean-targets:
 - target
