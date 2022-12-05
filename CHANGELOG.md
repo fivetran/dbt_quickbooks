@@ -5,6 +5,7 @@
 
 ## Contributors
 - [@mikerenderco](https://github.com/mikerenderco) ([#50](https://github.com/fivetran/dbt_quickbooks/pull/50))
+- [@mel-restori](https://github.com/mel-restori) ([#54](https://github.com/fivetran/dbt_quickbooks/pull/54))
 
 # dbt_quickbooks v0.5.3
 ## Bug Fixes
