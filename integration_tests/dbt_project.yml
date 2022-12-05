@@ -92,3 +92,4 @@ seeds:
 clean-targets:
 - target
 - dbt_modules
+- dbt_packages

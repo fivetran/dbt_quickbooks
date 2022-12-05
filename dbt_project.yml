@@ -27,6 +27,7 @@ vars:
     bundle: "{{ ref('stg_quickbooks__bundle') }}"
     credit_memo_line: "{{ ref('stg_quickbooks__credit_memo_line') }}"
     credit_memo: "{{ ref('stg_quickbooks__credit_memo') }}"
+    credit_card_payment_txn: "{{ ref('stg_quickbooks__credit_card_payment_txn') }}"
     customer: "{{ ref('stg_quickbooks__customer') }}"
     department: "{{ ref('stg_quickbooks__department') }}"
     deposit_line: "{{ ref('stg_quickbooks__deposit_line') }}"
