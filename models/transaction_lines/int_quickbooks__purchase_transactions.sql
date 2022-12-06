@@ -19,6 +19,7 @@ purchase_lines as (
 final as (
     select
         purchases.purchase_id as transaction_id,
+        purchases.source_relation,
         purchase_lines.index as transaction_line_id,
         purchases.doc_number,
         'purchase' as transaction_type,
@@ -36,9 +37,13 @@ final as (
 
     inner join purchase_lines 
         on purchases.purchase_id = purchase_lines.purchase_id
+    
+    left join purchase_lines purchase_lines_relation
+        on purchases.source_relation = purchase_lines_relation.source_relation
 
     left join items
         on purchase_lines.item_expense_item_id = items.item_id
+        and purchase_lines_relation.source_relation = items.source_relation
 )
 
 select *

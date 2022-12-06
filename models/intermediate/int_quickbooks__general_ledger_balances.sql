@@ -1,16 +1,20 @@
 with general_ledger as (
+
     select *
-    from {{ref('quickbooks__general_ledger')}}
+    from {{ ref('quickbooks__general_ledger') }}
 ),
 
 gl_accounting_periods as (
+
     select *
-    from {{ref('int_quickbooks__general_ledger_date_spine')}}
+    from {{ ref('int_quickbooks__general_ledger_date_spine') }}
 ),
 
 gl_period_balance as (
+
     select
         account_id,
+        source_relation,
         account_number,
         account_name,
         is_sub_account,
@@ -26,10 +30,11 @@ gl_period_balance as (
         sum(adjusted_amount) as period_balance
     from general_ledger
 
-    {{ dbt_utils.group_by(13) }}
+    {{ dbt_utils.group_by(14) }}
 ),
 
 gl_cumulative_balance as (
+
     select
         *,
         case when financial_statement_helper = 'balance_sheet'
@@ -40,8 +45,10 @@ gl_cumulative_balance as (
 ),
 
 gl_beginning_balance as (
+
     select
         account_id,
+        source_relation,
         account_number,
         account_name,
         is_sub_account,
@@ -66,6 +73,7 @@ gl_beginning_balance as (
 gl_patch as (
     select 
         coalesce(gl_beginning_balance.account_id, gl_accounting_periods.account_id) as account_id,
+        coalsece(gl_beginning_balance.source_relation, gl_accounting_periods.source_relation) as source_relation,
         coalesce(gl_beginning_balance.account_number, gl_accounting_periods.account_number) as account_number,
         coalesce(gl_beginning_balance.account_name, gl_accounting_periods.account_name) as account_name,
         coalesce(gl_beginning_balance.is_sub_account, gl_accounting_periods.is_sub_account) as is_sub_account,
@@ -113,6 +121,7 @@ gl_value_partion as (
 final as (
     select
         account_id,
+        source_relation,
         account_number,
         account_name,
         is_sub_account,

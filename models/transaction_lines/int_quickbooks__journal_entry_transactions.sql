@@ -2,18 +2,22 @@
 {{ config(enabled=var('using_journal_entry', True)) }}
 
 with journal_entries as (
+
     select *
     from {{ ref('stg_quickbooks__journal_entry') }}
 ),
 
 journal_entry_lines as (
+
     select *
     from {{ ref('stg_quickbooks__journal_entry_line') }}
 ),
 
 final as (
+
     select
         journal_entries.journal_entry_id as transaction_id,
+        journal_entries.source_relation,
         journal_entry_lines.index as transaction_line_id,
         journal_entries.doc_number,
         'journal_entry' as transaction_type,
@@ -34,6 +38,9 @@ final as (
 
     inner join journal_entry_lines
         on journal_entries.journal_entry_id = journal_entry_lines.journal_entry_id
+    
+    left join journal_entry_lines journal_entry_lines_relation
+        on journal_entries.source_relation = journal_entry_lines_relation.source_relation
 )
 
 select *

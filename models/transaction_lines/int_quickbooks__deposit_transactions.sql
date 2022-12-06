@@ -2,18 +2,21 @@
 {{ config(enabled=var('using_deposit', True)) }}
 
 with deposits as (
+     
     select *
-    from {{ref('stg_quickbooks__deposit')}}
+    from {{ ref('stg_quickbooks__deposit') }}
 ), 
 
 deposit_lines as (
+
     select *
-    from {{ref('stg_quickbooks__deposit_line')}}
+    from {{ ref('stg_quickbooks__deposit_line') }}
 ),
 
 final as (
     select
         deposits.deposit_id as transaction_id,
+        deposits.source_relation,
         deposit_lines.index as transaction_line_id,
         cast(null as {{ dbt.type_string() }}) as doc_number,
         'deposit' as transaction_type,
@@ -31,6 +34,9 @@ final as (
     
     inner join deposit_lines 
         on deposits.deposit_id = deposit_lines.deposit_id
+    
+    left join deposit_lines deposit_lines_relation
+        on deposits.source_relation = deposit_lines_relation.source_relation
 )
 
 select *

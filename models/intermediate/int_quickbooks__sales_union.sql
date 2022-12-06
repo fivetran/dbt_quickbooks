@@ -1,6 +1,7 @@
 {{ config(enabled=fivetran_utils.enabled_vars_one_true(['using_sales_receipt','using_invoice'])) }}
 
 with sales_union as (
+
     {% if var('using_sales_receipt', True) %}
     select *
     from {{ ref('int_quickbooks__sales_receipt_transactions') }}
@@ -37,32 +38,38 @@ with sales_union as (
 ),
 
 customers as (
+
     select *
     from {{ ref('stg_quickbooks__customer') }}
 ),
 
 {% if var('using_department', True) %}
 departments as ( 
+
     select *
     from {{ ref('stg_quickbooks__department') }}
 ),
 {% endif %}
 
 vendors as (
+
     select *
     from {{ ref('stg_quickbooks__vendor') }}
 ),
 
 income_accounts as (
+
     select *
     from {{ ref('int_quickbooks__account_classifications') }}
     where account_type = 'Income'
 ),
 
 final as (
+
     select 
         'sales' as transaction_source,
         sales_union.transaction_id,
+        sales_union.source_relation,
         sales_union.transaction_line_id,
         sales_union.doc_number,
         sales_union.transaction_type,
@@ -91,6 +98,9 @@ final as (
 
     inner join income_accounts
         on sales_union.account_id = income_accounts.account_id
+    
+    left join income_accounts income_accounts_relation
+        on sales_union.source_relation = income_accounts_relation.source_relation
 
     left join customers
         on customers.customer_id = sales_union.customer_id

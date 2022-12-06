@@ -1,11 +1,14 @@
 with accounts as (
+
     select *
     from {{ ref('stg_quickbooks__account') }}
 ),
 
 classification_fix as (
+
     select 
         account_id,
+        source_relation,
         account_number,
         is_sub_account,
         parent_account_id,
@@ -37,6 +40,7 @@ classification_fix as (
 ),
 
 classification_add as (
+
     select
         *,
         case when classification in ('Liability', 'Equity')
@@ -57,6 +61,7 @@ classification_add as (
 ),
 
 adjusted_balances as (
+
     select 
         *,
         (balance * multiplier) as adjusted_balance
@@ -64,6 +69,7 @@ adjusted_balances as (
 ),
 
 final as (
+    
     select
         adjusted_balances.*,
         case when adjusted_balances.is_sub_account

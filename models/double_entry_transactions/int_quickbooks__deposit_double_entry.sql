@@ -7,21 +7,25 @@ specific other account indicated in the deposit line.
 {{ config(enabled=var('using_deposit', True)) }}
 
 with deposits as (
+
     select *
     from {{ ref('stg_quickbooks__deposit') }}
 ), 
 
 deposit_lines as (
+
     select *
     from {{ ref('stg_quickbooks__deposit_line') }}
 ),
 
 accounts as (
+
     select *
     from {{ ref('stg_quickbooks__account') }}
 ),
 
 uf_accounts as (
+
     select
         account_id
     from accounts
@@ -32,8 +36,10 @@ uf_accounts as (
 ),
 
 deposit_join as (
+
     select
         deposits.deposit_id as transaction_id,
+        deposits.source_relation,
         deposit_lines.index,
         deposits.transaction_date,
         deposit_lines.amount,
@@ -47,13 +53,18 @@ deposit_join as (
     inner join deposit_lines 
         on deposits.deposit_id = deposit_lines.deposit_id
     
+    left join deposit_lines deposit_lines_relation
+        on deposits.source_relation = deposit_lines_relation.source_relation
+    
     cross join uf_accounts
 
 ),
 
 final as (
+
     select
         transaction_id,
+        source_relation,
         index,
         transaction_date,
         customer_id,
@@ -69,6 +80,7 @@ final as (
 
     select
         transaction_id,
+        source_relation,
         index,
         transaction_date,
         customer_id,

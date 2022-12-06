@@ -6,16 +6,19 @@ Table that creates a debit record to the specified expense account and credit re
 {{ config(enabled=var('using_bill', True)) }}
 
 with bills as (
+
     select *
     from {{ ref('stg_quickbooks__bill') }}
 ),
 
 bill_lines as (
+
     select *
     from {{ ref('stg_quickbooks__bill_line') }}
 ),
 
 items as (
+    
     select 
         item.*, 
         parent.expense_account_id as parent_expense_account_id,
@@ -28,7 +31,8 @@ items as (
 
 bill_join as (
     select
-        bills.bill_id as transaction_id, 
+        bills.bill_id as transaction_id,
+        bills.source_relation,
         bill_lines.index,
         bills.transaction_date,
         bill_lines.amount,
@@ -40,15 +44,20 @@ bill_join as (
     from bills
 
     inner join bill_lines 
-        on bills.bill_id = bill_lines.bill_id
+        on bills.bill_id = bill_lines.bill_id  
+    
+    left join bill_lines bill_lines_relation
+        on bills.source_relation = bill_lines_relation.source_relation 
 
     left join items
         on bill_lines.item_expense_item_id = items.item_id
+        and bill_lines_relation.source_relation = items.source_relation
 ),
 
 final as (
     select 
         transaction_id,
+        source_relation,
         index,
         transaction_date,
         customer_id,
@@ -64,6 +73,7 @@ final as (
 
     select
         transaction_id,
+        source_relation,
         index,
         transaction_date,
         customer_id,

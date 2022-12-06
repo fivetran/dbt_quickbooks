@@ -6,13 +6,16 @@ Table that creates a debit record to the receiveing account and a credit record 
 {{ config(enabled=var('using_transfer', True)) }}
 
 with transfers as (
+
     select *
     from {{ ref('stg_quickbooks__transfer') }}
 ),
 
 transfer_body as (
+
     select
         transfer_id as transaction_id,
+        source_relation,
         row_number() over(partition by transfer_id order by transaction_date) - 1 as index,
         transaction_date,
         amount,
@@ -22,8 +25,10 @@ transfer_body as (
 ),
 
 final as (
+    
     select 
         transaction_id,
+        source_relation,
         index,
         transaction_date,
         cast(null as {{ dbt.type_string() }}) as customer_id,
@@ -39,6 +44,7 @@ final as (
 
     select 
         transaction_id,
+        source_relation,
         index,
         transaction_date,
         cast(null as {{ dbt.type_string() }}) as customer_id,

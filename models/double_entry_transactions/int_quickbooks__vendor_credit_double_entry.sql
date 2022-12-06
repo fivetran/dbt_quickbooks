@@ -6,16 +6,19 @@ Table that creates a debit record to payable account and a credit record to the 
 {{ config(enabled=var('using_vendor_credit', True)) }}
 
 with vendor_credits as (
+    
     select *
     from {{ ref('stg_quickbooks__vendor_credit') }}
 ),
 
 vendor_credit_lines as (
+
     select *
     from {{ ref('stg_quickbooks__vendor_credit_line') }}
 ),
 
 items as (
+
     select 
         item.*, 
         parent.income_account_id as parent_income_account_id
@@ -26,8 +29,10 @@ items as (
 ),
 
 vendor_credit_join as (
+
     select
         vendor_credits.vendor_credit_id as transaction_id,
+        vendor_credits.source_relation,
         vendor_credit_lines.index,
         vendor_credits.transaction_date,
         vendor_credit_lines.amount,
@@ -41,8 +46,12 @@ vendor_credit_join as (
     inner join vendor_credit_lines 
         on vendor_credits.vendor_credit_id = vendor_credit_lines.vendor_credit_id
 
+    left join vendor_credit_lines vendor_credit_lines_relation
+        on vendor_credits.source_relation = vendor_credit_lines_relation.source_relation
+
     left join items
         on vendor_credit_lines.item_expense_item_id = items.item_id
+        and vendor_credit_lines_relation.source_relation = items.source_relation
 ),
 
 final as (

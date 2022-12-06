@@ -1,14 +1,17 @@
 with general_ledger_balances as (
+
     select *
-    from {{ref('int_quickbooks__general_ledger_balances')}}
+    from {{ ref('int_quickbooks__general_ledger_balances') }}
 ),
 
 retained_earnings as (
+
     select *
-    from {{ref('int_quickbooks__retained_earnings')}}
+    from {{ ref('int_quickbooks__retained_earnings') }}
 ),
 
 final as (
+
     select *
     from general_ledger_balances
 

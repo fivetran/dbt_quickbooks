@@ -2,35 +2,41 @@
 {{ config(enabled=var('using_invoice')) }}
 
 with invoices as (
+
     select *
-    from {{ref('stg_quickbooks__invoice')}}
+    from {{ ref('stg_quickbooks__invoice') }}
 ),
 
 invoice_linked as (
+
     select *
-    from {{ref('stg_quickbooks__invoice_linked_txn')}}
+    from {{ ref('stg_quickbooks__invoice_linked_txn') }}
 ),
 
 {% if var('using_estimate', True) %}
 estimates as (
+
     select *
-    from {{ref('stg_quickbooks__estimate')}}
+    from {{ ref('stg_quickbooks__estimate') }}
 ),
 {% endif %}
 
 payments as (
+
     select *
-    from {{ref('stg_quickbooks__payment')}}
+    from {{ ref('stg_quickbooks__payment') }}
 ),
 
 payment_lines_payment as (
+
     select *
-    from {{ref('stg_quickbooks__payment_line')}}
+    from {{ ref('stg_quickbooks__payment_line') }}
 
     where invoice_id is not null
 ),
 
 invoice_est as (
+
     select
         invoices.invoice_id,
         invoice_linked.estimate_id
@@ -43,6 +49,7 @@ invoice_est as (
 ),
 
 invoice_pay as (
+
     select
         invoices.invoice_id,
         invoice_linked.payment_id
@@ -55,6 +62,7 @@ invoice_pay as (
 ),
 
 invoice_link as (
+
     select
         invoices.*,
         invoice_est.estimate_id,
@@ -69,9 +77,11 @@ invoice_link as (
 ),
 
 final as (
+
     select
         cast('invoice' as {{ dbt.type_string() }}) as transaction_type,
         invoice_link.invoice_id as transaction_id,
+        invoice_link.source_relation,
         invoice_link.doc_number,
         invoice_link.estimate_id,
         invoice_link.department_id,
@@ -102,16 +112,19 @@ final as (
     {% if var('using_estimate', True) %}
     left join estimates
         on invoice_link.estimate_id = estimates.estimate_id
+        and invoice_link.source_relation = estimates.source_relation
     {% endif %}
 
     left join payments
         on invoice_link.payment_id = payments.payment_id
+        and invoice_link.source_relation = payments.source_relation
 
     left join payment_lines_payment
         on payments.payment_id = payment_lines_payment.payment_id
-            and invoice_link.invoice_id = payment_lines_payment.invoice_id
+        and invoice_link.invoice_id = payment_lines_payment.invoice_id
+        and invoice_link.source_relation = payment_lines_payment.source_relation
 
-    group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14
+    {{ dbt_utils.group_by(15) }} 
 )
 
 select * 

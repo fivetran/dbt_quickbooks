@@ -121,6 +121,12 @@ models:
       Table that unions all accounts payable records from int_quickbooks__bill_join and all accounts receivable records from int_quickbooks__invoice_join
       while also adding customer, vendor, address, and department level detail to the accounts payable and receivable records. Further, date and amount
       calculations are included to show if the payable/receivable has been fully paid and/or paid on time.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - transaction_id
+            - source_relation
     columns:
       - name: transaction_type
         description: Set to 'bill' of the transaction is a bill and 'invoice' if the transaction is an invoice.
@@ -173,6 +179,12 @@ models:
     description: >
       Table that unions all expense records from int_quickbooks__expenses_union and all sales records from the int_quickbooks__sales_union while also adding 
       customer, vendor, and department level detail to the expense and sales records.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_id
+            - source_relation
+            - transaction_line_id
     columns:
       - name: transaction_source
         description: Set to 'expense' if the transaction type is an expense and 'sale' if the transaction type is a sale.
@@ -227,6 +239,12 @@ models:
     description: >
       Table that unions all records from each model within the double_entry_transactions directory. The table end result is a comprehensive general ledger
       with an offsetting debit and credit entry for each transaction.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_id
+            - source_relation
+            - transaction_index
     columns:
       - name: transaction_id
         description: Unique identifier of transaction. Each transaction will have an offsetting debit and credit record.
@@ -275,6 +293,14 @@ models:
     description: >
       Table that pulls general ledger account level balances per period from int_quickbooks__general_ledger_balances while also creating an offsetting
       Retained Earnings entry for Revenue - Expenses per year to be added as single Equity line balance per year.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - account_id
+            - account_type
+            - account_sub_type
+            - source_relation
+            - period_first_day 
     columns:
       - name: account_id
         description: Reference to the account that the period balances are associated.
@@ -314,11 +340,17 @@ models:
   - name: quickbooks__profit_and_loss
     description: >
       Table containing all revenue and expense account classes by calendar year and month enriched with account type, class, and parent information.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - calendar_date
+            - source_relation
+            - account_class 
+            - account_type
+            - account_number
     columns:
-      - name: calendar_year
-        description: The calendar year in the YYYY format.
-      - name: calendar_month
-        description: The calendar month in the MMM format.
+      - name: calendar_date
+        description: Timestamp of the first calendar date of the month.
       - name: account_class
         description: The account classification.
       - name: is_sub_account
@@ -341,11 +373,17 @@ models:
   - name: quickbooks__balance_sheet
     description: >
       Table containing all asset, liability, and equity account classes by calendar year and month enriched with account type, class, and parent information.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - calendar_date
+            - source_relation
+            - account_class
+            - account_type
+            - account_number
     columns:
-      - name: calendar_year
-        description: The calendar year in the YYYY format.
-      - name: calendar_month
-        description: The calendar month in the MMM format.
+      - name: calendar_date
+        description: Timestamp of the first calendar date of the month.
       - name: account_class
         description: The account classification.
       - name: is_sub_account
@@ -364,5 +402,3 @@ models:
         description: The name of the account.
       - name: amount
         description: The total ending period balance.
-
-     
