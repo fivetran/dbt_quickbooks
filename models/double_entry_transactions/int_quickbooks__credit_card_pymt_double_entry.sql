@@ -7,7 +7,7 @@ Table that creates a debit record to the associated bank account and a credit re
 
 with credit_card_payments as (
     select *
-    from {{ref('stg_quickbooks__credit_card_payment_txn')}}
+    from {{ ref('stg_quickbooks__credit_card_payment_txn') }}
     where is_most_recent_record
 ),
 
