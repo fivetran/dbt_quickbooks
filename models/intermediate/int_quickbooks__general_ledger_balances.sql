@@ -73,7 +73,7 @@ gl_beginning_balance as (
 gl_patch as (
     select 
         coalesce(gl_beginning_balance.account_id, gl_accounting_periods.account_id) as account_id,
-        coalsece(gl_beginning_balance.source_relation, gl_accounting_periods.source_relation) as source_relation,
+        coalesce(gl_beginning_balance.source_relation, gl_accounting_periods.source_relation) as source_relation,
         coalesce(gl_beginning_balance.account_number, gl_accounting_periods.account_number) as account_number,
         coalesce(gl_beginning_balance.account_name, gl_accounting_periods.account_name) as account_name,
         coalesce(gl_beginning_balance.is_sub_account, gl_accounting_periods.is_sub_account) as is_sub_account,
@@ -105,6 +105,7 @@ gl_patch as (
         on gl_beginning_balance.account_id = gl_accounting_periods.account_id
             and gl_beginning_balance.date_month = gl_accounting_periods.period_first_day
             and gl_beginning_balance.date_year = gl_accounting_periods.date_year
+            and gl_beginning_balance.class_id = gl_accounting_periods.class_id
 ),
 
 gl_value_partion as (

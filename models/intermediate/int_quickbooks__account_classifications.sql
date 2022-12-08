@@ -69,7 +69,7 @@ adjusted_balances as (
 ),
 
 final as (
-    
+
     select
         adjusted_balances.*,
         case when adjusted_balances.is_sub_account
@@ -84,6 +84,7 @@ final as (
 
     left join accounts as parent_accounts
         on parent_accounts.account_id = adjusted_balances.parent_account_id
+        and parent_accounts.source_relation = adjusted_balances.source_relation
 )
 
 select *

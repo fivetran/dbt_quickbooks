@@ -124,9 +124,9 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - transaction_type
             - transaction_id
             - source_relation
+            - estimate_id
     columns:
       - name: transaction_type
         description: Set to 'bill' of the transaction is a bill and 'invoice' if the transaction is an invoice.
@@ -185,6 +185,7 @@ models:
             - transaction_id
             - source_relation
             - transaction_line_id
+            - item_id
     columns:
       - name: transaction_source
         description: Set to 'expense' if the transaction type is an expense and 'sale' if the transaction type is a sale.
@@ -242,9 +243,8 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - transaction_id
-            - source_relation
-            - transaction_index
+            - unique_id
+            - source_relation 
     columns:
       - name: transaction_id
         description: Unique identifier of transaction. Each transaction will have an offsetting debit and credit record.
@@ -297,10 +297,9 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - account_id
-            - account_type
-            - account_sub_type
-            - source_relation
-            - period_first_day 
+            - class_id
+            - source_relation 
+            - period_first_day
     columns:
       - name: account_id
         description: Reference to the account that the period balances are associated.
@@ -343,11 +342,10 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - calendar_date
+            - account_id
+            - class_id
             - source_relation
-            - account_class 
-            - account_type
-            - account_number
+            - calendar_date 
     columns:
       - name: calendar_date
         description: Timestamp of the first calendar date of the month.
@@ -373,14 +371,6 @@ models:
   - name: quickbooks__balance_sheet
     description: >
       Table containing all asset, liability, and equity account classes by calendar year and month enriched with account type, class, and parent information.
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - calendar_date
-            - source_relation
-            - account_class
-            - account_type
-            - account_number
     columns:
       - name: calendar_date
         description: Timestamp of the first calendar date of the month.

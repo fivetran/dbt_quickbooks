@@ -9,6 +9,7 @@ with general_ledger_by_period as (
         period_first_day as calendar_date,
         source_relation,
         account_class,
+        class_id,
         is_sub_account,
         parent_account_number,
         parent_account_name,

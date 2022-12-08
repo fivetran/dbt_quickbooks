@@ -106,7 +106,7 @@ accounts as (
 
 adjusted_gl as (
     select
-        {{ dbt_utils.generate_surrogate_key(['gl_union.transaction_id', 'gl_union.index', 'accounts.name', ' gl_union.transaction_type']) }} as unique_id,
+        {{ dbt_utils.generate_surrogate_key(['gl_union.transaction_id', 'gl_union.index', 'accounts.name', ' gl_union.transaction_type', 'gl_union.transaction_source']) }} as unique_id,
         gl_union.transaction_id,
         gl_union.source_relation,
         gl_union.index as transaction_index,
@@ -141,7 +141,7 @@ adjusted_gl as (
 ),
 
 final as (
-    
+
     select
         *,
         sum(adjusted_amount) over (partition by account_id order by transaction_date, account_id rows unbounded preceding) as running_balance

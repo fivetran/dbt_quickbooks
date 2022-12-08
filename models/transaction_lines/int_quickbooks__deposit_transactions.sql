@@ -34,9 +34,7 @@ final as (
     
     inner join deposit_lines 
         on deposits.deposit_id = deposit_lines.deposit_id
-    
-    left join deposit_lines deposit_lines_relation
-        on deposits.source_relation = deposit_lines_relation.source_relation
+        and deposits.source_relation = deposit_lines.source_relation
 )
 
 select *

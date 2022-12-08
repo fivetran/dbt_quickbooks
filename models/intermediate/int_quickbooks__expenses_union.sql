@@ -60,7 +60,7 @@ expense_accounts as (
 ),
 
 final as (
-    
+
     select 
         'expense' as transaction_source,
         expense_union.transaction_id,
@@ -94,9 +94,7 @@ final as (
 
     inner join expense_accounts
         on expense_union.account_id = expense_accounts.account_id
-
-    left join expense_accounts expense_accounts_relation
-        on expense_union.source_relation = expense_accounts_relation.source_relation
+        and expense_union.source_relation = expense_accounts.source_relation
 
     left join customers
         on customers.customer_id = expense_union.customer_id

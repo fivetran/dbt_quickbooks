@@ -44,9 +44,7 @@ refund_receipt_join as (
 
     inner join refund_receipt_lines
         on refund_receipts.refund_id = refund_receipt_lines.refund_id
-    
-    left join refund_receipt_lines refund_receipt_lines_relation
-        and refund_receipts.source_relation = refund_receipt_lines_relation.source_relation
+        and refund_receipts.source_relation = refund_receipt_lines.source_relation
 
     left join items
         on refund_receipt_lines.sales_item_item_id = items.item_id

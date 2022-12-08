@@ -47,13 +47,11 @@ final as (
 
     inner join credit_memo_lines
         on credit_memos.credit_memo_id = credit_memo_lines.credit_memo_id
-    
-    left join credit_memo_lines credit_memo_lines_relation
-        on credit_memos.source_relation = credit_memo_lines_relation.source_relation
+        and credit_memos.source_relation = credit_memo_lines.source_relation
 
     left join items
         on credit_memo_lines.sales_item_item_id = items.item_id
-        and credit_memo_lines_relation.source_relation = items.source_relation
+        and credit_memo_lines.source_relation = items.source_relation
 )
 
 select *

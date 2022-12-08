@@ -2,7 +2,7 @@
 {{ config(enabled=var('using_bill', True)) }}
 
 with bills as (
-    
+
     select *
     from {{ ref('stg_quickbooks__bill') }} 
 ),
@@ -41,13 +41,11 @@ final as (
 
     inner join bill_lines 
         on bills.bill_id = bill_lines.bill_id
-    
-    left join bill_lines bill_lines_relation
-        on bills.bill_id = bill_lines_relation.bill_id
+        and bills.bill_id = bill_lines.bill_id
 
     left join items
         on bill_lines.item_expense_item_id = items.item_id
-        and bill_lines_relation.source_relation = items.source_relation
+        and bill_lines.source_relation = items.source_relation
 )
 
 select *

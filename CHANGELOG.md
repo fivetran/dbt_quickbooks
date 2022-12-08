@@ -1,5 +1,6 @@
-# New feature
+# New features
 - Addition of `class_id` to `quickbooks__general_ledger` and `quickbooks_general_ledger_by_period`, add in class values for all intermediate models necessary to pass into final models.
+- Added `source_relation` field to all Quickbooks models to allow customers, if they have multiple Quickbooks connectors, to union them together inside our package.
 # dbt_quickbooks_source v0.6.0
 ## 🚨 Breaking Changes 🚨:
 [PR #51](https://github.com/fivetran/dbt_quickbooks/pull/51) includes the following breaking changes:

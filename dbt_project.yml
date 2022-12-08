@@ -8,12 +8,12 @@ models:
   quickbooks:
     +materialized: table
     +schema: quickbooks
-    double_entry_transactions:
-      +materialized: ephemeral
-    transaction_lines:
-      +materialized: ephemeral
-    intermediate:
-      +materialized: ephemeral
+    # double_entry_transactions:
+    #   +materialized: ephemeral
+    # transaction_lines:
+    #   +materialized: ephemeral
+    # intermediate:
+    #   +materialized: ephemeral
 vars:
   quickbooks:
     account: "{{ ref('stg_quickbooks__account') }}"

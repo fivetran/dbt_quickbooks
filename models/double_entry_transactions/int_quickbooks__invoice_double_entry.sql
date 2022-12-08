@@ -23,6 +23,7 @@ items as (
 
     left join {{ ref('stg_quickbooks__item') }} parent
         on item.parent_item_id = parent.item_id
+        and item.source_relation = parent.source_relation
 ),
 
 accounts as (
@@ -63,18 +64,22 @@ bundle_income_accounts as (
 
     select distinct
         coalesce(parent.income_account_id, income_accounts.account_id) as account_id,
+        coalesce(parent.source_relation, income_accounts.source_relation) as source_relation,
         bundle_items.bundle_id 
 
     from items 
 
     left join items as parent
         on items.parent_item_id = parent.item_id
+        and items.source_relation = parent.source_relation
 
     inner join income_accounts 
         on income_accounts.account_id = items.income_account_id
+        and income_accounts.source_relation = items.source_relation
 
     inner join bundle_items 
         on bundle_items.item_id = items.item_id
+        and bundle_items.source_relation = items.source_relation
 ),
 {% endif %}
 
@@ -112,13 +117,11 @@ invoice_join as (
 
     inner join invoice_lines
         on invoices.invoice_id = invoice_lines.invoice_id
-
-    left join invoice_lines invoice_lines_relation
-        on invoices.source_relation = invoice_lines_relation.source_relation
+        and invoices.source_relation = invoice_lines.source_relation
 
     left join items
         on coalesce(invoice_lines.sales_item_item_id, invoice_lines.item_id) = items.item_id
-        and invoice_lines_relation.source_relation = items.source_relation
+        and invoice_lines.source_relation = items.source_relation
 
     {% if var('using_invoice_bundle', True) %}
     left join bundle_income_accounts
@@ -137,7 +140,7 @@ final as (
 
     select
         transaction_id,
-        source_relation,
+        invoice_join.source_relation,
         index,
         transaction_date,
         customer_id,
@@ -153,7 +156,7 @@ final as (
 
     select
         transaction_id,
-        source_relation,
+        invoice_join.source_relation,
         index,
         transaction_date,
         customer_id,

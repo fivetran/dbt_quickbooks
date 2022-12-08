@@ -8,24 +8,26 @@ revenue_starter as (
 
     select
         period_first_day,
+        source_relation,
         sum(period_net_change) as revenue_net_change
     from general_ledger_balances
     
     where account_class = 'Revenue'
 
-    {{ dbt_utils.group_by(1) }} 
+    {{ dbt_utils.group_by(2) }} 
 ),
 
 expense_starter as (
 
     select 
         period_first_day,
+        source_relation,
         sum(period_net_change) as expense_net_change 
     from general_ledger_balances
     
     where account_class = 'Expense'
 
-    {{ dbt_utils.group_by(1) }} 
+    {{ dbt_utils.group_by(2) }} 
 ),
 
 net_income_loss as (
@@ -34,14 +36,14 @@ net_income_loss as (
     from revenue_starter
 
     join expense_starter 
-        using (period_first_day)
+        using (period_first_day, source_relation)
 ),
 
 retained_earnings_starter as (
 
     select
         cast('9999' as {{ dbt.type_string() }}) as account_id,
-        cast(null as {{ dbt.type_string() }}) as source_relation,
+        source_relation,
         cast('9999-00' as {{ dbt.type_string() }}) as account_number,
         cast('Net Income / Retained Earnings Adjustment' as {{ dbt.type_string() }}) as account_name,
         false as is_sub_account,
@@ -72,6 +74,7 @@ final as (
     
     select
         account_id,
+        source_relation,
         account_number,
         account_name,
         is_sub_account,

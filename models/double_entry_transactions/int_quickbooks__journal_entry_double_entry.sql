@@ -35,9 +35,7 @@ final as (
 
     inner join journal_entry_lines
         on journal_entries.journal_entry_id = journal_entry_lines.journal_entry_id
-    
-    left join journal_entry_lines journal_entry_lines_relation
-        on journal_entries.source_relation = journal_entry_lines_relation.source_relation
+        and journal_entries.source_relation = journal_entry_lines.source_relation
 
     where journal_entry_lines.amount is not null
 )

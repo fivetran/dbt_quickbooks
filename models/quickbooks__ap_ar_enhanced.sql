@@ -99,7 +99,7 @@ final as (
     {% if var('using_address', True) %}
     left join addresses as billing_address
         on vendors.billing_address_id = billing_address.address_id
-        on vendors.source_relation = billing_address.source_relation
+        and vendors.source_relation = billing_address.source_relation
     {% endif %}
     
     {% if var('using_invoice', True) %}

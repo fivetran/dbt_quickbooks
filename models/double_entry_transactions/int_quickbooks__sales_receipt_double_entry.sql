@@ -44,13 +44,11 @@ sales_receipt_join as (
 
     inner join sales_receipt_lines
         on sales_receipts.sales_receipt_id = sales_receipt_lines.sales_receipt_id
-
-    left join sales_receipt_lines sales_receipt_lines_relation
-        on sales_receipts.source_relation = sales_receipt_lines_relation.source_relation
+        and sales_receipts.source_relation = sales_receipt_lines.source_relation
 
     left join items
         on sales_receipt_lines.sales_item_item_id = items.item_id
-        and sales_receipt_lines_relation.source_relation = items.source_relation
+        and sales_receipt_lines.source_relation = items.source_relation
 
     where coalesce(sales_receipt_lines.discount_account_id, sales_receipt_lines.sales_item_account_id, sales_receipt_lines.sales_item_item_id) is not null
 ),

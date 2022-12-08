@@ -43,13 +43,11 @@ purchase_join as (
     
     inner join purchase_lines
         on purchases.purchase_id = purchase_lines.purchase_id
-    
-    left join purchase_lines purchase_lines_relation
-        on purchases.source_relation = purchase_lines_relation.source_relation
+        and purchases.source_relation = purchase_lines.source_relation
 
     left join items
         on purchase_lines.item_expense_item_id = items.item_id
-        and purchase_lines_relation.source_relation = items.source_relation
+        and purchase_lines.source_relation = items.source_relation
 ),
 
 final as (

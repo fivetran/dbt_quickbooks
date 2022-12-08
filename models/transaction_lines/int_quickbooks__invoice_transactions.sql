@@ -47,13 +47,11 @@ final as (
 
     inner join invoice_lines
         on invoices.invoice_id = invoice_lines.invoice_id
-    
-    left join invoice_lines invoice_lines_relation
-        on invoices.source_relation = invoice_lines_relation.source_relation
+        and invoices.source_relation = invoice_lines.source_relation
 
     left join items
         on coalesce(invoice_lines.sales_item_item_id, invoice_lines.item_id) = items.item_id
-        and invoice_lines_relation.source_relation = items.source_relation
+        and invoice_lines.source_relation = items.source_relation
 )
 
 select *
