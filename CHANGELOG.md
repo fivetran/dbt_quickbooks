@@ -1,11 +1,11 @@
 # dbt_quickbooks_source v0.5.4
 ## Features
-- Addition of the `credit_card_payment_txn` (enabled/disabled using the `using_credit_card_payment_txn` variable) source as well as the accompanying staging and intermediate models. This source includes all credit card payment transactions and will be used in downstream General Ledger generation to ensure accurate reporting of all transaction types. ([#50](https://github.com/fivetran/dbt_quickbooks/pull/50))
-  >**Note**: the `credit_card_payment_txn` source and models are disabled by default. In order to enabled them, you will want to set the `using_credit_card_payment_txn` variable to `true` in your dbt_project.yml.
+- Addition of the `credit_card_payment_txn` (enabled/disabled using the `using_credit_card_payment_txn` variable) source as well as the accompanying staging and intermediate models. This source includes all credit card payment transactions and will be used in downstream General Ledger generation to ensure accurate reporting of all transaction types. ([#61](https://github.com/fivetran/dbt_quickbooks/pull/61))
+  >**Note**: the `credit_card_payment_txn` source and models are disabled by default. In order to enable them, you will want to set the `using_credit_card_payment_txn` variable to `true` in your dbt_project.yml.
 
 ## Contributors
-- [@mikerenderco](https://github.com/mikerenderco) ([#50](https://github.com/fivetran/dbt_quickbooks/pull/50))
-- [@mel-restori](https://github.com/mel-restori) ([#54](https://github.com/fivetran/dbt_quickbooks/pull/54))
+- [@mikerenderco](https://github.com/mikerenderco) ([#50](https://github.com/fivetran/dbt_quickbooks/pull/50), [#47](https://github.com/fivetran/dbt_quickbooks/issues/47))
+- [@mel-restori](https://github.com/mel-restori) ([#54](https://github.com/fivetran/dbt_quickbooks/pull/54), [#47](https://github.com/fivetran/dbt_quickbooks/issues/47))
 
 # dbt_quickbooks v0.5.3
 ## Bug Fixes
