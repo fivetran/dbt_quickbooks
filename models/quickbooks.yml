@@ -11,6 +11,9 @@ models:
   - name: int_quickbooks__credit_memo_double_entry
     description: Table that creates a debit record to Discounts Refunds Given and a credit record to the specified income account.
 
+  - name: int_quickbooks__credit_card_pymt_double_entry
+    description: Table that creates a debit record to credit card payment transactions.
+
   - name: int_quickbooks__deposit_double_entry
     description: Table that creates a debit record to the specified cash account and a credit record to either undeposited funds or a specific other account indicated in the deposit line.
 
