@@ -1,3 +1,6 @@
 packages:
-- package: fivetran/quickbooks_source
-  version: [">=0.6.0", "<0.7.0"]
+# - package: fivetran/quickbooks_source
+#   version: [">=0.6.0", "<0.7.0"]
+  - git: https://github.com/fivetran/dbt_quickbooks_source.git
+    revision: feature/backwards-credit-card
+    warn-unpinned: false
