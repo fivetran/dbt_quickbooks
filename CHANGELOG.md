@@ -1,5 +1,10 @@
-# New features
-- Added `class_id` to `quickbooks__general_ledger` and `quickbooks_general_ledger_by_period`, add in class values for all intermediate models necessary to pass into final models. [#58](https://github.com/fivetran/dbt_quickbooks/pull/58).
+# New Features (In Progress)
+
+## 🚨 Breaking Changes 🚨:
+- Added `transaction_source` to surrogate key function to fix `unique_id` uniqueness issues.  Customer will need to do either a full refresh or add in the variable to their modeling to produce up-to-date `unique_id` values.
+
+## Additional Features
+- Added `class_id` to `quickbooks__general_ledger`, `quickbooks_general_ledger_by_period`, and `quickbooks__balance_sheet`; add in class values for all intermediate models necessary to pass into final models. [#58](https://github.com/fivetran/dbt_quickbooks/pull/58).
 - Added `source_relation` field to all Quickbooks models to allow customers, if they have multiple Quickbooks connectors, to union them inside the package. [#62](https://github.com/fivetran/dbt_quickbooks/pull/62).
 # dbt_quickbooks_source v0.6.0
 ## 🚨 Breaking Changes 🚨:

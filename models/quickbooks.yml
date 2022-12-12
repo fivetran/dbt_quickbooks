@@ -371,6 +371,13 @@ models:
   - name: quickbooks__balance_sheet
     description: >
       Table containing all asset, liability, and equity account classes by calendar year and month enriched with account type, class, and parent information.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - account_id 
+            - source_relation 
+            - calendar_date
+            - class_id
     columns:
       - name: calendar_date
         description: Timestamp of the first calendar date of the month.
@@ -382,6 +389,8 @@ models:
         description: The parent account number. If the account is the parent account then the account number is recorded.
       - name: parent_account_name
         description: The parent account name. If the account is the parent account then the account name is recorded.
+      - name: class_id
+        description: Reference to the class associated with the account.
       - name: account_type
         description: The type of the account.
       - name: account_sub_type
@@ -390,5 +399,7 @@ models:
         description: User defined number of the account.
       - name: account_name
         description: The name of the account.
+      - name: account_id
+        description: The identifier of the account.
       - name: amount
         description: The total ending period balance.
