@@ -1,7 +1,7 @@
 # New Features (In Progress)
 
 ## 🚨 Breaking Changes 🚨:
-- Added `transaction_source` to surrogate key function to fix `unique_id` uniqueness issues.  Customer will need to do either a full refresh or add in the variable to their modeling to produce up-to-date `unique_id` values.
+- Added `transaction_source` to `generate_surrogate_key` function to fix `unique_id` uniqueness issues in the `quickbooks__general_ledger` model.  A full refresh is recommended for accurate and consistent surrogate keys, for more information please refer to dbt-utils [release notes](https://github.com/dbt-labs/dbt-utils/releases/tag/1.0.0) regarding `generate_surrogate_key`.
 
 ## Additional Features
 - Added `class_id` to `quickbooks__general_ledger`, `quickbooks_general_ledger_by_period`, and `quickbooks__balance_sheet`; add in class values for all intermediate models necessary to pass into final models. [#58](https://github.com/fivetran/dbt_quickbooks/pull/58).
