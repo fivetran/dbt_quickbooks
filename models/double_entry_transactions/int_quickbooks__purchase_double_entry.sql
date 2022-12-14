@@ -2,16 +2,19 @@
 Table that creates a debit record to a specified expense account and a credit record to the payment account.
 */
 with purchases as (
+
     select *
     from {{ ref('stg_quickbooks__purchase') }}
 ),
 
 purchase_lines as (
+
     select *
     from {{ ref('stg_quickbooks__purchase_line') }}
 ),
 
 items as (
+
     select 
         item.*, 
         parent.expense_account_id as parent_expense_account_id
@@ -22,8 +25,10 @@ items as (
 ),
 
 purchase_join as (
+
     select
         purchases.purchase_id as transaction_id,
+        purchases.source_relation,
         purchase_lines.index,
         purchases.transaction_date,
         purchase_lines.amount,
@@ -38,14 +43,18 @@ purchase_join as (
     
     inner join purchase_lines
         on purchases.purchase_id = purchase_lines.purchase_id
+        and purchases.source_relation = purchase_lines.source_relation
 
     left join items
         on purchase_lines.item_expense_item_id = items.item_id
+        and purchase_lines.source_relation = items.source_relation
 ),
 
 final as (
+
     select
         transaction_id,
+        source_relation,
         index,
         transaction_date,
         customer_id,
@@ -61,6 +70,7 @@ final as (
 
     select
         transaction_id,
+        source_relation,
         index,
         transaction_date,
         customer_id,

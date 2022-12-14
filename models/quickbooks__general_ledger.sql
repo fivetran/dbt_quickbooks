@@ -1,6 +1,8 @@
 with gl_union as (
+
     select
         transaction_id,
+        source_relation,
         index,
         transaction_date,
         customer_id,
@@ -96,6 +98,7 @@ with gl_union as (
 ),
 
 accounts as (
+
     select *
     from {{ ref('int_quickbooks__account_classifications') }}
 ),
@@ -103,8 +106,9 @@ accounts as (
 
 adjusted_gl as (
     select
-        {{ dbt_utils.generate_surrogate_key(['gl_union.transaction_id', 'gl_union.index', 'accounts.name', ' gl_union.transaction_type']) }} as unique_id,
+        {{ dbt_utils.generate_surrogate_key(['gl_union.transaction_id', 'gl_union.index', 'accounts.name', ' gl_union.transaction_type', 'gl_union.transaction_source']) }} as unique_id,
         gl_union.transaction_id,
+        gl_union.source_relation,
         gl_union.index as transaction_index,
         gl_union.transaction_date,
         gl_union.customer_id,
@@ -133,9 +137,11 @@ adjusted_gl as (
 
     left join accounts
         on gl_union.account_id = accounts.account_id
+        and gl_union.source_relation = accounts.source_relation
 ),
 
 final as (
+
     select
         *,
         sum(adjusted_amount) over (partition by account_id order by transaction_date, account_id rows unbounded preceding) as running_balance

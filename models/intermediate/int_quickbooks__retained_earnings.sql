@@ -1,41 +1,49 @@
 with general_ledger_balances as (
+
     select *
     from {{ ref('int_quickbooks__general_ledger_balances') }}
 ),
 
 revenue_starter as (
+
     select
         period_first_day,
+        source_relation,
         sum(period_net_change) as revenue_net_change
     from general_ledger_balances
     
     where account_class = 'Revenue'
 
-    group by 1
+    {{ dbt_utils.group_by(2) }} 
 ),
 
 expense_starter as (
+
     select 
         period_first_day,
+        source_relation,
         sum(period_net_change) as expense_net_change 
     from general_ledger_balances
     
     where account_class = 'Expense'
 
-    group by 1
+    {{ dbt_utils.group_by(2) }} 
 ),
 
 net_income_loss as (
+
     select *
     from revenue_starter
 
     join expense_starter 
-        using (period_first_day)
+        using (period_first_day, source_relation)
 ),
 
 retained_earnings_starter as (
+
     select
         cast('9999' as {{ dbt.type_string() }}) as account_id,
+        source_relation,
         cast('9999-00' as {{ dbt.type_string() }}) as account_number,
         cast('Net Income / Retained Earnings Adjustment' as {{ dbt.type_string() }}) as account_name,
         false as is_sub_account,
@@ -55,16 +63,18 @@ retained_earnings_starter as (
 
 
 retained_earnings_beginning as (
+
     select
         *,
         sum(coalesce(period_net_change,0)) over (order by period_first_day, period_first_day rows unbounded preceding) as period_ending_balance
     from retained_earnings_starter
-)
-,
+),
 
 final as (
+    
     select
         account_id,
+        source_relation,
         account_number,
         account_name,
         is_sub_account,

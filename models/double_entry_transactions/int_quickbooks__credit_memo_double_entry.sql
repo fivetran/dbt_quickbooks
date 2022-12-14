@@ -6,26 +6,31 @@ Table that creates a debit record to Discounts Refunds Given and a credit record
 {{ config(enabled=var('using_credit_memo', True)) }}
 
 with credit_memos as (
+
     select *
     from {{ ref('stg_quickbooks__credit_memo') }}
 ),
 
 credit_memo_lines as (
+
     select *
     from {{ ref('stg_quickbooks__credit_memo_line') }}
 ),
 
 items as (
+
     select *
     from {{ ref('stg_quickbooks__item') }}
 ),
 
 accounts as (
+
     select *
     from {{ ref('stg_quickbooks__account') }}
 ),
 
 df_accounts as (
+
     select
         account_id as account_id
     from accounts
@@ -36,8 +41,10 @@ df_accounts as (
 ),
 
 credit_memo_join as (
+
     select
         credit_memos.credit_memo_id as transaction_id,
+        credit_memos.source_relation,
         credit_memo_lines.index,
         credit_memos.transaction_date,
         credit_memo_lines.amount,
@@ -49,16 +56,20 @@ credit_memo_join as (
 
     inner join credit_memo_lines
         on credit_memos.credit_memo_id = credit_memo_lines.credit_memo_id
+        and credit_memos.source_relation = credit_memo_lines.source_relation
 
     left join items
         on credit_memo_lines.sales_item_item_id = items.item_id
+        and credit_memo_lines.source_relation = items.source_relation
 
     where coalesce(credit_memo_lines.discount_account_id, credit_memo_lines.sales_item_account_id, credit_memo_lines.sales_item_item_id) is not null
 ),
 
 final as (
+
     select
         transaction_id,
+        source_relation,
         index,
         transaction_date,
         customer_id,
@@ -74,6 +85,7 @@ final as (
 
     select 
         transaction_id,
+        source_relation,
         index,
         transaction_date,
         customer_id,

@@ -6,14 +6,17 @@ Table that creates a debit record to the associated bank account and a credit re
 {{ config(enabled=var('using_credit_card_payment_txn', False)) }}
 
 with credit_card_payments as (
+    
     select *
     from {{ ref('stg_quickbooks__credit_card_payment_txn') }}
     where is_most_recent_record
 ),
 
 credit_card_payment_prep as (
+
     select
         credit_card_payments.credit_card_payment_id as transaction_id,
+        credit_card_payments.source_relation,
         row_number() over (partition by credit_card_payments.credit_card_payment_id order by credit_card_payments.transaction_date) - 1 as index,
         credit_card_payments.transaction_date,
         credit_card_payments.amount,
@@ -26,8 +29,10 @@ credit_card_payment_prep as (
 ),
 
 final as (
+
     select
         transaction_id,
+        source_relation,
         index,
         transaction_date,
         customer_id,
@@ -43,6 +48,7 @@ final as (
 
     select 
         transaction_id,
+        source_relation,
         index,
         transaction_date,
         customer_id,

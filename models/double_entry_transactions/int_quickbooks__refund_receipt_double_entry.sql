@@ -6,16 +6,19 @@ Table that creates a debit record to the specified asset account and a credit re
 {{ config(enabled=var('using_refund_receipt', True)) }}
 
 with refund_receipts as (
+
     select *
     from {{ ref('stg_quickbooks__refund_receipt') }}
 ),
 
 refund_receipt_lines as (
+
     select *
     from {{ ref('stg_quickbooks__refund_receipt_line') }}
 ),
 
 items as (
+
     select 
         item.*, 
         parent.income_account_id as parent_income_account_id
@@ -26,8 +29,10 @@ items as (
 ),
 
 refund_receipt_join as (
+
     select
         refund_receipts.refund_id as transaction_id,
+        refund_receipts.source_relation,
         refund_receipt_lines.index,
         refund_receipts.transaction_date,
         refund_receipt_lines.amount,
@@ -39,6 +44,7 @@ refund_receipt_join as (
 
     inner join refund_receipt_lines
         on refund_receipts.refund_id = refund_receipt_lines.refund_id
+        and refund_receipts.source_relation = refund_receipt_lines.source_relation
 
     left join items
         on refund_receipt_lines.sales_item_item_id = items.item_id
@@ -47,8 +53,10 @@ refund_receipt_join as (
 ),
 
 final as (
+
     select
         transaction_id,
+        source_relation,
         index,
         transaction_date,
         customer_id,
@@ -64,6 +72,7 @@ final as (
 
     select
         transaction_id,
+        source_relation,
         index,
         transaction_date,
         customer_id,
