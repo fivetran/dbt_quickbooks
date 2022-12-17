@@ -81,6 +81,12 @@ vars:
     quickbooks_union_databases: ['quickbooks_usa','quickbooks_canada'] # use this if the data is in different databases/projects but uses the same schema name
 ```
 
+### Customize the ordinal for account classes in balance sheet and profit-and-loss models
+The current default numbering is based on best practices for finance balance sheets and profit-and-loss statements. If you'd like to customize the order of your account classes, go to the `quickbooks__balance_sheet_account_class_order` and `quickbooks__profit_and_loss_account_class_order` seed files in `dbt_quickbooks_source` and modify the `ordinal` numbering.  If you are adding additional account class types, you will need to customize your own version of the `int_quickbooks__account_classifications` model to handle the logic for these types, and either override or disable the above model and set up your own custom configuration. 
+
+
+## 
+
 ### Changing the Build Schema
 By default this package will build the QuickBooks staging models within a schema titled (<target_schema> + `_quickbooks_staging`) and QuickBooks final models within a schema titled (<target_schema> + `_quickbooks`) in your target database. If this is not where you would like your modeled QuickBooks data to be written to, add the following configuration to your `dbt_project.yml` file:
 

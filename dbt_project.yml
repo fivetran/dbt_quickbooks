@@ -52,6 +52,10 @@ vars:
     vendor_credit_line: "{{ ref('stg_quickbooks__vendor_credit_line') }}"
     vendor_credit: "{{ ref('stg_quickbooks__vendor_credit') }}"
     vendor: "{{ ref('stg_quickbooks__vendor') }}"
+
+    balance_sheet_account_class: "{{ ref('quickbooks__balance_sheet_account_class_order') }}"
+    profit_and_loss_account_class: "{{ ref('quickbooks__profit_and_loss_account_class_order') }}"
+    
     using_address: true
     using_bill: true
     using_credit_memo: true

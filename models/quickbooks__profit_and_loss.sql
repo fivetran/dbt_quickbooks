@@ -3,12 +3,20 @@ with general_ledger_by_period as (
     select *
     from {{ ref('quickbooks__general_ledger_by_period') }}
     where financial_statement_helper = 'income_statement'
+), 
 
-), final as (
+profit_and_loss_account_class as (
+
+    select * 
+    from {{ var('profit_and_loss_account_class') }}
+),
+
+final as (
     select
         period_first_day as calendar_date,
         source_relation,
-        account_class,
+        general_ledger_by_period.account_class,
+        ordinal as account_class_ordinal,
         class_id,
         is_sub_account,
         parent_account_number,
@@ -20,6 +28,8 @@ with general_ledger_by_period as (
         account_name,
         period_net_change as amount
     from general_ledger_by_period
+    left join profit_and_loss_account_class 
+        on general_ledger_by_period.account_class = profit_and_loss_account_class.account_class
 )
 
 select *
