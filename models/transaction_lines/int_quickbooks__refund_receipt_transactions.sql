@@ -33,8 +33,8 @@ final as (
         refund_receipts.class_id,
         refund_receipts.department_id,
         refund_receipts.customer_id,
-        cast(null as {{ dbt_utils.type_string() }}) as vendor_id,
-        cast(null as {{ dbt_utils.type_string() }}) as billable_status,
+        cast(null as {{ dbt.type_string() }}) as vendor_id,
+        cast(null as {{ dbt.type_string() }}) as billable_status,
         refund_receipt_lines.description,
         refund_receipt_lines.amount * -1 as amount,
         refund_receipts.total_amount * -1 as total_amount
