@@ -4,6 +4,6 @@ packages:
 
 #REMEMBER TO CHANGE REVISION AFTER MERGING `dbt_quickbooks_source`
   - git: https://github.com/fivetran/dbt_quickbooks_source.git
-    revision: feature/quickbooks-updates-project
+    revision: feature/create-account-class-ordering-seeds
     warn-unpinned: false 
   
