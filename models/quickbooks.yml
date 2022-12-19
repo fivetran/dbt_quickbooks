@@ -351,6 +351,8 @@ models:
         description: Timestamp of the first calendar date of the month.
       - name: account_class
         description: The account classification.
+      - name: account_class_ordinal
+        description: Integer indicating the ordering of the particular class based on accounting best practices.
       - name: is_sub_account
         description: Boolean indicating whether the account is a sub account (true) or a parent account (false).
       - name: parent_account_number
@@ -383,6 +385,8 @@ models:
         description: Timestamp of the first calendar date of the month.
       - name: account_class
         description: The account classification.
+      - name: account_class_ordinal
+        description: Integer indicating the ordering of the particular class based on accounting best practices.
       - name: is_sub_account
         description: Boolean indicating whether the account is a sub account (true) or a parent account (false).
       - name: parent_account_number
