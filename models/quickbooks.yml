@@ -335,6 +335,8 @@ models:
         description: Balance of the account as of the first date of the period. 
       - name: period_ending_balance
         description: Sum of all transaction line adjusted_balances of the account for the period.
+      - name: account_ordinal
+        description: Integer ordering of the account based on specific account features.
 
   - name: quickbooks__profit_and_loss
     description: >
@@ -351,8 +353,6 @@ models:
         description: Timestamp of the first calendar date of the month.
       - name: account_class
         description: The account classification.
-      - name: account_class_ordinal
-        description: Integer indicating the ordering of the particular class based on accounting best practices.
       - name: is_sub_account
         description: Boolean indicating whether the account is a sub account (true) or a parent account (false).
       - name: parent_account_number
@@ -369,7 +369,9 @@ models:
         description: The name of the account.
       - name: amount
         description: The total period net change for the period.
-
+      - name: account_ordinal
+        description: Integer ordering of the account based on specific account features.
+  
   - name: quickbooks__balance_sheet
     description: >
       Table containing all asset, liability, and equity account classes by calendar year and month enriched with account type, class, and parent information.
@@ -385,8 +387,6 @@ models:
         description: Timestamp of the first calendar date of the month.
       - name: account_class
         description: The account classification.
-      - name: account_class_ordinal
-        description: Integer indicating the ordering of the particular class based on accounting best practices.
       - name: is_sub_account
         description: Boolean indicating whether the account is a sub account (true) or a parent account (false).
       - name: parent_account_number
@@ -407,3 +407,5 @@ models:
         description: The identifier of the account.
       - name: amount
         description: The total ending period balance.
+      - name: account_ordinal
+        description: Integer ordering of the account based on specific account features.
