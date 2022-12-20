@@ -45,7 +45,7 @@ retained_earnings_starter as (
         cast('9999' as {{ dbt.type_string() }}) as account_id,
         source_relation,
         cast('9999-00' as {{ dbt.type_string() }}) as account_number,
-        cast('Net Income / Retained Earnings Adjustment' as {{ dbt.type_string() }}) as account_name,
+        cast('Net Income Adjustment' as {{ dbt.type_string() }}) as account_name,
         false as is_sub_account,
         cast(null as {{ dbt.type_string() }}) as parent_account_number,
         cast(null as {{ dbt.type_string() }}) as parent_account_name,
