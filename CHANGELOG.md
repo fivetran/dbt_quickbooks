@@ -8,6 +8,7 @@
 - Added `source_relation` field to all Quickbooks models to allow customers, if they have multiple Quickbooks connectors, to union them inside the package. [#62](https://github.com/fivetran/dbt_quickbooks/pull/62).
 - Added tests to all final models, particularly to test uniqueness across a combination of columns, including `source_relation`. [#62](https://github.com/fivetran/dbt_quickbooks/pull/62)
 - Added `account_class_ordinal` to `quickbooks__balance_sheet` and `quickbooks__profit_and_loss` to allow customers to order their data by account class type. [#65](https://github.com/fivetran/dbt_quickbooks/pull/65)
+- Modified `int_quickbooks__retained_earnings` intermediate model to accurately reflect `account_name` field, from "Net Income / Retained Earnings Adjustment" to "Net Income Adjustment". [#66](https://github.com/fivetran/dbt_quickbooks/pull/66)
 # dbt_quickbooks_source v0.6.0
 ## 🚨 Breaking Changes 🚨:
 [PR #51](https://github.com/fivetran/dbt_quickbooks/pull/51) includes the following breaking changes:
