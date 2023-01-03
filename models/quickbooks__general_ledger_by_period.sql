@@ -10,8 +10,10 @@ retained_earnings as (
     from {{ ref('int_quickbooks__retained_earnings') }}
 ),
 
-ordinals as (
+{% if var('financial_statement_ordinal') %}
 
+ordinals as ( 
+    
     select 
         cast(account_class as {{ dbt.type_string() }}) as account_class,
         cast(account_type as {{ dbt.type_string() }}) as account_type,
@@ -20,7 +22,7 @@ ordinals as (
         ordinal
     from {{ var('financial_statement_ordinal') }}
 ),
-
+{% endif %}
 
 balances_earnings_unioned as (
 
@@ -35,9 +37,21 @@ balances_earnings_unioned as (
 
 final as (
 
-    select balances_earnings_unioned.*,
+    select 
+        balances_earnings_unioned.*,
+    {% if var('financial_statement_ordinal') %}
         coalesce(account_number_ordinal.ordinal, account_sub_type_ordinal.ordinal, account_type_ordinal.ordinal, account_class_ordinal.ordinal) as account_ordinal
+    {% else %}
+        case 
+            when account_class = "Asset" then 1
+            when account_class = "Liability" then 2
+            when account_class = "Equity" then 3
+            when account_class = "Revenue" then 1
+            when account_class = "Expense" then 2
+        end as account_ordinal 
+    {% endif %}
     from balances_earnings_unioned
+    {% if var('financial_statement_ordinal') %}
         left join ordinals as account_class_ordinal
             on balances_earnings_unioned.account_class = account_class_ordinal.account_class
         left join ordinals as account_type_ordinal
@@ -46,7 +60,7 @@ final as (
             on balances_earnings_unioned.account_sub_type = account_sub_type_ordinal.account_sub_type
         left join ordinals as account_number_ordinal
             on balances_earnings_unioned.account_number = account_number_ordinal.account_number
-)
+    {% endif %})
 
 select *
 from final

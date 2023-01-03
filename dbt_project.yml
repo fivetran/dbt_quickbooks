@@ -9,11 +9,11 @@ models:
     +materialized: table
     +schema: quickbooks
     double_entry_transactions:
-      +materialized: ephemeral
+      +materialized: table
     transaction_lines:
-      +materialized: ephemeral
+      +materialized: table
     intermediate:
-      +materialized: ephemeral
+      +materialized: table
 vars:
   quickbooks:
     account: "{{ ref('stg_quickbooks__account') }}"
@@ -53,8 +53,8 @@ vars:
     vendor_credit: "{{ ref('stg_quickbooks__vendor_credit') }}"
     vendor: "{{ ref('stg_quickbooks__vendor') }}"
 
-    financial_statement_ordinal: "{{ ref('quickbooks__financial_statement_ordinal') }}"
-   
+    financial_statement_ordinal: "{{ ref('financial_statement_ordinal_test') }}"
+
     using_address: true
     using_bill: true
     using_credit_memo: true
