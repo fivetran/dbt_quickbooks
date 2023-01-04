@@ -37,8 +37,8 @@ final as (
         transaction_date,
         customer_id,
         vendor_id,
-        amount,
-        credit_card_account_id as account_id,
+        amount, 
+        cast(bank_account_id as {{ dbt.type_string() }}) as account_id,
         class_id,
         'credit' as transaction_type,
         'credit card payment' as transaction_source
@@ -54,7 +54,7 @@ final as (
         customer_id,
         vendor_id,
         amount,
-        bank_account_id as account_id,
+        cast(credit_card_account_id as {{ dbt.type_string() }}) as account_id,
         class_id,   
         'debit' as transaction_type,
         'credit card payment' as transaction_source
