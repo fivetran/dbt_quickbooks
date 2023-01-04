@@ -42,11 +42,11 @@ final as (
         coalesce(account_number_ordinal.ordinal, account_sub_type_ordinal.ordinal, account_type_ordinal.ordinal, account_class_ordinal.ordinal) as account_ordinal
     {% else %}
         case 
-            when account_class = "Asset" then 1
-            when account_class = "Liability" then 2
-            when account_class = "Equity" then 3
-            when account_class = "Revenue" then 1
-            when account_class = "Expense" then 2
+            when account_class = 'Asset' then 1
+            when account_class = 'Liability' then 2
+            when account_class = 'Equity' then 3
+            when account_class = 'Revenue' then 1
+            when account_class = 'Expense' then 2
         end as account_ordinal 
     {% endif %}
     from balances_earnings_unioned
