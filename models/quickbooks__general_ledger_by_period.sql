@@ -11,9 +11,8 @@ retained_earnings as (
 ),
 
 {% if var('financial_statement_ordinal') %}
-
 ordinals as ( 
-    
+
     select 
         cast(account_class as {{ dbt.type_string() }}) as account_class,
         cast(account_type as {{ dbt.type_string() }}) as account_type,
@@ -33,7 +32,7 @@ balances_earnings_unioned as (
 
     select *
     from retained_earnings
-),
+), 
 
 final as (
 
@@ -52,15 +51,16 @@ final as (
     {% endif %}
     from balances_earnings_unioned
     {% if var('financial_statement_ordinal') %}
-        left join ordinals as account_class_ordinal
-            on balances_earnings_unioned.account_class = account_class_ordinal.account_class
-        left join ordinals as account_type_ordinal
-            on balances_earnings_unioned.account_type = account_type_ordinal.account_type
-        left join ordinals as account_sub_type_ordinal
-            on balances_earnings_unioned.account_sub_type = account_sub_type_ordinal.account_sub_type
         left join ordinals as account_number_ordinal
             on balances_earnings_unioned.account_number = account_number_ordinal.account_number
-    {% endif %})
+        left join ordinals as account_sub_type_ordinal
+            on balances_earnings_unioned.account_sub_type = account_sub_type_ordinal.account_sub_type
+        left join ordinals as account_type_ordinal
+            on balances_earnings_unioned.account_type = account_type_ordinal.account_type
+        left join ordinals as account_class_ordinal
+            on balances_earnings_unioned.account_class = account_class_ordinal.account_class
+    {% endif %}
+)
 
 select *
 from final

@@ -336,7 +336,7 @@ models:
       - name: period_ending_balance
         description: Sum of all transaction line adjusted_balances of the account for the period.
       - name: account_ordinal
-        description: Integer ordering of the account based on specific account features.
+        description: Integer value to order the account within final financial statement reporting. The customer can also configure the ordinal; [see the README for details](https://github.com/fivetran/dbt_quickbooks/blob/feature/add-account-class-ordering-to-balance-profit-loss-models/README.md#https://github.com/fivetran/dbt_quickbooks/blob/main/README.md#customize-the-ordinal-for-account-classes-in-dbt_quickbooks-models)
 
   - name: quickbooks__profit_and_loss
     description: >
@@ -370,7 +370,7 @@ models:
       - name: amount
         description: The total period net change for the period.
       - name: account_ordinal
-        description: Integer ordering of the account based on specific account features.
+        description: Integer value to order the account within final financial statement reporting. The customer can also configure the ordinal; [see the README for details](https://github.com/fivetran/dbt_quickbooks/blob/feature/add-account-class-ordering-to-balance-profit-loss-models/README.md#https://github.com/fivetran/dbt_quickbooks/blob/main/README.md#customize-the-ordinal-for-account-classes-in-dbt_quickbooks-models)
   
   - name: quickbooks__balance_sheet
     description: >
@@ -408,4 +408,4 @@ models:
       - name: amount
         description: The total ending period balance.
       - name: account_ordinal
-        description: Integer ordering of the account based on specific account features.
+        description: Integer value to order the account within final financial statement reporting. The customer can also configure the ordinal; [see the README for details](https://github.com/fivetran/dbt_quickbooks/blob/feature/add-account-class-ordering-to-balance-profit-loss-models/README.md#https://github.com/fivetran/dbt_quickbooks/blob/main/README.md#customize-the-ordinal-for-account-classes-in-dbt_quickbooks-models)

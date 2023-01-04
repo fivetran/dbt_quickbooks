@@ -53,7 +53,7 @@ vars:
     vendor_credit: "{{ ref('stg_quickbooks__vendor_credit') }}"
     vendor: "{{ ref('stg_quickbooks__vendor') }}"
 
-    financial_statement_ordinal: "{{ ref('financial_statement_ordinal_test') }}"
+    financial_statement_ordinal: []
 
     using_address: true
     using_bill: true
