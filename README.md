@@ -86,7 +86,11 @@ The current default numbering for ordinals is based on best practices for balanc
  
 If you'd like to modify this, take the following steps:
 
-1) Import a csv with fields into the `seeds` folder, then configure the `financial_statement_ordinal` variable in your `dbt_project.yml` to reference the seed file name. 
+1) Import a csv with fields into the root (not the dbt package) `seeds` folder, then configure the `financial_statement_ordinal` variable in your `dbt_project.yml` to reference the seed file name. 
+  - For example, if you created a seed file named `quickbooks_ordinals.csv`, then you would edit the `financial_statement_ordinal` in your root `dbt_project.yml` as such.
+  ```yml
+  vars:
+     financial_statement_ordinal: "{ ref('quickbooks_ordinals') }"
 2) Examine the `financial_statement_ordinal_example` file in the `integration_tests/seeds` folder to see what your sample seed file should look like. (NOTE: Make sure that your `seed` file name is different from `financial_statement_ordinal_example` to avoid errors.). You can use this file as an example and follow the steps in (1) to see what the ordering of the data looks like. 
 3) When adding and making changes to the seed file, you will need to run the `dbt build` command to compile the updated seed data into the above financial reporting models.
 
