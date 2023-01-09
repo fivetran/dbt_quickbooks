@@ -1,0 +1,12 @@
+report,account_class,account_type,account_sub_type,account_number,cash_flow_type,cash_flow_account_ordinal
+Cash Flow,,Accounts Receivable,,,Operating,1
+Cash Flow,,Bank,,,Cash or Cash Equivalents,2
+Cash Flow,,Credit Card,,,Operating,3
+Cash Flow,,Other Current Asset,,,Operating,4
+Cash Flow,,Accounts Payable,,,Operating,5
+Cash Flow,,Other Current Liability,,,Operating,6
+Cash Flow,,Fixed Asset,,,Investing,7
+Cash Flow,,Other Asset,,,Investing,8
+Cash Flow,,Long Term Liability,,,Financing,9
+Cash Flow,Equity,,,,Financing,10
+
