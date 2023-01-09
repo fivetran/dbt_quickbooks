@@ -2,7 +2,7 @@ config-version: 2
 name: 'quickbooks'
  
 version: '0.6.0'
-require-dbt-version: [">=1.0.0", "<2.0.0"]
+require-dbt-version: [">=1.3.0", "<2.0.0"]
 
 models:
   quickbooks:
@@ -54,9 +54,8 @@ vars:
     vendor_credit: "{{ ref('stg_quickbooks__vendor_credit') }}"
     vendor: "{{ ref('stg_quickbooks__vendor') }}"
 
-    balance_sheet_account_class: "{{ ref('quickbooks__balance_sheet_account_class_order') }}"
-    profit_and_loss_account_class: "{{ ref('quickbooks__profit_and_loss_account_class_order') }}"
-    
+    financial_statement_ordinal: []
+
     using_address: true
     using_bill: true
     using_credit_memo: true

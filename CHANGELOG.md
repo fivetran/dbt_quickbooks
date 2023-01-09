@@ -6,8 +6,9 @@
 ## Additional Features
 - Added `class_id` to `quickbooks__general_ledger`, `quickbooks_general_ledger_by_period`, and `quickbooks__balance_sheet`; add in class values for all intermediate models necessary to pass into final models. [#58](https://github.com/fivetran/dbt_quickbooks/pull/58).
 - Added `source_relation` field to all Quickbooks models to allow customers, if they have multiple Quickbooks connectors, to union them inside the package. [#62](https://github.com/fivetran/dbt_quickbooks/pull/62).
-- Added tests to all final models, particularly to test uniqueness across a combination of columns, including `source_relation`. 
-- Modified `int_quickbooks__retained_earnings` intermediate model to accurately reflect `account_name` field value, from "Net Income / Retained Earnings Adjustment" to "Net Income Adjustment". [#66](https://github.com/fivetran/dbt_quickbooks/pull/66)
+- Added tests to all final models, particularly to test uniqueness across a combination of columns, including `source_relation`. [#62](https://github.com/fivetran/dbt_quickbooks/pull/62)
+- Added `account_ordinal` value to `quickbooks__general_ledger_by_period`, `quickbooks__balance_sheet` and `quickbooks__profit_and_loss` to allow customers to order their financial reports based on the account field values. The ordinals can be further configured by the customer ([see the README](https://github.com/fivetran/dbt_quickbooks/blob/main/README.md) for details and use the seed [`financial_statement_ordinal_example` file](https://github.com/fivetran/dbt_quickbooks/tree/main/integration_tests/seeds/financial_statement_ordinal_example.csv) for guidance). [#65](https://github.com/fivetran/dbt_quickbooks/pull/65)
+- Modified `int_quickbooks__retained_earnings` intermediate model to accurately reflect `account_name` field, from "Net Income / Retained Earnings Adjustment" to "Net Income Adjustment". [#66](https://github.com/fivetran/dbt_quickbooks/pull/66)
 # dbt_quickbooks_source v0.6.0
 ## 🚨 Breaking Changes 🚨:
 [PR #51](https://github.com/fivetran/dbt_quickbooks/pull/51) includes the following breaking changes:
