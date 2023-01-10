@@ -178,6 +178,54 @@ models:
       - name: recent_payment_date
         description: The last date a payment was provided for the bill or invoice.
 
+  - name: quickbooks__cash_flow_classifications
+    description: >
+      Table that provides additional classifications necessary for the cash flow statement, like the 
+      cash flow type and ordinals.
+
+  - name: quickbooks__cash_flow_statement
+    description: >
+      Table that provides all line items necessary to construct a cash flow statement.
+    columns:
+      - name: account_unique_id
+        description: Unique identifier of the cash flow statement account line, dependent on account_id, class_id, source_relation and calendar_date.
+        tests:
+          - unique
+          - not_null
+      - name: calendar_date
+        description: Timestamp of the first calendar date of the month.
+      - name: account_class
+        description: The account classification.
+      - name: is_sub_account
+        description: Boolean indicating whether the account is a sub account (true) or a parent account (false).
+      - name: parent_account_number
+        description: The parent account number. If the account is the parent account then the account number is recorded.
+      - name: parent_account_name
+        description: The parent account name. If the account is the parent account then the account name is recorded.
+      - name: class_id
+        description: Reference to the class associated with the account.
+      - name: account_type
+        description: The type of the account.
+      - name: account_sub_type
+        description: Sub type of the account.
+      - name: account_number
+        description: User defined number of the account.
+      - name: account_name
+        description: The name of the account.
+      - name: account_id
+        description: The identifier of the account.
+      - name: cash_flow_type
+        description: The type of cash flow (Defaults are Cash or Cash Equivalents, Investing, Operating, Financing). The customer can also configure the cash flow type; [see the README for details].
+      - name: cash_flow_account_ordinal
+        description: Integer value to order the account within final cash flow statement reporting. The customer can also configure the ordinal; [see the README for details].
+      - name: cash_ending_period
+        description: The total ending period balance cash for every cash flow account line.
+      - name: cash_beginning_period
+        description: The total beginning period balance cash for every cash flow account line.
+      - name: cash_net_period
+        description: The net cash change from the beginning to the end of the period for every cash flow account line.
+
+
   - name: quickbooks__expenses_sales_enhanced
     description: >
       Table that unions all expense records from int_quickbooks__expenses_union and all sales records from the int_quickbooks__sales_union while also adding 

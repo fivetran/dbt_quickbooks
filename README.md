@@ -81,20 +81,22 @@ vars:
     quickbooks_union_databases: ['quickbooks_usa','quickbooks_canada'] # use this if the data is in different databases/projects but uses the same schema name
 ```
 
-### Customize the ordinal for account classes in `dbt_quickbooks` models 
-The current default numbering for ordinals is based on best practices for balance sheets and profit-and-loss statements in accounting. You can see these ordinals in action in the `quickbooks__general_ledger_by_period`, `quickbooks__balance_sheet` and `quickbooks__profit_and_loss` models. The ordinals are assigned off of the `account_class` values.
+### Customize the ordinal and/or cash flow types for account classes in `dbt_quickbooks` models 
+The current default numbering for ordinals is based on best practices for balance sheets and profit-and-loss statements in accounting. You can see these ordinals being implemented in the `quickbooks__general_ledger_by_period` and `quickbooks__cash_flow_classifications` models, then implemented in the `quickbooks__balance_sheet`, `quickbooks__profit_and_loss`, and `quickbooks__cash_flow_statement` models. The ordinals and cash flow types are assigned off of `account_class` values.
  
-If you'd like to modify this, take the following steps:
+If you'd like to modify this, take the following steps to configure the fields you'd like to modify:
 
-1) Import a csv with fields into the `seeds` folder, then configure the `financial_statement_ordinal` variable in your `dbt_project.yml` to reference the seed file name. 
-2) Examine the `financial_statement_ordinal_example` file in the `integration_tests/seeds` folder to see what your sample seed file should look like. (NOTE: Make sure that your `seed` file name is different from `financial_statement_ordinal_example` to avoid errors.). You can use this file as an example and follow the steps in (1) to see what the ordering of the data looks like. 
-3) When adding and making changes to the seed file, you will need to run the `dbt build` command to compile the updated seed data into the above financial reporting models.
+1) Import a csv with fields into the `seeds` folder, then configure either your  `financial_statement_ordinal` and/or `cash_flow_statement_type_ordinal` variables in your `dbt_project.yml` to reference the seed file name. 
+2) Examine the `financial_statement_ordinal_example` and `cash_flow_statement_type_ordinal_example` files in the `integration_tests/seeds` folder to see what your sample seed file(s) should look like. (NOTE: Make sure that your `seed` file name is different from `financial_statement_ordinal_example`  and `cash_flow_statement_type_ordinal_example` to avoid errors.). You can use these files as an example and follow the steps in (1) to see what the ordering of the data looks like. 
+3) When adding and making changes to the seed files, you will need to run the `dbt build` command to compile the updated seed data into the above financial reporting models.
 
-These are our recommended best practices to follow with your seed file (you can see them in action in the `financial_statement_ordinal_example` file): 
+These are our recommended best practices to follow with your seed file (you can see them in action in the `financial_statement_ordinal_example` and `cash_flow_statement_type_ordinal_example` files): 
+- REQUIRED: Every row should have a non-null `ordinal` (and for `cash_flow_statement_type_ordinal_example`, `cash_flow_type`) value. 
 - REQUIRED: In each row of the seed file, only populate ONE of the columns of `account_class`, `account_type`, `account_sub_type`, and `account_number` to avoid duplicated ordinals and test failures. This should also make the logic cleaner in defining which account value takes precedence in the ordering hierarchy. 
-- We recommend creating ordinals for each `account_class` value available (usually 'Asset', 'Liability', 'Equity' for the Profit and Loss sheet, and 'Revenue' and 'Expense' for the Balance Sheet) to make sure each financial reporting line has an ordinal assigned to it. Then you can create any additional customization as needed with the more specific account fields to order even further.  
-- Fill out the `report` field as either `Balance Sheet` if the particular row belongs in `quickbooks__balance_sheet`, or `Profit and Loss` for `quickbooks__profit_and_loss`. 
-- We recommend ordering the `ordinal` for each report separately in the seed, i.e. have ordinals for `quickbooks__balance_sheet` and `quickbooks__profit_and_loss`  start at 1 each, to make your reporting more clean. 
+- In `financial_statement_ordinal_example`, we recommend creating ordinals for each `account_class` value available (usually 'Asset', 'Liability', 'Equity' for the Profit and Loss sheet, and 'Revenue' and 'Expense' for the Balance Sheet) to make sure each financial reporting line has an ordinal assigned to it. Then you can create any additional customization as needed with the more specific account fields to order even further. 
+- In `financial_statement_ordinal_example`, fill out the `report` field as either `Balance Sheet` if the particular row belongs in `quickbooks__balance_sheet`, `Profit and Loss` for `quickbooks__profit_and_loss`.  
+- In `cash_flow_statement_type_ordinal_example`, the `report` field should always be `Cash Flow`.
+- In `financial_statement_ordinal_example`, we recommend ordering the `ordinal` for each report separately in the seed, i.e. have ordinals for `quickbooks__balance_sheet` and `quickbooks__profit_and_loss` start at 1 each, to make your reporting more clean. 
 
 ### Changing the Build Schema
 By default this package will build the QuickBooks staging models within a schema titled (<target_schema> + `_quickbooks_staging`) and QuickBooks final models within a schema titled (<target_schema> + `_quickbooks`) in your target database. If this is not where you would like your modeled QuickBooks data to be written to, add the following configuration to your `dbt_project.yml` file:

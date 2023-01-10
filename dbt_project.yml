@@ -56,6 +56,7 @@ vars:
 
     financial_statement_ordinal: []
     cash_flow_statement_type_ordinal: []
+    # cash_flow_statement_type_ordinal: "{{ ref('cash_flow_statement_type_ordinal_test') }}"
 
     using_address: true
     using_bill: true

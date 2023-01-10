@@ -17,7 +17,6 @@ with cash_flow_key as (
    from {{ ref('quickbooks__balance_sheet') }}
 ),
  
- 
 {% if var('cash_flow_statement_type_ordinal') %}
 ordinals as (
  
@@ -32,12 +31,11 @@ ordinals as (
 ),
 {% endif %}
  
- 
 cash_flow_types as (
- 
+
    select cash_flow_key.*,
    {% if var('cash_flow_statement_type_ordinal') %}
-       ordinals.cash_flow_type
+       coalesce(account_number_ordinal.cash_flow_type, account_sub_type_ordinal.cash_flow_type, account_type_ordinal.cash_flow_type, account_class_ordinal.cash_flow_type) as cash_flow_type 
    {% else %}
        case when account_type = 'Bank' then 'Cash or Cash Equivalents'
            when account_type = 'Accounts Receivable' then 'Operating'
@@ -54,12 +52,13 @@ cash_flow_types as (
    from cash_flow_key
  
    {% if var('cash_flow_statement_type_ordinal') %}
-   {%- set cash_flow_type_field = ['account_number', 'account_sub_type', 'account_type', 'account_class'] -%}
+
+   {% set cash_flow_type_fields = ['account_number', 'account_sub_type', 'account_type', 'account_class'] %}
  
-   {% for cash_flow_type_field in cash_flow_type_fields -%}       
+   {% for cash_flow_type_field in cash_flow_type_fields %}       
        left join ordinals as {{ cash_flow_type_field }}_ordinal
            on cash_flow_key.{{ cash_flow_type_field }} = {{ cash_flow_type_field }}_ordinal.{{ cash_flow_type_field }}
-   {%- endfor %}
+   {% endfor %}
  
    {% endif %}
 ),
@@ -67,8 +66,9 @@ cash_flow_types as (
 cash_flow_ordinals as (
  
    select cash_flow_types.*,
+
    {% if var('cash_flow_statement_type_ordinal') %}
-       coalesce(account_number_ordinal.ordinal, account_sub_type_ordinal.ordinal, account_type_ordinal.ordinal, account_class_ordinal.ordinal, cash_flow_type.ordinal) as cash_flow_account_ordinal
+       coalesce(account_number_ordinal.ordinal, account_sub_type_ordinal.ordinal, account_type_ordinal.ordinal, account_class_ordinal.ordinal, cash_flow_type_ordinal.ordinal) as cash_flow_account_ordinal
    {% else %}
        case when cash_flow_type = 'Cash or Cash Equivalents' then 1
            when cash_flow_type = 'Operating' then 2
@@ -76,15 +76,17 @@ cash_flow_ordinals as (
            when cash_flow_type  = 'Financing' then 4
        end as cash_flow_account_ordinal
    {% endif %}
+
    from cash_flow_types
+
    {% if var('cash_flow_statement_type_ordinal') %}
  
-   {%- set ordinal_field = ['cash_flow_type', 'account_number', 'account_sub_type', 'account_type', 'account_class'] -%}
+   {% set ordinal_fields = ['cash_flow_type', 'account_number', 'account_sub_type', 'account_type', 'account_class'] %}
  
-   {% for ordinal_field in ordinal_fields -%}       
+   {% for ordinal_field in ordinal_fields %} 
        left join ordinals as {{ ordinal_field }}_ordinal
            on cash_flow_types.{{ ordinal_field }} = {{ ordinal_field }}_ordinal.{{ ordinal_field }}
-   {%- endfor %}
+   {% endfor %}
  
    {% endif %}
 )

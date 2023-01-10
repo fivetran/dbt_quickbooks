@@ -1,4 +1,4 @@
-report,account_class,account_type,account_sub_type,account_number,cash_flow_type,cash_flow_account_ordinal
+report,account_class,account_type,account_sub_type,account_number,cash_flow_type,ordinal
 Cash Flow,,Accounts Receivable,,,Operating,1
 Cash Flow,,Bank,,,Cash or Cash Equivalents,2
 Cash Flow,,Credit Card,,,Operating,3
