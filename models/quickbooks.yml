@@ -178,7 +178,7 @@ models:
       - name: recent_payment_date
         description: The last date a payment was provided for the bill or invoice.
 
-  - name: quickbooks__cash_flow_classifications
+  - name: int_quickbooks__cash_flow_classifications
     description: >
       Table that provides additional classifications necessary for the cash flow statement, like the 
       cash flow type and ordinals.
@@ -192,8 +192,8 @@ models:
         tests:
           - unique
           - not_null
-      - name: calendar_date
-        description: Timestamp of the first calendar date of the month.
+      - name: cash_flow_period
+        description: Timestamp of the first date for the cash flow period.
       - name: account_class
         description: The account classification.
       - name: is_sub_account
@@ -215,9 +215,9 @@ models:
       - name: account_id
         description: The identifier of the account.
       - name: cash_flow_type
-        description: The type of cash flow (Defaults are Cash or Cash Equivalents, Investing, Operating, Financing). The customer can also configure the cash flow type; [see the README for details].
-      - name: cash_flow_account_ordinal
-        description: Integer value to order the account within final cash flow statement reporting. The customer can also configure the ordinal; [see the README for details].
+        description: The type of cash flow (Defaults are Cash or Cash Equivalents, Investing, Operating, Financing). The customer can also configure the cash flow type; [see the README for details](https://github.com/fivetran/dbt_quickbooks/blob/feature/quickbooks-updates-project/README.md#customize-the-account-ordering-of-your-financial-statement-models).
+      - name: ordinal
+        description: Integer value to order the account within final cash flow statement reporting. The customer can also configure the ordinal; [see the README for details](https://github.com/fivetran/dbt_quickbooks/blob/feature/quickbooks-updates-project/README.md#customize-the-account-ordering-of-your-financial-statement-models).
       - name: cash_ending_period
         description: The total ending period balance cash for every cash flow account line.
       - name: cash_beginning_period
@@ -459,4 +459,4 @@ models:
       - name: amount
         description: The total ending period balance.
       - name: account_ordinal
-        description: Integer value to order the account within final financial statement reporting. The customer can also configure the ordinal; [see the README for details](https://github.com/fivetran/dbt_quickbooks/blob/feature/add-account-class-ordering-to-balance-profit-loss-models/README.md#https://github.com/fivetran/dbt_quickbooks/blob/main/README.md#customize-the-ordinal-for-account-classes-in-dbt_quickbooks-models)
+        description: Integer value to order the account within final financial statement reporting. The customer can also configure the ordinal; [see the README for details](https://github.com/fivetran/dbt_quickbooks/blob/feature/quickbooks-updates-project/README.md#customize-the-account-ordering-of-your-financial-statement-models)

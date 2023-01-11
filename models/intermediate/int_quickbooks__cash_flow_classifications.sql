@@ -1,6 +1,6 @@
 with cash_flow_key as (
  
-   select calendar_date,
+   select calendar_date as cash_flow_period,
        source_relation,
        account_class,
        class_id,
@@ -40,9 +40,10 @@ cash_flow_types as (
        case when account_type = 'Bank' then 'Cash or Cash Equivalents'
            when account_type = 'Accounts Receivable' then 'Operating'
            when account_type = 'Credit Card' then 'Operating'
-           when account_type = 'Other Curent Asset' then 'Operating'
+           when account_type = 'Other Current Asset' then 'Operating'
            when account_type = 'Accounts Payable' then 'Operating'
            when account_type = 'Other Current Liability' then 'Operating'
+           when account_name = 'Net Income Adjustment' then 'Operating'
            when account_type = 'Fixed Asset' then 'Investing'
            when account_type = 'Other Asset' then 'Investing'
            when account_type = 'Long Term Liability' then 'Financing'
@@ -68,7 +69,7 @@ cash_flow_ordinals as (
    select cash_flow_types.*,
 
    {% if var('cash_flow_statement_type_ordinal') %}
-       coalesce(account_number_ordinal.ordinal, account_sub_type_ordinal.ordinal, account_type_ordinal.ordinal, account_class_ordinal.ordinal, cash_flow_type_ordinal.ordinal) as cash_flow_account_ordinal
+       coalesce(account_number_ordinal.ordinal, account_sub_type_ordinal.ordinal, account_type_ordinal.ordinal, account_class_ordinal.ordinal, cash_flow_type_ordinal.ordinal) as ordinal
    {% else %}
        case when cash_flow_type = 'Cash or Cash Equivalents' then 1
            when cash_flow_type = 'Operating' then 2
