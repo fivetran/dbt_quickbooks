@@ -31,7 +31,7 @@ ordinals as (
 ),
 {% endif %}
  
-cash_flow_types as (
+cash_flow_types_and_ordinals as (
 
    select cash_flow_key.*,
    {% if var('cash_flow_statement_type_ordinal') %}
@@ -49,7 +49,18 @@ cash_flow_types as (
            when account_type = 'Long Term Liability' then 'Financing'
            when account_class = 'Equity' then 'Financing'
            end as cash_flow_type
+    {% endif %},
+
+    {% if var('cash_flow_statement_type_ordinal') %}
+       coalesce(account_number_ordinal.ordinal, account_sub_type_ordinal.ordinal, account_type_ordinal.ordinal, account_class_ordinal.ordinal) as ordinal
+    {% else %}
+       case when cash_flow_type = 'Cash or Cash Equivalents' then 1
+           when cash_flow_type = 'Operating' then 2
+           when cash_flow_type  = 'Investing' then 3
+           when cash_flow_type  = 'Financing' then 4
+       end as ordinal
    {% endif %}
+
    from cash_flow_key
  
    {% if var('cash_flow_statement_type_ordinal') %}
@@ -62,36 +73,8 @@ cash_flow_types as (
    {% endfor %}
  
    {% endif %}
-),
- 
-cash_flow_ordinals as (
- 
-   select cash_flow_types.*,
-
-   {% if var('cash_flow_statement_type_ordinal') %}
-       coalesce(account_number_ordinal.ordinal, account_sub_type_ordinal.ordinal, account_type_ordinal.ordinal, account_class_ordinal.ordinal, cash_flow_type_ordinal.ordinal) as ordinal
-   {% else %}
-       case when cash_flow_type = 'Cash or Cash Equivalents' then 1
-           when cash_flow_type = 'Operating' then 2
-           when cash_flow_type  = 'Investing' then 3
-           when cash_flow_type  = 'Financing' then 4
-       end as ordinal
-   {% endif %}
-
-   from cash_flow_types
-
-   {% if var('cash_flow_statement_type_ordinal') %}
- 
-   {% set ordinal_fields = ['cash_flow_type', 'account_number', 'account_sub_type', 'account_type', 'account_class'] %}
- 
-   {% for ordinal_field in ordinal_fields %} 
-       left join ordinals as {{ ordinal_field }}_ordinal
-           on cash_flow_types.{{ ordinal_field }} = {{ ordinal_field }}_ordinal.{{ ordinal_field }}
-   {% endfor %}
- 
-   {% endif %}
 )
- 
+
 select *
-from cash_flow_ordinals
+from cash_flow_types_and_ordinals
 
