@@ -215,9 +215,9 @@ models:
       - name: account_id
         description: The identifier of the account.
       - name: cash_flow_type
-        description: The type of cash flow (Defaults are Cash or Cash Equivalents, Investing, Operating, Financing). The customer can also configure the cash flow type; [see the README for details](https://github.com/fivetran/dbt_quickbooks/blob/feature/quickbooks-updates-project/README.md#customize-the-account-ordering-of-your-financial-statement-models).
+        description: The type of cash flow (Defaults are Cash or Cash Equivalents, Investing, Operating, Financing). The customer can also configure the cash flow type; [see the README for details](https://github.com/fivetran/dbt_quickbooks/blob/main/README.md#customize-the-account-ordering-of-your-financial-statement-models).
       - name: ordinal
-        description: Integer value to order the account within final cash flow statement reporting. The customer can also configure the ordinal; [see the README for details](https://github.com/fivetran/dbt_quickbooks/blob/feature/quickbooks-updates-project/README.md#customize-the-account-ordering-of-your-financial-statement-models).
+        description: Integer value to order the account within final cash flow statement reporting. The customer can also configure the ordinal; [see the README for details](https://github.com/fivetran/dbt_quickbooks/blob/main/README.md#customize-the-account-ordering-of-your-financial-statement-models).
       - name: cash_ending_period
         description: The total ending period balance cash for every cash flow account line.
       - name: cash_beginning_period

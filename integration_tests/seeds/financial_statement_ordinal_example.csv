@@ -1,21 +1,11 @@
-report,account_class,account_type,account_sub_type,account_number,cash_flow_type,ordinal
-Profit and Loss,Revenue,,,,,1
-Profit and Loss,,,,4998-00,,2
-Profit and Loss,Expense,,,,,3
-Profit and Loss,,Cost of Goods Sold,,,,4
-Balance Sheet,Asset,,,,,1
-Balance Sheet,,,Savings,,,2
-Balance Sheet,Liability,,,,,3
-Balance Sheet,,Credit Card,,,,4
-Balance Sheet,Equity,,,,,5
-Balance Sheet,,,,3111-00,,6 
-Cash Flow,,Accounts Receivable,,,Operating,1
-Cash Flow,,Bank,,,Operating,2
-Cash Flow,,Credit Card,,,Operating,3
-Cash Flow,,Other Current Asset,,,Operating,4
-Cash Flow,,Accounts Payable,,,Operating,5
-Cash Flow,,Other Current Liability,,,Operating,6
-Cash Flow,,Fixed Asset,,,Investing,7
-Cash Flow,,Other Asset,,,Investing,8
-Cash Flow,,Long Term Liability,,,Financing,9
-Cash Flow,Equity,,,,Financing,10
+report,account_class,account_type,account_sub_type,account_number,ordinal
+Profit and Loss,Revenue,,,,1
+Profit and Loss,,,,4998-00,2
+Profit and Loss,Expense,,,,3
+Profit and Loss,,Cost of Goods Sold,,,4
+Balance Sheet,Asset,,,,1
+Balance Sheet,,,Savings,,2
+Balance Sheet,Liability,,,,3
+Balance Sheet,,Credit Card,,,4
+Balance Sheet,Equity,,,,5
+Balance Sheet,,,,3111-00,6
