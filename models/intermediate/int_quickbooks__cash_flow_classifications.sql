@@ -75,7 +75,7 @@ cash_flow_ordinals as (
            when cash_flow_type = 'Operating' then 2
            when cash_flow_type  = 'Investing' then 3
            when cash_flow_type  = 'Financing' then 4
-       end as cash_flow_account_ordinal
+       end as ordinal
    {% endif %}
 
    from cash_flow_types
