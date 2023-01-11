@@ -2,7 +2,7 @@ packages:
   # - package: fivetran/quickbooks_source
   #   version: [">=0.6.0", "<0.7.0"]
 
-#REMEMBER TO CHANGE REVISION BEFORE MERGING
+#REMEMBER TO CHANGE REVISION BEFORE MERGING BOTH SOURCE AND TRANSFORM BRANCHES INTO `main`
   - git: https://github.com/fivetran/dbt_quickbooks_source.git
     revision: feature/quickbooks-updates-project
     warn-unpinned: false 

@@ -80,11 +80,12 @@ vars:
     quickbooks_union_schemas: ['quickbooks_usa','quickbooks_canada'] # use this if the data is in different schemas/datasets of the same database/project
     quickbooks_union_databases: ['quickbooks_usa','quickbooks_canada'] # use this if the data is in different databases/projects but uses the same schema name
 ```
-  
+
 ### Customize the account ordering of your financial statement models.
-The current default numbering for ordinals [in the `quickbooks__general_ledger_by_period](https://github.com/fivetran/dbt_quickbooks/blob/main/models/quickbooks__general_ledger_by_period.sql#L44-L50) and [the `int_quickbooks__cash_flow_classifications`](https://github.com/fivetran/dbt_quickbooks/blob/main/models/int_quickbooks__cash_flow_classifications.sql) models is based on best practices for balance sheets, profit-and-loss, and cash flow statements in accounting. You can see these ordinals being implemented in the `quickbooks__general_ledger_by_period` and `quickbooks__cash_flow_classifications` models, then implemented in the `quickbooks__balance_sheet`, `quickbooks__profit_and_loss`, and `quickbooks__cash_flow_statement` models. The balance sheet and profit-and-loss `ordinal` is assigned off of `account_class` values, the `cash_flow_type` is assigned off of `account_class`, `account_name` or `account_type`, and the cash flow ordinal is assigned off of `cash_flow_type`.
- 
+The current default numbering for ordinals [in the `quickbooks__general_ledger_by_period](https://github.com/fivetran/dbt_quickbooks/blob/main/models/quickbooks__general_ledger_by_period.sql#L44-L50) and [the `int_quickbooks__cash_flow_classifications`](https://github.com/fivetran/dbt_quickbooks/blob/main/models/intermediate/int_quickbooks__cash_flow_classifications.sql) models is based on best practices for balance sheets, profit-and-loss, and cash flow statements in accounting. You can see these ordinals being implemented in the `quickbooks__general_ledger_by_period` and `quickbooks__cash_flow_classifications` models, then implemented in the `quickbooks__balance_sheet`, `quickbooks__profit_and_loss`, and `quickbooks__cash_flow_statement` models. The balance sheet and profit-and-loss `ordinal` is assigned off of `account_class` values, the `cash_flow_type` is assigned off of `account_class`, `account_name` or `account_type`, and the cash flow ordinal is assigned off of `cash_flow_type`.
+
 If you'd like to modify either of these configurations, take the following steps to configure the fields you'd like to modify:
+
 
 1) Import a csv with fields into the root (not the dbt package) `seeds` folder, then configure either your `financial_statement_ordinal` and/or `cash_flow_statement_type_ordinal` variables in your `dbt_project.yml` to reference the seed file name. 
 - For example, if you created a seed file named `quickbooks_ordinals.csv`, then you would edit the `financial_statement_ordinal` in your root `dbt_project.yml` as such.
@@ -93,6 +94,7 @@ If you'd like to modify either of these configurations, take the following steps
   vars:
      financial_statement_ordinal: "{ ref('quickbooks_ordinals') }"
  
+
 2) Examine the [`financial_statement_ordinal_example` file](https://github.com/fivetran/dbt_quickbooks/tree/main/integration_tests/seeds/financial_statement_ordinal_example.csv) and/or [the `cash_flow_statement_type_ordinal_example` file](https://github.com/fivetran/dbt_quickbooks/blob/main/integration_tests/seeds/cash_flow_statement_type_ordinal_example.csv) to see what your sample seed file should look like. (NOTE: Make sure that your `seed` file name is different from `financial_statement_ordinal_example` to avoid errors.). You can use this file as an example and follow the steps in (1) to see what the ordering of the data looks like. 
 3) When adding and making changes to the seed file, you will need to run the `dbt build` command to compile the updated seed data into the above financial reporting models.
 
