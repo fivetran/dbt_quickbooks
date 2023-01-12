@@ -120,15 +120,15 @@ If you'd like to modify this, take the following steps:
   vars:
      financial_statement_ordinal: "{{ ref('quickbooks_ordinals') }}"
  
-2) Examine the [`financial_statement_ordinal_example` file](https://github.com/fivetran/dbt_quickbooks/tree/main/integration_tests/seeds/financial_statement_ordinal_example.csv) to see what your sample seed file should look like. (NOTE: Make sure that your `seed` file name is different from `financial_statement_ordinal_example` to avoid errors.). You can use this file as an example and follow the steps in (1) to see what the ordering of the data looks like, then modify as needed. 
+2) Examine the [`financial_statement_ordinal_example` file](https://github.com/fivetran/dbt_quickbooks/tree/main/example_ordinal_seeds/seeds/financial_statement_ordinal_example.csv) to see what your sample seed file should look like. (NOTE: Make sure that your `seed` file name is different from `financial_statement_ordinal_example` to avoid errors.). You can use this file as an example and follow the steps in (1) to see what the ordering of the data looks like, then modify as needed. 
 
 3) When adding and making changes to the seed file, you will need to run the `dbt build` command to compile the updated seed data into the above financial reporting models.
 
-These are our recommended best practices to follow with your seed file (you can see them in action in the `financial_statement_ordinal_example` file): 
+These are our recommended best practices to follow with your seed file ([you can see them in action in the `financial_statement_ordinal_example` file](https://github.com/fivetran/dbt_quickbooks/tree/main/example_ordinal_seeds/seeds/financial_statement_ordinal_example.csv)): 
 - REQUIRED: In each row of the seed file, only populate **ONE** of the `account_class`, `account_type`, `account_sub_type`, and `account_number` columns  to avoid duplicated ordinals and test failures. This should also make the logic cleaner in defining which account value takes precedence in the ordering hierarchy. 
 - We recommend creating ordinals for each `account_class` value available (usually 'Asset', 'Liability', 'Equity' for the Profit and Loss sheet, and 'Revenue' and 'Expense' for the Balance Sheet) to make sure each financial reporting line has an ordinal assigned to it. Then you can create any additional customization as needed with the more specific account fields to order even further.  
 - Fill out the `report` field as either `Balance Sheet` if the particular row belongs in `quickbooks__balance_sheet`, or `Profit and Loss` for `quickbooks__profit_and_loss`. 
-- We recommend ordering the `ordinal` for each report separately in the seed, i.e. have ordinals for `quickbooks__balance_sheet` and `quickbooks__profit_and_loss`  start at 1 each, to make your reporting more clean. 
+- We recommend ordering the `ordinal` for each report separately in the seed, i.e. have ordinals for `quickbooks__balance_sheet` and `quickbooks__profit_and_loss` start at 1 each, to make your reporting more clean. 
 
 We'd love for you to share your experiences with the ordinal seed file with us [in the Fivetran community user group](https://community.fivetran.com/t5/user-group-for-dbt/gh-p/dbt-user-group) so we can make these model and seed configurations even better for you in the future!
 
