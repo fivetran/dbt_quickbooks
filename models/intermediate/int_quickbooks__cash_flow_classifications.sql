@@ -35,7 +35,8 @@ cash_flow_types_and_ordinals as (
 
    select cash_flow_key.*,
    {% if var('cash_flow_statement_type_ordinal') %}
-       coalesce(account_number_ordinal.cash_flow_type, account_sub_type_ordinal.cash_flow_type, account_type_ordinal.cash_flow_type, account_class_ordinal.cash_flow_type) as cash_flow_type 
+       coalesce(account_number_ordinal.cash_flow_type, account_sub_type_ordinal.cash_flow_type, account_type_ordinal.cash_flow_type, account_class_ordinal.cash_flow_type) as cash_flow_type,
+       coalesce(account_number_ordinal.ordinal, account_sub_type_ordinal.ordinal, account_type_ordinal.ordinal, account_class_ordinal.ordinal) as cash_flow_ordinal 
    {% else %}
        case when account_type = 'Bank' then 'Cash or Cash Equivalents'
            when account_type = 'Accounts Receivable' then 'Operating'
@@ -48,18 +49,20 @@ cash_flow_types_and_ordinals as (
            when account_type = 'Other Asset' then 'Investing'
            when account_type = 'Long Term Liability' then 'Financing'
            when account_class = 'Equity' then 'Financing'
-           end as cash_flow_type
-    {% endif %},
-
-    {% if var('cash_flow_statement_type_ordinal') %}
-       coalesce(account_number_ordinal.ordinal, account_sub_type_ordinal.ordinal, account_type_ordinal.ordinal, account_class_ordinal.ordinal) as ordinal
-    {% else %}
-       case when cash_flow_type = 'Cash or Cash Equivalents' then 1
-           when cash_flow_type = 'Operating' then 2
-           when cash_flow_type  = 'Investing' then 3
-           when cash_flow_type  = 'Financing' then 4
-       end as ordinal
-   {% endif %}
+        end as cash_flow_type,
+        case when account_type = 'Bank' then 1
+           when account_type = 'Accounts Receivable' then 2
+           when account_type = 'Credit Card' then 2
+           when account_type = 'Other Current Asset' then 2
+           when account_type = 'Accounts Payable' then 2
+           when account_type = 'Other Current Liability' then 2
+           when account_name = 'Net Income Adjustment' then 2
+           when account_type = 'Fixed Asset' then 3
+           when account_type = 'Other Asset' then 3
+           when account_type = 'Long Term Liability' then 4
+           when account_class = 'Equity' then 4
+        end as cash_flow_ordinal
+    {% endif %}
 
    from cash_flow_key
  

@@ -215,9 +215,9 @@ models:
       - name: account_id
         description: The identifier of the account.
       - name: cash_flow_type
-        description: The type of cash flow (Defaults are Cash or Cash Equivalents, Investing, Operating, Financing). The customer can also configure the cash flow type; [see the README for details](https://github.com/fivetran/dbt_quickbooks/blob/main/README.md#customize-the-account-ordering-of-your-financial-statement-models).
-      - name: ordinal
-        description: Integer value to order the account within final cash flow statement reporting. The customer can also configure the ordinal; [see the README for details](https://github.com/fivetran/dbt_quickbooks/blob/main/README.md#customize-the-account-ordering-of-your-financial-statement-models).
+        description: The type of cash flow (Defaults are Cash or Cash Equivalents, Investing, Operating, Financing). The customer can also configure the cash flow type; [see the README for details](https://github.com/fivetran/dbt_quickbooks/blob/main/README.md#customize-the-cash-flow-model).
+      - name: cash_flow_ordinal
+        description: Integer value to order the account within final cash flow statement reporting. The customer can also configure the ordinal; [see the README for details](https://github.com/fivetran/dbt_quickbooks/blob/main/README.md#customize-the-cash-flow-model).
       - name: cash_ending_period
         description: The total ending period balance cash for every cash flow account line.
       - name: cash_beginning_period
@@ -387,7 +387,7 @@ models:
       - name: period_ending_balance
         description: Sum of all transaction line adjusted_balances of the account for the period.
       - name: account_ordinal
-        description: Integer value to order the account within final financial statement reporting. The customer can also configure the ordinal; [see the README for details](https://github.com/fivetran/dbt_quickbooks/blob/feature/add-account-class-ordering-to-balance-profit-loss-models/README.md#https://github.com/fivetran/dbt_quickbooks/blob/main/README.md#customize-the-ordinal-for-account-classes-in-dbt_quickbooks-models)
+        description: Integer value to order the account within final financial statement reporting. The customer can also configure the ordinal; [see the README for details](https://github.com/fivetran/dbt_quickbooks/blob/main/README.md#customize-the-account-ordering-of-your-profit-loss-and-balance-sheet-models)
 
   - name: quickbooks__profit_and_loss
     description: >
@@ -421,7 +421,7 @@ models:
       - name: amount
         description: The total period net change for the period.
       - name: account_ordinal
-        description: Integer value to order the account within final financial statement reporting. The customer can also configure the ordinal; [see the README for details](https://github.com/fivetran/dbt_quickbooks/blob/feature/add-account-class-ordering-to-balance-profit-loss-models/README.md#https://github.com/fivetran/dbt_quickbooks/blob/main/README.md#customize-the-ordinal-for-account-classes-in-dbt_quickbooks-models)
+        description: Integer value to order the account within final financial statement reporting. The customer can also configure the ordinal; [see the README for details](https://github.com/fivetran/dbt_quickbooks/blob/main/README.md#customize-the-account-ordering-of-your-profit-loss-and-balance-sheet-models)
   
   - name: quickbooks__balance_sheet
     description: >

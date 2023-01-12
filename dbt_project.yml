@@ -55,7 +55,7 @@ vars:
     vendor: "{{ ref('stg_quickbooks__vendor') }}"
 
     financial_statement_ordinal: []
-    cash_flow_statement_type_ordinal: "{{ ref('cash_flow_statement_type_ordinal_test') }}"
+    cash_flow_statement_type_ordinal: []
 
     using_address: true
     using_bill: true
