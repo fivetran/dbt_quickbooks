@@ -19,13 +19,6 @@ gl_union as (
         transaction_source
     from {{ ref('int_quickbooks__purchase_double_entry') }}
 
-    {% if var('using_bill', True) %}
-    union all
-
-    select *
-    from {{ ref('int_quickbooks__bill_payment_double_entry') }}
-    {% endif %}
-
     union all
 
     select transaction_id,
@@ -40,6 +33,13 @@ gl_union as (
         transaction_type,
         transaction_source 
     from unioned_models
+
+    {% if var('using_bill', True) %}
+    union all
+
+    select *
+    from {{ ref('int_quickbooks__bill_payment_double_entry') }}
+    {% endif %}
 ),
 
 accounts as (
