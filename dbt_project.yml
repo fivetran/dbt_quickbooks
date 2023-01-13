@@ -9,7 +9,7 @@ models:
     +materialized: table
     +schema: quickbooks
     double_entry_transactions:
-      +materialized: ephemeral
+      +materialized: table
     transaction_lines:
       +materialized: ephemeral
     intermediate:

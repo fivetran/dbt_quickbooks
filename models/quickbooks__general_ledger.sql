@@ -1,4 +1,9 @@
-with gl_union as (
+with unioned_models as (
+
+    {{ dbt_utils.union_relations(get_enabled_unioned_models()) }}
+),
+
+gl_union as (
 
     select
         transaction_id,
@@ -14,87 +19,27 @@ with gl_union as (
         transaction_source
     from {{ ref('int_quickbooks__purchase_double_entry') }}
 
-    {% if var('using_sales_receipt', True) %}
-    union all
-
-    select *
-    from {{ ref('int_quickbooks__sales_receipt_double_entry') }}
-    {% endif %}
-
     {% if var('using_bill', True) %}
     union all
 
     select *
     from {{ ref('int_quickbooks__bill_payment_double_entry') }}
+    {% endif %}
 
     union all
 
-    select *
-    from {{ ref('int_quickbooks__bill_double_entry') }}
-    {% endif %}
-
-    {% if var('using_credit_memo', True) %}
-    union all
-
-    select *
-    from {{ ref('int_quickbooks__credit_memo_double_entry') }}
-    {% endif %}
-
-    {% if var('using_credit_card_payment_txn', False) %}
-    union all
-
-    select *
-    from {{ ref('int_quickbooks__credit_card_pymt_double_entry') }}
-    {% endif %}
-
-    {% if var('using_deposit', True) %}
-    union all
-
-    select *
-    from {{ ref('int_quickbooks__deposit_double_entry') }}
-    {% endif %}
-
-    {% if var('using_invoice', True) %}
-    union all
-
-    select *
-    from {{ ref('int_quickbooks__invoice_double_entry') }}
-    {% endif %}
-
-    {% if var('using_transfer', True) %}
-    union all
-
-    select *
-    from {{ ref('int_quickbooks__transfer_double_entry') }}
-    {% endif %}
-
-    {% if var('using_journal_entry', True) %}
-    union all
-
-    select *
-    from {{ ref('int_quickbooks__journal_entry_double_entry') }}
-    {% endif %}
-
-    {% if var('using_payment', True) %}
-    union all
-
-    select *
-    from {{ ref('int_quickbooks__payment_double_entry') }}
-    {% endif %}
-
-    {% if var('using_refund_receipt', True) %}
-    union all
-
-    select *
-    from {{ ref('int_quickbooks__refund_receipt_double_entry') }}
-    {% endif %}
-
-    {% if var('using_vendor_credit', True) %}
-    union all
-
-    select *
-    from {{ ref('int_quickbooks__vendor_credit_double_entry') }}
-    {% endif %}
+    select transaction_id,
+        source_relation,
+        index,
+        transaction_date,
+        customer_id,
+        vendor_id,
+        amount,
+        account_id,
+        class_id,
+        transaction_type,
+        transaction_source 
+    from unioned_models
 ),
 
 accounts as (
