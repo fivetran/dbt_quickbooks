@@ -3,8 +3,7 @@
 {% set unioned_models = [
     'sales_receipt', 
     'bill', 
-    'credit_memo',  
-    'credit_card_payment_txn',
+    'credit_memo',
     'deposit',
     'invoice',
     'transfer',
