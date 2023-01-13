@@ -33,13 +33,6 @@ gl_union as (
         transaction_type,
         transaction_source 
     from unioned_models
-
-    {% if var('using_bill', True) %}
-    union all
-
-    select *
-    from {{ ref('int_quickbooks__bill_payment_double_entry') }}
-    {% endif %}
 ),
 
 accounts as (

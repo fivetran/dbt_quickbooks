@@ -295,7 +295,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - unique_id
-            - source_relation 
+            - source_relation   
     columns:
       - name: transaction_id
         description: Unique identifier of transaction. Each transaction will have an offsetting debit and credit record.

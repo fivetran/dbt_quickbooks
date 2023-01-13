@@ -2,8 +2,8 @@
 
 {% set unioned_models = [
     'sales_receipt', 
-    'bill', 
     'credit_memo',
+    'bill',
     'deposit',
     'invoice',
     'transfer',
@@ -18,7 +18,15 @@
     {% if var('using_' ~ unioned_model, True) %}
         {{ enabled_unioned_models.append(ref('int_quickbooks__' ~ unioned_model ~ '_double_entry')) }}
     {% endif %}
-{% endfor %}
+ {% endfor %}   
+    
+{% if var('using_bill', True) %}
+    {{ enabled_unioned_models.append(ref('int_quickbooks__bill_payment_double_entry')) }}
+{% endif %}
+
+{% if var('using_credit_card_payment_txn', True) %}
+    {{ enabled_unioned_models.append(ref('int_quickbooks__credit_card_pymt_double_entry')) }}
+{% endif %}
 
 {{ return(enabled_unioned_models) }}
 
