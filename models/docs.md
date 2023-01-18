@@ -31,10 +31,6 @@ Table containing all revenue and expense account classes by calendar year and mo
 Class of the account associated 
 {% enddocs %}
 
-{% docs account_id %} 
-The identifier of the account associated 
-{% enddocs %}
-
 {% docs account_name %}
 Name of the account associated 
 {% enddocs %}
