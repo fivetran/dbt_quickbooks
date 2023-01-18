@@ -77,7 +77,7 @@ models:
       Adds a multiplier of -1 to Liability and Equity accounts to offset the account balance so liability and equity accounts do not show up as
       negative balances.
 
-      Creates a new classification field that fills in the gaps if classifications were incorrectly set on certain account_types. For more information 
+      Creates a new classification field that fills in the gaps if classifications were incorrectly set on certain s. For more information 
       on how these classifications were determined you can refer to the 
       [QuickBooks API Docs](https://developer.intuit.com/app/developer/qbo/docs/api/accounting/all-entities/account) that was used as reference.
 
@@ -134,7 +134,7 @@ models:
       - name: transaction_type
         description: Set to 'bill' of the transaction is a bill and 'invoice' if the transaction is an invoice.
       - name: transaction_id
-        description: Unique identifier of the bill or invoice.
+        description: "{{ doc('transaction_id') }}" for the bill or invoice.
       - name: doc_number
         description: The QuickBooks document number reference.
       - name: estimate_id
@@ -195,25 +195,25 @@ models:
       - name: cash_flow_period
         description: Timestamp of the first date for the cash flow period.
       - name: account_class
-        description: The account classification.
+        description: "{{ doc('account_class') }}" with the cash flow line. 
       - name: is_sub_account
-        description: Boolean indicating whether the account is a sub account (true) or a parent account (false).
+        description: "{{ doc('is_sub_account') }}"
       - name: parent_account_number
-        description: The parent account number. If the account is the parent account then the account number is recorded.
+        description: "{{ doc('parent_account_number') }}"
       - name: parent_account_name
-        description: The parent account name. If the account is the parent account then the account name is recorded.
+        description: "{{ doc('parent_account_name') }}"
       - name: class_id
-        description: Reference to the class associated with the account.
+        description: "{{ doc('class_id') }}" with the account.
       - name: account_type
-        description: The type of the account.
+        description: "{{ doc('account_type') }}" with the cash flow line.
       - name: account_sub_type
-        description: Sub type of the account.
+        description: "{{ doc('account_sub_type') }}" with the cash flow line.
       - name: account_number
-        description: User defined number of the account.
+        description: "{{ doc('account_number') }}"
       - name: account_name
-        description: The name of the account.
+        description: "{{ doc('account_name') }}" with the cash flow line.
       - name: account_id
-        description: The identifier of the account.
+        description: "{{ doc('account_id') }}" with the cash flow line.
       - name: cash_flow_type
         description: The type of cash flow (Defaults are Cash or Cash Equivalents, Investing, Operating, Financing). The customer can also configure the cash flow type; [see the README for details](https://github.com/fivetran/dbt_quickbooks/blob/main/README.md#customize-the-cash-flow-model).
       - name: cash_flow_ordinal
@@ -241,7 +241,7 @@ models:
       - name: transaction_source
         description: Set to 'expense' if the transaction type is an expense and 'sale' if the transaction type is a sale.
       - name: transaction_id
-        description: Unique identifier of either the expense or sale transactions.
+        description: "{{ doc('transaction_id') }}" for either the expense or sale.
       - name: transaction_line_id
         description: Unique identifier of either the expense or sale line item.
       - name: doc_number
@@ -249,7 +249,7 @@ models:
       - name: transaction_type
         description: Specifies the expense or sale transaction type (ie. invoice, sales_receipt, deposit, journal entry, etc.).
       - name: transaction_date
-        description: Timestamp of the date when the transaction occurred.
+        description: "{{ doc('transaction_date') }}"
       - name: item_id
         description: Unique identifier of the item included in a sale transaction.
       - name: item_quantity
@@ -257,13 +257,13 @@ models:
       - name: item_unit_price
         description: Unit price of the item included in the sale transaction.
       - name: account_id
-        description: Reference to the account associated with either the expense or sale.
+        description: "{{ doc('account_id') }}" with either the expense or sale.
       - name: account_name
-        description: Name of the account associated with either the expense or sale.
+        description: "{{ doc('account_name') }}" with either the expense or sale.
       - name: account_sub_type
-        description: Account sub type of the account associated with either the expense or sale.
+        description: "{{ doc('account_sub_type') }}" with either the expense or sale.
       - name: class_id
-        description: Reference to the class associated with either the expense or sale.
+        description: "{{ doc('class_id') }}" with either the expense or sale.
       - name: department_id
         description: Reference to the department associated with either the expense or sale.
       - name: department_name
@@ -298,37 +298,37 @@ models:
             - source_relation 
     columns:
       - name: transaction_id
-        description: Unique identifier of transaction. Each transaction will have an offsetting debit and credit record.
+        description: "{{ doc('transaction_id') }}". Each transaction will have an offsetting debit and credit record.
       - name: transaction_index
         description: Unique identifier of the individual debit and credit records of the transaction.
       - name: transaction_date
-        description: Timestamp of the date that the transaction occurred.
+        description: "{{ doc('transaction_date') }}"
       - name: amount
         description: Monetary amount of the transaction line.
       - name: account_id
-        description: Reference to the account associated with the transaction line.
+        description: "{{ doc('account_id') }}" with the transaction line.
       - name: class_id
-        description: Reference to the class associated with the transaction line.
+        description: "{{ doc('class_id') }}" with the transaction line.
       - name: account_number
-        description: The user defined account number associated with the account.
+        description: "{{ doc('account_number') }}"
       - name: account_name
-        description: Name of the account associated with the transaction line.
+        description: "{{ doc('account_name') }}" with the transaction line.
       - name: is_sub_account
-        description: Boolean indicating whether the account is a sub account (true) or a parent account (false).
+        description: "{{ doc('is_sub_account') }}"
       - name: parent_account_number
-        description: The parent account number. If the account is the parent account then the account number is recorded.
+        description: "{{ doc('parent_account_number') }}"
       - name: parent_account_name
-        description: The parent account name. If the account is the parent account then the account name is recorded.
+        description: "{{ doc('parent_account_name') }}"
       - name: account_type
-        description: Type of the account associated with the transaction line.
+        description: "{{ doc('account_type') }}" with the transaction line.
       - name: account_sub_type
-        description: Account sub type of the account associated with the transaction line.
+        description: "{{ doc('account_sub_type') }}" with the transaction line.
       - name: financial_statement_helper
         description: Either 'balance sheet' or 'income statement' and is used to determine that financial statement the account impacts.
       - name: account_current_balance
         description: Total current balance of the account associated with the transaction line.
       - name: account_class
-        description: Class of the account associated with the transaction line. Will be one of 'Expense', 'Revenue', 'Asset', 'Liability', and 'Equity'.
+        description: "{{ doc('account_class') }}" with the transaction line. Will be one of 'Expense', 'Revenue', 'Asset', 'Liability', and 'Equity'.
       - name: transaction_type
         description: Identifier of whether the transaction is a debit or credit entry.
       - name: transaction_source
@@ -353,25 +353,25 @@ models:
             - period_first_day
     columns:
       - name: account_id
-        description: Reference to the account that the period balances are associated.
+        description: "{{ doc('account_id') }}" with the period balance transactions.
       - name: account_number
-        description: The user defined account number associated with the account.
+        description: "{{ doc('account_number') }}" with the account.
       - name: account_name
-        description: Name of the account associated with the period balances.
+        description: "{{ doc('account_name') }}" with the period balance transactions.
       - name: is_sub_account
-        description: Boolean indicating whether the account is a sub account (true) or a parent account (false).
+        description: "{{ doc('is_sub_account') }}"
       - name: parent_account_number
-        description: The parent account number. If the account is the parent account then the account number is recorded.
+        description: "{{ doc('parent_account_number') }}"
       - name: parent_account_name
-        description: The parent account name. If the account is the parent account then the account name is recorded.
+        description: "{{ doc('parent_account_name') }}"
       - name: account_type
-        description: Type of account associated with the period balances.
+        description: "{{ doc('account_type') }}" with the period balance transactions.
       - name: account_sub_type
-        description: Sub type of the account associated with the period balances.
+        description: "{{ doc('account_sub_type') }}" with the period balance transactions.
       - name: account_class
-        description: Class of the account associated with the period balances.
+        description: "{{ doc('account_class') }}" with the period balance transactions.
       - name: class_id
-        description: Reference to the transaction class that the period balances are associated.
+        description: "{{ doc('class_id') }}" with the period balance transactions.
       - name: financial_statement_helper
         description: Helper field identifying whether the account impacts the balances sheet or income statement.
       - name: date_year
@@ -387,7 +387,7 @@ models:
       - name: period_ending_balance
         description: Sum of all transaction line adjusted_balances of the account for the period.
       - name: account_ordinal
-        description: Integer value to order the account within final financial statement reporting. The customer can also configure the ordinal; [see the README for details](https://github.com/fivetran/dbt_quickbooks/blob/main/README.md#customize-the-account-ordering-of-your-profit-loss-and-balance-sheet-models)
+        description: "{{ doc('account_ordinal') }}"
 
   - name: quickbooks__profit_and_loss
     description: >
@@ -401,27 +401,27 @@ models:
             - calendar_date 
     columns:
       - name: calendar_date
-        description: Timestamp of the first calendar date of the month.
+        description: "{{ doc('calendar_date') }}"
       - name: account_class
-        description: The account classification.
+        description: "{{ doc('account_class') }}" with the profit and loss line.
       - name: is_sub_account
-        description: Boolean indicating whether the account is a sub account (true) or a parent account (false).
+        description: "{{ doc('is_sub_account') }}"
       - name: parent_account_number
-        description: The parent account number. If the account is the parent account then the account number is recorded.
+        description: "{{ doc('parent_account_number') }}"
       - name: parent_account_name
-        description: The parent account name. If the account is the parent account then the account name is recorded.
+        description: "{{ doc('parent_account_name') }}"
       - name: account_type
-        description: The type of the account.
+        description: "{{ doc('account_type') }}" with the profit and loss line.
       - name: account_sub_type
-        description: Sub type of the account.
+        description: "{{ doc('account_sub_type') }}" with the profit and loss line.
       - name: account_number
-        description: User defined number of the account.
+        description: "{{ doc('account_number') }}"
       - name: account_name
-        description: The name of the account.
+        description: "{{ doc('account_name') }}" with the profit and loss line.
       - name: amount
         description: The total period net change for the period.
       - name: account_ordinal
-        description: Integer value to order the account within final financial statement reporting. The customer can also configure the ordinal; [see the README for details](https://github.com/fivetran/dbt_quickbooks/blob/main/README.md#customize-the-account-ordering-of-your-profit-loss-and-balance-sheet-models)
+        description: "{{ doc('account_ordinal') }}"
   
   - name: quickbooks__balance_sheet
     description: >
@@ -435,28 +435,28 @@ models:
             - class_id
     columns:
       - name: calendar_date
-        description: Timestamp of the first calendar date of the month.
+        description: "{{ doc('calendar_date') }}"
       - name: account_class
-        description: The account classification.
+        description: "{{ doc('account_class') }}" with the balance sheet line.
       - name: is_sub_account
-        description: Boolean indicating whether the account is a sub account (true) or a parent account (false).
+        description: "{{ doc('is_sub_account') }}"
       - name: parent_account_number
-        description: The parent account number. If the account is the parent account then the account number is recorded.
+        description: "{{ doc('parent_account_number') }}"
       - name: parent_account_name
-        description: The parent account name. If the account is the parent account then the account name is recorded.
+        description: "{{ doc('parent_account_name') }}"
       - name: class_id
-        description: Reference to the class associated with the account.
+        description: "{{ doc('class_id') }}" with the account.
       - name: account_type
-        description: The type of the account.
+        description: "{{ doc('account_type') }}" with the balance sheet line.
       - name: account_sub_type
-        description: Sub type of the account.
+        description: "{{ doc('account_sub_type') }}" with the balance sheet line.
       - name: account_number
-        description: User defined number of the account.
+        description: "{{ doc('account_number') }}"
       - name: account_name
-        description: The name of the account.
+        description: "{{ doc('account_name') }}" with the balance sheet line.
       - name: account_id
-        description: The identifier of the account.
+        description: "{{ doc('account_id') }}" with the balance sheet line..
       - name: amount
         description: The total ending period balance.
       - name: account_ordinal
-        description: Integer value to order the account within final financial statement reporting. The customer can also configure the ordinal; [see the README for details](https://github.com/fivetran/dbt_quickbooks/blob/main/README.md#customize-the-account-ordering-of-your-financial-statement-models)
+        description: "{{ doc('account_ordinal') }}"

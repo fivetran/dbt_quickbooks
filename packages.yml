@@ -6,6 +6,3 @@ packages:
   - git: https://github.com/fivetran/dbt_quickbooks_source.git
     revision: feature/quickbooks-updates-project
     warn-unpinned: false 
- 
-# packages: 
-#   - local: ../dbt_quickbooks_source
