@@ -11,6 +11,8 @@
 - Added `source_relation` field to all Quickbooks models to allow customers, if they have multiple Quickbooks connectors, to union them inside the package. [#62](https://github.com/fivetran/dbt_quickbooks/pull/62).
 - Added tests to all final models, particularly to test uniqueness across a combination of columns, including `source_relation`. [#62](https://github.com/fivetran/dbt_quickbooks/pull/62)
 - Modified `int_quickbooks__retained_earnings` intermediate model to accurately reflect `account_name` field, from "Net Income / Retained Earnings Adjustment" to "Net Income Adjustment". [#66](https://github.com/fivetran/dbt_quickbooks/pull/66)
+- Updated README to follow latest package standards. [#71](https://github.com/fivetran/dbt_quickbooks/pull/71)
+- Added `quickbooks_[source_table_name]_identifier` variables so it's easier to refer to source tables with different names. [#71](https://github.com/fivetran/dbt_quickbooks/pull/71)
 
 # dbt_quickbooks_source v0.6.0
 ## 🚨 Breaking Changes 🚨:

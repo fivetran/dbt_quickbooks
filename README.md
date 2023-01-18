@@ -15,6 +15,17 @@
 
 # QuickBooks dbt Package ([Docs](https://fivetran.github.io/dbt_quickbooks/))
 
+# Table of Contents
+- [📣 What does this dbt package do?](https://github.com/fivetran/dbt_quickbooks/#-what-does-this-dbt-package-do)
+- [🎯 How do I use the dbt package?](https://github.com/fivetran/dbt_quickbooks_source/#-how-do-i-use-the-dbt-package) 
+    - [Required steps](https://github.com/fivetran/dbt_quickbooks/#step-1-prerequisites)
+    - [Additional options](https://github.com/fivetran/dbt_quickbooks/#optional-step-5-orchestrate-your-models-with-fivetran-transformations-for-dbt-core)
+- [🔍 Does this package have dependencies?](https://github.com/fivetran/dbt_quickbooks/#-does-this-package-have-dependencies)
+- [🙌 How is this package maintained and can I contribute?](https://github.com/fivetran/dbt_quickbooks/#-how-is-this-package-maintained-and-can-i-contribute)
+    - [Package Maintenance](https://github.com/fivetran/dbt_quickbooks/#package-maintenance)
+    - [Contributions](https://github.com/fivetran/dbt_quickbooks/#contributions)
+    - [🏪 Are there any resources available?](https://github.com/fivetran/dbt_quickbooks/#-are-there-any-resources-available)
+
 # 📣 What does this dbt package do?
 - Produces modeled tables that leverage QuickBooks data from [Fivetran's connector](https://fivetran.com/docs/applications/quickbooks) in the format described by [this ERD](https://fivetran.com/docs/applications/quickbooks#schemainformation) and builds off the output of our [QuickBooks source package](https://github.com/fivetran/dbt_quickbooks_source).
 
