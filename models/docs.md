@@ -25,7 +25,7 @@ Table that pulls general ledger account level balances per period from int_quick
 Table containing all revenue and expense account classes by calendar year and month enriched with account type, class, and parent information.
 {% enddocs %}
 
-# Field Definitions 
+# Field Definitions and References
 
 {% docs account_class %}
 Class of the account associated 
