@@ -59,10 +59,6 @@ The type of account associated
 Timestamp of the first calendar date of the month.
 {% enddocs calendar_date %}
 
-{% docs class_id %}
-Reference to the class associated 
-{% enddocs %}
-
 {% docs is_sub_account %}
 Boolean indicating whether the account is a sub account (true) or a parent account (false).
 {% enddocs %}
