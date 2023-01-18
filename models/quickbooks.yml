@@ -119,11 +119,13 @@ models:
       expenses. This total is set as the period ending balance. From the period ending balance the net change and beginning balances are calculated. This is table
       is then unioned with in_quickbooks__general_ledger_balances.
 
-  - name: quickbooks__ap_ar_enhanced
+  - name: int_quickbooks__cash_flow_classifications
     description: >
-      Table that unions all accounts payable records from int_quickbooks__bill_join and all accounts receivable records from int_quickbooks__invoice_join
-      while also adding customer, vendor, address, and department level detail to the accounts payable and receivable records. Further, date and amount
-      calculations are included to show if the payable/receivable has been fully paid and/or paid on time.
+      Table that provides additional classifications necessary for the cash flow statement, like the 
+      cash flow type and ordinals.
+
+  - name: quickbooks__ap_ar_enhanced
+    description: "{{ doc('ap_ar_enhanced_table') }}"   
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -134,7 +136,7 @@ models:
       - name: transaction_type
         description: Set to 'bill' of the transaction is a bill and 'invoice' if the transaction is an invoice.
       - name: transaction_id
-        description: "{{ doc('transaction_id') }}" for the bill or invoice.
+        description: "{{ doc('transaction_id') }} for the bill or invoice."
       - name: doc_number
         description: The QuickBooks document number reference.
       - name: estimate_id
@@ -178,14 +180,8 @@ models:
       - name: recent_payment_date
         description: The last date a payment was provided for the bill or invoice.
 
-  - name: int_quickbooks__cash_flow_classifications
-    description: >
-      Table that provides additional classifications necessary for the cash flow statement, like the 
-      cash flow type and ordinals.
-
   - name: quickbooks__cash_flow_statement
-    description: >
-      Table that provides all line items necessary to construct a cash flow statement.
+    description: "{{ doc('cash_flow_statement_table') }}" 
     columns:
       - name: account_unique_id
         description: Unique identifier of the cash flow statement account line, dependent on account_id, class_id, source_relation and calendar_date.
@@ -195,7 +191,7 @@ models:
       - name: cash_flow_period
         description: Timestamp of the first date for the cash flow period.
       - name: account_class
-        description: "{{ doc('account_class') }}" with the cash flow line. 
+        description: "{{ doc('account_class') }} with the cash flow line."
       - name: is_sub_account
         description: "{{ doc('is_sub_account') }}"
       - name: parent_account_number
@@ -203,17 +199,17 @@ models:
       - name: parent_account_name
         description: "{{ doc('parent_account_name') }}"
       - name: class_id
-        description: "{{ doc('class_id') }}" with the account.
+        description: "{{ doc('class_id') }} with the account."
       - name: account_type
-        description: "{{ doc('account_type') }}" with the cash flow line.
+        description: "{{ doc('account_type') }} with the cash flow line."
       - name: account_sub_type
-        description: "{{ doc('account_sub_type') }}" with the cash flow line.
+        description: "{{ doc('account_sub_type') }} with the cash flow line."
       - name: account_number
         description: "{{ doc('account_number') }}"
       - name: account_name
-        description: "{{ doc('account_name') }}" with the cash flow line.
+        description: "{{ doc('account_name') }} with the cash flow line."
       - name: account_id
-        description: "{{ doc('account_id') }}" with the cash flow line.
+        description: "{{ doc('account_id') }} with the cash flow line."
       - name: cash_flow_type
         description: The type of cash flow (Defaults are Cash or Cash Equivalents, Investing, Operating, Financing). The customer can also configure the cash flow type; [see the README for details](https://github.com/fivetran/dbt_quickbooks/blob/main/README.md#customize-the-cash-flow-model).
       - name: cash_flow_ordinal
@@ -227,9 +223,7 @@ models:
 
 
   - name: quickbooks__expenses_sales_enhanced
-    description: >
-      Table that unions all expense records from int_quickbooks__expenses_union and all sales records from the int_quickbooks__sales_union while also adding 
-      customer, vendor, and department level detail to the expense and sales records.
+    description: "{{ doc('expenses_sales_enhanced_table') }}" 
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -241,7 +235,7 @@ models:
       - name: transaction_source
         description: Set to 'expense' if the transaction type is an expense and 'sale' if the transaction type is a sale.
       - name: transaction_id
-        description: "{{ doc('transaction_id') }}" for either the expense or sale.
+        description: "{{ doc('transaction_id') }} for either the expense or sale."
       - name: transaction_line_id
         description: Unique identifier of either the expense or sale line item.
       - name: doc_number
@@ -257,13 +251,13 @@ models:
       - name: item_unit_price
         description: Unit price of the item included in the sale transaction.
       - name: account_id
-        description: "{{ doc('account_id') }}" with either the expense or sale.
+        description: "{{ doc('account_id') }} with either the expense or sale."
       - name: account_name
-        description: "{{ doc('account_name') }}" with either the expense or sale.
+        description: "{{ doc('account_name') }} with either the expense or sale."
       - name: account_sub_type
-        description: "{{ doc('account_sub_type') }}" with either the expense or sale.
+        description: "{{ doc('account_sub_type') }} with either the expense or sale."
       - name: class_id
-        description: "{{ doc('class_id') }}" with either the expense or sale.
+        description: "{{ doc('class_id') }} with either the expense or sale."
       - name: department_id
         description: Reference to the department associated with either the expense or sale.
       - name: department_name
@@ -288,9 +282,7 @@ models:
         description: Total monetary amount of either the expense or sale.
 
   - name: quickbooks__general_ledger
-    description: >
-      Table that unions all records from each model within the double_entry_transactions directory. The table end result is a comprehensive general ledger
-      with an offsetting debit and credit entry for each transaction.
+    description: "{{ doc('general_ledger_table') }}"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -298,7 +290,7 @@ models:
             - source_relation 
     columns:
       - name: transaction_id
-        description: "{{ doc('transaction_id') }}". Each transaction will have an offsetting debit and credit record.
+        description: "{{ doc('transaction_id') }}. Each transaction will have an offsetting debit and credit record."
       - name: transaction_index
         description: Unique identifier of the individual debit and credit records of the transaction.
       - name: transaction_date
@@ -306,13 +298,13 @@ models:
       - name: amount
         description: Monetary amount of the transaction line.
       - name: account_id
-        description: "{{ doc('account_id') }}" with the transaction line.
+        description: "{{ doc('account_id') }} with the transaction line."
       - name: class_id
-        description: "{{ doc('class_id') }}" with the transaction line.
+        description: "{{ doc('class_id') }} with the transaction line."
       - name: account_number
         description: "{{ doc('account_number') }}"
       - name: account_name
-        description: "{{ doc('account_name') }}" with the transaction line.
+        description: "{{ doc('account_name') }} with the transaction line."
       - name: is_sub_account
         description: "{{ doc('is_sub_account') }}"
       - name: parent_account_number
@@ -320,15 +312,15 @@ models:
       - name: parent_account_name
         description: "{{ doc('parent_account_name') }}"
       - name: account_type
-        description: "{{ doc('account_type') }}" with the transaction line.
+        description: "{{ doc('account_type') }} with the transaction line."
       - name: account_sub_type
-        description: "{{ doc('account_sub_type') }}" with the transaction line.
+        description: "{{ doc('account_sub_type') }} with the transaction line."
       - name: financial_statement_helper
         description: Either 'balance sheet' or 'income statement' and is used to determine that financial statement the account impacts.
       - name: account_current_balance
         description: Total current balance of the account associated with the transaction line.
       - name: account_class
-        description: "{{ doc('account_class') }}" with the transaction line. Will be one of 'Expense', 'Revenue', 'Asset', 'Liability', and 'Equity'.
+        description: "{{ doc('account_class') }} with the transaction line. Will be one of 'Expense', 'Revenue', 'Asset', 'Liability', and 'Equity'."
       - name: transaction_type
         description: Identifier of whether the transaction is a debit or credit entry.
       - name: transaction_source
@@ -341,9 +333,7 @@ models:
         description: The running balance of the account by each individual day.
   
   - name: quickbooks__general_ledger_by_period
-    description: >
-      Table that pulls general ledger account level balances per period from int_quickbooks__general_ledger_balances while also creating an offsetting
-      Retained Earnings entry for Revenue - Expenses per year to be added as single Equity line balance per year.
+    description: "{{ doc('general_ledger_by_period_table') }}"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -353,11 +343,11 @@ models:
             - period_first_day
     columns:
       - name: account_id
-        description: "{{ doc('account_id') }}" with the period balance transactions.
+        description: "{{ doc('account_id') }} with the period balance transactions."
       - name: account_number
-        description: "{{ doc('account_number') }}" with the account.
+        description: "{{ doc('account_number') }} with the account."
       - name: account_name
-        description: "{{ doc('account_name') }}" with the period balance transactions.
+        description: "{{ doc('account_name') }} with the period balance transactions."
       - name: is_sub_account
         description: "{{ doc('is_sub_account') }}"
       - name: parent_account_number
@@ -365,13 +355,13 @@ models:
       - name: parent_account_name
         description: "{{ doc('parent_account_name') }}"
       - name: account_type
-        description: "{{ doc('account_type') }}" with the period balance transactions.
+        description: "{{ doc('account_type') }} with the period balance transactions."
       - name: account_sub_type
-        description: "{{ doc('account_sub_type') }}" with the period balance transactions.
+        description: "{{ doc('account_sub_type') }} with the period balance transactions."
       - name: account_class
-        description: "{{ doc('account_class') }}" with the period balance transactions.
+        description: "{{ doc('account_class') }} with the period balance transactions."
       - name: class_id
-        description: "{{ doc('class_id') }}" with the period balance transactions.
+        description: "{{ doc('class_id') }} with the period balance transactions."
       - name: financial_statement_helper
         description: Helper field identifying whether the account impacts the balances sheet or income statement.
       - name: date_year
@@ -390,8 +380,7 @@ models:
         description: "{{ doc('account_ordinal') }}"
 
   - name: quickbooks__profit_and_loss
-    description: >
-      Table containing all revenue and expense account classes by calendar year and month enriched with account type, class, and parent information.
+    description: "{{ doc('profit_and_loss_table') }}"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -403,7 +392,7 @@ models:
       - name: calendar_date
         description: "{{ doc('calendar_date') }}"
       - name: account_class
-        description: "{{ doc('account_class') }}" with the profit and loss line.
+        description: "{{ doc('account_class') }} with the profit and loss line."
       - name: is_sub_account
         description: "{{ doc('is_sub_account') }}"
       - name: parent_account_number
@@ -411,13 +400,13 @@ models:
       - name: parent_account_name
         description: "{{ doc('parent_account_name') }}"
       - name: account_type
-        description: "{{ doc('account_type') }}" with the profit and loss line.
+        description: "{{ doc('account_type') }} with the profit and loss line."
       - name: account_sub_type
-        description: "{{ doc('account_sub_type') }}" with the profit and loss line.
+        description: "{{ doc('account_sub_type') }} with the profit and loss line."
       - name: account_number
         description: "{{ doc('account_number') }}"
       - name: account_name
-        description: "{{ doc('account_name') }}" with the profit and loss line.
+        description: "{{ doc('account_name') }} with the profit and loss line."
       - name: amount
         description: The total period net change for the period.
       - name: account_ordinal
@@ -437,7 +426,7 @@ models:
       - name: calendar_date
         description: "{{ doc('calendar_date') }}"
       - name: account_class
-        description: "{{ doc('account_class') }}" with the balance sheet line.
+        description: "{{ doc('account_class') }} with the balance sheet line."
       - name: is_sub_account
         description: "{{ doc('is_sub_account') }}"
       - name: parent_account_number
@@ -445,17 +434,17 @@ models:
       - name: parent_account_name
         description: "{{ doc('parent_account_name') }}"
       - name: class_id
-        description: "{{ doc('class_id') }}" with the account.
+        description: "{{ doc('class_id') }} with the account."
       - name: account_type
-        description: "{{ doc('account_type') }}" with the balance sheet line.
+        description: "{{ doc('account_type') }} with the balance sheet line."
       - name: account_sub_type
-        description: "{{ doc('account_sub_type') }}" with the balance sheet line.
+        description: "{{ doc('account_sub_type') }} with the balance sheet line."
       - name: account_number
         description: "{{ doc('account_number') }}"
       - name: account_name
-        description: "{{ doc('account_name') }}" with the balance sheet line.
+        description: "{{ doc('account_name') }} with the balance sheet line."
       - name: account_id
-        description: "{{ doc('account_id') }}" with the balance sheet line..
+        description: "{{ doc('account_id') }} with the balance sheet line."
       - name: amount
         description: The total ending period balance.
       - name: account_ordinal

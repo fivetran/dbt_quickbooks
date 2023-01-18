@@ -1,13 +1,42 @@
-{% docs account_class %}
-Class of the account associated
+# Table Definitions
+
+{% docs ap_ar_enhanced_table %}
+Table that unions all accounts payable records from int_quickbooks__bill_join and all accounts receivable records from int_quickbooks__invoice_join while also adding customer, vendor, address, and department level detail to the accounts payable and receivable records. Further, date and amount
+calculations are included to show if the payable/receivable has been fully paid and/or paid on time.
 {% enddocs %}
 
-{% docs account_id %}
-The identifier of the account associated
+{% docs cash_flow_statement_table %}
+Table that provides all line items necessary to construct a cash flow statement.
+{% enddocs %}
+
+{% docs expenses_sales_enhanced_table %}
+Table that unions all expense records from int_quickbooks__expenses_union and all sales records from the int_quickbooks__sales_union while also adding  customer, vendor, and department level detail to the expense and sales records.
+{% enddocs %}
+
+{% docs general_ledger_table %}
+Table that unions all records from each model within the double_entry_transactions directory. The table end result is a comprehensive general ledger with an offsetting debit and credit entry for each transaction.
+{% enddocs %}
+
+{% docs general_ledger_by_period_table %}
+Table that pulls general ledger account level balances per period from int_quickbooks__general_ledger_balances while also creating an offsetting Retained Earnings entry for Revenue - Expenses per year to be added as single Equity line balance per year.
+{% enddocs %}
+
+{% docs profit_and_loss_table %}
+Table containing all revenue and expense account classes by calendar year and month enriched with account type, class, and parent information.
+{% enddocs %}
+
+# Field Definitions 
+
+{% docs account_class %}
+Class of the account associated 
+{% enddocs %}
+
+{% docs account_id %} 
+The identifier of the account associated 
 {% enddocs %}
 
 {% docs account_name %}
-Name of the account associated
+Name of the account associated 
 {% enddocs %}
 
 {% docs account_number %}
@@ -19,11 +48,11 @@ Integer value to order the account within final financial statement reporting. T
 {% enddocs %}
 
 {% docs account_sub_type %}
-Sub type of the account associated
+Sub type of the account associated 
 {% enddocs %}
 
 {% docs account_type %}
-The type of account associated
+The type of account associated 
 {% enddocs %}
 
 {% docs calendar_date %}
@@ -31,7 +60,7 @@ Timestamp of the first calendar date of the month.
 {% enddocs calendar_date %}
 
 {% docs class_id %}
-Reference to the class associated
+Reference to the class associated 
 {% enddocs %}
 
 {% docs is_sub_account %}
@@ -51,5 +80,5 @@ Timestamp of the date that the transaction occurred.
 {% enddocs %}
 
 {% docs transaction_id %}
-Unique identifier of the transaction
+Unique identifier of the transaction 
 {% enddocs %}
