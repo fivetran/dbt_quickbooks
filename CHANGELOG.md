@@ -1,5 +1,4 @@
-# dbt_quickbooks v0.6.1
-
+# dbt_quickbooks v0.7.0
 ## 🚨 Breaking Changes 🚨:
 - Added `transaction_source` to `generate_surrogate_key` function to fix `unique_id` uniqueness issues in the `quickbooks__general_ledger` model.  A full refresh is recommended for accurate and consistent surrogate keys, for more information please refer to dbt-utils [release notes](https://github.com/dbt-labs/dbt-utils/releases/tag/1.0.0) regarding `generate_surrogate_key`.
 

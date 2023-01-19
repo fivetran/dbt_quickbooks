@@ -19,17 +19,17 @@
 - [📣 What does this dbt package do?](https://github.com/fivetran/dbt_quickbooks/#-what-does-this-dbt-package-do)
 - [🎯 How do I use the dbt package?](https://github.com/fivetran/dbt_quickbooks_source/#-how-do-i-use-the-dbt-package) 
     - [Required steps](https://github.com/fivetran/dbt_quickbooks/#step-1-prerequisites)
-    - [Additional options](https://github.com/fivetran/dbt_quickbooks/#optional-step-5-orchestrate-your-models-with-fivetran-transformations-for-dbt-core)
+    - [Additional options](https://github.com/fivetran/dbt_quickbooks/#optional-step-5-additional-configurations)
 - [🔍 Does this package have dependencies?](https://github.com/fivetran/dbt_quickbooks/#-does-this-package-have-dependencies)
 - [🙌 How is this package maintained and can I contribute?](https://github.com/fivetran/dbt_quickbooks/#-how-is-this-package-maintained-and-can-i-contribute)
-    - [Package Maintenance](https://github.com/fivetran/dbt_quickbooks/#package-maintenance)
-    - [Contributions](https://github.com/fivetran/dbt_quickbooks/#contributions)
-    - [🏪 Are there any resources available?](https://github.com/fivetran/dbt_quickbooks/#-are-there-any-resources-available)
+  - [Package Maintenance](https://github.com/fivetran/dbt_quickbooks/#package-maintenance)
+  - [Contributions](https://github.com/fivetran/dbt_quickbooks/#contributions)
+- [🏪 Are there any resources available?](https://github.com/fivetran/dbt_quickbooks/#-are-there-any-resources-available)
 
 # 📣 What does this dbt package do?
 - Produces modeled tables that leverage QuickBooks data from [Fivetran's connector](https://fivetran.com/docs/applications/quickbooks) in the format described by [this ERD](https://fivetran.com/docs/applications/quickbooks#schemainformation) and builds off the output of our [QuickBooks source package](https://github.com/fivetran/dbt_quickbooks_source).
 
-The main focus of this package is to provide users insights into their QuickBooks data that can be used for financial statement reporting and deeper analysis. The package achieves this by:
+- Enables users with insights into their QuickBooks data that can be used for financial statement reporting and deeper analysis. The package achieves this by:
   - Creating a comprehensive general ledger that can be used to create financial statements with additional flexibility.
   - Providing historical general ledger month beginning balances, ending balances, and net change for each account.
   - Enhancing Accounts Payable and Accounts Receivables data by providing past and present aging of bills and invoices.
@@ -69,7 +69,7 @@ Include the following QuickBooks package version in your `packages.yml` file.
 ```yaml
 packages:
   - package: fivetran/quickbooks
-    version: [">=0.6.0", "<0.7.0"]
+    version: [">=0.7.0", "<0.8.0"]
 ```
 
 ## Step 3: Define database and schema variables
@@ -82,7 +82,6 @@ vars:
 ```
 
 ## Step 4: Enabling/Disabling Models
-<details><summary>Expand for details on enabling/disabling models.</summary>
 Your QuickBooks connector might not sync every table that this package expects. This package takes into consideration that not every QuickBooks account utilizes the same transactional tables.
 
 By default, most variables' values are assumed to be `true` (with exception of `using_credit_card_payment_txn`). In other to enable or disable the relevant functionality in the package, you will need to add the relevant variables:
@@ -106,17 +105,34 @@ vars:
     using_sales_receipt: false # disable if you don't have estimates in QuickBooks
     using_credit_card_payment_txn: true # enable if you want to include credit card payment transactions in your staging models
 ```
-</details>
 
-## (Optional) Step 5: Orchestrate your models with Fivetran Transformations for dbt Core™
-<details><summary>Expand for details.</summary>
-<br>
+## (Optional) Step 5: Additional Configurations
+<details><summary>Expand for configurations</summary>
 
-Fivetran offers the ability for you to orchestrate your dbt project through [Fivetran Transformations for dbt Core™](https://fivetran.com/docs/transformations/dbt). Learn how to set up your project for orchestration through Fivetran in our [Transformations for dbt Core setup guides](https://fivetran.com/docs/transformations/dbt#setupguide).
-</details>
+### Changing the Build Schema
+By default this package will build the QuickBooks staging models within a schema titled (<target_schema> + `_quickbooks_staging`) and QuickBooks final models within a schema titled (<target_schema> + `_quickbooks`) in your target database. If this is not where you would like your modeled QuickBooks data to be written to, add the following configuration to your `dbt_project.yml` file:
 
-## Union Multiple Quickbooks Connectors
-<details><summary>Expand for details.</summary>
+```yml
+# dbt_project.yml
+
+...
+models:
+    quickbooks:
+      +schema: my_new_schema_name # leave blank for just the target_schema
+    quickbooks_source:
+      +schema: my_new_schema_name # leave blank for just the target_schema
+```
+
+### Change the source table references
+If an individual source table has a different name than the package expects, add the table name as it appears in your destination to the respective variable:
+> IMPORTANT: See this project's [`dbt_project.yml`](https://github.com/fivetran/dbt_quickbooks/blob/main/dbt_project.yml) variable declarations to see the expected names.
+    
+```yml
+vars:
+    quickbooks_<default_source_table_name>_identifier: your_table_name 
+``` 
+
+### Unioning Multiple Quickbooks Connectors 
 If you have multiple Quickbooks connectors in Fivetran and would like to use this package on all of them simultaneously, we have provided functionality to do so. The package will union all of the data together and pass the unioned table into the transformations. You will be able to see which source it came from in the `source_relation` column of each model. To use this functionality, you will need to set either the `quickbooks_union_schemas` or `quickbooks_union_databases` variables:
 
 ```yml
@@ -128,11 +144,9 @@ config-version: 2
 vars:
     quickbooks_union_schemas: ['quickbooks_usa','quickbooks_canada'] # use this if the data is in different schemas/datasets of the same database/project
     quickbooks_union_databases: ['quickbooks_usa','quickbooks_canada'] # use this if the data is in different databases/projects but uses the same schema name
-```
-</details>
+``` 
 
-## Customize the Cash Flow Model
-<details><summary>Expand for details.</summary>
+### Customize the Cash Flow Model 
 **IMPORTANT**: It is very likely you will need to reconfigure your `cash_flow_type` to make sure your cash flow statement matches your specific use case. Please examine the following instructions.
 
 The current default numbering for ordinals and default cash flow types are set in [the `int_quickbooks__cash_flow_classifications`](https://github.com/fivetran/dbt_quickbooks/blob/main/models/intermediate/int_quickbooks__cash_flow_classifications.sql) model. It's based on best practices for cash flow statements leveraging the indirect method in accounting. You can see these ordinals being created in the `int_quickbooks__cash_flow_classifications` model, then implemented in the `quickbooks__cash_flow_statement` model. The `cash_flow_type` value is assigned off of `account_class`, `account_name` or `account_type`, and the cash flow ordinal is assigned off of `cash_flow_type`.
@@ -155,11 +169,9 @@ These are our recommended best practices to follow with your seed file (you can 
 - In `cash_flow_statement_type_ordinal_example`, we recommend creating ordinals for each `cash_flow_type` value available (the default types are `Cash or Cash Equivalents`, `Operating`, `Investing`, `Financing` as per best financial practices, but you can configure as you like in your seed file) to make sure each cash flow statement type can be easily ordered. Then you can create any additional customization as needed with the more specific account fields to order even further.   
 - In `cash_flow_statement_type_ordinal_example`, the `report` field should always be `Cash Flow`.  
 
-We'd love for you to share your experiences with the cash flow seed file with us [in the Fivetran community user group](https://community.fivetran.com/t5/user-group-for-dbt/gh-p/dbt-user-group) so we can make these model and seed configurations even better for you in the future!
-</details>
+We'd love for you to share your experiences with the cash flow seed file with us [in the Fivetran community user group](https://community.fivetran.com/t5/user-group-for-dbt/gh-p/dbt-user-group) so we can make these model and seed configurations even better for you in the future! 
 
-## Customize the account ordering of your financial models.
-<details><summary>Expand for details.</summary>
+### Customize the account ordering of your financial models. 
 [The current default numbering for ordinals](https://github.com/fivetran/dbt_quickbooks/blob/main/models/quickbooks__general_ledger_by_period.sql#L44-L50) is based on best practices for balance sheets and profit-and-loss statements in accounting. You can see these ordinals in action in the `quickbooks__general_ledger_by_period`, `quickbooks__balance_sheet` and `quickbooks__profit_and_loss` models. The ordinals are assigned off of the `account_class` values.
  
 If you'd like to modify this, take the following steps:
@@ -184,31 +196,14 @@ These are our recommended best practices to follow with your seed file ([you can
 We'd love for you to share your experiences with the ordinal seed file with us [in the Fivetran community user group](https://community.fivetran.com/t5/user-group-for-dbt/gh-p/dbt-user-group) so we can make these model and seed configurations even better for you in the future!
 </details>
 
-### Changing the build schema
-By default this package will build the QuickBooks staging models within a schema titled (<target_schema> + `_quickbooks_staging`) and QuickBooks final models within a schema titled (<target_schema> + `_quickbooks`) in your target database. If this is not where you would like your modeled QuickBooks data to be written to, add the following configuration to your `dbt_project.yml` file:
+## (Optional) Step 6: Orchestrate your models with Fivetran Transformations for dbt Core™
+<details><summary>Expand for details.</summary>
+<br>
 
-```yml
-# dbt_project.yml
+Fivetran offers the ability for you to orchestrate your dbt project through [Fivetran Transformations for dbt Core™](https://fivetran.com/docs/transformations/dbt). Learn how to set up your project for orchestration through Fivetran in our [Transformations for dbt Core setup guides](https://fivetran.com/docs/transformations/dbt#setupguide).
+</details>
 
-...
-models:
-    quickbooks:
-      +schema: my_new_schema_name # leave blank for just the target_schema
-    quickbooks_source:
-      +schema: my_new_schema_name # leave blank for just the target_schema
-```
-
-### Change the source table references
-If an individual source table has a different name than the package expects, add the table name as it appears in your destination to the respective variable:
-> IMPORTANT: See this project's [`dbt_project.yml`](https://github.com/fivetran/dbt_quickbooks/blob/main/dbt_project.yml) variable declarations to see the expected names.
-    
-```yml
-vars:
-    quickbooks_<default_source_table_name>_identifier: your_table_name 
-```
-
-## Analysis of the financial models
-
+## (Optional) Step 7: Analysis of the financial models
 After running the models within this package, you may want to compare the baseline financial statement totals from the data provided against what you expect. You can make use of the [analysis functionality of dbt](https://docs.getdbt.com/docs/building-a-dbt-project/analyses/) and run pre-written SQL to test these values. The SQL files within the [analysis](https://github.com/fivetran/dbt_quickbooks/blob/master/analysis) folder contain SQL queries you may compile to generate balance sheet and income statement values. You can then tie these generated values to your expected ones and confirm the values provided in this package are accurate.
 
 # 🔍 Does this package have dependencies?
@@ -218,7 +213,7 @@ This dbt package is dependent on the following dbt packages. Please be aware tha
 ```yml
 packages:
     - package: fivetran/quickbooks_source
-      version: [">=0.6.0", "<0.7.0"]
+      version: [">=0.7.0", "<0.8.0"]
 
     - package: fivetran/fivetran_utils
       version: [">=0.4.0", "<0.5.0"]
@@ -236,7 +231,7 @@ A small team of analytics engineers at Fivetran develops these dbt packages. How
 
 We highly encourage and welcome contributions to this package. Check out [this dbt Discourse article](https://discourse.getdbt.com/t/contributing-to-a-dbt-package/657) to learn how to contribute to a dbt package!
 
-## 🏪 Are there any resources available?
+# 🏪 Are there any resources available?
 - If you have questions or want to reach out for help, please refer to the [GitHub Issue](https://github.com/fivetran/dbt_quickbooks/issues/new/choose) section to find the right avenue of support for you.
 - If you would like to provide feedback to the dbt package team at Fivetran or would like to request a new dbt package, fill out our [Feedback Form](https://www.surveymonkey.com/r/DQ7K7WW).
 - Have questions or want to just say hi? Book a time during our office hours [on Calendly](https://calendly.com/fivetran-solutions-team/fivetran-solutions-team-office-hours) or email us at solutions@fivetran.com.
