@@ -1,6 +1,4 @@
-{% macro get_enabled_unioned_models() %}
-
-{% set unioned_models = [ 
+{% macro get_enabled_unioned_models(unioned_models = [ 
     'bill',
     'credit_memo',
     'deposit',
@@ -10,7 +8,7 @@
     'refund_receipt',
     'sales_receipt',
     'transfer',
-    'vendor_credit'] %}
+    'vendor_credit']) %} 
 
 {% set enabled_unioned_models = [] %}
 

@@ -12,7 +12,7 @@
 - Added `source_relation` field to all Quickbooks models to allow customers, if they have multiple Quickbooks connectors, to union them inside the package. [#62](https://github.com/fivetran/dbt_quickbooks/pull/62).
 - Added tests to all final models, particularly to test uniqueness across a combination of columns, including `source_relation`. [#62](https://github.com/fivetran/dbt_quickbooks/pull/62)
 - Modified `int_quickbooks__retained_earnings` intermediate model to accurately reflect `account_name` field, from "Net Income / Retained Earnings Adjustment" to "Net Income Adjustment". [#66](https://github.com/fivetran/dbt_quickbooks/pull/66)
-- Create `get_enabled_unioned_models` macro to make `quickbooks__general_ledger` more readable and provide more model flexibility. Materialized `double_entry_transactions` models in own schema to ensure macro execution, created `quickbooks_intermediate` schema for customers to explore these models further. [#70](https://github.com/fivetran/dbt_quickbooks/pull/70)
+- Create `get_enabled_unioned_models` macro to make `quickbooks__general_ledger` more readable and provide more model flexibility. Materialized `double_entry_transactions` models in own schema as a table to ensure macro execution, created `quickbooks_intermediate` schema for customers to explore these models further. [#70](https://github.com/fivetran/dbt_quickbooks/pull/70)
 # dbt_quickbooks_source v0.6.0
 ## 🚨 Breaking Changes 🚨:
 [PR #51](https://github.com/fivetran/dbt_quickbooks/pull/51) includes the following breaking changes:

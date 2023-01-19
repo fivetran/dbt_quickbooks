@@ -8,3 +8,6 @@ macros:
       - name: unioned_models
         type: list
         description: List of strings referring to particular models to then be appended and eventually unioned if enabled.
+      - name: enabled_unioned_models
+        type: list
+        description: List of relations of models that are enabled to eventually be unioned into a general ledger model.
