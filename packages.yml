@@ -4,8 +4,5 @@ packages:
 
 #REMEMBER TO CHANGE REVISION BEFORE MERGING BOTH SOURCE AND TRANSFORM BRANCHES INTO `main`
   - git: https://github.com/fivetran/dbt_quickbooks_source.git
-    revision: feature/quickbooks-updates-project
+    revision: feature/readme-updates
     warn-unpinned: false 
- 
-# packages: 
-#   - local: ../dbt_quickbooks_source
