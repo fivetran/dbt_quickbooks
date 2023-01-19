@@ -5,22 +5,6 @@ with unioned_models as (
 
 gl_union as (
 
-    select
-        transaction_id,
-        source_relation,
-        index,
-        transaction_date,
-        customer_id,
-        vendor_id,
-        amount,
-        account_id,
-        class_id,
-        transaction_type,
-        transaction_source
-    from {{ ref('int_quickbooks__purchase_double_entry') }}
-
-    union all
-
     select transaction_id,
         source_relation,
         index,
@@ -43,6 +27,7 @@ accounts as (
 
 
 adjusted_gl as (
+    
     select
         {{ dbt_utils.generate_surrogate_key(['gl_union.transaction_id', 'gl_union.index', 'accounts.name', ' gl_union.transaction_type', 'gl_union.transaction_source']) }} as unique_id,
         gl_union.transaction_id,

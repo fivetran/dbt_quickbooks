@@ -1,18 +1,20 @@
 {% macro get_enabled_unioned_models() %}
 
-{% set unioned_models = [
-    'sales_receipt', 
-    'credit_memo',
+{% set unioned_models = [ 
     'bill',
+    'credit_memo',
     'deposit',
     'invoice',
-    'transfer',
     'journal_entry',
     'payment',
     'refund_receipt',
+    'sales_receipt',
+    'transfer',
     'vendor_credit'] %}
 
 {% set enabled_unioned_models = [] %}
+
+{{ enabled_unioned_models.append(ref('int_quickbooks__purchase_double_entry')) }}
 
 {% for unioned_model in unioned_models %}  
     {% if var('using_' ~ unioned_model, True) %}
