@@ -287,8 +287,10 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - unique_id
-            - source_relation 
+            - source_relation   
     columns:
+      - name: unique_id
+        description: Unique identifier of the general ledger line, dependent on `transaction_id`, `transaction_index`, `account_name, `transaction_type`, `transaction_source`. 
       - name: transaction_id
         description: "{{ doc('transaction_id') }}. Each transaction will have an offsetting debit and credit record."
       - name: transaction_index
