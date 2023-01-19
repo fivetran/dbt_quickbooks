@@ -13,7 +13,7 @@
 - Updated README to follow latest package standards. [#71](https://github.com/fivetran/dbt_quickbooks/pull/71)
 - Added `quickbooks_[source_table_name]_identifier` variables so it's easier to refer to source tables with different names. [#71](https://github.com/fivetran/dbt_quickbooks/pull/71)
 
-# dbt_quickbooks_source v0.6.0
+# dbt_quickbooks v0.6.0
 ## 🚨 Breaking Changes 🚨:
 [PR #51](https://github.com/fivetran/dbt_quickbooks/pull/51) includes the following breaking changes:
 - Dispatch update for dbt-utils to dbt-core cross-db macros migration. Specifically `{{ dbt_utils.<macro> }}` have been updated to `{{ dbt.<macro> }}` for the below macros:
@@ -51,7 +51,7 @@
     - `dbt.current_timestamp_in_utc_backcompat`
 - Dependencies on `fivetran/fivetran_utils` have been upgraded, previously `[">=0.3.0", "<0.4.0"]` now `[">=0.4.0", "<0.5.0"]`.
 
-# dbt_quickbooks_source v0.5.4
+# dbt_quickbooks v0.5.4
 ## Features
 - Addition of the `credit_card_payment_txn` (enabled/disabled using the `using_credit_card_payment_txn` variable) source as well as the accompanying staging and intermediate models. This source includes all credit card payment transactions and will be used in downstream General Ledger generation to ensure accurate reporting of all transaction types. ([#61](https://github.com/fivetran/dbt_quickbooks/pull/61))
   >**Note**: the `credit_card_payment_txn` source and models are disabled by default. In order to enable them, you will want to set the `using_credit_card_payment_txn` variable to `true` in your dbt_project.yml.
