@@ -2,9 +2,6 @@
     <a alt="License"
         href="https://github.com/fivetran/dbt_quickbooks/blob/main/LICENSE">
         <img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" /></a>
-    <a alt="Fivetran-Release"
-        href="https://fivetran.com/docs/getting-started/core-concepts#releasephases">
-        <img src="https://img.shields.io/badge/Fivetran Release Phase-_Beta-orange.svg" /></a>
     <a alt="dbt-core">
         <img src="https://img.shields.io/badge/dbt_Core™_version->=1.3.0_,<2.0.0-orange.svg" /></a>
     <a alt="Maintained?">
@@ -15,7 +12,7 @@
 
 # QuickBooks dbt Package ([Docs](https://fivetran.github.io/dbt_quickbooks/))
 
-# Table of Contents
+# 📖 Table of Contents
 - [📣 What does this dbt package do?](https://github.com/fivetran/dbt_quickbooks/#-what-does-this-dbt-package-do)
 - [🎯 How do I use the dbt package?](https://github.com/fivetran/dbt_quickbooks_source/#-how-do-i-use-the-dbt-package) 
     - [Required steps](https://github.com/fivetran/dbt_quickbooks/#step-1-prerequisites)
@@ -109,29 +106,6 @@ vars:
 ## (Optional) Step 5: Additional Configurations
 <details><summary>Expand for configurations</summary>
 
-### Changing the Build Schema
-By default this package will build the QuickBooks staging models within a schema titled (<target_schema> + `_quickbooks_staging`) and QuickBooks final models within a schema titled (<target_schema> + `_quickbooks`) in your target database. If this is not where you would like your modeled QuickBooks data to be written to, add the following configuration to your `dbt_project.yml` file:
-
-```yml
-# dbt_project.yml
-
-...
-models:
-    quickbooks:
-      +schema: my_new_schema_name # leave blank for just the target_schema
-    quickbooks_source:
-      +schema: my_new_schema_name # leave blank for just the target_schema
-```
-
-### Change the source table references
-If an individual source table has a different name than the package expects, add the table name as it appears in your destination to the respective variable:
-> IMPORTANT: See this project's [`dbt_project.yml`](https://github.com/fivetran/dbt_quickbooks/blob/main/dbt_project.yml) variable declarations to see the expected names.
-    
-```yml
-vars:
-    quickbooks_<default_source_table_name>_identifier: your_table_name 
-``` 
-
 ### Unioning Multiple Quickbooks Connectors 
 If you have multiple Quickbooks connectors in Fivetran and would like to use this package on all of them simultaneously, we have provided functionality to do so. The package will union all of the data together and pass the unioned table into the transformations. You will be able to see which source it came from in the `source_relation` column of each model. To use this functionality, you will need to set either the `quickbooks_union_schemas` or `quickbooks_union_databases` variables:
 
@@ -194,6 +168,29 @@ These are our recommended best practices to follow with your seed file ([you can
 - We recommend ordering the `ordinal` for each report separately in the seed, i.e. have ordinals for `quickbooks__balance_sheet` and `quickbooks__profit_and_loss` start at 1 each, to make your reporting more clean. 
 
 We'd love for you to share your experiences with the ordinal seed file with us [in the Fivetran community user group](https://community.fivetran.com/t5/user-group-for-dbt/gh-p/dbt-user-group) so we can make these model and seed configurations even better for you in the future!
+
+### Changing the Build Schema
+By default this package will build the QuickBooks staging models within a schema titled (<target_schema> + `_quickbooks_staging`) and QuickBooks final models within a schema titled (<target_schema> + `_quickbooks`) in your target database. If this is not where you would like your modeled QuickBooks data to be written to, add the following configuration to your `dbt_project.yml` file:
+
+```yml
+# dbt_project.yml
+
+...
+models:
+    quickbooks:
+      +schema: my_new_schema_name # leave blank for just the target_schema
+    quickbooks_source:
+      +schema: my_new_schema_name # leave blank for just the target_schema
+```
+
+### Change the source table references
+If an individual source table has a different name than the package expects, add the table name as it appears in your destination to the respective variable:
+> IMPORTANT: See this project's [`dbt_project.yml`](https://github.com/fivetran/dbt_quickbooks/blob/main/dbt_project.yml) variable declarations to see the expected names.
+    
+```yml
+vars:
+    quickbooks_<default_source_table_name>_identifier: your_table_name 
+``` 
 </details>
 
 ## (Optional) Step 6: Orchestrate your models with Fivetran Transformations for dbt Core™
