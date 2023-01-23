@@ -228,6 +228,9 @@ A small team of analytics engineers at Fivetran develops these dbt packages. How
 
 We highly encourage and welcome contributions to this package. Check out [this dbt Discourse article](https://discourse.getdbt.com/t/contributing-to-a-dbt-package/657) to learn how to contribute to a dbt package!
 
+## Opinionated Modelling Decisions
+This dbt package takes an opinionated stance on how to define the ordering and cash flow types in our model based on best financial practices. Customers do have the option to customize these orderings and cash flow types with a seed file. [Instructions are available in the Additional Configuration section](https://github.com/fivetran/dbt_quickbooks/#optional-step-5-additional-configurations). If you would like a deeper explanation of the logic used by default in the dbt package, [you may reference the DECISIONLOG](https://github.com/fivetran/dbt_quickbooks/blob/main/DECISIONLOG.md).
+
 # 🏪 Are there any resources available?
 - If you have questions or want to reach out for help, please refer to the [GitHub Issue](https://github.com/fivetran/dbt_quickbooks/issues/new/choose) section to find the right avenue of support for you.
 - If you would like to provide feedback to the dbt package team at Fivetran or would like to request a new dbt package, fill out our [Feedback Form](https://www.surveymonkey.com/r/DQ7K7WW).
