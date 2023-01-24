@@ -2,23 +2,28 @@
 {{ config(enabled=var('using_invoice', True)) }}
 
 with invoices as (
+
     select *
-    from {{ref('stg_quickbooks__invoice')}}
+    from {{ ref('stg_quickbooks__invoice') }}
 ),
 
 invoice_lines as (
+
     select *
-    from {{ref('stg_quickbooks__invoice_line')}}
+    from {{ ref('stg_quickbooks__invoice_line') }}
 ),
 
 items as (
+
     select *
-    from {{ref('stg_quickbooks__item')}}
+    from {{ ref('stg_quickbooks__item') }}
 ),
 
 final as (
+
     select
         invoices.invoice_id as transaction_id,
+        invoices.source_relation,
         invoice_lines.index as transaction_line_id,
         invoices.doc_number,
         'invoice' as transaction_type,
@@ -42,9 +47,11 @@ final as (
 
     inner join invoice_lines
         on invoices.invoice_id = invoice_lines.invoice_id
+        and invoices.source_relation = invoice_lines.source_relation
 
     left join items
         on coalesce(invoice_lines.sales_item_item_id, invoice_lines.item_id) = items.item_id
+        and invoice_lines.source_relation = items.source_relation
 )
 
 select *

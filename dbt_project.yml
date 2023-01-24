@@ -1,15 +1,16 @@
 config-version: 2
 name: 'quickbooks'
-
-version: '0.6.0'
-require-dbt-version: [">=1.0.0", "<2.0.0"]
+ 
+version: '0.7.0'
+require-dbt-version: [">=1.3.0", "<2.0.0"]
 
 models:
   quickbooks:
     +materialized: table
     +schema: quickbooks
     double_entry_transactions:
-      +materialized: ephemeral
+      +schema: quickbooks_intermediate
+      +materialized: table
     transaction_lines:
       +materialized: ephemeral
     intermediate:
@@ -53,6 +54,10 @@ vars:
     vendor_credit_line: "{{ ref('stg_quickbooks__vendor_credit_line') }}"
     vendor_credit: "{{ ref('stg_quickbooks__vendor_credit') }}"
     vendor: "{{ ref('stg_quickbooks__vendor') }}"
+
+    financial_statement_ordinal: []
+    cash_flow_statement_type_ordinal: []
+
     using_address: true
     using_bill: true
     using_credit_memo: true

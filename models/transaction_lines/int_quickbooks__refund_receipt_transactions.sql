@@ -2,23 +2,28 @@
 {{ config(enabled=var('using_refund_receipt', True)) }}
 
 with refund_receipts as (
+
     select *
-    from {{ref('stg_quickbooks__refund_receipt')}}
+    from {{ ref('stg_quickbooks__refund_receipt') }}
 ),
 
 refund_receipt_lines as (
+
     select *
-    from {{ref('stg_quickbooks__refund_receipt_line')}}
+    from {{ ref('stg_quickbooks__refund_receipt_line') }}
 ),
 
 items as (
+
     select *
-    from {{ref('stg_quickbooks__item')}}
+    from {{ ref('stg_quickbooks__item') }}
 ),
 
 final as (
+
     select
         refund_receipts.refund_id as transaction_id,
+        refund_receipts.source_relation,
         refund_receipt_lines.index as transaction_line_id,
         refund_receipts.doc_number,
         'refund_receipt' as transaction_type,
@@ -42,9 +47,11 @@ final as (
 
     inner join refund_receipt_lines
         on refund_receipts.refund_id = refund_receipt_lines.refund_id
+        and refund_receipts.source_relation = refund_receipt_lines.source_relation
 
     left join items
         on refund_receipt_lines.sales_item_item_id = items.item_id
+        and refund_receipt_lines.source_relation = items.source_relation
 )
 
 select *

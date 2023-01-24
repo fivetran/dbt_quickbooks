@@ -6,21 +6,25 @@ Table that creates a debit record to accounts payable and a credit record to the
 {{ config(enabled=var('using_bill', True)) }}
 
 with bill_payments as (
+
     select *
     from {{ ref('stg_quickbooks__bill_payment') }}
 ),
 
 bill_payment_lines as (
+
     select *
     from {{ ref('stg_quickbooks__bill_payment_line') }}
 ),
 
 accounts as (
+
     select *
     from {{ ref('stg_quickbooks__account') }}
 ),
 
 ap_accounts as (
+
     select
         account_id
     from accounts
@@ -33,6 +37,7 @@ ap_accounts as (
 bill_payment_join as (
     select
         bill_payments.bill_payment_id as transaction_id,
+        bill_payments.source_relation,
         row_number() over(partition by bill_payments.bill_payment_id order by bill_payments.transaction_date) - 1 as index,
         bill_payments.transaction_date,
         bill_payments.total_amount as amount,
@@ -46,14 +51,17 @@ bill_payment_join as (
 ),
 
 final as (
+    
     select
         transaction_id,
+        source_relation,
         index,
         transaction_date,
         cast(null as {{ dbt.type_string() }}) as customer_id,
         vendor_id,
         amount,
         payment_account_id as account_id,
+        cast(null as {{ dbt.type_string() }}) as class_id,
         'credit' as transaction_type,
         'bill payment' as transaction_source
     from bill_payment_join
@@ -62,12 +70,14 @@ final as (
 
     select
         transaction_id,
+        source_relation,
         index,
         transaction_date,
         cast(null as {{ dbt.type_string() }}) as customer_id,
         vendor_id,
         amount,
         account_id,
+        cast(null as {{ dbt.type_string() }}) as class_id,
         'debit' as transaction_type,
         'bill payment' as transaction_source
     from bill_payment_join

@@ -1,5 +1,19 @@
-# dbt_quickbooks v0.6.0
+# dbt_quickbooks v0.7.0
+## 🚨 Breaking Changes 🚨:
+- Added `transaction_source` to `generate_surrogate_key` function to fix `unique_id` uniqueness issues in the `quickbooks__general_ledger` model.  A full refresh is recommended for accurate and consistent surrogate keys, for more information please refer to dbt-utils [release notes](https://github.com/dbt-labs/dbt-utils/releases/tag/1.0.0) regarding `generate_surrogate_key`.
 
+## Additional Features
+- Created the `quickbooks__cash_flow_statement` model so customers can more easily produce their own cash flow statements. Default categorizations are created in `int_quickbooks__cash_flow_classifications`, where each account line is assigned a `cash_flow_type`, with main types being `Cash or Cash Equivalents`, `Operating`, `Investing`, and `Financing`. The `ordinal` value is also created based on the `cash_flow_type` for ordering purposes. All values created are based on cash flow best practices.[#69](https://github.com/fivetran/dbt_quickbooks/pull/69)
+- For the `quickbooks__cash_flow_statement`, customers can create and configure their own `cash_flow_type` and `ordinal` for ordering purposes. [See the README](https://github.com/fivetran/dbt_quickbooks/blob/main/README.md#customize-the-cash-flow-model) for details and [use the seed `cash_flow_statement_type_ordinal_example` file](https://github.com/fivetran/dbt_quickbooks/tree/main/example_ordinal_seeds/cash_flow_statement_type_ordinal_example.csv) for guidance). [#69](https://github.com/fivetran/dbt_quickbooks/pull/69)
+- Added `account_ordinal` value to `quickbooks__general_ledger_by_period`, `quickbooks__balance_sheet` and `quickbooks__profit_and_loss` to allow customers to order their financial reports based on the account field values. The ordinals can be further configured by the customer. [See the README](https://github.com/fivetran/dbt_quickbooks/blob/main/README.md#customize-the-account-ordering-of-your-financial-models) for details [and use the seed `financial_statement_ordinal_example` file](https://github.com/fivetran/dbt_quickbooks/blob/main/example_ordinal_seeds/seeds/financial_statement_ordinal_example.csv) for guidance). [#65](https://github.com/fivetran/dbt_quickbooks/pull/65)
+- Added `class_id` to `quickbooks__general_ledger`, `quickbooks_general_ledger_by_period`, and `quickbooks__balance_sheet`; add in class values for all intermediate models necessary to pass into final models. [#58](https://github.com/fivetran/dbt_quickbooks/pull/58).
+- Added `source_relation` field to all Quickbooks models to allow customers, if they have multiple Quickbooks connectors, to union them inside the package. [#62](https://github.com/fivetran/dbt_quickbooks/pull/62).
+- Added tests to all final models, particularly to test uniqueness across a combination of columns, including `source_relation`. [#62](https://github.com/fivetran/dbt_quickbooks/pull/62)
+- Modified `int_quickbooks__retained_earnings` intermediate model to accurately reflect `account_name` field, from "Net Income / Retained Earnings Adjustment" to "Net Income Adjustment". [#66](https://github.com/fivetran/dbt_quickbooks/pull/66)
+- Updated README to follow latest package standards. [#71](https://github.com/fivetran/dbt_quickbooks/pull/71)
+- Added `quickbooks_[source_table_name]_identifier` variables so it's easier to refer to source tables with different names. [#71](https://github.com/fivetran/dbt_quickbooks/pull/71)
+
+# dbt_quickbooks v0.6.0
 ## 🚨 Breaking Changes 🚨:
 [PR #51](https://github.com/fivetran/dbt_quickbooks/pull/51) includes the following breaking changes:
 - Dispatch update for dbt-utils to dbt-core cross-db macros migration. Specifically `{{ dbt_utils.<macro> }}` have been updated to `{{ dbt.<macro> }}` for the below macros:
@@ -37,7 +51,7 @@
     - `dbt.current_timestamp_in_utc_backcompat`
 - Dependencies on `fivetran/fivetran_utils` have been upgraded, previously `[">=0.3.0", "<0.4.0"]` now `[">=0.4.0", "<0.5.0"]`.
 
-# dbt_quickbooks_source v0.5.4
+# dbt_quickbooks v0.5.4
 ## Features
 - Addition of the `credit_card_payment_txn` (enabled/disabled using the `using_credit_card_payment_txn` variable) source as well as the accompanying staging and intermediate models. This source includes all credit card payment transactions and will be used in downstream General Ledger generation to ensure accurate reporting of all transaction types. ([#61](https://github.com/fivetran/dbt_quickbooks/pull/61))
   >**Note**: the `credit_card_payment_txn` source and models are disabled by default. In order to enable them, you will want to set the `using_credit_card_payment_txn` variable to `true` in your dbt_project.yml.

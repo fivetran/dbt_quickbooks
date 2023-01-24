@@ -69,6 +69,7 @@ date_spine as (
 final as (
     select distinct
         general_ledger.account_id,
+        general_ledger.source_relation,
         general_ledger.account_number,
         general_ledger.account_name,
         general_ledger.is_sub_account,
@@ -78,6 +79,7 @@ final as (
         general_ledger.account_sub_type,
         general_ledger.account_class,
         general_ledger.financial_statement_helper,
+        general_ledger.class_id,
         date_spine.date_year,
         date_spine.period_first_day,
         date_spine.period_last_day,

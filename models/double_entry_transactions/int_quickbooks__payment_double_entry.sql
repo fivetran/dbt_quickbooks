@@ -6,21 +6,25 @@ Table that creates a debit record to either undeposited funds or a specified cas
 {{ config(enabled=var('using_payment', True)) }}
 
 with payments as (
+
     select *
-    from {{ref('stg_quickbooks__payment')}}
+    from {{ ref('stg_quickbooks__payment') }}
 ),
 
 payment_lines as (
+
     select *
-    from {{ref('stg_quickbooks__payment_line')}}
+    from {{ ref('stg_quickbooks__payment_line') }}
 ),
 
 accounts as (
+
     select *
     from {{ ref('stg_quickbooks__account') }}
 ),
 
 ar_accounts as (
+
     select
         account_id
     from accounts
@@ -31,8 +35,10 @@ ar_accounts as (
 ),
 
 payment_join as (
+
     select
         payments.payment_id as transaction_id,
+        payments.source_relation,
         row_number() over(partition by payments.payment_id order by payments.transaction_date) - 1 as index,
         payments.transaction_date,
         payments.total_amount as amount,
@@ -43,14 +49,17 @@ payment_join as (
 ),
 
 final as (
+    
     select
         transaction_id,
+        source_relation,
         index,
         transaction_date,
         customer_id,
         cast(null as {{ dbt.type_string() }}) as vendor_id,
         amount,
         deposit_to_account_id as account_id,
+        cast(null as {{ dbt.type_string() }}) as class_id,
         'debit' as transaction_type,
         'payment' as transaction_source
     from payment_join
@@ -59,12 +68,14 @@ final as (
 
     select
         transaction_id,
+        source_relation,
         index,
         transaction_date,
         customer_id,
         cast(null as {{ dbt.type_string() }}) as vendor_id,
         amount,
         coalesce(receivable_account_id, ar_accounts.account_id) as account_id,
+        cast(null as {{ dbt.type_string() }}) as class_id,
         'credit' as transaction_type,
         'payment' as transaction_source
     from payment_join
