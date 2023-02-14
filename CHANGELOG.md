@@ -1,6 +1,6 @@
 # dbt_quickbooks v0.8.0
 ## 🚨 Breaking Changes 🚨:
-- Changing `account_name` input to `account_id` for the `generate_surrogate_key` function to fix `unique_id` uniqueness issues in the `quickbooks__general_ledger` model.  A full refresh is recommended for accurate and consistent surrogate keys. [#73](https://github.com/fivetran/dbt_quickbooks/pull/73)
+- Replacing `account_name` with `account_id` as input for the `generate_surrogate_key` function to fix `unique_id` uniqueness issues in the `quickbooks__general_ledger` model.  A full refresh is recommended for accurate and consistent surrogate keys. [#73](https://github.com/fivetran/dbt_quickbooks/pull/73)
 
 # dbt_quickbooks v0.7.0
 ## 🚨 Breaking Changes 🚨:
