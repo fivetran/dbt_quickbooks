@@ -1,3 +1,7 @@
+# dbt_quickbooks v0.8.0
+## 🚨 Breaking Changes 🚨:
+- Changing `account_name` input to `account_id` for the `generate_surrogate_key` function to fix `unique_id` uniqueness issues in the `quickbooks__general_ledger` model.  A full refresh is recommended for accurate and consistent surrogate keys.
+
 # dbt_quickbooks v0.7.0
 ## 🚨 Breaking Changes 🚨:
 - Added `transaction_source` to `generate_surrogate_key` function to fix `unique_id` uniqueness issues in the `quickbooks__general_ledger` model.  A full refresh is recommended for accurate and consistent surrogate keys, for more information please refer to dbt-utils [release notes](https://github.com/dbt-labs/dbt-utils/releases/tag/1.0.0) regarding `generate_surrogate_key`. ([#62](https://github.com/fivetran/dbt_quickbooks/pull/62))
