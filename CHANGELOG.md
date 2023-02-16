@@ -1,5 +1,9 @@
+# dbt_quickbooks v0.8.0
+## 🚨 Breaking Changes 🚨
+- Replacing `account_name` with `account_id` as input for the `generate_surrogate_key` function to fix `unique_id` uniqueness issues in the `quickbooks__general_ledger` model.  A full refresh is recommended for accurate and consistent surrogate keys. ([#73](https://github.com/fivetran/dbt_quickbooks/pull/73))
+
 # dbt_quickbooks v0.7.0
-## 🚨 Breaking Changes 🚨:
+## 🚨 Breaking Changes 🚨
 - Added `transaction_source` to `generate_surrogate_key` function to fix `unique_id` uniqueness issues in the `quickbooks__general_ledger` model.  A full refresh is recommended for accurate and consistent surrogate keys, for more information please refer to dbt-utils [release notes](https://github.com/dbt-labs/dbt-utils/releases/tag/1.0.0) regarding `generate_surrogate_key`. ([#62](https://github.com/fivetran/dbt_quickbooks/pull/62))
 
 ## Additional Features
@@ -14,7 +18,7 @@
 - Added `quickbooks_[source_table_name]_identifier` variables so it's easier to refer to source tables with different names. ([#71](https://github.com/fivetran/dbt_quickbooks/pull/71))
 
 # dbt_quickbooks v0.6.0
-## 🚨 Breaking Changes 🚨:
+## 🚨 Breaking Changes 🚨
 [PR #51](https://github.com/fivetran/dbt_quickbooks/pull/51) includes the following breaking changes:
 - Dispatch update for dbt-utils to dbt-core cross-db macros migration. Specifically `{{ dbt_utils.<macro> }}` have been updated to `{{ dbt.<macro> }}` for the below macros:
     - `any_value`
