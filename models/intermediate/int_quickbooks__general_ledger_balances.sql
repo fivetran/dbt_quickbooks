@@ -105,7 +105,8 @@ gl_patch as (
         on gl_beginning_balance.account_id = gl_accounting_periods.account_id
             and gl_beginning_balance.date_month = gl_accounting_periods.period_first_day
             and gl_beginning_balance.date_year = gl_accounting_periods.date_year
-            and gl_beginning_balance.class_id = gl_accounting_periods.class_id
+            and gl_beginning_balance.source_relation = gl_accounting_periods.source_relation
+--             and gl_beginning_balance.class_id = gl_accounting_periods.class_id
 ),
 
 gl_value_partion as (
