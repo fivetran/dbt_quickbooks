@@ -85,22 +85,21 @@ By default, most variables' values are assumed to be `true` (with exception of `
 
 ```yml
 vars:
-  quickbooks_source:
-    using_address: false # disable if you don't have addresses in QuickBooks
-    using_bill: false # disable if you don't have bills or bill payments in QuickBooks
-    using_credit_memo: false # disable if you don't have credit memos in QuickBooks
-    using_department: false # disable if you don't have departments in QuickBooks
-    using_deposit: false # disable if you don't have deposits in QuickBooks
-    using_estimate: false # disable if you don't have estimates in QuickBooks
-    using_invoice: false # disable if you don't have estimates in QuickBooks
-    using_invoice_bundle: false # disable if you don't have estimates in QuickBooks
-    using_journal_entry: false # disable if you don't have estimates in QuickBooks
-    using_payment: false # disable if you don't have estimates in QuickBooks
-    using_refund_receipt: false # disable if you don't have estimates in QuickBooks
-    using_transfer: false # disable if you don't have estimates in QuickBooks
-    using_vendor_credit: false # disable if you don't have estimates in QuickBooks
-    using_sales_receipt: false # disable if you don't have estimates in QuickBooks
-    using_credit_card_payment_txn: true # enable if you want to include credit card payment transactions in your staging models
+  using_address: false # disable if you don't have addresses in QuickBooks
+  using_bill: false # disable if you don't have bills or bill payments in QuickBooks
+  using_credit_memo: false # disable if you don't have credit memos in QuickBooks
+  using_department: false # disable if you don't have departments in QuickBooks
+  using_deposit: false # disable if you don't have deposits in QuickBooks
+  using_estimate: false # disable if you don't have estimates in QuickBooks
+  using_invoice: false # disable if you don't have estimates in QuickBooks
+  using_invoice_bundle: false # disable if you don't have estimates in QuickBooks
+  using_journal_entry: false # disable if you don't have estimates in QuickBooks
+  using_payment: false # disable if you don't have estimates in QuickBooks
+  using_refund_receipt: false # disable if you don't have estimates in QuickBooks
+  using_transfer: false # disable if you don't have estimates in QuickBooks
+  using_vendor_credit: false # disable if you don't have estimates in QuickBooks
+  using_sales_receipt: false # disable if you don't have estimates in QuickBooks
+  using_credit_card_payment_txn: true # enable if you want to include credit card payment transactions in your staging models
 ```
 
 ## (Optional) Step 5: Additional Configurations
