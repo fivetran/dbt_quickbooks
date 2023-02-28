@@ -71,6 +71,7 @@ gl_beginning_balance as (
 ),
 
 gl_patch as (
+
     select 
         coalesce(gl_beginning_balance.account_id, gl_accounting_periods.account_id) as account_id,
         coalesce(gl_beginning_balance.source_relation, gl_accounting_periods.source_relation) as source_relation,
@@ -108,7 +109,8 @@ gl_patch as (
             and coalesce(gl_beginning_balance.class_id, '0') = coalesce(gl_accounting_periods.class_id, '0')
 ),
 
-gl_value_partion as (
+gl_value_partition as (
+
     select
         *,
         sum(case when period_ending_balance_starter is null 
@@ -116,10 +118,10 @@ gl_value_partion as (
             else 1 
                 end) over (order by account_id, class_id, period_last_day rows unbounded preceding) as gl_partition
     from gl_patch
-
 ),
  
 final as (
+    
     select
         account_id,
         source_relation,
@@ -141,8 +143,7 @@ final as (
             first_value(period_ending_balance_starter) over (partition by gl_partition order by period_last_day rows unbounded preceding)) as period_beginning_balance,
         coalesce(period_ending_balance_starter,
             first_value(period_ending_balance_starter) over (partition by gl_partition order by period_last_day rows unbounded preceding)) as period_ending_balance
-    from gl_value_partion
-
+    from gl_value_partition
 )
 
 select *
