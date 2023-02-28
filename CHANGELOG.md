@@ -2,6 +2,7 @@
 ## 🐛 Bug Fixes 🔨
 - Adding partitions by `class_id` in appropriate models to ensure correct account amount aggregations in `quickbooks__general_ledger`, ``quickbooks__general_ledger_by_period`, `quickbooks__balance_sheet`, and `quickbooks__profit_and_loss` models. ([#77](https://github.com/fivetran/dbt_quickbooks/pull/77))
 - Modifying join in `int_quickbooks__general_ledger_balances` to account for null `class_id` values and bring in the correct non-zero balances. ([#77](https://github.com/fivetran/dbt_quickbooks/pull/77)) 
+
 # dbt_quickbooks v0.8.0
 ## 🚨 Breaking Changes 🚨
 - Replacing `account_name` with `account_id` as input for the `generate_surrogate_key` function to fix `unique_id` uniqueness issues in the `quickbooks__general_ledger` model.  A full refresh is recommended for accurate and consistent surrogate keys. ([#73](https://github.com/fivetran/dbt_quickbooks/pull/73))
