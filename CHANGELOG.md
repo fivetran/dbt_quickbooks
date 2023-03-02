@@ -1,6 +1,6 @@
 # dbt_quickbooks v0.8.1
 ## 🐛 Bug Fixes 🔨
-- Adding partitions by `class_id` in appropriate models to ensure correct account amount aggregations in `quickbooks__general_ledger`, ``quickbooks__general_ledger_by_period`, `quickbooks__balance_sheet`, and `quickbooks__profit_and_loss` models. ([#77](https://github.com/fivetran/dbt_quickbooks/pull/77))
+- Adding partitions by `class_id` in appropriate models to ensure correct account amount aggregations in `quickbooks__general_ledger`, `quickbooks__general_ledger_by_period`, `quickbooks__balance_sheet`, and `quickbooks__profit_and_loss` models. ([#77](https://github.com/fivetran/dbt_quickbooks/pull/77))
 - Modifying join in `int_quickbooks__general_ledger_balances` to account for null `class_id` values and bring in the correct non-zero balances. ([#77](https://github.com/fivetran/dbt_quickbooks/pull/77)) 
 
 # dbt_quickbooks v0.8.0
