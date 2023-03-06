@@ -100,6 +100,7 @@ vars:
   using_vendor_credit: false # disable if you don't have estimates in QuickBooks
   using_sales_receipt: false # disable if you don't have estimates in QuickBooks
   using_credit_card_payment_txn: true # enable if you want to include credit card payment transactions in your staging models
+  using_purchase_order: true #enable if you want to include purchase orders in your staging models
 ```
 
 ## (Optional) Step 5: Additional Configurations
