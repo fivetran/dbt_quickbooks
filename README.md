@@ -8,6 +8,9 @@
         <img src="https://img.shields.io/badge/Maintained%3F-yes-green.svg" /></a>
     <a alt="PRs">
         <img src="https://img.shields.io/badge/Contributions-welcome-blueviolet" /></a>
+    <a alt="Fivetran Quickstart Compatibile"
+        href="https://fivetran.com/docs/transformations/dbt/quickstart">
+        <img src="https://img.shields.io/badge/Fivetran_Quickstart_Compatibile%3F-yes-green.svg" /></a>
 </p>
 
 # QuickBooks dbt Package ([Docs](https://fivetran.github.io/dbt_quickbooks/))
@@ -34,6 +37,7 @@
   - Producing end financial statement models like balance sheet, profit and loss, and cash flow for optimized financial reporting.
 - Generates a comprehensive data dictionary of your source and modeled QuickBooks data through the [dbt docs site](https://fivetran.github.io/dbt_quickbooks/).
 
+<!--section="quickbooks_transformation_model"-->
 The following table provides a detailed list of all models materialized within this package by default. A dependency on the source package is declared in this package's `packages.yml` file, so it will automatically download when you run `dbt deps`. The primary outputs of this package are described below. Intermediate models are used to create these output models.
 
 > TIP: See more details about these models in the package's [dbt docs site](https://fivetran.github.io/dbt_quickbooks/#!/overview?g_v=1&g_e=seeds). 
@@ -47,6 +51,7 @@ The following table provides a detailed list of all models materialized within t
 | [quickbooks__cash_flow_statement](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.quickbooks__cash_flow_statement) | Table containing all cash or cash equivalents, investing, operating, and financing cash flow types by calendar year and month enriched with account type, class, and parent information, as well as ordering configuration. **IMPORTANT**: It is very likely you will need to configure the cash flow types for your own unique use case. [Scroll below to get full instructions for how to configure your cash flow types](https://github.com/fivetran/dbt_quickbooks/blob/main/README.md#customize-the-cash-flow-types-and-account-ordering-of-your-cash-flow-statement). |
 | [quickbooks__ap_ar_enhanced](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.quickbooks__ap_ar_enhanced) | Table providing the amount, amount paid, due date, and days overdue of all bills and invoices your company has received and paid along with customer, vendor, department, and address information for each invoice or bill. |
 | [quickbooks__expenses_sales_enhanced](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.quickbooks__expenses_sales_enhanced) | Table providing enhanced customer, vendor, and account details for each expense and sale transaction. |
+<!--section-end-->
 
 ## Currency Package Compatibility
 
@@ -234,4 +239,4 @@ This dbt package takes an opinionated stance on how to define the ordering and c
 # 🏪 Are there any resources available?
 - If you have questions or want to reach out for help, please refer to the [GitHub Issue](https://github.com/fivetran/dbt_quickbooks/issues/new/choose) section to find the right avenue of support for you.
 - If you would like to provide feedback to the dbt package team at Fivetran or would like to request a new dbt package, fill out our [Feedback Form](https://www.surveymonkey.com/r/DQ7K7WW).
-- Have questions or want to just say hi? Book a time during our office hours [on Calendly](https://calendly.com/fivetran-solutions-team/fivetran-solutions-team-office-hours) or email us at solutions@fivetran.com.
+- Have questions or want to be part of the community discourse? Create a post in the [Fivetran community](https://community.fivetran.com/t5/user-group-for-dbt/gh-p/dbt-user-group) and our team along with the community can join in on the discussion!
