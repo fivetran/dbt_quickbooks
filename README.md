@@ -13,7 +13,7 @@
         <img src="https://img.shields.io/badge/Fivetran_Quickstart_Compatible%3F-yes-green.svg" /></a>
 </p>
 
-# QuickBooks dbt Package ([Docs](https://fivetran.github.io/dbt_quickbooks/))
+# QuickBooks dbt Package ([Docs](https://fivetran.github.io/dbt_quickbooks/)) 
 
 # 📖 Table of Contents
 - [📣 What does this dbt package do?](https://github.com/fivetran/dbt_quickbooks/#-what-does-this-dbt-package-do)

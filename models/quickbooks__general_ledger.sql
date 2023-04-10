@@ -14,6 +14,7 @@ gl_union as (
         amount,
         account_id,
         class_id,
+        department_id,
         transaction_type,
         transaction_source 
     from unioned_models
@@ -39,6 +40,7 @@ adjusted_gl as (
         gl_union.amount,
         gl_union.account_id,
         gl_union.class_id,
+        gl_union.department_id,
         accounts.account_number,
         accounts.name as account_name,
         accounts.is_sub_account,
@@ -48,7 +50,7 @@ adjusted_gl as (
         accounts.account_sub_type,
         accounts.financial_statement_helper,
         accounts.balance as account_current_balance,
-        accounts.classification as account_class, 
+        accounts.classification as account_class,
         gl_union.transaction_type,
         gl_union.transaction_source,
         accounts.transaction_type as account_transaction_type,
