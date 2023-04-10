@@ -25,8 +25,8 @@ transfer_body as (
 ),
 
 final as (
-    
-    select 
+
+    select
         transaction_id,
         source_relation,
         index,
@@ -36,19 +36,21 @@ final as (
         amount,
         credit_to_account_id as account_id,
         cast(null as {{ dbt.type_string() }}) as class_id,
+        cast(null as {{ dbt.type_string() }}) as department_id,
         'credit' as transaction_type,
         'transfer' as transaction_source
     from transfer_body
 
     union all
 
-    select 
+    select
         transaction_id,
         source_relation,
         index,
         transaction_date,
         cast(null as {{ dbt.type_string() }}) as customer_id,
         cast(null as {{ dbt.type_string() }}) as vendor_id,
+        cast(null as {{ dbt.type_string() }}) as department_id,
         amount,
         debit_to_account_id as account_id,
         cast(null as {{ dbt.type_string() }}) as class_id,
