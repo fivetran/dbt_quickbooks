@@ -1,3 +1,13 @@
+# dbt_quickbooks v0.9.0
+## Bug Fixes
+- Added logic to the `int_quickbooks__invoice_double_entry` model to account for invoice discounts.
+
+## Under the Hood
+- Leveraged the new `detail_type` field to ensure better accuracy when identifying invoice lines that should be accounted for in the general ledger calculations.
+
+## Contributors
+- [@SellJamHere](https://github.com/SellJamHere) ([#60](https://github.com/fivetran/dbt_quickbooks/pull/60))
+
 # dbt_quickbooks v0.8.1
 ## 🐛 Bug Fixes 🔨
 - Adding partitions by `class_id` in appropriate models to ensure correct account amount aggregations in `quickbooks__general_ledger`, `quickbooks__general_ledger_by_period`, `quickbooks__balance_sheet`, and `quickbooks__profit_and_loss` models. ([#77](https://github.com/fivetran/dbt_quickbooks/pull/77))

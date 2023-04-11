@@ -91,11 +91,12 @@ ar_accounts as (
     where account_type = 'Accounts Receivable'
 ),
 
-invoice_lines_without_discount as (
+invoice_join as (
+
     select
         invoices.invoice_id as transaction_id,
-        invoice_lines.index, 
         invoices.source_relation,
+        invoice_lines.index, 
         invoices.transaction_date as transaction_date,
         case when invoices.total_amount != 0
             then invoice_lines.amount
@@ -103,9 +104,19 @@ invoice_lines_without_discount as (
                 end as amount,
 
         {% if var('using_invoice_bundle', True) %}
-        coalesce(invoice_lines.account_id, items.parent_income_account_id, items.income_account_id, bundle_income_accounts.account_id) as account_id,
+        case when invoice_lines.detail_type is not null then invoice_lines.detail_type
+            when coalesce(invoice_lines.account_id, items.parent_income_account_id, items.income_account_id, bundle_income_accounts.account_id) is not null then 'SalesItemLineDetail'
+            when invoice_lines.discount_account_id is not null then 'DiscountLine'
+            when coalesce(invoice_lines.account_id, items.parent_income_account_id, items.income_account_id, bundle_income_accounts.account_id, invoice_lines.discount_account_id) is null and invoice_lines.detail_type is null then 'SubTotalLineDetail'
+        end as invoice_line_transaction_type,
+        coalesce(invoice_lines.account_id, items.parent_income_account_id, items.income_account_id, bundle_income_accounts.account_id, invoice_lines.discount_account_id) as account_id,
         {% else %}
-        coalesce(invoice_lines.account_id, items.income_account_id) as account_id,
+        case when invoice_lines.detail_type is not null then invoice_lines.detail_type
+            when coalesce(invoice_lines.account_id, items.parent_income_account_id, items.income_account_id) is not null then 'SalesItemLineDetail'
+            when invoice_lines.discount_account_id is not null then 'DiscountLine'
+            when coalesce(invoice_lines.account_id, items.parent_income_account_id, items.income_account_id, invoice_lines.discount_account_id) is null and invoice_lines.detail_type is null then 'SubTotalLineDetail'
+        end as invoice_line_transaction_type,
+        coalesce(invoice_lines.account_id, items.income_account_id, invoice_lines.discount_account_id) as account_id,
         {% endif %}
 
         coalesce(invoice_lines.sales_item_class_id, invoice_lines.discount_class_id, invoices.class_id) as class_id,
@@ -126,115 +137,57 @@ invoice_lines_without_discount as (
     left join bundle_income_accounts
         on bundle_income_accounts.bundle_id = invoice_lines.bundle_id
         and bundle_income_accounts.source_relation = invoice_lines.source_relation
-
-    where coalesce(invoice_lines.account_id, invoice_lines.sales_item_account_id, invoice_lines.sales_item_item_id, invoice_lines.item_id, bundle_income_accounts.account_id) is not null
-
-    {% else %}
-    where coalesce(invoice_lines.account_id, invoice_lines.sales_item_account_id, invoice_lines.sales_item_item_id, invoice_lines.item_id) is not null
-
     {% endif %}
 ),
 
-invoice_discount as (
-    select
-        invoices.invoice_id as transaction_id,
-        invoices.transaction_date as transaction_date,
-        case when invoices.total_amount != 0
-            then invoice_lines.amount
-            else invoices.total_amount
-                end as amount,
-
-	    invoice_lines.discount_account_id as account_id,
-
-	    invoices.customer_id
-
-    from invoices
-
-    inner join invoice_lines
-        on invoices.invoice_id = invoice_lines.invoice_id
-
-    left join items
-        on coalesce(invoice_lines.sales_item_item_id, invoice_lines.item_id) = items.item_id
-
-    where invoice_lines.discount_account_id is not null
-),
-
-ar_line_item as (
-    select distinct
-        iwd.transaction_id,
-        iwd.transaction_date,
-        ar_accounts.account_id,
-        ar_accounts.name,
-        iwd.customer_id,
-        sum(iwd.amount) over (partition by iwd.transaction_id) - coalesce(invoice_discount.amount, 0) as amount
-    from invoice_lines_without_discount iwd
-    left join invoice_discount on iwd.transaction_id = invoice_discount.transaction_id
-    cross join ar_accounts
-    order by transaction_date
+invoice_filter as (
+    select *
+    from invoice_join
+    where invoice_line_transaction_type != 'SubTotalLineDetail'
 ),
 
 final as (
 
     select
         transaction_id,
-        invoice_join.source_relation,
+        invoice_filter.source_relation,
         index,
         transaction_date,
         customer_id,
         cast(null as {{ dbt.type_string() }}) as vendor_id,
-        amount as amount_adj,
-        iwd.account_id,
-        class_id,
-        'credit' as transaction_type,
-        'invoice' as transaction_source
-    from invoice_lines_without_discount iwd
-    left join {{ref('stg_quickbooks__account')}} sqa on iwd.account_id = sqa.account_id
-
-    union all
-
-    select
-        transaction_id,
-        invoice_join.source_relation,
-        index,
-        transaction_date,
-        customer_id,
-        cast(null as {{ dbt.type_string() }}) as vendor_id,
-        amount * -1 as amount_adj,
+        amount,
         account_id,
         class_id,
-        'debit' as transaction_type,
-        'invoice' as transaction_source
-    from ar_line_item
+        case when invoice_line_transaction_type = 'DiscountLine' then 'debit'
+            else 'credit' 
+        end as transaction_type,
+        case when invoice_line_transaction_type = 'DiscountLine' then 'invoice discount'
+            else 'invoice'
+        end as transaction_source
+    from invoice_filter
 
     union all
 
     select
         transaction_id,
-        cast(null as {{ dbt_utils.type_string() }}) as index,
+        invoice_filter.source_relation,
+        index,
         transaction_date,
         customer_id,
-        cast(null as {{ dbt_utils.type_string() }}) as vendor_id,
+        cast(null as {{ dbt.type_string() }}) as vendor_id,
         amount,
-        amount * -1 as amount_adj,
-        invoice_discount.account_id,
-        'debit' as transaction_type,
-        'invoice' as transaction_source
-    from invoice_discount
-    left join {{ref('stg_quickbooks__account')}} sqa on invoice_discount.account_id = sqa.account_id
+        ar_accounts.account_id,
+        class_id,
+        case when invoice_line_transaction_type = 'DiscountLine' then 'credit'
+            else 'debit' 
+        end as transaction_type,
+        case when invoice_line_transaction_type = 'DiscountLine' then 'invoice discount'
+            else 'invoice'
+        end as transaction_source
+    from invoice_filter
+
+    cross join ar_accounts
 )
 
-select
-    transaction_id,
-    row_number() over (partition by transaction_id order by index nulls last) - 1 as index,
-    transaction_date,
-    customer_id,
-    vendor_id,
-    amount,
-    account_id,
-    transaction_type,
-    transaction_source
+select * 
 from final
-order by
-    transaction_date,
-    transaction_id,
-    index nulls last
