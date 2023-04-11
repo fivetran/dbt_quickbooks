@@ -2,9 +2,13 @@
 
 ## Additional Features
 - Added `department_id` to the `quickbooks__general_ledger` and the upstream tables required for that change. ([#63](https://github.com/fivetran/dbt_quickbooks/pull/63))
+  - Please note that this field was not added to the downstream `quickbooks__general_ledger_by_period`, `quickbooks__balance_sheet`, `quickbooks__profit_and_loss`, or `quickbooks__cash_flow_statement` models as this would require the grain of these models to be adjusted for the `department_id`. This would likely cause more confusion in the initial output. As such, the field was omitted in the aggregate models to ensure consistency of these models. If you wish this to be included, please open a Feature Request to let us know!
 
 ## Contributors
 - [@MarcelloMolinaro](https://github.com/MarcelloMolinaro) ([#63](https://github.com/fivetran/dbt_quickbooks/pull/63))
+
+## Complimentary Release Notes
+- See the source package [CHANGELOG](https://github.com/fivetran/dbt_quickbooks_source/blob/main/CHANGELOG.md) for updates made to the staging layer in `dbt_quickbooks_source v0.8.0`.
 
 # dbt_quickbooks v0.8.1
 

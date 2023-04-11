@@ -24,7 +24,8 @@ credit_card_payment_prep as (
         credit_card_payments.credit_card_account_id,
         cast(null as {{ dbt.type_string() }}) as customer_id,
         cast(null as {{ dbt.type_string() }}) as vendor_id,
-        cast(null as {{ dbt.type_string() }}) as class_id
+        cast(null as {{ dbt.type_string() }}) as class_id,
+        cast(null as {{ dbt.type_string() }}) as department_id
     from credit_card_payments
 ),
 
@@ -40,6 +41,7 @@ final as (
         amount, 
         cast(bank_account_id as {{ dbt.type_string() }}) as account_id,
         class_id,
+        department_id,
         'credit' as transaction_type,
         'credit card payment' as transaction_source
     from credit_card_payment_prep
@@ -55,7 +57,8 @@ final as (
         vendor_id,
         amount,
         cast(credit_card_account_id as {{ dbt.type_string() }}) as account_id,
-        class_id,   
+        class_id,
+        department_id,
         'debit' as transaction_type,
         'credit card payment' as transaction_source
     from credit_card_payment_prep
