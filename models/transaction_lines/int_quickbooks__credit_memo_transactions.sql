@@ -2,23 +2,28 @@
 {{ config(enabled=var('using_credit_memo', True)) }}
 
 with credit_memos as (
+
     select *
-    from {{ref('stg_quickbooks__credit_memo')}}
+    from {{ ref('stg_quickbooks__credit_memo') }}
 ),
 
 credit_memo_lines as (
+
     select *
-    from {{ref('stg_quickbooks__credit_memo_line')}}
+    from {{ ref('stg_quickbooks__credit_memo_line') }}
 ),
 
 items as (
+
     select *
-    from {{ref('stg_quickbooks__item')}}
+    from {{ ref('stg_quickbooks__item') }}
 ),
 
 final as (
+
     select
         credit_memos.credit_memo_id as transaction_id,
+        credit_memos.source_relation,
         credit_memo_lines.index as transaction_line_id,
         credit_memos.doc_number,
         'credit_memo' as transaction_type,
@@ -33,8 +38,8 @@ final as (
         credit_memos.class_id,
         credit_memos.department_id,
         credit_memos.customer_id, 
-        cast(null as {{ dbt_utils.type_string() }}) as vendor_id,
-        cast(null as {{ dbt_utils.type_string() }}) as billable_status,
+        cast(null as {{ dbt.type_string() }}) as vendor_id,
+        cast(null as {{ dbt.type_string() }}) as billable_status,
         credit_memo_lines.description,
         credit_memo_lines.amount * -1 as amount,
         credit_memos.total_amount * -1 as total_amount
@@ -42,9 +47,11 @@ final as (
 
     inner join credit_memo_lines
         on credit_memos.credit_memo_id = credit_memo_lines.credit_memo_id
+        and credit_memos.source_relation = credit_memo_lines.source_relation
 
-     left join items
+    left join items
         on credit_memo_lines.sales_item_item_id = items.item_id
+        and credit_memo_lines.source_relation = items.source_relation
 )
 
 select *

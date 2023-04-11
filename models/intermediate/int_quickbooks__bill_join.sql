@@ -2,45 +2,54 @@
 {{ config(enabled=var('using_bill', True)) }}
 
 with bills as (
+
     select *
-    from {{ref('stg_quickbooks__bill')}}
+    from {{ ref('stg_quickbooks__bill') }}
 ),
 
 bill_lines as (
+
     select *
-    from {{ref('stg_quickbooks__bill_line')}}
+    from {{ ref('stg_quickbooks__bill_line') }}
 ),
 
 bills_linked as (
+
     select *
-    from {{ref('stg_quickbooks__bill_linked_txn')}}
+    from {{ ref('stg_quickbooks__bill_linked_txn') }}
 ),
 
 bill_payments as (
+
     select *
-    from {{ref('stg_quickbooks__bill_payment')}}
+    from {{ ref('stg_quickbooks__bill_payment') }}
 ),
 
 bill_payment_lines as (
+
     select *
-    from {{ref('stg_quickbooks__bill_payment_line')}}
+    from {{ ref('stg_quickbooks__bill_payment_line') }}
 
     where bill_id is not null
 ),
 
 bill_pay as (
+
     select
         bills.bill_id,
+        bills.source_relation,
         bills_linked.bill_payment_id
     from bills
 
     left join bills_linked
         on bills.bill_id = bills_linked.bill_id
+        and bills.source_relation = bills_linked.source_relation
 
     where bills_linked.bill_payment_id is not null
 ),
 
 bill_link as (
+
     select
         bills.*,
         bill_pay.bill_payment_id
@@ -48,12 +57,15 @@ bill_link as (
 
     left join bill_pay
         on bills.bill_id = bill_pay.bill_id
+        and bills.source_relation = bill_pay.source_relation
 ),
 
 final as (
+
     select
-        cast('bill' as {{ dbt_utils.type_string() }})  as transaction_type,
+        cast('bill' as {{ dbt.type_string() }})  as transaction_type,
         bill_link.bill_id as transaction_id,
+        bill_link.source_relation,
         bill_link.doc_number,
         bill_link.department_id,
         bill_link.vendor_id as vendor_id,
@@ -69,12 +81,14 @@ final as (
 
     left join bill_payments
         on bill_link.bill_payment_id = bill_payments.bill_payment_id
+        and bill_link.source_relation = bill_payments.source_relation
 
     left join bill_payment_lines
         on bill_payments.bill_payment_id = bill_payment_lines.bill_payment_id
-            and bill_link.bill_id = bill_payment_lines.bill_id
+        and bill_payments.source_relation = bill_payment_lines.source_relation
+        and bill_link.bill_id = bill_payment_lines.bill_id
     
-    group by 1, 2, 3, 4, 5, 6, 7, 8, 9
+    {{ dbt_utils.group_by(10) }} 
 )
 
 select * 

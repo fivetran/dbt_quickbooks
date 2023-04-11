@@ -2,23 +2,28 @@
 {{ config(enabled=var('using_sales_receipt', True)) }}
 
 with sales_receipts as (
+
     select *
-    from {{ref('stg_quickbooks__sales_receipt')}}
+    from {{ ref('stg_quickbooks__sales_receipt') }}
 ),
 
 sales_receipt_lines as (
+
     select *
-    from {{ref('stg_quickbooks__sales_receipt_line')}}
+    from {{ ref('stg_quickbooks__sales_receipt_line') }}
 ),
 
 items as (
+
     select *
-    from {{ref('stg_quickbooks__item')}}
+    from {{ ref('stg_quickbooks__item') }}
 ),
 
 final as (
+
     select
         sales_receipts.sales_receipt_id as transaction_id,
+        sales_receipts.source_relation,
         sales_receipt_lines.index as transaction_line_id,
         sales_receipts.doc_number,
         'sales_receipt' as transaction_type,
@@ -30,18 +35,20 @@ final as (
         sales_receipts.class_id,
         sales_receipts.department_id,
         sales_receipts.customer_id,
-        cast(null as {{ dbt_utils.type_string() }}) as vendor_id,
-        cast(null as {{ dbt_utils.type_string() }}) as billable_status,
+        cast(null as {{ dbt.type_string() }}) as vendor_id,
+        cast(null as {{ dbt.type_string() }}) as billable_status,
         sales_receipt_lines.description,
         sales_receipt_lines.amount,
         sales_receipts.total_amount
     from sales_receipts
 
     inner join sales_receipt_lines
-        on sales_receipts.sales_receipt_id = sales_receipt_lines.sales_receipt_id
+        on sales_receipts.sales_receipt_id = sales_receipt_lines.sales_receipt_id   
+        and sales_receipts.source_relation = sales_receipt_lines.source_relation
 
     left join items
         on sales_receipt_lines.sales_item_item_id = items.item_id
+        and sales_receipt_lines.source_relation = items.source_relation
 )
 
 select *

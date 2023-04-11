@@ -47,7 +47,7 @@ with spine as (
     {{ dbt_utils.date_spine(
         datepart="month",
         start_date=first_date_adjust,
-        end_date=dbt_utils.dateadd("month", 1, last_date_adjust)
+        end_date=dbt.dateadd("month", 1, last_date_adjust)
         )
     }}
 ),
@@ -59,16 +59,17 @@ general_ledger as (
 
 date_spine as (
     select
-        cast({{ dbt_utils.date_trunc("year", "date_month") }} as date) as date_year,
-        cast({{ dbt_utils.date_trunc("month", "date_month") }} as date) as period_first_day,
-        {{ dbt_utils.last_day("date_month", "month") }} as period_last_day,
-        row_number() over (order by cast({{ dbt_utils.date_trunc("month", "date_month") }} as date)) as period_index
+        cast({{ dbt.date_trunc("year", "date_month") }} as date) as date_year,
+        cast({{ dbt.date_trunc("month", "date_month") }} as date) as period_first_day,
+        {{ dbt.last_day("date_month", "month") }} as period_last_day,
+        row_number() over (order by cast({{ dbt.date_trunc("month", "date_month") }} as date)) as period_index
     from spine
 ),
 
 final as (
     select distinct
         general_ledger.account_id,
+        general_ledger.source_relation,
         general_ledger.account_number,
         general_ledger.account_name,
         general_ledger.is_sub_account,
@@ -78,6 +79,7 @@ final as (
         general_ledger.account_sub_type,
         general_ledger.account_class,
         general_ledger.financial_statement_helper,
+        general_ledger.class_id,
         date_spine.date_year,
         date_spine.period_first_day,
         date_spine.period_last_day,

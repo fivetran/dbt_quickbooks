@@ -1,108 +1,44 @@
-with gl_union as (
-    select
-        transaction_id,
+with unioned_models as (
+
+    {{ dbt_utils.union_relations(get_enabled_unioned_models()) }}
+),
+
+gl_union as (
+
+    select transaction_id,
+        source_relation,
         index,
         transaction_date,
         customer_id,
         vendor_id,
         amount,
         account_id,
+        class_id,
         transaction_type,
-        transaction_source
-    from {{ref('int_quickbooks__purchase_double_entry')}}
-
-    {% if var('using_sales_receipt', True) %}
-    union all
-
-    select *
-    from {{ref('int_quickbooks__sales_receipt_double_entry')}}
-    {% endif %}
-
-    {% if var('using_bill', True) %}
-    union all
-
-    select *
-    from {{ref('int_quickbooks__bill_payment_double_entry')}}
-
-    union all
-
-    select *
-    from {{ref('int_quickbooks__bill_double_entry')}}
-    {% endif %}
-
-    {% if var('using_credit_memo', True) %}
-    union all
-
-    select *
-    from {{ref('int_quickbooks__credit_memo_double_entry')}}
-    {% endif %}
-
-    {% if var('using_deposit', True) %}
-    union all
-
-    select *
-    from {{ref('int_quickbooks__deposit_double_entry')}}
-    {% endif %}
-
-    {% if var('using_invoice', True) %}
-    union all
-
-    select *
-    from {{ref('int_quickbooks__invoice_double_entry')}}
-    {% endif %}
-
-    {% if var('using_transfer', True) %}
-    union all
-
-    select *
-    from {{ref('int_quickbooks__transfer_double_entry')}}
-    {% endif %}
-
-    {% if var('using_journal_entry', True) %}
-    union all
-
-    select *
-    from {{ref('int_quickbooks__journal_entry_double_entry')}}
-    {% endif %}
-
-    {% if var('using_payment', True) %}
-    union all
-
-    select *
-    from {{ref('int_quickbooks__payment_double_entry')}}
-    {% endif %}
-
-    {% if var('using_refund_receipt', True) %}
-    union all
-
-    select *
-    from {{ref('int_quickbooks__refund_receipt_double_entry')}}
-    {% endif %}
-
-    {% if var('using_vendor_credit', True) %}
-    union all
-
-    select *
-    from {{ref('int_quickbooks__vendor_credit_double_entry')}}
-    {% endif %}
+        transaction_source 
+    from unioned_models
 ),
 
 accounts as (
+
     select *
-    from {{ref('int_quickbooks__account_classifications')}}
+    from {{ ref('int_quickbooks__account_classifications') }}
 ),
 
 
 adjusted_gl as (
+    
     select
-        {{ dbt_utils.surrogate_key(['gl_union.transaction_id', 'gl_union.index', 'accounts.name', ' gl_union.transaction_type']) }} as unique_id,
+        {{ dbt_utils.generate_surrogate_key(['gl_union.transaction_id', 'gl_union.index', 'gl_union.account_id', ' gl_union.transaction_type', 'gl_union.transaction_source']) }} as unique_id,
         gl_union.transaction_id,
+        gl_union.source_relation,
         gl_union.index as transaction_index,
         gl_union.transaction_date,
         gl_union.customer_id,
         gl_union.vendor_id,
         gl_union.amount,
         gl_union.account_id,
+        gl_union.class_id,
         accounts.account_number,
         accounts.name as account_name,
         accounts.is_sub_account,
@@ -124,12 +60,14 @@ adjusted_gl as (
 
     left join accounts
         on gl_union.account_id = accounts.account_id
+        and gl_union.source_relation = accounts.source_relation
 ),
 
 final as (
+
     select
         *,
-        sum(adjusted_amount) over (partition by account_id order by transaction_date, account_id rows unbounded preceding) as running_balance
+        sum(adjusted_amount) over (partition by account_id, class_id order by transaction_date, account_id, class_id rows unbounded preceding) as running_balance
     from adjusted_gl
 )
 

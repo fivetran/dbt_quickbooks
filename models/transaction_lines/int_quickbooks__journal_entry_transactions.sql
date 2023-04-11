@@ -2,18 +2,22 @@
 {{ config(enabled=var('using_journal_entry', True)) }}
 
 with journal_entries as (
+
     select *
     from {{ ref('stg_quickbooks__journal_entry') }}
 ),
 
 journal_entry_lines as (
+
     select *
     from {{ ref('stg_quickbooks__journal_entry_line') }}
 ),
 
 final as (
+
     select
         journal_entries.journal_entry_id as transaction_id,
+        journal_entries.source_relation,
         journal_entry_lines.index as transaction_line_id,
         journal_entries.doc_number,
         'journal_entry' as transaction_type,
@@ -23,7 +27,7 @@ final as (
         journal_entry_lines.department_id,
         journal_entry_lines.customer_id,
         journal_entry_lines.vendor_id,
-        cast(billable_status as {{ dbt_utils.type_string() }}) as billable_status,
+        cast(billable_status as {{ dbt.type_string() }}) as billable_status,
         journal_entry_lines.description,
         case when lower(journal_entry_lines.posting_type) = 'credit'
             then journal_entry_lines.amount * -1 
@@ -34,6 +38,7 @@ final as (
 
     inner join journal_entry_lines
         on journal_entries.journal_entry_id = journal_entry_lines.journal_entry_id
+        and journal_entries.source_relation = journal_entry_lines.source_relation
 )
 
 select *
