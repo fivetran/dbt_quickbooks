@@ -1,5 +1,5 @@
 [![Apache License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) 
-# QuickBooks ([docs](https://dbt-quickbooks.netlify.app/))
+# QuickBooks ([docs](https://dbt-quickbooks.netlify.app/)) 
 
 This package models QuickBooks data from [Fivetran's connector](https://fivetran.com/docs/applications/quickbooks). It uses data in the format described by [this ERD](https://fivetran.com/docs/applications/quickbooks#schemainformation).
 
