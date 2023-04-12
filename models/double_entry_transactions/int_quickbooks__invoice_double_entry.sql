@@ -106,14 +106,14 @@ invoice_join as (
         {% if var('using_invoice_bundle', True) %}
         case when invoice_lines.detail_type is not null then invoice_lines.detail_type
             when coalesce(invoice_lines.account_id, items.parent_income_account_id, items.income_account_id, bundle_income_accounts.account_id) is not null then 'SalesItemLineDetail'
-            when invoice_lines.discount_account_id is not null then 'DiscountLine'
+            when invoice_lines.discount_account_id is not null then 'DiscountLineDetail'
             when coalesce(invoice_lines.account_id, items.parent_income_account_id, items.income_account_id, bundle_income_accounts.account_id, invoice_lines.discount_account_id) is null and invoice_lines.detail_type is null then 'SubTotalLineDetail'
         end as invoice_line_transaction_type,
         coalesce(invoice_lines.account_id, items.parent_income_account_id, items.income_account_id, bundle_income_accounts.account_id, invoice_lines.discount_account_id) as account_id,
         {% else %}
         case when invoice_lines.detail_type is not null then invoice_lines.detail_type
             when coalesce(invoice_lines.account_id, items.parent_income_account_id, items.income_account_id) is not null then 'SalesItemLineDetail'
-            when invoice_lines.discount_account_id is not null then 'DiscountLine'
+            when invoice_lines.discount_account_id is not null then 'DiscountLineDetail'
             when coalesce(invoice_lines.account_id, items.parent_income_account_id, items.income_account_id, invoice_lines.discount_account_id) is null and invoice_lines.detail_type is null then 'SubTotalLineDetail'
         end as invoice_line_transaction_type,
         coalesce(invoice_lines.account_id, items.income_account_id, invoice_lines.discount_account_id) as account_id,
@@ -158,10 +158,10 @@ final as (
         amount,
         account_id,
         class_id,
-        case when invoice_line_transaction_type = 'DiscountLine' then 'debit'
+        case when invoice_line_transaction_type = 'DiscountLineDetail' then 'debit'
             else 'credit' 
         end as transaction_type,
-        case when invoice_line_transaction_type = 'DiscountLine' then 'invoice discount'
+        case when invoice_line_transaction_type = 'DiscountLineDetail' then 'invoice discount'
             else 'invoice'
         end as transaction_source
     from invoice_filter
@@ -178,10 +178,10 @@ final as (
         amount,
         ar_accounts.account_id,
         class_id,
-        case when invoice_line_transaction_type = 'DiscountLine' then 'credit'
+        case when invoice_line_transaction_type = 'DiscountLineDetail' then 'credit'
             else 'debit' 
         end as transaction_type,
-        case when invoice_line_transaction_type = 'DiscountLine' then 'invoice discount'
+        case when invoice_line_transaction_type = 'DiscountLineDetail' then 'invoice discount'
             else 'invoice'
         end as transaction_source
     from invoice_filter
