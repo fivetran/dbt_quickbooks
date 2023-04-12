@@ -1,9 +1,13 @@
 # dbt_quickbooks v0.9.0
+[PR #85](https://github.com/fivetran/dbt_quickbooks/pull/85) includes the following updates:
 ## Bug Fixes
-- Added logic to the `int_quickbooks__invoice_double_entry` model to account for invoice discounts.
+- Added logic to the `int_quickbooks__invoice_double_entry` model to account for invoice discounts as they should be treated as contra revenue accounts that behavior differently from normal sale item detail invoice line items.
 
 ## Under the Hood
 - Leveraged the new `detail_type` field to ensure better accuracy when identifying invoice lines that should be accounted for in the general ledger calculations.
+
+## Documentation
+- Included documentation within the DECISIONLOG centered around the behavior of how invoice discounts are handled within the `int_quickbooks__invoice_double_entry` model.
 
 ## Contributors
 - [@SellJamHere](https://github.com/SellJamHere) ([#60](https://github.com/fivetran/dbt_quickbooks/pull/60))
