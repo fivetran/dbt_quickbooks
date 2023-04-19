@@ -8,7 +8,7 @@
 - [@MarcelloMolinaro](https://github.com/MarcelloMolinaro) ([#63](https://github.com/fivetran/dbt_quickbooks/pull/63))
 
 ## Complimentary Release Notes
-- See the source package [CHANGELOG](https://github.com/fivetran/dbt_quickbooks_source/blob/main/CHANGELOG.md) for updates made to the staging layer in `dbt_quickbooks_source v0.8.0`.
+- See the source package [CHANGELOG](https://github.com/fivetran/dbt_quickbooks_source/blob/main/CHANGELOG.md#dbt_quickbooks_source-v080) for updates made to the staging layer in `dbt_quickbooks_source v0.8.0`.
 
 # dbt_quickbooks v0.8.1
 
