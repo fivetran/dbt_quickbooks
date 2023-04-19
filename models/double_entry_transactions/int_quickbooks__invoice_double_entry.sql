@@ -16,8 +16,8 @@ invoice_lines as (
 ),
 
 items as (
-    select 
-        item.*, 
+    select
+        item.*,
         parent.income_account_id as parent_income_account_id
     from {{ ref('stg_quickbooks__item') }} item
 
@@ -54,7 +54,7 @@ bundle_items as (
 
 income_accounts as (
 
-    select * 
+    select *
     from accounts
 
     where account_sub_type = 'SalesOfProductIncome'
@@ -65,19 +65,19 @@ bundle_income_accounts as (
     select distinct
         coalesce(parent.income_account_id, income_accounts.account_id) as account_id,
         coalesce(parent.source_relation, income_accounts.source_relation) as source_relation,
-        bundle_items.bundle_id 
+        bundle_items.bundle_id
 
-    from items 
+    from items
 
     left join items as parent
         on items.parent_item_id = parent.item_id
         and items.source_relation = parent.source_relation
 
-    inner join income_accounts 
+    inner join income_accounts
         on income_accounts.account_id = items.income_account_id
         and income_accounts.source_relation = items.source_relation
 
-    inner join bundle_items 
+    inner join bundle_items
         on bundle_items.item_id = items.item_id
         and bundle_items.source_relation = items.source_relation
 ),
@@ -96,7 +96,7 @@ invoice_join as (
     select
         invoices.invoice_id as transaction_id,
         invoices.source_relation,
-        invoice_lines.index, 
+        invoice_lines.index,
         invoices.transaction_date as transaction_date,
         case when invoices.total_amount != 0
             then invoice_lines.amount
@@ -111,7 +111,8 @@ invoice_join as (
 
         coalesce(invoice_lines.sales_item_class_id, invoice_lines.discount_class_id, invoices.class_id) as class_id,
 
-        invoices.customer_id
+        invoices.customer_id,
+        invoices.department_id
 
     from invoices
 
@@ -128,10 +129,10 @@ invoice_join as (
         on bundle_income_accounts.bundle_id = invoice_lines.bundle_id
         and bundle_income_accounts.source_relation = invoice_lines.source_relation
 
-    where coalesce(invoice_lines.account_id, invoice_lines.sales_item_account_id, invoice_lines.sales_item_item_id, invoice_lines.item_id, bundle_income_accounts.account_id) is not null         
+    where coalesce(invoice_lines.account_id, invoice_lines.sales_item_account_id, invoice_lines.sales_item_item_id, invoice_lines.item_id, bundle_income_accounts.account_id) is not null
 
     {% else %}
-    where coalesce(invoice_lines.account_id, invoice_lines.sales_item_account_id, invoice_lines.sales_item_item_id, invoice_lines.item_id) is not null 
+    where coalesce(invoice_lines.account_id, invoice_lines.sales_item_account_id, invoice_lines.sales_item_item_id, invoice_lines.item_id) is not null
 
     {% endif %}
 ),
@@ -148,6 +149,7 @@ final as (
         amount,
         account_id,
         class_id,
+        department_id,
         'credit' as transaction_type,
         'invoice' as transaction_source
     from invoice_join
@@ -164,6 +166,7 @@ final as (
         amount,
         ar_accounts.account_id,
         class_id,
+        department_id,
         'debit' as transaction_type,
         'invoice' as transaction_source
     from invoice_join
@@ -171,5 +174,5 @@ final as (
     cross join ar_accounts
 )
 
-select * 
+select *
 from final

@@ -19,8 +19,8 @@ vendor_credit_lines as (
 
 items as (
 
-    select 
-        item.*, 
+    select
+        item.*,
         parent.income_account_id as parent_income_account_id
     from {{ ref('stg_quickbooks__item') }} item
 
@@ -40,10 +40,11 @@ vendor_credit_join as (
         coalesce(vendor_credit_lines.account_expense_account_id, items.parent_income_account_id, items.income_account_id, items.expense_account_id) as credit_account_id,
         coalesce(account_expense_customer_id, item_expense_customer_id) as customer_id,
         coalesce(item_expense_class_id, account_expense_class_id) as class_id,
-        vendor_credits.vendor_id
+        vendor_credits.vendor_id,
+        vendor_credits.department_id
     from vendor_credits
-    
-    inner join vendor_credit_lines 
+
+    inner join vendor_credit_lines
         on vendor_credits.vendor_credit_id = vendor_credit_lines.vendor_credit_id
         and vendor_credits.source_relation = vendor_credit_lines.source_relation
 
@@ -53,7 +54,7 @@ vendor_credit_join as (
 ),
 
 final as (
-    select 
+    select
         transaction_id,
         source_relation,
         index,
@@ -63,13 +64,14 @@ final as (
         amount,
         credit_account_id as account_id,
         class_id,
+        department_id,
         'credit' as transaction_type,
         'vendor_credit' as transaction_source
     from vendor_credit_join
 
     union all
 
-    select 
+    select
         transaction_id,
         source_relation,
         index,
@@ -79,6 +81,7 @@ final as (
         amount,
         debit_to_account_id as account_id,
         class_id,
+        department_id,
         'debit' as transaction_type,
         'vendor_credit' as transaction_source
     from vendor_credit_join

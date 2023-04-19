@@ -303,6 +303,8 @@ models:
         description: "{{ doc('account_id') }} with the transaction line."
       - name: class_id
         description: "{{ doc('class_id') }} with the transaction line."
+      - name: department_id
+        description: "{{ doc('department_id') }} with the transaction line."
       - name: account_number
         description: "{{ doc('account_number') }}"
       - name: account_name
