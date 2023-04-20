@@ -19,8 +19,8 @@ sales_receipt_lines as (
 
 items as (
 
-    select 
-        item.*, 
+    select
+        item.*,
         parent.income_account_id as parent_income_account_id
     from {{ ref('stg_quickbooks__item') }} item
 
@@ -39,7 +39,8 @@ sales_receipt_join as (
         sales_receipts.deposit_to_account_id as debit_to_account_id,
         coalesce(sales_receipt_lines.discount_account_id, sales_receipt_lines.sales_item_account_id, items.parent_income_account_id, items.income_account_id) as credit_to_account_id,
         sales_receipts.customer_id,
-        coalesce(sales_receipt_lines.sales_item_class_id, sales_receipt_lines.discount_class_id, sales_receipts.class_id) as class_id
+        coalesce(sales_receipt_lines.sales_item_class_id, sales_receipt_lines.discount_class_id, sales_receipts.class_id) as class_id,
+        sales_receipts.department_id
     from sales_receipts
 
     inner join sales_receipt_lines
@@ -65,6 +66,7 @@ final as (
         amount,
         debit_to_account_id as account_id,
         class_id,
+        department_id,
         'debit' as transaction_type,
         'sales_receipt' as transaction_source
     from sales_receipt_join
@@ -81,6 +83,7 @@ final as (
         amount,
         credit_to_account_id as account_id,
         class_id,
+        department_id,
         'credit' as transaction_type,
         'sales_receipt' as transaction_source
     from sales_receipt_join
