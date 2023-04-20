@@ -10,7 +10,7 @@
 - Included documentation [within the DECISIONLOG](https://github.com/fivetran/dbt_quickbooks/blob/main/DECISIONLOG.md) centered around the behavior of how invoice discounts are handled within the `int_quickbooks__invoice_double_entry` model.
 
 ## Complimentary Release Notes
-- See the source package [CHANGELOG](https://github.com/fivetran/dbt_quickbooks_source/blob/main/CHANGELOG.md) for updates made to the staging layer in `dbt_quickbooks_source v0.8.0`.
+- See the source package [CHANGELOG](https://github.com/fivetran/dbt_quickbooks_source/blob/main/CHANGELOG.md#dbt_quickbooks_source-v080) for updates made to the staging layer in `dbt_quickbooks_source v0.8.0`.
 
 ## Contributors
 - [@SellJamHere](https://github.com/SellJamHere) ([#60](https://github.com/fivetran/dbt_quickbooks/pull/60))
