@@ -7,7 +7,7 @@
 - Leveraged the new `detail_type` field to ensure better accuracy when identifying invoice lines that should be accounted for in the general ledger calculations.
 
 ## Documentation
-- Included documentation within the DECISIONLOG centered around the behavior of how invoice discounts are handled within the `int_quickbooks__invoice_double_entry` model.
+- Included documentation [within the DECISIONLOG](https://github.com/fivetran/dbt_quickbooks/blob/main/DECISIONLOG.md) centered around the behavior of how invoice discounts are handled within the `int_quickbooks__invoice_double_entry` model.
 
 ## Complimentary Release Notes
 - See the source package [CHANGELOG](https://github.com/fivetran/dbt_quickbooks_source/blob/main/CHANGELOG.md) for updates made to the staging layer in `dbt_quickbooks_source v0.8.0`.
