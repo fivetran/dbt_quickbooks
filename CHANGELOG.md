@@ -1,14 +1,24 @@
 # dbt_quickbooks v0.9.0
+## Bug Fixes
+- Added logic to the `int_quickbooks__invoice_double_entry` model to account for invoice discounts as they should be treated as contra revenue accounts that behavior differently from normal sale item detail invoice line items. ([#85](https://github.com/fivetran/dbt_quickbooks/pull/85))
 
 ## Additional Features
 - Added `department_id` to the `quickbooks__general_ledger` and the upstream tables required for that change. ([#63](https://github.com/fivetran/dbt_quickbooks/pull/63))
   - Please note that this field was not added to the downstream `quickbooks__general_ledger_by_period`, `quickbooks__balance_sheet`, `quickbooks__profit_and_loss`, or `quickbooks__cash_flow_statement` models as this would require the grain of these models to be adjusted for the `department_id`. This would likely cause more confusion in the initial output. As such, the field was omitted in the aggregate models to ensure consistency of these models. If you wish this to be included, please open a [Feature Request](https://github.com/fivetran/dbt_quickbooks/issues/new?assignees=&labels=enhancement&template=feature-request.yml&title=%5BFeature%5D+%3Ctitle%3E) to let us know!
 
+## Documentation
+- Included documentation [within the DECISIONLOG](https://github.com/fivetran/dbt_quickbooks/blob/main/DECISIONLOG.md) centered around the behavior of how invoice discounts are handled within the `int_quickbooks__invoice_double_entry` model. ([#85](https://github.com/fivetran/dbt_quickbooks/pull/85))
+
+## Under the Hood
+- Leveraged the new `detail_type` field to ensure better accuracy when identifying invoice lines that should be accounted for in the general ledger calculations. ([#85](https://github.com/fivetran/dbt_quickbooks/pull/85))
 ## Contributors
 - [@MarcelloMolinaro](https://github.com/MarcelloMolinaro) ([#63](https://github.com/fivetran/dbt_quickbooks/pull/63))
 
 ## Complimentary Release Notes
 - See the source package [CHANGELOG](https://github.com/fivetran/dbt_quickbooks_source/blob/main/CHANGELOG.md#dbt_quickbooks_source-v080) for updates made to the staging layer in `dbt_quickbooks_source v0.8.0`.
+
+## Contributors
+- [@SellJamHere](https://github.com/SellJamHere) ([#60](https://github.com/fivetran/dbt_quickbooks/pull/60))
 
 # dbt_quickbooks v0.8.1
 

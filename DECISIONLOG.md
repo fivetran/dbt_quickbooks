@@ -1,4 +1,27 @@
 # Decision Log
+## Invoice Discounts Logic
+The `int_quickbooks__invoice_double_entry` model has some unique logic to account for invoice discounts at the invoice line item level. These `DiscountLineDetail` invoice line detail types are handled differently from the normal `SalesItemLineDetail` lines. In the QuickBooks data for invoice lines these entries will not show up as a negative amount, but will instead be shown as a positive value that is to be discounted from the subtotal. As such, we do not want to add these discount lines to the total invoice cost. However, we still want to recognize them in the downstream general ledger models as they are contra revenue accounts that reduce the revenue accounts. Therefore, we need to take a different approach to debit and credit these discounts accordingly. 
+
+In particular, to handle these discounts we apply a debit to the `discount_account_id` (provided in the invoice line record) and a credit to the Accounts Receivable account. This is inherently different from the other behaviors of the invoice double entry model and it is handled accordingly with appropriate case when statements within the final cte.
+
+As an example, if we have the following invoice with the relevant line items:
+| **invoice_id** | **index**  | **amount**  | **detail_type**  |  **account_id**  | **discount_account_id**  |  
+| ------------------ | ----------------- | ----------------- | ----------------- | ----------------- | ----------------- |
+| 1111  | 0  | 80000 | SalesItemLineDetail | 55 | |
+| 1111  | 1  | 32000 | SalesItemLineDetail | 55 | |
+| 1111  | 2  | 112000 | SubTotalLineDetail | | |
+| 1111  | 3  | 14000 | DiscountLineDetail | | 44 |
+
+The corresponding entry that would result from the `int_quickbooks__invoice_double_entry` model would look like the following:
+
+| **account_id** | **account_name**  | **debit**  | **credit**  |
+| ------------------ | ----------------- | ----------------- | ----------------- |
+| 1  | accounts receivable  | 32000 | |
+| 1  | accounts receivable  | 80000 | |
+| 44  | discount account  | 14000 | |
+| 1  | accounts receivable  |  | 14000 |
+| 55  | cash account  | | 80000 |
+| 55  | other cash account  | | 32000 |
 
 ## QuickBooks Cash Flow Type Logic  
 - In the `int_quickbooks__cash_flow_classifications` model, our default behavior is to classify the `cash_flow_type` based on the `account_type`, `account_class` or `account_name` fields of the balance sheet line. This logic was based on best available financial practices, with the cash flow being calculated using the indirect method rather than the direct method. Cash flow types usually fall into one of four buckets:

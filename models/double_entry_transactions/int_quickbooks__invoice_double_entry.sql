@@ -104,9 +104,19 @@ invoice_join as (
                 end as amount,
 
         {% if var('using_invoice_bundle', True) %}
-        coalesce(invoice_lines.account_id, items.parent_income_account_id, items.income_account_id, bundle_income_accounts.account_id) as account_id,
+        case when invoice_lines.detail_type is not null then invoice_lines.detail_type
+            when coalesce(invoice_lines.account_id, items.parent_income_account_id, items.income_account_id, bundle_income_accounts.account_id) is not null then 'SalesItemLineDetail'
+            when invoice_lines.discount_account_id is not null then 'DiscountLineDetail'
+            when coalesce(invoice_lines.account_id, items.parent_income_account_id, items.income_account_id, bundle_income_accounts.account_id, invoice_lines.discount_account_id) is null then 'DescriptionOnly'
+        end as invoice_line_transaction_type,
+        coalesce(invoice_lines.account_id, items.parent_income_account_id, items.income_account_id, bundle_income_accounts.account_id, invoice_lines.discount_account_id) as account_id,
         {% else %}
-        coalesce(invoice_lines.account_id, items.income_account_id) as account_id,
+        case when invoice_lines.detail_type is not null then invoice_lines.detail_type
+            when coalesce(invoice_lines.account_id, items.parent_income_account_id, items.income_account_id) is not null then 'SalesItemLineDetail'
+            when invoice_lines.discount_account_id is not null then 'DiscountLineDetail'
+            when coalesce(invoice_lines.account_id, items.parent_income_account_id, items.income_account_id, invoice_lines.discount_account_id) is null then 'DescriptionOnly'
+        end as invoice_line_transaction_type,
+        coalesce(invoice_lines.account_id, items.income_account_id, invoice_lines.discount_account_id) as account_id,
         {% endif %}
 
         coalesce(invoice_lines.sales_item_class_id, invoice_lines.discount_class_id, invoices.class_id) as class_id,
@@ -128,20 +138,21 @@ invoice_join as (
     left join bundle_income_accounts
         on bundle_income_accounts.bundle_id = invoice_lines.bundle_id
         and bundle_income_accounts.source_relation = invoice_lines.source_relation
-
-    where coalesce(invoice_lines.account_id, invoice_lines.sales_item_account_id, invoice_lines.sales_item_item_id, invoice_lines.item_id, bundle_income_accounts.account_id) is not null
-
-    {% else %}
-    where coalesce(invoice_lines.account_id, invoice_lines.sales_item_account_id, invoice_lines.sales_item_item_id, invoice_lines.item_id) is not null
-
     {% endif %}
+),
+
+invoice_filter as (
+
+    select *
+    from invoice_join
+    where invoice_line_transaction_type not in ('SubTotalLineDetail','DescriptionOnly')
 ),
 
 final as (
 
     select
         transaction_id,
-        invoice_join.source_relation,
+        invoice_filter.source_relation,
         index,
         transaction_date,
         customer_id,
@@ -150,15 +161,19 @@ final as (
         account_id,
         class_id,
         department_id,
-        'credit' as transaction_type,
-        'invoice' as transaction_source
-    from invoice_join
+        case when invoice_line_transaction_type = 'DiscountLineDetail' then 'debit'
+            else 'credit' 
+        end as transaction_type,
+        case when invoice_line_transaction_type = 'DiscountLineDetail' then 'invoice discount'
+            else 'invoice'
+        end as transaction_source
+    from invoice_filter
 
     union all
 
     select
         transaction_id,
-        invoice_join.source_relation,
+        invoice_filter.source_relation,
         index,
         transaction_date,
         customer_id,
@@ -167,9 +182,13 @@ final as (
         ar_accounts.account_id,
         class_id,
         department_id,
-        'debit' as transaction_type,
-        'invoice' as transaction_source
-    from invoice_join
+        case when invoice_line_transaction_type = 'DiscountLineDetail' then 'credit'
+            else 'debit' 
+        end as transaction_type,
+        case when invoice_line_transaction_type = 'DiscountLineDetail' then 'invoice discount'
+            else 'invoice'
+        end as transaction_source
+    from invoice_filter
 
     cross join ar_accounts
 )
