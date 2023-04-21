@@ -175,7 +175,7 @@ These are our recommended best practices to follow with your seed file ([you can
 We'd love for you to share your experiences with the ordinal seed file with us [in the Fivetran community user group](https://community.fivetran.com/t5/user-group-for-dbt/gh-p/dbt-user-group) so we can make these model and seed configurations even better for you in the future!
 
 ### Changing the Build Schema
-By default this package will build the QuickBooks staging models within a schema titled (<target_schema> + `_quickbooks_staging`) and QuickBooks final models within a schema titled (<target_schema> + `_quickbooks`) in your target database. If this is not where you would like your modeled QuickBooks data to be written to, add the following configuration to your `dbt_project.yml` file:
+By default this package will build the QuickBooks staging models within a schema titled (<target_schema> + `_quickbooks_staging`), QuickBooks intermediate (particularly the double entry) models within a schema titled (<target_schema> + `_quickbooks_intermediate`), and QuickBooks final models within a schema titled (<target_schema> + `_quickbooks`) in your target database. If this is not where you would like your modeled QuickBooks data to be written to, add the following configuration to your `dbt_project.yml` file:
 
 ```yml
 # dbt_project.yml
@@ -184,6 +184,7 @@ By default this package will build the QuickBooks staging models within a schema
 models:
     quickbooks:
       +schema: my_new_schema_name # leave blank for just the target_schema
+
     quickbooks_source:
       +schema: my_new_schema_name # leave blank for just the target_schema
 ```
