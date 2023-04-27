@@ -28,7 +28,7 @@ ap_accounts as (
     select
         account_id
     from accounts
-    
+
     where account_type = 'Accounts Payable'
         and is_active
         and not is_sub_account
@@ -43,7 +43,8 @@ bill_payment_join as (
         bill_payments.total_amount as amount,
         coalesce(bill_payments.credit_card_account_id,bill_payments.check_bank_account_id) as payment_account_id,
         ap_accounts.account_id,
-        bill_payments.vendor_id
+        bill_payments.vendor_id,
+        bill_payments.department_id
     from bill_payments
 
     cross join ap_accounts
@@ -51,7 +52,7 @@ bill_payment_join as (
 ),
 
 final as (
-    
+
     select
         transaction_id,
         source_relation,
@@ -62,6 +63,7 @@ final as (
         amount,
         payment_account_id as account_id,
         cast(null as {{ dbt.type_string() }}) as class_id,
+        department_id,
         'credit' as transaction_type,
         'bill payment' as transaction_source
     from bill_payment_join
@@ -78,6 +80,7 @@ final as (
         amount,
         account_id,
         cast(null as {{ dbt.type_string() }}) as class_id,
+        department_id,
         'debit' as transaction_type,
         'bill payment' as transaction_source
     from bill_payment_join

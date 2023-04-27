@@ -13,7 +13,7 @@
         <img src="https://img.shields.io/badge/Fivetran_Quickstart_Compatible%3F-yes-green.svg" /></a>
 </p>
 
-# QuickBooks dbt Package ([Docs](https://fivetran.github.io/dbt_quickbooks/))
+# QuickBooks dbt Package ([Docs](https://fivetran.github.io/dbt_quickbooks/)) 
 
 # 📖 Table of Contents
 - [📣 What does this dbt package do?](https://github.com/fivetran/dbt_quickbooks/#-what-does-this-dbt-package-do)
@@ -71,7 +71,7 @@ Include the following QuickBooks package version in your `packages.yml` file.
 ```yaml
 packages:
   - package: fivetran/quickbooks
-    version: [">=0.8.0", "<0.9.0"]
+    version: [">=0.9.0", "<0.10.0"]
 ```
 
 ## Step 3: Define database and schema variables
@@ -96,14 +96,14 @@ vars:
   using_department: false # disable if you don't have departments in QuickBooks
   using_deposit: false # disable if you don't have deposits in QuickBooks
   using_estimate: false # disable if you don't have estimates in QuickBooks
-  using_invoice: false # disable if you don't have estimates in QuickBooks
-  using_invoice_bundle: false # disable if you don't have estimates in QuickBooks
-  using_journal_entry: false # disable if you don't have estimates in QuickBooks
-  using_payment: false # disable if you don't have estimates in QuickBooks
-  using_refund_receipt: false # disable if you don't have estimates in QuickBooks
-  using_transfer: false # disable if you don't have estimates in QuickBooks
-  using_vendor_credit: false # disable if you don't have estimates in QuickBooks
-  using_sales_receipt: false # disable if you don't have estimates in QuickBooks
+  using_invoice: false # disable if you don't have invoices in QuickBooks
+  using_invoice_bundle: false # disable if you don't have invoice bundles in QuickBooks
+  using_journal_entry: false # disable if you don't have journal entries in QuickBooks
+  using_payment: false # disable if you don't have payments in QuickBooks
+  using_refund_receipt: false # disable if you don't have refund receipts in QuickBooks
+  using_transfer: false # disable if you don't have transfers in QuickBooks
+  using_vendor_credit: false # disable if you don't have vendor credits in QuickBooks
+  using_sales_receipt: false # disable if you don't have sales receipts in QuickBooks
   using_credit_card_payment_txn: true # enable if you want to include credit card payment transactions in your staging models
   using_purchase_order: true #enable if you want to include purchase orders in your staging models
 ```
@@ -175,7 +175,7 @@ These are our recommended best practices to follow with your seed file ([you can
 We'd love for you to share your experiences with the ordinal seed file with us [in the Fivetran community user group](https://community.fivetran.com/t5/user-group-for-dbt/gh-p/dbt-user-group) so we can make these model and seed configurations even better for you in the future!
 
 ### Changing the Build Schema
-By default this package will build the QuickBooks staging models within a schema titled (<target_schema> + `_quickbooks_staging`) and QuickBooks final models within a schema titled (<target_schema> + `_quickbooks`) in your target database. If this is not where you would like your modeled QuickBooks data to be written to, add the following configuration to your `dbt_project.yml` file:
+By default this package will build the QuickBooks staging models within a schema titled (<target_schema> + `_quickbooks_staging`), QuickBooks intermediate (particularly the double entry) models within a schema titled (<target_schema> + `_quickbooks_intermediate`), and QuickBooks final models within a schema titled (<target_schema> + `_quickbooks`) in your target database. If this is not where you would like your modeled QuickBooks data to be written to, add the following configuration to your `dbt_project.yml` file:
 
 ```yml
 # dbt_project.yml
@@ -184,6 +184,7 @@ By default this package will build the QuickBooks staging models within a schema
 models:
     quickbooks:
       +schema: my_new_schema_name # leave blank for just the target_schema
+
     quickbooks_source:
       +schema: my_new_schema_name # leave blank for just the target_schema
 ```
@@ -215,7 +216,7 @@ This dbt package is dependent on the following dbt packages. Please be aware tha
 ```yml
 packages:
     - package: fivetran/quickbooks_source
-      version: [">=0.7.0", "<0.8.0"]
+      version: [">=0.8.0", "<0.9.0"]
 
     - package: fivetran/fivetran_utils
       version: [">=0.4.0", "<0.5.0"]
@@ -234,7 +235,7 @@ A small team of analytics engineers at Fivetran develops these dbt packages. How
 We highly encourage and welcome contributions to this package. Check out [this dbt Discourse article](https://discourse.getdbt.com/t/contributing-to-a-dbt-package/657) to learn how to contribute to a dbt package!
 
 ## Opinionated Modelling Decisions
-This dbt package takes an opinionated stance on how to define the ordering and cash flow types in our model based on best financial practices. Customers do have the option to customize these orderings and cash flow types with a seed file. [Instructions are available in the Additional Configuration section](https://github.com/fivetran/dbt_quickbooks/#optional-step-5-additional-configurations). If you would like a deeper explanation of the logic used by default in the dbt package, [you may reference the DECISIONLOG](https://github.com/fivetran/dbt_quickbooks/blob/main/DECISIONLOG.md).
+This dbt package takes an opinionated stance on how to define the ordering and cash flow types in our model based on best financial practices. Customers do have the option to customize these orderings and cash flow types with a seed file. [Instructions are available in the Additional Configuration section](https://github.com/fivetran/dbt_quickbooks/#optional-step-5-additional-configurations). If you would like a deeper explanation of the logic used by default or for more insight into certain modeling practices within this dbt package, [you may reference the DECISIONLOG](https://github.com/fivetran/dbt_quickbooks/blob/main/DECISIONLOG.md).
 
 # 🏪 Are there any resources available?
 - If you have questions or want to reach out for help, please refer to the [GitHub Issue](https://github.com/fivetran/dbt_quickbooks/issues/new/choose) section to find the right avenue of support for you.

@@ -1,13 +1,32 @@
-# dbt_quickbooks v0.UPDATE.UPDATE
+# dbt_quickbooks v0.9.0
+## Bug Fixes
+- Added logic to the `int_quickbooks__invoice_double_entry` model to account for invoice discounts as they should be treated as contra revenue accounts that behavior differently from normal sale item detail invoice line items. ([#85](https://github.com/fivetran/dbt_quickbooks/pull/85))
 
- ## Under the Hood:
+## Additional Features
+- Added `department_id` to the `quickbooks__general_ledger` and the upstream tables required for that change. ([#63](https://github.com/fivetran/dbt_quickbooks/pull/63))
+  - Please note that this field was not added to the downstream `quickbooks__general_ledger_by_period`, `quickbooks__balance_sheet`, `quickbooks__profit_and_loss`, or `quickbooks__cash_flow_statement` models as this would require the grain of these models to be adjusted for the `department_id`. This would likely cause more confusion in the initial output. As such, the field was omitted in the aggregate models to ensure consistency of these models. If you wish this to be included, please open a [Feature Request](https://github.com/fivetran/dbt_quickbooks/issues/new?assignees=&labels=enhancement&template=feature-request.yml&title=%5BFeature%5D+%3Ctitle%3E) to let us know!
 
+## Documentation
+- Included documentation [within the DECISIONLOG](https://github.com/fivetran/dbt_quickbooks/blob/main/DECISIONLOG.md) centered around the behavior of how invoice discounts are handled within the `int_quickbooks__invoice_double_entry` model. ([#85](https://github.com/fivetran/dbt_quickbooks/pull/85))
+
+## Under the Hood
+- Leveraged the new `detail_type` field to ensure better accuracy when identifying invoice lines that should be accounted for in the general ledger calculations. ([#85](https://github.com/fivetran/dbt_quickbooks/pull/85))
 - Incorporated the new `fivetran_utils.drop_schemas_automation` macro into the end of each Buildkite integration test job.
 - Updated the pull request [templates](/.github).
+
+## Contributors
+- [@MarcelloMolinaro](https://github.com/MarcelloMolinaro) ([#63](https://github.com/fivetran/dbt_quickbooks/pull/63))
+- [@SellJamHere](https://github.com/SellJamHere) ([#60](https://github.com/fivetran/dbt_quickbooks/pull/60))
+
+## Complimentary Release Notes
+- See the source package [CHANGELOG](https://github.com/fivetran/dbt_quickbooks_source/blob/main/CHANGELOG.md#dbt_quickbooks_source-v080) for updates made to the staging layer in `dbt_quickbooks_source v0.8.0`.
+
 # dbt_quickbooks v0.8.1
+
 ## 🐛 Bug Fixes 🔨
 - Adding partitions by `class_id` in appropriate models to ensure correct account amount aggregations in `quickbooks__general_ledger`, `quickbooks__general_ledger_by_period`, `quickbooks__balance_sheet`, and `quickbooks__profit_and_loss` models. ([#77](https://github.com/fivetran/dbt_quickbooks/pull/77))
 - Modifying join in `int_quickbooks__general_ledger_balances` to account for null `class_id` values and bring in the correct non-zero balances. ([#77](https://github.com/fivetran/dbt_quickbooks/pull/77)) 
+
 
 # dbt_quickbooks v0.8.0
 ## 🚨 Breaking Changes 🚨
@@ -70,6 +89,7 @@
 ## Features
 - Addition of the `credit_card_payment_txn` (enabled/disabled using the `using_credit_card_payment_txn` variable) source as well as the accompanying staging and intermediate models. This source includes all credit card payment transactions and will be used in downstream General Ledger generation to ensure accurate reporting of all transaction types. ([#61](https://github.com/fivetran/dbt_quickbooks/pull/61))
   >**Note**: the `credit_card_payment_txn` source and models are disabled by default. In order to enable them, you will want to set the `using_credit_card_payment_txn` variable to `true` in your dbt_project.yml.
+
 
 ## Contributors
 - [@mikerenderco](https://github.com/mikerenderco) ([#50](https://github.com/fivetran/dbt_quickbooks/pull/50), [#47](https://github.com/fivetran/dbt_quickbooks/issues/47))
