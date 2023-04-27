@@ -1,6 +1,7 @@
 # dbt_quickbooks v0.9.0
 ## Bug Fixes
 - Added logic to the `int_quickbooks__invoice_double_entry` model to account for invoice discounts as they should be treated as contra revenue accounts that behavior differently from normal sale item detail invoice line items. ([#85](https://github.com/fivetran/dbt_quickbooks/pull/85))
+- Updated the `cash_beginning_period` and `cash_net_period` values to coalesce to 0 in the `quickbooks__cash_flow_statement` in order to ensure every row has a value, especially the first row in the sequence since it will always be null. ([#88](https://github.com/fivetran/dbt_quickbooks/issues/88))
 
 ## Additional Features
 - Added `department_id` to the `quickbooks__general_ledger` and the upstream tables required for that change. ([#63](https://github.com/fivetran/dbt_quickbooks/pull/63))
@@ -14,12 +15,13 @@
 - Incorporated the new `fivetran_utils.drop_schemas_automation` macro into the end of each Buildkite integration test job.
 - Updated the pull request [templates](/.github).
 
+## Complimentary Release Notes
+- See the source package [CHANGELOG](https://github.com/fivetran/dbt_quickbooks_source/blob/main/CHANGELOG.md#dbt_quickbooks_source-v080) for updates made to the staging layer in `dbt_quickbooks_source v0.8.0`.
+
 ## Contributors
 - [@MarcelloMolinaro](https://github.com/MarcelloMolinaro) ([#63](https://github.com/fivetran/dbt_quickbooks/pull/63))
 - [@SellJamHere](https://github.com/SellJamHere) ([#60](https://github.com/fivetran/dbt_quickbooks/pull/60))
-
-## Complimentary Release Notes
-- See the source package [CHANGELOG](https://github.com/fivetran/dbt_quickbooks_source/blob/main/CHANGELOG.md#dbt_quickbooks_source-v080) for updates made to the staging layer in `dbt_quickbooks_source v0.8.0`.
+- [@caffeinebounce](https://github.com/caffeinebounce) ([#88](https://github.com/fivetran/dbt_quickbooks/issues/88))
 
 # dbt_quickbooks v0.8.1
 
