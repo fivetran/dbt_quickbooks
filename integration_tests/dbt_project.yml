@@ -1,6 +1,6 @@
 name: 'quickbooks_integration_tests'
 
-version: '0.8.1'
+version: '0.9.0'  
 
 profile: 'integration_tests'
 config-version: 2
@@ -16,7 +16,7 @@ models:
   quickbooks_source:
     +materialized: table
     tmp:
-      +materialized: view   
+      +materialized: view
 vars:
   quickbooks_source:
     quickbooks_schema: quickbooks_integrations_tests
@@ -56,7 +56,7 @@ vars:
     quickbooks_refund_receipt_identifier: "refund_receipt_data"
     quickbooks_sales_receipt_line_identifier: "sales_receipt_line_data"
     quickbooks_sales_receipt_identifier: "sales_receipt_data"
-    quickbooks_transfer_identifier: "transfer_data"    
+    quickbooks_transfer_identifier: "transfer_data"
     quickbooks_vendor_credit_line_identifier: "vendor_credit_line_data"
     quickbooks_vendor_credit_identifier: "vendor_credit_data"
     quickbooks_vendor_identifier: "vendor_data"

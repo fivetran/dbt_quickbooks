@@ -1,7 +1,7 @@
 name: 🎉 Feature
 description: Suggest a new feature for the Fivetran dbt package
 title: "[Feature] <title>"
-labels: ["enhancement"]
+labels: ["type:enhancement"]
 body:
   - type: markdown
     attributes:

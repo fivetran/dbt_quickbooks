@@ -1,5 +1,5 @@
 /*
-Table that creates a debit record to the specified cash account and a credit record to either undeposited funds or a 
+Table that creates a debit record to the specified cash account and a credit record to either undeposited funds or a
 specific other account indicated in the deposit line.
 */
 
@@ -10,7 +10,7 @@ with deposits as (
 
     select *
     from {{ ref('stg_quickbooks__deposit') }}
-), 
+),
 
 deposit_lines as (
 
@@ -46,14 +46,15 @@ deposit_join as (
         deposits.account_id as deposit_to_acct_id,
         coalesce(deposit_lines.deposit_account_id, uf_accounts.account_id) as deposit_from_acct_id,
         deposit_customer_id as customer_id,
-        deposit_lines.deposit_class_id as class_id
+        deposit_lines.deposit_class_id as class_id,
+        deposits.department_id
 
     from deposits
-    
-    inner join deposit_lines 
+
+    inner join deposit_lines
         on deposits.deposit_id = deposit_lines.deposit_id
         and deposits.source_relation = deposit_lines.source_relation
-    
+
     cross join uf_accounts
 
 ),
@@ -70,6 +71,7 @@ final as (
         amount,
         deposit_to_acct_id as account_id,
         class_id,
+        department_id,
         'debit' as transaction_type,
         'deposit' as transaction_source
     from deposit_join
@@ -86,6 +88,7 @@ final as (
         amount,
         deposit_from_acct_id as account_id,
         class_id,
+        department_id,
         'credit' as transaction_type,
         'deposit' as transaction_source
     from deposit_join
