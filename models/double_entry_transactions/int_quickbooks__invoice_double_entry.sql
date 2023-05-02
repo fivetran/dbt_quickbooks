@@ -107,14 +107,14 @@ invoice_join as (
         case when invoice_lines.detail_type is not null then invoice_lines.detail_type
             when coalesce(invoice_lines.account_id, items.parent_income_account_id, items.income_account_id, bundle_income_accounts.account_id) is not null then 'SalesItemLineDetail'
             when invoice_lines.discount_account_id is not null then 'DiscountLineDetail'
-            when coalesce(invoice_lines.account_id, items.parent_income_account_id, items.income_account_id, bundle_income_accounts.account_id, invoice_lines.discount_account_id) is null then 'DescriptionOnly'
+            when coalesce(invoice_lines.account_id, items.parent_income_account_id, items.income_account_id, bundle_income_accounts.account_id, invoice_lines.discount_account_id) is null then 'NoAccountMapping'
         end as invoice_line_transaction_type,
         coalesce(invoice_lines.account_id, items.parent_income_account_id, items.income_account_id, bundle_income_accounts.account_id, invoice_lines.discount_account_id) as account_id,
         {% else %}
         case when invoice_lines.detail_type is not null then invoice_lines.detail_type
             when coalesce(invoice_lines.account_id, items.parent_income_account_id, items.income_account_id) is not null then 'SalesItemLineDetail'
             when invoice_lines.discount_account_id is not null then 'DiscountLineDetail'
-            when coalesce(invoice_lines.account_id, items.parent_income_account_id, items.income_account_id, invoice_lines.discount_account_id) is null then 'DescriptionOnly'
+            when coalesce(invoice_lines.account_id, items.parent_income_account_id, items.income_account_id, invoice_lines.discount_account_id) is null then 'NoAccountMapping'
         end as invoice_line_transaction_type,
         coalesce(invoice_lines.account_id, items.income_account_id, invoice_lines.discount_account_id) as account_id,
         {% endif %}
@@ -145,7 +145,7 @@ invoice_filter as (
 
     select *
     from invoice_join
-    where invoice_line_transaction_type not in ('SubTotalLineDetail','DescriptionOnly')
+    where invoice_line_transaction_type not in ('SubTotalLineDetail','NoAccountMapping')
 ),
 
 final as (
