@@ -1,3 +1,7 @@
+# dbt_quickbooks v0.10.0
+## 🎉 Feature Update 🎉
+- Databricks compatibility! ([#92](https://github.com/fivetran/dbt_quickbooks/pull/92))
+
 # dbt_quickbooks v0.9.0
 ## Bug Fixes
 - Added logic to the `int_quickbooks__invoice_double_entry` model to account for invoice discounts as they should be treated as contra revenue accounts that behavior differently from normal sale item detail invoice line items. ([#85](https://github.com/fivetran/dbt_quickbooks/pull/85))
