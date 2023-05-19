@@ -35,7 +35,10 @@ final as (
             then -1 * purchase_lines.amount
             else purchase_lines.amount
         end as amount,
-        purchases.total_amount
+        case when coalesce(purchases.credit, false) 
+            then -1 * purchases.total_amount
+            else purchases.total_amount
+        end as total_amount
     from purchases
 
     inner join purchase_lines 
