@@ -31,7 +31,10 @@ final as (
         purchases.vendor_id,
         coalesce(purchase_lines.account_expense_billable_status, purchase_lines.item_expense_billable_status) as billable_status,
         purchase_lines.description,
-        purchase_lines.amount,
+        case when coalesce(purchases.credit, false)
+            then -1 * purchase_lines.amount
+            else purchase_lines.amount
+        end as amount,
         purchases.total_amount
     from purchases
 
