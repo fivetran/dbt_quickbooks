@@ -1,6 +1,7 @@
 # dbt_quickbooks v0.9.1
+[PR #93](https://github.com/fivetran/dbt_quickbooks/pull/93) includes the following updates:
 ## Bug Fixes
-- Adjusted the purchase amount totals within the `int_quickbooks__purchase_transactions` model to factor in credits when calculating purchase amounts.
+- Adjusted the purchase amount totals within the `int_quickbooks__purchase_transactions` model to factor in credits when calculating purchase amounts. 
 # dbt_quickbooks v0.9.0
 ## Bug Fixes
 - Added logic to the `int_quickbooks__invoice_double_entry` model to account for invoice discounts as they should be treated as contra revenue accounts that behavior differently from normal sale item detail invoice line items. ([#85](https://github.com/fivetran/dbt_quickbooks/pull/85))
