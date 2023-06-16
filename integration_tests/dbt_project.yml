@@ -78,7 +78,7 @@ seeds:
         account_expense_account_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
     purchase_data:
       +column_types:
-        credit: "{{ 'boolean' if target.name == 'snowflake' else 'bool' }}"
+        credit: "{{ 'boolean' if target.name in ('snowflake', 'spark', 'databricks') else 'bool' }}"
     refund_receipt_data:
       +column_types:
         transaction_date: date
