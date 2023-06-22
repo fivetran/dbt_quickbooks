@@ -1,4 +1,4 @@
-name: 'quickbooks_integration_tests'
+name: 'quickbooks_integration_tests_2'
 
 version: '0.10.0'
 
@@ -63,7 +63,7 @@ vars:
 
 seeds:
   +quote_columns: "{{ true if target.type == 'redshift' else false }}"
-  quickbooks_integration_tests:
+  quickbooks_integration_tests_2:
     bill_line_data:
       +column_types:
         item_expense_billable_status: "{{ 'varchar(100)' if target.name in ('redshift', 'postgres') else 'string' }}"
