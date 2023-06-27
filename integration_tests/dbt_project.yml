@@ -1,6 +1,6 @@
 name: 'quickbooks_integration_tests'
 
-version: '0.9.1'  
+version: '0.10.0'
 
 profile: 'integration_tests'
 config-version: 2
@@ -19,7 +19,7 @@ models:
       +materialized: view
 vars:
   quickbooks_source:
-    quickbooks_schema: quickbooks_integrations_tests
+    quickbooks_schema: quickbooks_integration_tests_02
     quickbooks_account_identifier: "account_data"
     quickbooks_address_identifier: "address_data"
     quickbooks_bill_line_identifier: "bill_line_data"
@@ -78,7 +78,7 @@ seeds:
         account_expense_account_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
     purchase_data:
       +column_types:
-        credit: "{{ 'boolean' if target.name == 'snowflake' else 'bool' }}"
+        credit: "{{ 'boolean' if target.name in ('snowflake', 'spark', 'databricks') else 'bool' }}"
     refund_receipt_data:
       +column_types:
         transaction_date: date
@@ -97,3 +97,7 @@ clean-targets:
 - target
 - dbt_modules
 - dbt_packages
+
+dispatch:
+  - macro_namespace: dbt_utils
+    search_order: ['spark_utils', 'dbt_utils']
