@@ -85,8 +85,10 @@ bundle_income_accounts as (
 
 ar_accounts as (
 
-    select *
-    from {{ ref('stg_quickbooks__account') }}
+    select 
+        account_id,
+        source_relation
+    from accounts
 
     where account_type = 'Accounts Receivable'
 ),
@@ -191,6 +193,7 @@ final as (
     from invoice_filter
 
     cross join ar_accounts
+    where ar_accounts.source_relation = invoice_filter.source_relation
 )
 
 select *

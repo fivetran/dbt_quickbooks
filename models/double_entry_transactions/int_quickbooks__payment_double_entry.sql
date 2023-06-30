@@ -26,7 +26,8 @@ accounts as (
 ar_accounts as (
 
     select
-        account_id
+        account_id,
+        source_relation
     from accounts
 
     where account_type = 'Accounts Receivable'
@@ -69,7 +70,7 @@ final as (
 
     select
         transaction_id,
-        source_relation,
+        payment_join.source_relation,
         index,
         transaction_date,
         customer_id,
@@ -83,6 +84,7 @@ final as (
     from payment_join
 
     cross join ar_accounts
+    where ar_accounts.source_relation = payment_join.source_relation
 )
 
 select *

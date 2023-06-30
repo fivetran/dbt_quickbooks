@@ -26,7 +26,8 @@ accounts as (
 ap_accounts as (
 
     select
-        account_id
+        account_id,
+        source_relation
     from accounts
 
     where account_type = 'Accounts Payable'
@@ -48,6 +49,7 @@ bill_payment_join as (
     from bill_payments
 
     cross join ap_accounts
+    where ap_accounts.source_relation = bill_payments.source_relation
 
 ),
 
