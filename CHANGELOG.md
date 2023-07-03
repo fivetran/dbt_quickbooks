@@ -1,3 +1,6 @@
+# dbt_quickbooks v0.10.1
+([#95](https://github.com/fivetran/dbt_quickbooks/pull/95))
+
 # dbt_quickbooks v0.10.0
 ## 🎉 Feature Update 🎉
 - Databricks compatibility! ([#92](https://github.com/fivetran/dbt_quickbooks/pull/92))

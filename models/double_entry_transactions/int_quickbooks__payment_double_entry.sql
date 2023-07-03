@@ -53,7 +53,7 @@ final as (
 
     select
         transaction_id,
-        source_relation,
+        payment_join.source_relation,
         index,
         transaction_date,
         customer_id,
@@ -83,11 +83,11 @@ final as (
         'payment' as transaction_source
     from payment_join
 
-    {# cross join ar_accounts
-    where ar_accounts.source_relation = payment_join.source_relation #}
+    cross join ar_accounts
+    where ar_accounts.source_relation = payment_join.source_relation
 
-    join ar_accounts
-    on ar_accounts.source_relation = payment_join.source_relation
+    {# join ar_accounts
+    on ar_accounts.source_relation = payment_join.source_relation #}
 )
 
 select *

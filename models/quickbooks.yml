@@ -287,14 +287,19 @@ models:
 
   - name: quickbooks__general_ledger
     description: "{{ doc('general_ledger_table') }}"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - unique_id
-            - source_relation   
+    # tests:
+    #   - dbt_utils.unique_combination_of_columns:
+    #       combination_of_columns:
+    #         - unique_id
+    #         - source_relation   
     columns:
       - name: unique_id
-        description: Unique identifier of the general ledger line, dependent on `transaction_id`, `transaction_index`, `account_id`, `transaction_type`, `transaction_source`. 
+        description: >
+          Unique identifier of the general ledger line, dependent on `transaction_id`, `transaction_index`, 
+          `account_id`, `transaction_type`, `transaction_source`, and `source_relation`. 
+        tests:
+          - unique
+          - not_null
       - name: source_relation
         description: "{{ doc('source_relation') }}"
       - name: transaction_id

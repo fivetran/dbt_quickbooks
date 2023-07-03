@@ -71,7 +71,7 @@ final as (
 
     select
         transaction_id,
-        source_relation,
+        credit_memo_join.source_relation,
         index,
         transaction_date,
         customer_id,
@@ -101,11 +101,11 @@ final as (
         'credit_memo' as transaction_source
     from credit_memo_join
 
-    {# cross join df_accounts
-    where df_accounts.source_relation = credit_memo_join.source_relation #}
+    cross join df_accounts
+    where df_accounts.source_relation = credit_memo_join.source_relation
 
-    join df_accounts
-    on df_accounts.source_relation = credit_memo_join.source_relation
+    {# join df_accounts
+    on df_accounts.source_relation = credit_memo_join.source_relation #}
 )
 
 select *
