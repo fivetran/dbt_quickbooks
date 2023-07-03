@@ -22,6 +22,7 @@ items as (
 
     left join {{ ref('stg_quickbooks__item') }} parent
         on item.parent_item_id = parent.item_id
+        and item.source_relation = parent.source_relation
 ),
 
 purchase_join as (

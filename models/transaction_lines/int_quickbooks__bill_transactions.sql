@@ -41,7 +41,7 @@ final as (
 
     inner join bill_lines 
         on bills.bill_id = bill_lines.bill_id
-        and bills.bill_id = bill_lines.bill_id
+        and bills.source_relation = bill_lines.source_relation
 
     left join items
         on bill_lines.item_expense_item_id = items.item_id
