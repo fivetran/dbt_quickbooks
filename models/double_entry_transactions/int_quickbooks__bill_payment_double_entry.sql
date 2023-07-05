@@ -39,7 +39,8 @@ bill_payment_join as (
     select
         bill_payments.bill_payment_id as transaction_id,
         bill_payments.source_relation,
-        row_number() over(partition by bill_payments.bill_payment_id order by bill_payments.transaction_date) - 1 as index,
+        row_number() over(partition by bill_payments.bill_payment_id, bill_payments.source_relation 
+            order by bill_payments.transaction_date) - 1 as index,
         bill_payments.transaction_date,
         bill_payments.total_amount as amount,
         coalesce(bill_payments.credit_card_account_id,bill_payments.check_bank_account_id) as payment_account_id,
@@ -48,11 +49,11 @@ bill_payment_join as (
         bill_payments.department_id
     from bill_payments
 
-    cross join ap_accounts
-    where ap_accounts.source_relation = bill_payments.source_relation
+    {# cross join ap_accounts
+    where ap_accounts.source_relation = bill_payments.source_relation #}
 
-    {# join ap_accounts
-    on ap_accounts.source_relation = bill_payments.source_relation #}
+    inner join ap_accounts
+    on ap_accounts.source_relation = bill_payments.source_relation
 
 ),
 

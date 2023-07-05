@@ -40,7 +40,8 @@ payment_join as (
     select
         payments.payment_id as transaction_id,
         payments.source_relation,
-        row_number() over(partition by payments.payment_id order by payments.transaction_date) - 1 as index,
+        row_number() over(partition by payments.payment_id, payments.source_relation 
+            order by payments.transaction_date) - 1 as index,
         payments.transaction_date,
         payments.total_amount as amount,
         payments.deposit_to_account_id,
@@ -83,11 +84,11 @@ final as (
         'payment' as transaction_source
     from payment_join
 
-    cross join ar_accounts
-    where ar_accounts.source_relation = payment_join.source_relation
+    {# cross join ar_accounts
+    where ar_accounts.source_relation = payment_join.source_relation #}
 
-    {# join ar_accounts
-    on ar_accounts.source_relation = payment_join.source_relation #}
+    inner join ar_accounts
+    on ar_accounts.source_relation = payment_join.source_relation
 )
 
 select *
