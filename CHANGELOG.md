@@ -1,4 +1,4 @@
-# dbt_quickbooks v0.10.1
+# dbt_quickbooks v0.11.0
 [PR #95](https://github.com/fivetran/dbt_quickbooks/pull/95) includes the following updates:
 ## 🎉 Features
 - Added description for column `source_relation` to the documentation.
