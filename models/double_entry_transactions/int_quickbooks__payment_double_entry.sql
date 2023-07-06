@@ -84,9 +84,6 @@ final as (
         'payment' as transaction_source
     from payment_join
 
-    {# cross join ar_accounts
-    where ar_accounts.source_relation = payment_join.source_relation #}
-
     inner join ar_accounts
     on ar_accounts.source_relation = payment_join.source_relation
 )

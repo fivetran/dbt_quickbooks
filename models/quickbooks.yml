@@ -289,11 +289,6 @@ models:
 
   - name: quickbooks__general_ledger
     description: "{{ doc('general_ledger_table') }}"
-    # tests:
-    #   - dbt_utils.unique_combination_of_columns:
-    #       combination_of_columns:
-    #         - unique_id
-    #         - source_relation   
     columns:
       - name: unique_id
         description: >

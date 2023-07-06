@@ -30,7 +30,9 @@ accounts as (
 adjusted_gl as (
     
     select
-        {{ dbt_utils.generate_surrogate_key(['gl_union.transaction_id', 'gl_union.source_relation', 'gl_union.index', 'gl_union.account_id', ' gl_union.transaction_type', 'gl_union.transaction_source']) }} as unique_id,
+        {{ dbt_utils.generate_surrogate_key(['gl_union.transaction_id', 'gl_union.source_relation', 'gl_union.index',
+            'gl_union.account_id', ' gl_union.transaction_type', 'gl_union.transaction_source']) }} 
+            as unique_id,
         gl_union.transaction_id,
         gl_union.source_relation,
         gl_union.index as transaction_index,
