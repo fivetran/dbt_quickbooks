@@ -190,6 +190,8 @@ models:
         tests:
           - unique
           - not_null
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: cash_flow_period
         description: Timestamp of the first date for the cash flow period.
       - name: account_class
