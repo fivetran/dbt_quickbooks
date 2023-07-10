@@ -18,7 +18,7 @@ credit_card_payment_prep as (
         credit_card_payments.credit_card_payment_id as transaction_id,
         credit_card_payments.source_relation,
         row_number() over (partition by credit_card_payments.credit_card_payment_id, credit_card_payments.source_relation 
-            order by credit_card_payments.transaction_date) - 1 as index,
+            order by credit_card_payments.source_relation, credit_card_payments.transaction_date) - 1 as index,
         credit_card_payments.transaction_date,
         credit_card_payments.amount,
         credit_card_payments.bank_account_id,

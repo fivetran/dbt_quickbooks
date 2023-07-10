@@ -38,7 +38,8 @@ gl_cumulative_balance as (
     select
         *,
         case when financial_statement_helper = 'balance_sheet'
-            then sum(period_balance) over (partition by account_id, class_id order by date_month, account_id, class_id rows unbounded preceding) 
+            then sum(period_balance) over (partition by account_id, class_id, source_relation 
+            order by source_relation, date_month, account_id, class_id rows unbounded preceding) 
             else 0
                 end as cumulative_balance
     from gl_period_balance
@@ -141,9 +142,11 @@ final as (
         period_last_day,
         coalesce(period_net_change,0) as period_net_change,
         coalesce(period_beginning_balance_starter,
-            first_value(period_ending_balance_starter) over (partition by gl_partition order by period_last_day rows unbounded preceding)) as period_beginning_balance,
+            first_value(period_ending_balance_starter) over (partition by gl_partition, source_relation 
+            order by period_last_day rows unbounded preceding)) as period_beginning_balance,
         coalesce(period_ending_balance_starter,
-            first_value(period_ending_balance_starter) over (partition by gl_partition order by period_last_day rows unbounded preceding)) as period_ending_balance
+            first_value(period_ending_balance_starter) over (partition by gl_partition, source_relation 
+            order by period_last_day rows unbounded preceding)) as period_ending_balance
     from gl_value_partition
 )
 
