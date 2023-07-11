@@ -1,7 +1,7 @@
 # dbt_quickbooks v0.11.0
 [PR #95](https://github.com/fivetran/dbt_quickbooks/pull/95) includes the following updates:
-## 🎉 Features
-- Added description for column `source_relation` to the documentation.
+## 🚨 Breaking Changes 🚨 (recommend --full-refresh)
+- We recommend using `dbt run --full-refresh` the next time you run your project if you are receiving errors.
 
 ## 🪲 Bug Fixes
 - Included `source_relation` in all joins and window functions for models outputting `source_relation`. This is to prevent duplicate records in end models when using the unioning functionality. These updates were in the intermediate models, which flowed to downstream end models:
@@ -9,8 +9,12 @@
   - `quickbooks__expenses_sales_enhanced`
 - In end model `quickbooks__general_ledger`, added `source_relation` as part of the generated surrogate key `unique_id` to prevent duplicate `unique_id`s when using the unioning functionality.
 
+## 🎉 Features
+- Added description for column `source_relation` to the documentation.
+
 ## 🚘 Under the Hood
 - Updated test from a combination of columns to uniqueness of `unique_id` in `quickbooks__general_ledger`. 
+- Updated ordering in final CTE of `quickbooks__cash_flow_statement` to include `source_relation`. 
 - Updated analysis `quickbooks__balance_sheet` with updated join strategy. 
 
 # dbt_quickbooks v0.10.0
