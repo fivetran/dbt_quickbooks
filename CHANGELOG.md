@@ -1,8 +1,6 @@
 # dbt_quickbooks v0.11.0
+## 🚨 Breaking Changes 🚨
 [PR #95](https://github.com/fivetran/dbt_quickbooks/pull/95) includes the following updates:
-## 🚨 Breaking Changes 🚨 (recommend --full-refresh)
-- We recommend using `dbt run --full-refresh` the next time you run your project if you are receiving errors.
-
 ## 🪲 Bug Fixes
 - Included `source_relation` in all joins and window functions for models outputting `source_relation`. This is to prevent duplicate records in end models when using the unioning functionality. These updates were in the intermediate models, which flowed to downstream end models:
   - `quickbooks__general_ledger`

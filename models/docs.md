@@ -68,7 +68,7 @@ The parent account number. If the account is the parent account then the account
 {% enddocs %}
 
 {% docs source_relation %}
-The source of the record, if the unioning functionality is being used.
+The source of the record if the unioning functionality is being used. If not this field will be null. 
 {% enddocs %}
 
 {% docs transaction_date %}
