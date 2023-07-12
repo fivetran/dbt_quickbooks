@@ -12,7 +12,7 @@
 
 ## 🚘 Under the Hood
 - Updated test from a combination of columns to uniqueness of `unique_id` in `quickbooks__general_ledger`. 
-- Updated ordering in final CTE of `quickbooks__cash_flow_statement` to include `source_relation`. 
+- Updated ordering in certain models to include `source_relation`. 
 - Updated analysis `quickbooks__balance_sheet` with updated join strategy. 
 
 # dbt_quickbooks v0.10.0
