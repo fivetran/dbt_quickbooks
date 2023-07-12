@@ -19,7 +19,7 @@ models:
       +materialized: view
 vars:
   quickbooks_source:
-    quickbooks_schema: quickbooks_integration_tests_02
+    quickbooks_schema: quickbooks_integration_tests
     quickbooks_account_identifier: "account_data"
     quickbooks_address_identifier: "address_data"
     quickbooks_bill_line_identifier: "bill_line_data"
