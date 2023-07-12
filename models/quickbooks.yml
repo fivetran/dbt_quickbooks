@@ -137,6 +137,8 @@ models:
         description: Set to 'bill' of the transaction is a bill and 'invoice' if the transaction is an invoice.
       - name: transaction_id
         description: "{{ doc('transaction_id') }} for the bill or invoice."
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: doc_number
         description: The QuickBooks document number reference.
       - name: estimate_id
@@ -188,6 +190,8 @@ models:
         tests:
           - unique
           - not_null
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: cash_flow_period
         description: Timestamp of the first date for the cash flow period.
       - name: account_class
@@ -236,6 +240,8 @@ models:
         description: Set to 'expense' if the transaction type is an expense and 'sale' if the transaction type is a sale.
       - name: transaction_id
         description: "{{ doc('transaction_id') }} for either the expense or sale."
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: transaction_line_id
         description: Unique identifier of either the expense or sale line item.
       - name: doc_number
@@ -283,14 +289,16 @@ models:
 
   - name: quickbooks__general_ledger
     description: "{{ doc('general_ledger_table') }}"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - unique_id
-            - source_relation   
     columns:
       - name: unique_id
-        description: Unique identifier of the general ledger line, dependent on `transaction_id`, `transaction_index`, `account_id`, `transaction_type`, `transaction_source`. 
+        description: >
+          Unique identifier of the general ledger line, dependent on `transaction_id`, `transaction_index`, 
+          `account_id`, `transaction_type`, `transaction_source`, and `source_relation`. 
+        tests:
+          - unique
+          - not_null
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: transaction_id
         description: "{{ doc('transaction_id') }}. Each transaction will have an offsetting debit and credit record."
       - name: transaction_index
@@ -301,6 +309,10 @@ models:
         description: Monetary amount of the transaction line.
       - name: account_id
         description: "{{ doc('account_id') }} with the transaction line."
+      - name: customer_id
+        description: Reference to the customer associated with the transaction.
+      - name: vendor_id
+        description: Reference to the vendor associated with the transaction.
       - name: class_id
         description: "{{ doc('class_id') }} with the transaction line."
       - name: department_id
@@ -348,6 +360,8 @@ models:
     columns:
       - name: account_id
         description: "{{ doc('account_id') }} with the period balance transactions."
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: account_number
         description: "{{ doc('account_number') }} with the account."
       - name: account_name
@@ -393,6 +407,12 @@ models:
             - source_relation
             - calendar_date 
     columns:
+      - name: account_id
+        description: "{{ doc('account_id') }} with the record."
+      - name: class_id
+        description: "{{ doc('class_id') }} with the record."
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: calendar_date
         description: "{{ doc('calendar_date') }}"
       - name: account_class
@@ -449,6 +469,8 @@ models:
         description: "{{ doc('account_name') }} with the balance sheet line."
       - name: account_id
         description: "{{ doc('account_id') }} with the balance sheet line."
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: amount
         description: The total ending period balance.
       - name: account_ordinal

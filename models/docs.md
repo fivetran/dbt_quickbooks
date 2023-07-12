@@ -67,6 +67,10 @@ The parent account name. If the account is the parent account then the account n
 The parent account number. If the account is the parent account then the account number is recorded.
 {% enddocs %}
 
+{% docs source_relation %}
+The source of the record if the unioning functionality is being used. If not this field will be null. 
+{% enddocs %}
+
 {% docs transaction_date %}
 Timestamp of the date that the transaction occurred.
 {% enddocs %}

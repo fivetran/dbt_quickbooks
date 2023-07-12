@@ -27,7 +27,8 @@ accounts as (
 uf_accounts as (
 
     select
-        account_id
+        account_id,
+        source_relation
     from accounts
 
     where account_sub_type = 'UndepositedFunds'
@@ -55,7 +56,8 @@ deposit_join as (
         on deposits.deposit_id = deposit_lines.deposit_id
         and deposits.source_relation = deposit_lines.source_relation
 
-    cross join uf_accounts
+    inner join uf_accounts
+    on uf_accounts.source_relation = deposits.source_relation
 
 ),
 

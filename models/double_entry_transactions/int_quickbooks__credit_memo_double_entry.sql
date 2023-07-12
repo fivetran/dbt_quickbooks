@@ -32,7 +32,8 @@ accounts as (
 df_accounts as (
 
     select
-        account_id as account_id
+        account_id as account_id,
+        source_relation
     from accounts
 
     where account_type = 'Accounts Receivable'
@@ -70,7 +71,7 @@ final as (
 
     select
         transaction_id,
-        source_relation,
+        credit_memo_join.source_relation,
         index,
         transaction_date,
         customer_id,
@@ -87,7 +88,7 @@ final as (
 
     select
         transaction_id,
-        source_relation,
+        credit_memo_join.source_relation,
         index,
         transaction_date,
         customer_id,
@@ -100,7 +101,8 @@ final as (
         'credit_memo' as transaction_source
     from credit_memo_join
 
-    cross join df_accounts
+    inner join df_accounts
+    on df_accounts.source_relation = credit_memo_join.source_relation
 )
 
 select *
