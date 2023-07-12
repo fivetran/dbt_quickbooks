@@ -118,7 +118,7 @@ gl_value_partition as (
         sum(case when period_ending_balance_starter is null 
             then 0 
             else 1 
-                end) over (order by account_id, class_id, period_last_day rows unbounded preceding) as gl_partition
+                end) over (order by source_relation, account_id, class_id, period_last_day rows unbounded preceding) as gl_partition
     from gl_patch
 ),
  
@@ -143,10 +143,10 @@ final as (
         coalesce(period_net_change,0) as period_net_change,
         coalesce(period_beginning_balance_starter,
             first_value(period_ending_balance_starter) over (partition by gl_partition, source_relation 
-            order by period_last_day rows unbounded preceding)) as period_beginning_balance,
+            order by source_relation, period_last_day rows unbounded preceding)) as period_beginning_balance,
         coalesce(period_ending_balance_starter,
             first_value(period_ending_balance_starter) over (partition by gl_partition, source_relation 
-            order by period_last_day rows unbounded preceding)) as period_ending_balance
+            order by source_relation, period_last_day rows unbounded preceding)) as period_ending_balance
     from gl_value_partition
 )
 
