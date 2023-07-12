@@ -40,7 +40,7 @@ bill_payment_join as (
         bill_payments.bill_payment_id as transaction_id,
         bill_payments.source_relation,
         row_number() over(partition by bill_payments.bill_payment_id, bill_payments.source_relation 
-            order by bill_payments.transaction_date) - 1 as index,
+            order by bill_payments.source_relation, bill_payments.transaction_date) - 1 as index,
         bill_payments.transaction_date,
         bill_payments.total_amount as amount,
         coalesce(bill_payments.credit_card_account_id,bill_payments.check_bank_account_id) as payment_account_id,
