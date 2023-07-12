@@ -1,7 +1,3 @@
 packages:
-  # - package: fivetran/quickbooks_source
-  #   version: [">=0.9.0", "<0.10.0"]
-
-- git: https://github.com/fivetran/dbt_quickbooks_source.git
-  revision: bugfix/join_on_source_relation
-  warn-unpinned: false
+  - package: fivetran/quickbooks_source
+    version: [">=0.9.0", "<0.10.0"]
