@@ -31,7 +31,7 @@ uf_accounts as (
         source_relation
     from accounts
 
-    where account_sub_type = '{{ var('quickbooks__deposit_account_sub_type', 'UndepositedFunds') }}'
+    where account_sub_type = '{{ var('quickbooks__undeposited_funds_reference', 'UndepositedFunds') }}'
         and is_active
         and not is_sub_account
 ),

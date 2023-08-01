@@ -30,7 +30,7 @@ ap_accounts as (
         source_relation
     from accounts
 
-    where account_type = '{{ var('quickbooks__bill_payment_account_type', 'Accounts Payable') }}'
+    where account_type = '{{ var('quickbooks__accounts_payable_reference', 'Accounts Payable') }}'
         and is_active
         and not is_sub_account
 ),

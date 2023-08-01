@@ -111,22 +111,7 @@ vars:
   using_purchase_order: true #enable if you want to include purchase orders in your staging models
 ```
 
-## Step 5: Configuring Account Type Names
-QuickBooks does allow for the `account_type` and `account_subtype` field values to be configured for customers internally. While our current filtered logic within our intermediate models accounts for the default values, it's possible there are different or multiple values that might change what the account types would be. 
-
-If you have different field value filters you'd like to set, you will need to configure the `account_type` and `account_subtype` variables that account for these variables in your `dbt_project.yml`.
-
-```yml
-vars: 
-  quickbooks__bill_payment_account_type: account_type_value # 'Accounts Payable' is the default filter set
-  quickbooks__credit_memo_account_type: account_type_value # 'Accounts Receivable' is the default filter set
-  quickbooks__deposit_account_sub_type: account_sub_type_value # 'UndepositedFunds' is the default filter
-  quickbooks__invoice_account_sub_type: account_sub_type_value # 'SalesOfProductIncome' is the default filter
-  quickbooks__invoice_account_type: account_type_value # 'Accounts Receivable' is the default filter
-  quickbooks__payment_account_type: account_type_value # 'Accounts Receivable' is the default filter
-```
-
-## (Optional) Step 6: Additional Configurations
+## (Optional) Step 5: Additional Configurations
 <details><summary>Expand for configurations</summary>
 
 ### Unioning Multiple Quickbooks Connectors 
@@ -142,6 +127,19 @@ vars:
     quickbooks_union_schemas: ['quickbooks_usa','quickbooks_canada'] # use this if the data is in different schemas/datasets of the same database/project
     quickbooks_union_databases: ['quickbooks_usa','quickbooks_canada'] # use this if the data is in different databases/projects but uses the same schema name
 ``` 
+
+### Configuring Account Type Names
+QuickBooks does allow for the `account_type` and `account_subtype` field values to be configured for customers internally. While our current filtered logic within our intermediate models accounts for the default values, it's possible there are different or multiple values that might change what the account types would be. 
+
+If you have different field value filters you'd like to set, you will need to configure the `account_type` and `account_subtype` variables that account for these variables in your `dbt_project.yml`.
+
+```yml
+vars: 
+  quickbooks__accounts_payable_reference: accounts_payable_value # 'Accounts Payable' is the default filter set
+  quickbooks__accounts_receivable_reference: account_receivable_value # 'Accounts Receivable' is the default filter set
+  quickbooks__undeposited_funds_reference: account_undeposited_funds_value # 'UndepositedFunds' is the default filter set
+  quickbooks__sales_of_product_income_reference: account_sales_of_product_income_value # 'SalesOfProductIncome' is the default filter set
+```
 
 ### Customize the Cash Flow Model 
 **IMPORTANT**: It is very likely you will need to reconfigure your `cash_flow_type` to make sure your cash flow statement matches your specific use case. Please examine the following instructions.
