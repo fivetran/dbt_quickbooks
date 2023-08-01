@@ -1,3 +1,11 @@
+# dbt_quickbooks v0.11.1
+## 🚨 Breaking Changes 🚨
+[PR #96](https://github.com/fivetran/dbt_quickbooks/pull/96) includes the following updates:
+
+## 🐛 Bug Fixes 🩹
+- Updated intermediate double entry models that have `account_type` and `account_sub_type` filters with configurable variables, since the type names used in the filter can be adjusted internally by QuickBooks customers. 
+- Updated README with additional steps for configuration. 
+
 # dbt_quickbooks v0.11.0
 ## 🚨 Breaking Changes 🚨
 [PR #95](https://github.com/fivetran/dbt_quickbooks/pull/95) includes the following updates:

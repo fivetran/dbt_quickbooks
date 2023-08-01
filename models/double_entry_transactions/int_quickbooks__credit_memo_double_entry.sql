@@ -36,7 +36,7 @@ df_accounts as (
         source_relation
     from accounts
 
-    where account_type = 'Accounts Receivable'
+    where account_type = '{{ var('quickbooks__credit_memo_account_type', 'Accounts Receivable') }}'
         and is_active
         and not is_sub_account
 ),

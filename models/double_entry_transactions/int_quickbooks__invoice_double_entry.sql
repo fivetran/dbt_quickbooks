@@ -57,7 +57,7 @@ income_accounts as (
     select *
     from accounts
 
-    where account_sub_type = 'SalesOfProductIncome'
+    where account_sub_type = '{{ var('quickbooks__invoice_account_sub_type', 'SalesOfProductIncome') }}'
 ),
 
 bundle_income_accounts as (
@@ -90,7 +90,7 @@ ar_accounts as (
         source_relation
     from accounts
 
-    where account_type = 'Accounts Receivable'
+    where account_type = '{{ var('quickbooks__invoice_account_type', 'Accounts Receivable') }}'
 ),
 
 invoice_join as (
