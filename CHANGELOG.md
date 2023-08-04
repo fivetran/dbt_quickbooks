@@ -1,10 +1,12 @@
 # dbt_quickbooks v0.11.1
 [PR #98](https://github.com/fivetran/dbt_quickbooks/pull/98) includes the following updates:
 
-## 🎉 Feature Update 🎉
-- Updated intermediate double entry models that have `account_type` and `account_sub_type` filters with configurable variables, since the type names used in the filter can be adjusted internally by QuickBooks customers. The intermediate models where these variables were introduced included: 
-
 ## 🐛 Bug Fixes 🩹
+- Updated intermediate double entry models that have `account_type` and `account_sub_type` filters with configurable variables, since the type names used in the filter can be adjusted internally by QuickBooks customers. 
+- Includes `items.asset_account_id` as the second field of the coalesce for the `payed_to_account_id` field within the `int_quickbooks__bill_payment_double_entry` model to ensure all account_id types are taken into consideration when mapping the transaction to the proper account. ([PR #100](https://github.com/fivetran/dbt_quickbooks/pull/100))
+
+## 🎉 Feature Updates 🎉
+- The intermediate models where these variables were introduced in the models below:
 | **Updated model** | **New variables to filter on** |
 | ----------| -------------------- |
 | [int_quickbooks__bill_payment_double_entry](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.int_quickbooks__bill_payment_double_entry) | `quickbooks__accounts_payable_reference` |
@@ -13,9 +15,7 @@
 | [int_quickbooks__invoice_double_entry](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.int_quickbooks__invoice_double_entry) | `quickbooks__sales_of_product_income_reference`, `quickbooks__accounts_receivable_reference` |
 | [int_quickbooks__payment_double_entry](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.int_quickbooks__payment_double_entry) | `quickbooks__accounts_receivable_reference` |
 
-- Includes `items.asset_account_id` as the second field of the coalesce for the `payed_to_account_id` field within the `int_quickbooks__bill_payment_double_entry` model to ensure all account_id types are taken into consideration when mapping the transaction to the proper account. ([PR #100](https://github.com/fivetran/dbt_quickbooks/pull/100))
-
-## Documentation
+## 🗒️ Documentation
 - Updated README with additional steps for configuration. This is an optional step since most customers will rely on the default account type/subtype values available. 
 
 ## Contributors
