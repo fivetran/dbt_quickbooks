@@ -1,3 +1,10 @@
+# dbt_quickbooks v0.11.1
+## Bug Fixes
+- Includes `items.asset_account_id` as the second field of the coalesce for the `payed_to_account_id` field within the `int_quickbooks__bill_payment_double_entry` model to ensure all account_id types are taken into consideration when mapping the transaction to the proper account. ([PR #100](https://github.com/fivetran/dbt_quickbooks/pull/100))
+
+## Contributors
+- [@mikerenderco](https://github.com/mikerenderco) ([PR #100](https://github.com/fivetran/dbt_quickbooks/pull/100))
+
 # dbt_quickbooks v0.11.0
 ## 🚨 Breaking Changes 🚨
 [PR #95](https://github.com/fivetran/dbt_quickbooks/pull/95) includes the following updates:
