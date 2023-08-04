@@ -7,6 +7,7 @@
 
 ## 🎉 Feature Updates 🎉
 - The intermediate models where these variables were introduced in the models below:
+
 | **Updated model** | **New variables to filter on** |
 | ----------| -------------------- |
 | [int_quickbooks__bill_payment_double_entry](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.int_quickbooks__bill_payment_double_entry) | `quickbooks__accounts_payable_reference` |
