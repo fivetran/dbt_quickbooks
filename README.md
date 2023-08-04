@@ -128,6 +128,19 @@ vars:
     quickbooks_union_databases: ['quickbooks_usa','quickbooks_canada'] # use this if the data is in different databases/projects but uses the same schema name
 ``` 
 
+### Configuring Account Type Names
+Within a few of the double entry models in this package a mapping takes place to assign certain transaction type's debits/credits to the appropriate offset account (ie. Accounts Payable, Accounts Receivable, Undeposited Funds, and SalesOfProductIncome) reference. While our current filtered logic within our intermediate models account for the default values, it's possible your use case relies on different account types to reference. 
+
+If you have a different value to reference for each type, you will need to configure the `account_type` and `account_sub_type` variables that account for these variables in your `dbt_project.yml`.
+
+```yml
+vars: 
+  quickbooks__accounts_payable_reference: accounts_payable_value # 'Accounts Payable' is the default filter set for the account_type reference.
+  quickbooks__accounts_receivable_reference: account_receivable_value # 'Accounts Receivable' is the default filter set for the account_type reference.
+  quickbooks__undeposited_funds_reference: account_undeposited_funds_value # 'UndepositedFunds' is the default filter set for the account_subtype reference.
+  quickbooks__sales_of_product_income_reference: account_sales_of_product_income_value # 'SalesOfProductIncome' is the default filter set for the account_subtype reference.
+```
+
 ### Customize the Cash Flow Model 
 **IMPORTANT**: It is very likely you will need to reconfigure your `cash_flow_type` to make sure your cash flow statement matches your specific use case. Please examine the following instructions.
 
