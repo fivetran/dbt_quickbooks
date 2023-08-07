@@ -1,8 +1,8 @@
 # dbt_quickbooks v0.11.1
-[PR #98](https://github.com/fivetran/dbt_quickbooks/pull/98) includes the following updates:
+This PR includes the following updates:
 
 ## 🐛 Bug Fixes 🩹
-- Updated intermediate double entry models that have `account_type` and `account_sub_type` filters with configurable variables, since the type names used in the filter can be adjusted internally by QuickBooks customers. 
+- Updated intermediate double entry models that have `account_type` and `account_sub_type` filters with configurable variables, since the type names used in the filter can be adjusted internally by QuickBooks customers. ([PR #98](https://github.com/fivetran/dbt_quickbooks/pull/98))
 - Includes `items.asset_account_id` as the second field of the coalesce for the `payed_to_account_id` field within the `int_quickbooks__bill_payment_double_entry` model to ensure all account_id types are taken into consideration when mapping the transaction to the proper account. ([PR #100](https://github.com/fivetran/dbt_quickbooks/pull/100))
 
 ## 🎉 Feature Updates 🎉
@@ -15,10 +15,10 @@
 | [int_quickbooks__deposit_double_entry](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.int_quickbooks__deposit_double_entry) | `quickbooks__undeposited_funds_reference` |
 | [int_quickbooks__invoice_double_entry](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.int_quickbooks__invoice_double_entry) | `quickbooks__sales_of_product_income_reference`, `quickbooks__accounts_receivable_reference` |
 | [int_quickbooks__payment_double_entry](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.int_quickbooks__payment_double_entry) | `quickbooks__accounts_receivable_reference` |
-
+ 
 ## 🗒️ Documentation
-- Updated README with additional steps for configuration. This is an optional step since most customers will rely on the default account type/subtype values available. 
-
+- [Updated README with additional steps for configuration](https://github.com/fivetran/dbt_quickbooks/blob/main/README.md#optional-step-5-additional-configurations). This is an optional step since most customers will rely on the default account type/subtype values available.
+  
 ## Contributors
 - [@mikerenderco](https://github.com/mikerenderco) ([PR #100](https://github.com/fivetran/dbt_quickbooks/pull/100))
 
