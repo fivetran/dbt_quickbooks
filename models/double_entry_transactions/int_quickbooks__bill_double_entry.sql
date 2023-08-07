@@ -37,7 +37,7 @@ bill_join as (
         bill_lines.index,
         bills.transaction_date,
         bill_lines.amount,
-        coalesce(bill_lines.account_expense_account_id, items.expense_account_id, items.parent_expense_account_id, items.expense_account_id, items.parent_income_account_id, items.income_account_id) as payed_to_account_id,
+        coalesce(bill_lines.account_expense_account_id,items.asset_account_id, items.expense_account_id, items.parent_expense_account_id, items.expense_account_id, items.parent_income_account_id, items.income_account_id) as payed_to_account_id,
         bills.payable_account_id,
         coalesce(bill_lines.account_expense_customer_id, bill_lines.item_expense_customer_id) as customer_id,
         coalesce(bill_lines.item_expense_class_id, bill_lines.account_expense_class_id) as class_id,

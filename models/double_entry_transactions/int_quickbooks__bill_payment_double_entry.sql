@@ -30,12 +30,13 @@ ap_accounts as (
         source_relation
     from accounts
 
-    where account_type = 'Accounts Payable'
+    where account_type = '{{ var('quickbooks__accounts_payable_reference', 'Accounts Payable') }}'
         and is_active
         and not is_sub_account
 ),
 
 bill_payment_join as (
+
     select
         bill_payments.bill_payment_id as transaction_id,
         bill_payments.source_relation,
@@ -51,7 +52,6 @@ bill_payment_join as (
 
     inner join ap_accounts
     on ap_accounts.source_relation = bill_payments.source_relation
-
 ),
 
 final as (
