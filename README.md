@@ -89,7 +89,7 @@ vars:
 ## Step 4: Enabling/Disabling Models
 Your QuickBooks connector might not sync every table that this package expects. This package takes into consideration that not every QuickBooks account utilizes the same transactional tables.
 
-By default, most variables' values are assumed to be `true` (with exception of `using_credit_card_payment_txn`). In other to enable or disable the relevant functionality in the package, you will need to add the relevant variables:
+By default, most variables' values are assumed to be `true` (with exception of `using_credit_card_payment_txn` and `using_purchase_order`). In other to enable or disable the relevant functionality in the package, you will need to add the relevant variables:
 
 ```yml
 vars:
