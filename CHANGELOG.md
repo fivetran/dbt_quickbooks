@@ -1,5 +1,5 @@
 # dbt_quickbooks v0.11.2
-This PR includes the following updates:
+[This PR](https://github.com/fivetran/dbt_quickbooks/pull/103/files) includes the following updates:
 ## 🚘 Under the Hood
 - Update seeds and configs in the integration tests folder to match what was updated upstream in the ([source package PR #51](https://github.com/fivetran/dbt_quickbooks_source/pull/51)) to correct timestamp fields.
 
