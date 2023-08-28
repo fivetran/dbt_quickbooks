@@ -172,7 +172,7 @@ models:
       - name: total_current_payment
         description: Sum of all total payments made towards the bill or invoice.
       - name: due_date
-        description: Timestamp of the due date for the bill or invoice.
+        description: The due date for the bill or invoice.
       - name: is_overdue
         description: Boolean indicating whether the bill or invoice full payment is overdue.
       - name: days_overdue

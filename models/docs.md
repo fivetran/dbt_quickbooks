@@ -72,7 +72,7 @@ The source of the record if the unioning functionality is being used. If not thi
 {% enddocs %}
 
 {% docs transaction_date %}
-Timestamp of the date that the transaction occurred.
+The date that the transaction occurred.
 {% enddocs %}
 
 {% docs transaction_id %}

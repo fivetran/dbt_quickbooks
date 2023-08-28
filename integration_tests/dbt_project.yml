@@ -75,23 +75,10 @@ seeds:
       +column_types:
         item_expense_billable_status: "{{ 'varchar(100)' if target.name in ('redshift', 'postgres') else 'string' }}"
         account_expense_billable_status: "{{ 'varchar(100)' if target.name in ('redshift', 'postgres') else 'string' }}"
-    credit_memo_data:
-      +column_types:
-        transaction_date: timestamp
     deposit_line_data:
       +column_types:
         deposit_account_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
         deposit_class_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
-    estimate_data:
-      +column_types:
-        transaction_date: timestamp
-    invoice_data:
-      +column_types:
-        due_date: timestamp
-        transaction_date: timestamp
-    payment_data:
-      +column_types:
-        transaction_date: timestamp
     purchase_line_data:
       +column_types:
         item_expense_billable_status: "{{ 'varchar(100)' if target.name in ('redshift', 'postgres') else 'string' }}"
@@ -99,10 +86,6 @@ seeds:
     purchase_data:
       +column_types:
         credit: "{{ 'boolean' if target.name in ('snowflake', 'spark', 'databricks') else 'bool' }}"
-        transaction_date: timestamp
-    purchase_order_data:
-      +column_types:
-        transaction_date: timestamp
     vendor_credit_line_data:
       +column_types:
         item_expense_billable_status: "{{ 'varchar(100)' if target.name in ('redshift', 'postgres') else 'string' }}"
