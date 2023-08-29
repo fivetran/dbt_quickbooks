@@ -1,4 +1,4 @@
-# dbt_quickbooks v0.11.2
+# dbt_quickbooks v0.VERSION.VERSION
 [This PR](https://github.com/fivetran/dbt_quickbooks/pull/103/files) includes the following updates:
 ## 🚘 Under the Hood
 - Update seeds and configs in the integration tests folder to match what was updated upstream in the ([source package PR #51](https://github.com/fivetran/dbt_quickbooks_source/pull/51)) to correct timestamp fields that should be date fields (`due_date`, `transaction_date`). Previously, some fields were getting interpreted as timestamps while some were interpreted as dates, leading to errors on downstream joins. In the upstream staging models, `due_date` and `transaction_date` are now explicitly cast as `date` types.

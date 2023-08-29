@@ -1,6 +1,6 @@
 name: 'quickbooks_integration_tests'
 
-version: '0.11.2'
+version: '0.11.1'
 
 profile: 'integration_tests'
 config-version: 2
@@ -60,9 +60,6 @@ vars:
     quickbooks_vendor_credit_line_identifier: "vendor_credit_line_data"
     quickbooks_vendor_credit_identifier: "vendor_credit_data"
     quickbooks_vendor_identifier: "vendor_data"
-
-    using_purchase_order: True
-    using_credit_card_payment_txn: True
     
 
 seeds:

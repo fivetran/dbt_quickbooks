@@ -1,5 +1,5 @@
 bill_payment_id,index,_fivetran_synced,amount,bill_id,check_id,credit_card_charge_id,credit_card_credit_id,deposit_id,expense_id,journal_entry_id,linked_bill_payment_id,vendor_credit_id,bill_payment_credit_card_id
-23,0,2020-05-20 14:03:30,38757,19.25,,,,,,,,,
+23,0,2020-05-20 14:03:30,38757,19,,,,,,,,,
 135,0,2020-11-01 16:02:01,79137,124,,,,,,,,,
 90,0,2020-09-01 16:02:12,74592,89,,,,,,,,,
 276,0,2020-12-01 16:02:03,88155,268,,,,,,,,,
