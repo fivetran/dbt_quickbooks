@@ -1,53 +1,81 @@
 -- depends_on: {{ ref('quickbooks__general_ledger') }}
-
 with spine as (
+
     {% if execute %}
     {% set first_date_query %}
-        select min(transaction_date) as min_date from {{ ref('quickbooks__general_ledger') }}
+        select  min( transaction_date ) as min_date from {{ ref('quickbooks__general_ledger') }}
     {% endset %}
+
     {% set first_date_result = run_query(first_date_query) %}
     {% if first_date_result and first_date_result.columns[0][0] %}
         {% set first_date = first_date_result.columns[0][0]|string %}
+
         {% if target.type == 'postgres' %}
             {% set first_date_adjust = "cast('" ~ first_date[0:10] ~ "' as date)" %}
+
         {% else %}
             {% set first_date_adjust = "'" ~ first_date[0:10] ~ "'" %}
+
         {% endif %}
     {% else %}
-        {% set first_date_adjust = "null" %}
+        {% set first_date_adjust = "'2000-01-01'" %}
+    {% endif %}        
+
+    {% else %} {% set first_date_adjust = "'2000-01-01'" %}
     {% endif %}
 
+    {% if execute %}
     {% set last_date_query %}
-        select max(transaction_date) as max_date from {{ ref('quickbooks__general_ledger') }}
+        select  max( transaction_date ) as max_date from {{ ref('quickbooks__general_ledger') }}
     {% endset %}
-    {% set last_date_result = run_query(last_date_query) %}
-    {% if last_date_result and last_date_result.columns[0][0] %}
-        {% set last_date = last_date_result.columns[0][0]|string %}
-        {% set current_date_query %}
-            select current_date
-        {% endset %}
-        {% set current_date = run_query(current_date_query).columns[0][0]|string %}
-        {% if current_date < last_date %}
-            {% set last_date_adjust = last_date %}
+
+    {% set current_date_query %}
+        select current_date
+    {% endset %}
+
+    {% if run_query(current_date_query).columns[0][0]|string < run_query(last_date_query).columns[0][0]|string %}
+        {% set last_date_result = run_query(current_date_query) %}
+        {% if last_date_result and last_date_result.columns[0][0] %}
+            {% set last_date = last_date_result.columns[0][0]|string %}
         {% else %}
-            {% set last_date_adjust = current_date %}
-        {% endif %}
-        {% if target.type == 'postgres' %}
-            {% set last_date_adjust = "cast('" ~ last_date_adjust[0:10] ~ "' as date)" %}
-        {% else %}
-            {% set last_date_adjust = "'" ~ last_date_adjust[0:10] ~ "'" %}
+            {% set last_date = "'2000-01-01'" %}
         {% endif %}
     {% else %}
-        {% set last_date_adjust = "null" %}
+        {% set last_date_result = run_query(current_date_query) %}
+        {% if last_date_result and last_date_result.columns[0][0] %}
+            {% set last_date = last_date_result.columns[0][0]|string %}
+        {% else %}
+            {% set last_date = "'2000-01-01'" %}
+        {% endif %}
+    {% endif %}
+        
+    {% if target.type == 'postgres' %}
+        {% if last_date !="null" && last_date != "None" %}
+            {% set last_date_adjust = "cast('" ~ last_date[0:10] ~ "' as date)" %}
+        {% else %}
+            {% set last_date_adjust = "cast('2000-01-01' as date)" %}
+        {% endif %}
+
+    {% else %}
+        {% set last_date_adjust = "'" ~ last_date[0:10] ~ "'" %}
+
     {% endif %}
     {% endif %}
 
-    {% if first_date_adjust != "null" and last_date_adjust != "null" %}
-    {{ dbt_utils.date_spine(
-        datepart="month",
-        start_date=first_date_adjust,
-        end_date=dbt.dateadd("month", 1, last_date_adjust)
-    ) }}
+    {% if first_date_adjust !="null" && first_date_adjust!="None" and last_date_adjust !="null" and last_date_adjust!="None" %}
+        {{ dbt_utils.date_spine(
+            datepart="month",
+            start_date=first_date_adjust,
+            end_date=last_date_adjust
+            )
+        }}
+    {% else %}
+        {{ dbt_utils.date_spine(
+            datepart="month",
+            start_date="'2000-01-01'",
+            end_date="'2000-01-01'"
+            )
+        }}
     {% endif %}
 ),
 general_ledger as (
