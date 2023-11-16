@@ -1,3 +1,6 @@
+# dbt_quickbooks v0.12.1
+[PR #108](https://github.com/fivetran/dbt_quickbooks/pull/108)
+
 # dbt_quickbooks v0.12.0
 [PR #103](https://github.com/fivetran/dbt_quickbooks/pull/103/files) includes the following updates:
 ## 🚘 Under the Hood
