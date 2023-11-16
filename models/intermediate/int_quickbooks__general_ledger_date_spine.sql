@@ -50,7 +50,7 @@ with spine as (
     {% endif %}
         
     {% if target.type == 'postgres' %}
-        {% if last_date !="null" && last_date != "None" %}
+        {% if last_date !="null" and last_date != "None" %}
             {% set last_date_adjust = "cast('" ~ last_date[0:10] ~ "' as date)" %}
         {% else %}
             {% set last_date_adjust = "cast('2000-01-01' as date)" %}
@@ -62,7 +62,7 @@ with spine as (
     {% endif %}
     {% endif %}
 
-    {% if first_date_adjust !="null" && first_date_adjust!="None" and last_date_adjust !="null" and last_date_adjust!="None" %}
+    {% if first_date_adjust !="null" and first_date_adjust!="None" and last_date_adjust !="null" and last_date_adjust!="None" %}
         {{ dbt_utils.date_spine(
             datepart="month",
             start_date=first_date_adjust,

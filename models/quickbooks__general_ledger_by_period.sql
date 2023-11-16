@@ -1,4 +1,4 @@
-/*with general_ledger_balances as (
+with general_ledger_balances as (
 
     select *
     from {{ ref('int_quickbooks__general_ledger_balances') }}
@@ -32,7 +32,7 @@ balances_earnings_unioned as (
 
     select *
     from retained_earnings
-), */
+), 
 
 final as (
 
