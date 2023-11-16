@@ -44,7 +44,7 @@ with spine as (
     {% endif %}
     {% endif %}
 
-{% if first_date_adjust!='None' and last_date_adjust!='None' %}
+/*{% if first_date_adjust!='None' and last_date_adjust!='None' %}
 
     {{ dbt_utils.date_spine(
         datepart="month",
@@ -58,7 +58,7 @@ with spine as (
         start_date=null,
         end_date=dbt.dateadd("month", 1, last_date_adjust)
     ) }}
-{% endif %}
+{% endif %}*/
 ),
 
 general_ledger as (
