@@ -18,10 +18,10 @@ with spine as (
 
         {% endif %}
     {% else %}
-        {% set first_date_adjust = "'2000-01-01'" %}
+        {% set first_date_adjust = "'2001-01-01'" %}
     {% endif %}        
 
-    {% else %} {% set first_date_adjust = "'2000-01-01'" %}
+    {% else %} {% set first_date_adjust = "'2001-01-01'" %}
     {% endif %}
 
     {% if execute %}
@@ -38,14 +38,14 @@ with spine as (
         {% if last_date_result and last_date_result.columns[0][0] %}
             {% set last_date = last_date_result.columns[0][0]|string %}
         {% else %}
-            {% set last_date = "'2000-01-01'" %}
+            {% set last_date = "'2001-01-01'" %}
         {% endif %}
     {% else %}
         {% set last_date_result = run_query(current_date_query) %}
         {% if last_date_result and last_date_result.columns[0][0] %}
             {% set last_date = last_date_result.columns[0][0]|string %}
         {% else %}
-            {% set last_date = "'2000-01-01'" %}
+            {% set last_date = "'2001-01-01'" %}
         {% endif %}
     {% endif %}
         
@@ -53,7 +53,7 @@ with spine as (
         {% if last_date !="null" and last_date != "None" %}
             {% set last_date_adjust = "cast('" ~ last_date[0:10] ~ "' as date)" %}
         {% else %}
-            {% set last_date_adjust = "cast('2000-01-01' as date)" %}
+            {% set last_date_adjust = "cast('2001-01-01' as date)" %}
         {% endif %}
 
     {% else %}
@@ -72,8 +72,8 @@ with spine as (
     {% else %}
         {{ dbt_utils.date_spine(
             datepart="month",
-            start_date="cast('2000-01-01' as date)",
-            end_date="cast('2000-01-01' as date)"
+            start_date="cast('2001-01-01' as date)",
+            end_date="cast('2001-01-01' as date)"
             )
         }}
     {% endif %}
