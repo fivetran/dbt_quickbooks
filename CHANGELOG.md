@@ -1,5 +1,5 @@
 # dbt_quickbooks v0.12.1
-[PR #] includes the following updates:
+[PR #109](https://github.com/fivetran/dbt_quickbooks/pull/109) includes the following updates:
 
 ## Bug Fixes
 - Adjusted the joins within the below intermediate double entry models to be `left join` as opposed to an `inner join`. This update was necessary as there was the possibility of the respective account cte joins to return no records if this was the case, the logic could erroneously remove transactions from the record.
