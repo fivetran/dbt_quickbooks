@@ -192,8 +192,8 @@ final as (
         end as transaction_source
     from invoice_filter
 
-    inner join ar_accounts
-    on ar_accounts.source_relation = invoice_filter.source_relation
+    left join ar_accounts
+        on ar_accounts.source_relation = invoice_filter.source_relation
 )
 
 select *
