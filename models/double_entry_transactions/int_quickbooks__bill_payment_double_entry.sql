@@ -50,8 +50,8 @@ bill_payment_join as (
         bill_payments.department_id
     from bill_payments
 
-    inner join ap_accounts
-    on ap_accounts.source_relation = bill_payments.source_relation
+    left join ap_accounts
+        on ap_accounts.source_relation = bill_payments.source_relation
 ),
 
 final as (

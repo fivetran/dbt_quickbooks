@@ -101,8 +101,8 @@ final as (
         'credit_memo' as transaction_source
     from credit_memo_join
 
-    inner join df_accounts
-    on df_accounts.source_relation = credit_memo_join.source_relation
+    left join df_accounts
+        on df_accounts.source_relation = credit_memo_join.source_relation
 )
 
 select *

@@ -84,8 +84,8 @@ final as (
         'payment' as transaction_source
     from payment_join
 
-    inner join ar_accounts
-    on ar_accounts.source_relation = payment_join.source_relation
+    left join ar_accounts
+        on ar_accounts.source_relation = payment_join.source_relation
 )
 
 select *
