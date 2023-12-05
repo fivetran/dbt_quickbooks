@@ -41,3 +41,9 @@ The corresponding entry that would result from the `int_quickbooks__invoice_doub
 
 - While the default case statement logic should work for many customers with basic setups, as customization gets more advanced for your specific business, this is not likely to cover all cases. This is why we created the seed functionality to allow you flexibility to adjust the ordering for your own custom purposes--[you can read more about how to set it up in our README](https://github.com/fivetran/dbt_quickbooks/blob/main/README.md#customize-the-account-ordering-of-your-financial-models).
 
+## Accrual Basis Accounting Models
+- There are two types of accounting methods
+      - Accrual, which records reevenue and expenses when transactions occur, but before money is received or dispensed.
+      - Cash basis, which records revenue and expenses when cash related to transactions actually is received or dispensed.  
+- For our initial build of `quickbooks__profit_and_loss`, `quickbooks__general_ledger_by_period`, and `quickbooks__balance_sheet`, we used the accrual accounting method rather than cash, as it is approved by GAAP (generally accepted accounting principles). Accrual accounting requires companies match revenues with expenses incurred to generate them.
+- If you'd like models that rely on the cash basis accounting, [please comment on this feature and we can prioritize it for future development](https://github.com/fivetran/dbt_quickbooks/issues/111).
