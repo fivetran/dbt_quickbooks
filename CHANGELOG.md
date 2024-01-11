@@ -1,3 +1,7 @@
+# dbt_quickbooks v0.12.2
+[PR #1√](https://github.com/fivetran/dbt_quickbooks/pull/1√) includes the following updates:
+- Summarize updates to int_quickbooks__invoice_double_entry
+
 # dbt_quickbooks v0.12.1
 [PR #109](https://github.com/fivetran/dbt_quickbooks/pull/109) includes the following updates:
 
