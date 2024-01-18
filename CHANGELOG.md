@@ -1,6 +1,6 @@
 # dbt_quickbooks v0.12.2
-[PR #1√](https://github.com/fivetran/dbt_quickbooks/pull/1√) includes the following updates:
-- Summarize updates to int_quickbooks__invoice_double_entry
+[PR #114](https://github.com/fivetran/dbt_quickbooks/pull/114) includes the following updates:
+- Updated model `int_quickbooks__invoice_double_entry` to account for the `sales_item_account_id` field from the `invoice_lines` source when determining the `account_id` associated with an invoice. 
 
 # dbt_quickbooks v0.12.1
 [PR #109](https://github.com/fivetran/dbt_quickbooks/pull/109) includes the following updates:
