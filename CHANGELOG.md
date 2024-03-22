@@ -5,9 +5,6 @@
 ## Bug Fixes
 - Included a default start and end date in the `int_quickbooks__general_ledger_date_spine` logic when generating the date spine. These default start and end dates will ensure the model still succeeds when no transactions are yet available.
 
-## Test Updates
-- Included an additional integration test to run the models when no transactions are present. This ensures the code still runs prior to transactions being available.
-
 ## Under the Hood
 - Updated the maintainer PR template to resemble the most up to date format.
 - Removed the check docs GitHub Action as it is no longer necessary.

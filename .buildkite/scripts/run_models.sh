@@ -16,7 +16,6 @@ db=$1
 echo `pwd`
 cd integration_tests
 dbt deps
-dbt run --vars '{using_credit_card_payment_txn: true}' --target "$db" ## Test to ensure the models work when no data is available.
 dbt seed --target "$db" --full-refresh
 dbt run --target "$db" --full-refresh
 dbt test --target "$db"

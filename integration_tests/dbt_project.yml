@@ -60,7 +60,6 @@ vars:
     quickbooks_vendor_credit_line_identifier: "vendor_credit_line_data"
     quickbooks_vendor_credit_identifier: "vendor_credit_data"
     quickbooks_vendor_identifier: "vendor_data"
-    
 
 seeds:
   +quote_columns: "{{ true if target.type == 'redshift' else false }}"
