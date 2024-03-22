@@ -1,6 +1,6 @@
 # dbt_quickbooks v0.12.3
 
-[PR #](https://github.com/fivetran/dbt_quickbooks/pull/) includes the following updates:
+[PR #119](https://github.com/fivetran/dbt_quickbooks/pull/119) includes the following updates:
 
 ## Bug Fixes
 - Included a default start and end date in the `int_quickbooks__general_ledger_date_spine` logic when generating the date spine. These default start and end dates will ensure the model still succeeds when no transactions are yet available.
