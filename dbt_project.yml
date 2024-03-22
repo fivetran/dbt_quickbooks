@@ -8,14 +8,14 @@ require-dbt-version: [">=1.3.0", "<2.0.0"]
 models:
   quickbooks:
     +materialized: table
-    +schema: quickbooks
-    double_entry_transactions:
-      +schema: quickbooks_intermediate
-      +materialized: table
-    transaction_lines:
-      +materialized: ephemeral
-    intermediate:
-      +materialized: ephemeral
+    # +schema: quickbooks
+    # double_entry_transactions:
+    #   +schema: quickbooks_intermediate
+    #   +materialized: table
+    # transaction_lines:
+    #   +materialized: ephemeral
+    # intermediate:
+    #   +materialized: ephemeral
 vars:
   quickbooks:
     account: "{{ ref('stg_quickbooks__account') }}"
