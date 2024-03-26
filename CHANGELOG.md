@@ -4,6 +4,8 @@
 
 ## Bug Fixes
 - Included a default start and end date in the `int_quickbooks__general_ledger_date_spine` logic when generating the date spine. These default start and end dates will ensure the model still succeeds when no transactions are yet available.
+  - The default start date will be one month in the past
+  - The default end date will be the current date
 
 ## Under the Hood
 - Updated the maintainer PR template to resemble the most up to date format.
