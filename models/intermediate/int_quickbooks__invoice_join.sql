@@ -39,11 +39,13 @@ invoice_est as (
 
     select
         invoices.invoice_id,
-        invoice_linked.estimate_id
+        invoice_linked.estimate_id,
+        invoices.source_relation
     from invoices
 
     left join invoice_linked
         on invoices.invoice_id = invoice_linked.invoice_id
+        and invoices.source_relation = invoice_linked.source_relation
 
     where invoice_linked.estimate_id is not null
 ),
@@ -52,11 +54,13 @@ invoice_pay as (
 
     select
         invoices.invoice_id,
-        invoice_linked.payment_id
+        invoice_linked.payment_id,
+        invoices.source_relation
     from invoices
 
     left join invoice_linked
         on invoices.invoice_id = invoice_linked.invoice_id
+        and invoices.source_relation = invoice_linked.source_relation
 
     where invoice_linked.payment_id is not null
 ),
@@ -71,9 +75,11 @@ invoice_link as (
 
     left join invoice_est
         on invoices.invoice_id = invoice_est.invoice_id
+        and invoices.source_relation = invoice_est.source_relation
 
     left join invoice_pay
         on invoices.invoice_id = invoice_pay.invoice_id
+        and invoices.source_relation = invoice_pay.source_relation
 ),
 
 final as (

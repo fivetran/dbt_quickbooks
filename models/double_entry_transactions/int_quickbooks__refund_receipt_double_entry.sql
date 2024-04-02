@@ -50,6 +50,7 @@ refund_receipt_join as (
 
     left join items
         on refund_receipt_lines.sales_item_item_id = items.item_id
+        and refund_receipt_lines.source_relation = items.source_relation
 
     where coalesce(refund_receipt_lines.discount_account_id, refund_receipt_lines.sales_item_account_id, refund_receipt_lines.sales_item_item_id) is not null
 ),
