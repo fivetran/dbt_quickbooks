@@ -7,34 +7,37 @@ with general_ledger_by_period as (
 liability_date as (
     select 
         account_id, 
+        source_relation,
         max(period_first_day) as period_first_day 
     from general_ledger_by_period
 
     where account_class = 'Liability'
 
-    group by 1
+    group by 1,2
 ),
 
 asset_date as (
     select 
         account_id, 
+        source_relation,
         max(period_first_day) as period_first_day 
     from general_ledger_by_period
 
     where account_class = 'Asset'
 
-    group by 1
+    group by 1,2
 ),
 
 equity_date as (
     select 
         account_id,
+        source_relation,
         max(period_first_day) as period_first_day 
     from general_ledger_by_period 
 
     where account_class = 'Equity'
 
-    group by 1
+    group by 1,2
 ),
 
 liability as (
@@ -68,16 +71,18 @@ equity as (
 )
 
 select 
-    "liability" as balance_sheet_type, 
+    'liability' as balance_sheet_type, 
     sum(period_ending_balance) as balance 
 from liability
+group by 1
 
 union all
 
 select 
-    "asset" as balance_sheet_type, 
+    'asset' as balance_sheet_type, 
     sum(period_ending_balance) as balance 
 from asset
+group by 1
 
 union all 
 
@@ -85,3 +90,4 @@ select
     'equity' as balance_sheet_type, 
     sum(period_ending_balance) as balance 
 from equity
+group by 1
