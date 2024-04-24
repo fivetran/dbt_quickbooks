@@ -1,8 +1,11 @@
 # dbt_quickbooks v0.12.3
-[PR #120](https://github.com/fivetran/dbt_quickbooks/pull/120) includes the following updates:
+[PR #123](https://github.com/fivetran/dbt_quickbooks/pull/123) includes the following updates:
 
 ## Bug Fixes
 - Updated sql models `int_quickbooks__invoice_join`, `int_quickbooks__refund_receipt_double_entry`, `int_quickbooks__sales_receipt_double_entry`, along with the `quickbooks__balance_sheet` analysis sql model to account for the missing `source_relaion` fields and joins that can cause cross-joins when an id is duplicated between sources. 
+
+## Contributors
+- [@MatteyRitch](https://github.com/MatteyRitch) ([PR #120](https://github.com/fivetran/dbt_quickbooks/pull/120))
 
 # dbt_quickbooks v0.12.2
 [PR #114](https://github.com/fivetran/dbt_quickbooks/pull/114) includes the following updates:

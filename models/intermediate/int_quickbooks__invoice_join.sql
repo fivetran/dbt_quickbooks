@@ -127,6 +127,7 @@ final as (
 
     left join payment_lines_payment
         on payments.payment_id = payment_lines_payment.payment_id
+        and payments.source_relation = payment_lines_payment.source_relation
         and invoice_link.invoice_id = payment_lines_payment.invoice_id
         and invoice_link.source_relation = payment_lines_payment.source_relation
 

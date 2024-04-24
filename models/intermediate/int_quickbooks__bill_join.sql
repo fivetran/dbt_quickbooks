@@ -87,6 +87,7 @@ final as (
         on bill_payments.bill_payment_id = bill_payment_lines.bill_payment_id
         and bill_payments.source_relation = bill_payment_lines.source_relation
         and bill_link.bill_id = bill_payment_lines.bill_id
+        and bill_link.source_relation = bill_payment_lines.source_relation
     
     {{ dbt_utils.group_by(10) }} 
 )
