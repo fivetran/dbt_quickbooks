@@ -4,7 +4,7 @@ with spine as (
 
     {% if execute %}
     {% set first_date_query %}
-        select  min( transaction_date ) as min_date from {{ ref('quickbooks__general_ledger') }}
+        select  coalesce(min(cast(transaction_date as date)),cast({{ dbt.dateadd("month", -1, "current_date") }} as date)) as min_date from {{ ref('quickbooks__general_ledger') }}
     {% endset %}
     {% set first_date = run_query(first_date_query).columns[0][0]|string %}
     
@@ -21,7 +21,7 @@ with spine as (
 
     {% if execute %}
     {% set last_date_query %}
-        select  max( transaction_date ) as max_date from {{ ref('quickbooks__general_ledger') }}
+        select  coalesce(max(cast(transaction_date as date)), cast(current_date as date)) as max_date from {{ ref('quickbooks__general_ledger') }}
     {% endset %}
 
     {% set current_date_query %}
