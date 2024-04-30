@@ -2,7 +2,7 @@
 [PR #123](https://github.com/fivetran/dbt_quickbooks/pull/123) includes the following updates:
 
 ## Bug Fixes
-- Added `source_relation` to joins within the following models as it was perviously missed:
+- Added `source_relation` to joins within the following models as it was previously missed:
    - `int_quickbooks__invoice_join`
    - `int_quickbooks__bill_join`
    - `int_quickbooks__refund_receipt_double_entry`
