@@ -112,7 +112,6 @@ vars:
 ```
 
 ## (Optional) Step 5: Additional Configurations
-<details><summary>Expand for configurations</summary>
 
 ### Unioning Multiple Quickbooks Connectors 
 If you have multiple Quickbooks connectors in Fivetran and would like to use this package on all of them simultaneously, we have provided functionality to do so. The package will union all of the data together and pass the unioned table into the transformations. You will be able to see which source it came from in the `source_relation` column of each model. To use this functionality, you will need to set either the `quickbooks_union_schemas` or `quickbooks_union_databases` variables:
@@ -213,14 +212,11 @@ If an individual source table has a different name than the package expects, add
 vars:
     quickbooks_<default_source_table_name>_identifier: your_table_name 
 ``` 
-</details>
 
 ## (Optional) Step 6: Orchestrate your models with Fivetran Transformations for dbt Core™
-<details><summary>Expand for details</summary>
-<br>
 
 Fivetran offers the ability for you to orchestrate your dbt project through [Fivetran Transformations for dbt Core™](https://fivetran.com/docs/transformations/dbt). Learn how to set up your project for orchestration through Fivetran in our [Transformations for dbt Core setup guides](https://fivetran.com/docs/transformations/dbt#setupguide).
-</details>
+
 
 ## (Optional) Step 7: Validate your data
 After running the models within this package, you may want to compare the baseline financial statement totals from the data provided against what you expect. You can make use of the [analysis functionality of dbt](https://docs.getdbt.com/docs/building-a-dbt-project/analyses/) and run pre-written SQL to test these values. The SQL files within the [analysis](https://github.com/fivetran/dbt_quickbooks/blob/master/analysis) folder contain SQL queries you may compile to generate balance sheet and income statement values. You can then tie these generated values to your expected ones and confirm the values provided in this package are accurate.
