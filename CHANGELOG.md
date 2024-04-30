@@ -2,7 +2,12 @@
 [PR #123](https://github.com/fivetran/dbt_quickbooks/pull/123) includes the following updates:
 
 ## Bug Fixes
-- Added missing joins on `source_relation` in `int_quickbooks__invoice_join`, `int_quickbooks__bill_join`, `int_quickbooks__refund_receipt_double_entry`, `int_quickbooks__sales_receipt_double_entry`, along with the `quickbooks__balance_sheet` analysis model.
+- Added `source_relation` to joins within the following models as it was perviously missed:
+   - `int_quickbooks__invoice_join`
+   - `int_quickbooks__bill_join`
+   - `int_quickbooks__refund_receipt_double_entry`
+   - `int_quickbooks__sales_receipt_double_entry`
+   - `quickbooks__balance_sheet` analysis model.
 
 ## Contributors
 - [@MatteyRitch](https://github.com/MatteyRitch) ([PR #120](https://github.com/fivetran/dbt_quickbooks/pull/120))
