@@ -21,6 +21,7 @@ estimates as (
 ),
 {% endif %}
 
+{% if var('using_payment', True) %}
 payments as (
 
     select *
@@ -34,6 +35,7 @@ payment_lines_payment as (
 
     where invoice_id is not null
 ),
+{% endif %}
 
 invoice_est as (
 
