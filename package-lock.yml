@@ -1,0 +1,8 @@
+packages:
+- package: fivetran/quickbooks_source
+  version: 0.10.0
+- package: fivetran/fivetran_utils
+  version: 0.4.10
+- package: dbt-labs/dbt_utils
+  version: 1.1.1
+sha1_hash: 45f856434cf0a90c226de3128710097fee6d4021
