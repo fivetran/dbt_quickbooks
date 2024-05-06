@@ -110,14 +110,15 @@ final as (
 
         {% endif %}
 
+        invoice_link.due_date as due_date
 
         {% if var('using_payment', True) %}
+        ,
         min(payments.transaction_date) as initial_payment_date,
         max(payments.transaction_date) as recent_payment_date,
-        sum(coalesce(payment_lines_payment.amount, 0)) as total_current_payment,
+        sum(coalesce(payment_lines_payment.amount, 0)) as total_current_payment
         {% endif %}
 
-        invoice_link.due_date as due_date
 
     from invoice_link
 
