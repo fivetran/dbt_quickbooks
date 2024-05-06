@@ -7,7 +7,9 @@ with general_ledger_by_period as (
 
 final as (
     select
-        period_last_day as calendar_date,
+        period_first_day as calendar_date,
+        period_first_day,
+        period_last_day,
         source_relation,
         account_class,
         class_id,

@@ -2,8 +2,8 @@
 [PR #124](https://github.com/fivetran/dbt_quickbooks/pull/124) includes the following updates:
 
 ## Bug Fixes
-- Updates the [int_quickbooks__invoice_join](models/intermediate/int_quickbooks__invoice_join.sql) to include the `using_payments` config. Previously, this model would fail if the `payment` or the `payment_line` source tables did not exist.
-- Updates the [quickbooks__profit_and_loss](models/quickbooks__profit_and_loss.sql) model to use `period_last_day` as `calendar_date`.
+- Updates the [int_quickbooks__invoice_join](models/intermediate/int_quickbooks__invoice_join.sql) and downstream [quickbooks__ap_ar_enhanced](dbt_quickbooks/models/quickbooks__ap_ar_enhanced.sql) models to include the `using_payments` config. Previously, this model would fail if the `payment` or the `payment_line` source tables did not exist.
+- Updates the [quickbooks__profit_and_loss](models/quickbooks__profit_and_loss.sql) model to include both `period_first_day` and `period_last_day`. This allows users to have greater optionality in choosing which date to aggregate records upon.
 
 # dbt_quickbooks v0.12.4
 [PR #123](https://github.com/fivetran/dbt_quickbooks/pull/123) includes the following updates:
