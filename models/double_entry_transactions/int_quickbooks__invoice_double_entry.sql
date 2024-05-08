@@ -104,6 +104,7 @@ invoice_join as (
         {% if var('using_invoice_bundle', True) %}
         case when invoice_lines.bundle_id is not null and (invoice_lines.bundle_quantity=0 or invoice_lines.bundle_quantity is null) then 0
             when invoice_lines.bundle_id is not null and invoices.total_amount != 0 then invoice_lines.amount
+            when invoice_lines.bundle_id is null then invoice_lines.amount
             else invoices.total_amount
         end as amount,
         case when invoice_lines.detail_type is not null then invoice_lines.detail_type
