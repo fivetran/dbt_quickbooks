@@ -100,19 +100,21 @@ invoice_join as (
         invoices.source_relation,
         invoice_lines.index,
         invoices.transaction_date as transaction_date,
-        case when invoices.total_amount != 0
-            then invoice_lines.amount
-            else invoices.total_amount
-                end as amount,
 
         {% if var('using_invoice_bundle', True) %}
+        case when invoice_lines.bundle_id is not null and (invoice_lines.bundle_quantity=0 or invoice_lines.bundle_quantity is null) then 0
+            when invoice_lines.bundle_id is not null and invoices.total_amount != 0 then invoice_lines.amount
+            else invoices.total_amount
+        end as amount,
         case when invoice_lines.detail_type is not null then invoice_lines.detail_type
             when coalesce(invoice_lines.account_id, items.parent_income_account_id, items.income_account_id, bundle_income_accounts.account_id, invoice_lines.sales_item_account_id) is not null then 'SalesItemLineDetail'
             when invoice_lines.discount_account_id is not null then 'DiscountLineDetail'
             when coalesce(invoice_lines.account_id, items.parent_income_account_id, items.income_account_id, bundle_income_accounts.account_id, invoice_lines.discount_account_id, invoice_lines.sales_item_account_id) is null then 'NoAccountMapping'
         end as invoice_line_transaction_type,
         coalesce(invoice_lines.account_id, items.parent_income_account_id, items.income_account_id, bundle_income_accounts.account_id, invoice_lines.discount_account_id, invoice_lines.sales_item_account_id) as account_id,
+
         {% else %}
+        invoice_lines.amount as amount,
         case when invoice_lines.detail_type is not null then invoice_lines.detail_type
             when coalesce(invoice_lines.account_id, items.parent_income_account_id, items.income_account_id, invoice_lines.sales_item_account_id) is not null then 'SalesItemLineDetail'
             when invoice_lines.discount_account_id is not null then 'DiscountLineDetail'
@@ -140,6 +142,7 @@ invoice_join as (
     left join bundle_income_accounts
         on bundle_income_accounts.bundle_id = invoice_lines.bundle_id
         and bundle_income_accounts.source_relation = invoice_lines.source_relation
+
     {% endif %}
 ),
 

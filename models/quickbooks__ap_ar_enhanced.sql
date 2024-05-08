@@ -1,5 +1,5 @@
---To disable this model, set the using_invoice variable within your dbt_project.yml file to False.
-{{ config(enabled=var('using_bill', True)) }}
+--To disable this model, set the using_bill and using_invoice variable within your dbt_project.yml file to False.
+{{ config(enabled=var('using_bill', True) and var('using_invoice', True)) }}
 
 with bill_join as (
 
