@@ -1,5 +1,5 @@
 --To disable this model, set the using_bill and using_invoice variable within your dbt_project.yml file to False.
-{{ config(enabled=var('using_bill', True) and var('using_invoice', True)) }}
+{{ config(enabled=var('using_bill', True) and var('using_invoice', True) and var('using_payment', True)) }}
 
 with bill_join as (
 
@@ -126,7 +126,7 @@ final as (
         concat(billing_address.address_1, billing_address.address_2) as customer_vendor_address_line,
         {% endif %}
 
-        customers.website as customer_vendor_webiste,
+        customers.website as customer_vendor_website,
         invoice_join.delivery_type,
         invoice_join.estimate_status,
         invoice_join.total_amount as total_amount,
