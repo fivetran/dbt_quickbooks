@@ -110,15 +110,10 @@ final as (
 
         {% endif %}
 
-        invoice_link.due_date as due_date
-
-        {% if var('using_payment', True) %}
-        ,
+        invoice_link.due_date as due_date,
         min(payments.transaction_date) as initial_payment_date,
         max(payments.transaction_date) as recent_payment_date,
         sum(coalesce(payment_lines_payment.amount, 0)) as total_current_payment
-        {% endif %}
-
 
     from invoice_link
 
@@ -127,8 +122,6 @@ final as (
         on invoice_link.estimate_id = estimates.estimate_id
         and invoice_link.source_relation = estimates.source_relation
     {% endif %}
-
-    {% if var('using_payment', True) %}
     left join payments
         on invoice_link.payment_id = payments.payment_id
         and invoice_link.source_relation = payments.source_relation
@@ -138,7 +131,7 @@ final as (
         and payments.source_relation = payment_lines_payment.source_relation
         and invoice_link.invoice_id = payment_lines_payment.invoice_id
         and invoice_link.source_relation = payment_lines_payment.source_relation
-    {% endif %}
+
 
     {{ dbt_utils.group_by(15) }} 
 )
