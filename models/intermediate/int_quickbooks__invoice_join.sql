@@ -1,5 +1,5 @@
 --To disable this model, set the using_invoice variable within your dbt_project.yml file to False.
-{{ config(enabled=var('using_invoice')) }}
+{{ config(enabled=var('using_invoice') and var('using_payment', True)) }}
 
 with invoices as (
 

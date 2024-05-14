@@ -1,12 +1,13 @@
 # dbt_quickbooks v0.13.0
-## 🚨 Breaking Changes 🚨:
 [PR #124](https://github.com/fivetran/dbt_quickbooks/pull/124) includes the following updates:
 
+## 🚨 Breaking Changes 🚨:
+- Updates the [int_quickbooks__invoice_join](https://github.com/fivetran/dbt_quickbooks/blob/main/models/intermediate/int_quickbooks__invoice_join.sql) and downstream [quickbooks__ap_ar_enhanced](https://github.com/fivetran/dbt_quickbooks/blob/main/models/quickbooks__ap_ar_enhanced.sql) models to include and require the `using_payments` config. Previously, these models would fail if the `payment` or the `payment_line` source tables did not exist.
+- Corrects the misspelled `customer_vendor_webiste` to `customer_vendor_website` in `quickbooks__ap_ar_enhanced`.
+
 ## Bug Fixes
-- Updates the [int_quickbooks__invoice_join](models/intermediate/int_quickbooks__invoice_join.sql) and downstream [quickbooks__ap_ar_enhanced](dbt_quickbooks/models/quickbooks__ap_ar_enhanced.sql) models to include the `using_payments` config. Previously, this model would fail if the `payment` or the `payment_line` source tables did not exist.
-- Requires [quickbooks__ap_ar_enhanced](dbt_quickbooks/models/quickbooks__ap_ar_enhanced.sql) to have `using_payments` enabled in order to run, otherwise the model is limited in its use.
-- Updates the [quickbooks__profit_and_loss](models/quickbooks__profit_and_loss.sql) model to include both `period_first_day` and `period_last_day`. This allows users to have greater optionality in choosing which date to aggregate records upon.
-- Updates the logic for the `amount` field in [int_quickbooks__invoice_double_entry](dbt_quickbooks/models/double_entry_transactions/int_quickbooks__invoice_double_entry.sql) to use `invoice.total_amount` only on the condition when a bundle is associated with the invoice and `invoice.total_amount` is 0, otherwise `invoice_lines.amount` is used. 
+- Updates the [quickbooks__profit_and_loss](https://github.com/fivetran/dbt_quickbooks/blob/main/models/quickbooks__profit_and_loss.sql)and [quickbooks__balance_sheet](https://github.com/fivetran/dbt_quickbooks/blob/main/models/quickbooks__balance_sheet.sql) models to include both `period_first_day` and `period_last_day`. This allows users to have greater optionality in choosing which date to aggregate records upon.
+- Updates the logic for the `amount` field in [int_quickbooks__invoice_double_entry](https://github.com/fivetran/dbt_quickbooks/blob/main/models/double_entry_transactions/int_quickbooks__invoice_double_entry.sql) to use `invoice.total_amount` only on the condition when a bundle is associated with the invoice and `invoice.total_amount` is 0, otherwise `invoice_lines.amount` is used. 
    - This avoids double counting when aggregating invoice_line items and accounts for the edge cases where a bundle_id is involved.
 
 # dbt_quickbooks v0.12.4
