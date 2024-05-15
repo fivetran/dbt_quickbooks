@@ -3,7 +3,7 @@
 
 ## 🚨 Breaking Changes 🚨:
 - Updates the [int_quickbooks__invoice_join](https://github.com/fivetran/dbt_quickbooks/blob/main/models/intermediate/int_quickbooks__invoice_join.sql) and downstream [quickbooks__ap_ar_enhanced](https://github.com/fivetran/dbt_quickbooks/blob/main/models/quickbooks__ap_ar_enhanced.sql) models to include and require the `using_payments` config. Previously, these models would fail if the `payment` or the `payment_line` source tables did not exist.
-- Corrects the misspelled `customer_vendor_webiste` to `customer_vendor_website` in `quickbooks__ap_ar_enhanced`.
+- Corrects the misspelled `customer_vendor_webiste` field to `customer_vendor_website` in `quickbooks__ap_ar_enhanced`.
 
 ## Bug Fixes
 - Updates the [quickbooks__profit_and_loss](https://github.com/fivetran/dbt_quickbooks/blob/main/models/quickbooks__profit_and_loss.sql) and [quickbooks__balance_sheet](https://github.com/fivetran/dbt_quickbooks/blob/main/models/quickbooks__balance_sheet.sql) models to include both `period_first_day` and `period_last_day`. This allows users to have greater flexibility in choosing which date to aggregate records upon.
