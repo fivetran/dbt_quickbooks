@@ -1,5 +1,5 @@
 --To disable this model, set the using_invoice variable within your dbt_project.yml file to False.
-{{ config(enabled=var('using_invoice')) }}
+{{ config(enabled=var('using_invoice') and var('using_payment', True)) }}
 
 with invoices as (
 
@@ -120,7 +120,6 @@ final as (
         on invoice_link.estimate_id = estimates.estimate_id
         and invoice_link.source_relation = estimates.source_relation
     {% endif %}
-
     left join payments
         on invoice_link.payment_id = payments.payment_id
         and invoice_link.source_relation = payments.source_relation
@@ -130,6 +129,7 @@ final as (
         and payments.source_relation = payment_lines_payment.source_relation
         and invoice_link.invoice_id = payment_lines_payment.invoice_id
         and invoice_link.source_relation = payment_lines_payment.source_relation
+
 
     {{ dbt_utils.group_by(15) }} 
 )

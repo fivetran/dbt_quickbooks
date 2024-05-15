@@ -52,7 +52,7 @@ The type of account associated
 {% enddocs %}
 
 {% docs calendar_date %}
-Timestamp of the first calendar date of the month.
+Timestamp of the first calendar date of the month. This is slated to be deprecated, and the fields `period_first_day` and `period_last_day` are both offered as replacements, depending on how your company performs their financial reporting.
 {% enddocs calendar_date %}
 
 {% docs is_sub_account %}

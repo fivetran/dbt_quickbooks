@@ -415,6 +415,10 @@ models:
         description: "{{ doc('source_relation') }}"
       - name: calendar_date
         description: "{{ doc('calendar_date') }}"
+      - name: period_first_day
+        description: Timestamp of the first date of the month.
+      - name: period_last_day
+        description: Timestamp of the last date of the month.
       - name: account_class
         description: "{{ doc('account_class') }} with the profit and loss line."
       - name: is_sub_account
@@ -449,6 +453,10 @@ models:
     columns:
       - name: calendar_date
         description: "{{ doc('calendar_date') }}"
+      - name: period_first_day
+        description: Timestamp of the first date of the month.
+      - name: period_last_day
+        description: Timestamp of the last date of the month.
       - name: account_class
         description: "{{ doc('account_class') }} with the balance sheet line."
       - name: is_sub_account

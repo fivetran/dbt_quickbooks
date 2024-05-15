@@ -1,5 +1,5 @@
---To disable this model, set the using_invoice variable within your dbt_project.yml file to False.
-{{ config(enabled=var('using_bill', True)) }}
+--To disable this model, set the using_bill and using_invoice variable within your dbt_project.yml file to False.
+{{ config(enabled=var('using_bill', True) and var('using_invoice', True) and var('using_payment', True)) }}
 
 with bill_join as (
 
@@ -72,7 +72,6 @@ final as (
         bill_join.total_amount,
         cast(null as {{ dbt.type_numeric() }}) as estimate_amount,
         bill_join.current_balance,
-        bill_join.total_current_payment,
         bill_join.due_date,
         case when bill_join.current_balance != 0 and {{ dbt.datediff("bill_join.recent_payment_date", "bill_join.due_date", 'day') }} < 0
             then true
@@ -83,7 +82,8 @@ final as (
             else 0
                 end as days_overdue,
         bill_join.initial_payment_date,
-        bill_join.recent_payment_date
+        bill_join.recent_payment_date,
+        bill_join.total_current_payment
     from bill_join
 
     {% if var('using_department', True) %}
@@ -126,13 +126,12 @@ final as (
         concat(billing_address.address_1, billing_address.address_2) as customer_vendor_address_line,
         {% endif %}
 
-        customers.website as customer_vendor_webiste,
+        customers.website as customer_vendor_website,
         invoice_join.delivery_type,
         invoice_join.estimate_status,
         invoice_join.total_amount as total_amount,
         invoice_join.estimate_total_amount as estimate_total_amount,
         invoice_join.current_balance as current_balance,
-        invoice_join.total_current_payment as total_current_payment,
         invoice_join.due_date,
         case when invoice_join.current_balance != 0 and {{ dbt.datediff("invoice_join.recent_payment_date", "invoice_join.due_date", 'day') }} < 0
             then true
@@ -143,7 +142,9 @@ final as (
             else 0
                 end as days_overdue,
         invoice_join.initial_payment_date,
-        invoice_join.recent_payment_date
+        invoice_join.recent_payment_date,
+        invoice_join.total_current_payment as total_current_payment
+
     from invoice_join
 
     {% if var('using_department', True) %}
