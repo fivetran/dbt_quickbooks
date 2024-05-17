@@ -1,7 +1,8 @@
 # dbt_quickbooks v0.13.1
+[PR #125](https://github.com/fivetran/dbt_quickbooks/pull/125) includes the following updates:
 
 ## Bug Fix
-- The `period_first_day` and `period_last_day` fields were mistakenly left out in the [quickbooks__profit_and_loss](https://github.com/fivetran/dbt_quickbooks/blob/main/models/quickbooks__profit_and_loss.sql) model although they were intended to be introduced as new fields. We have added these in.
+- The `period_first_day` and `period_last_day` fields were mistakenly left out in the [quickbooks__profit_and_loss](https://github.com/fivetran/dbt_quickbooks/blob/main/models/quickbooks__profit_and_loss.sql) model although they were intended to be introduced as new fields. We have added these back in.
 
 # dbt_quickbooks v0.13.0
 [PR #124](https://github.com/fivetran/dbt_quickbooks/pull/124) includes the following updates:
