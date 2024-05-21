@@ -5,6 +5,7 @@ version: '0.13.1'
 profile: 'integration_tests'
 config-version: 2
 models:
+  +schema: "quickbooks_{{ var('directed_schema','dev') }}"
   quickbooks:
     +materialized: table
     double_entry_transactions:
@@ -17,9 +18,10 @@ models:
     +materialized: table
     tmp:
       +materialized: view
+
 vars:
   quickbooks_source:
-    quickbooks_schema: quickbooks_integration_tests_05
+    quickbooks_schema: quickbooks_integration_tests_055
     quickbooks_account_identifier: "account_data"
     quickbooks_address_identifier: "address_data"
     quickbooks_bill_line_identifier: "bill_line_data"
@@ -67,6 +69,9 @@ seeds:
     +column_types:
       transaction_date: date
       due_date: date
+    bill_data:
+      +column_types:
+        global_tax_calculation: "{{ 'varchar(100)' if target.name in ('redshift', 'postgres') else 'string' }}"
     bill_line_data:
       +column_types:
         item_expense_billable_status: "{{ 'varchar(100)' if target.name in ('redshift', 'postgres') else 'string' }}"
