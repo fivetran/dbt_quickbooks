@@ -1,3 +1,9 @@
+# dbt_quickbooks v0.13.2
+[PR #130](https://github.com/fivetran/dbt_quickbooks/pull/130) includes the following updates:
+
+## Bug Fix
+- Adjusted logic for discount sales receipt lines in `int_quickbooks__sales_receipt_double_entry` model to bring in these values properly as negative adjusted amounts in the `quickbooks__general_ledger`. 
+
 # dbt_quickbooks v0.13.1
 [PR #125](https://github.com/fivetran/dbt_quickbooks/pull/125) includes the following updates:
 
@@ -42,7 +48,8 @@
   - The default end date will be the current date
 
 ## Under the Hood
-- Updated the maintainer PR template to resemble the most up to date format.
+- Updated the maintainer PR template to resemble the most 
+up to date format.
 - Removed the check docs GitHub Action as it is no longer necessary.
 
 # dbt_quickbooks v0.12.2
