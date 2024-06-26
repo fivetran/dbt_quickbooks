@@ -6,10 +6,10 @@ This pull request includes the following updates:
 [PR #130](https://github.com/fivetran/dbt_quickbooks/pull/130)  
 
 ## Under the Hood
-- Added consistency tests within integration tests for the `quickbooks__general_ledger` models.
+- Added consistency tests within integration tests for the `quickbooks__general_ledger` model.
 
 ## Contributors
-- [@mikerenderco](https://github.com/mikerenderco ) ([PR #131](https://github.com/fivetran/dbt_quickbooks/pull/131))
+- [@mikerenderco](https://github.com/mikerenderco) ([PR #131](https://github.com/fivetran/dbt_quickbooks/pull/131))
 
 # dbt_quickbooks v0.13.1
 [PR #125](https://github.com/fivetran/dbt_quickbooks/pull/125) includes the following updates:

@@ -17,12 +17,6 @@ sales_receipt_lines as (
     from {{ ref('stg_quickbooks__sales_receipt_line') }}
 ),
 
-accounts as (
-
-    select *
-    from {{ ref('stg_quickbooks__account') }}
-),
-
 items as (
 
     select
