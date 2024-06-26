@@ -23,17 +23,6 @@ accounts as (
     from {{ ref('stg_quickbooks__account') }}
 ),
 
-drg_accounts as (
-
-    select
-        account_id as account_id,
-        source_relation
-    from accounts
-
-    where lower(account_sub_type) = 'discountsrefundsgiven'
-        and is_active
-),
-
 items as (
 
     select
@@ -73,10 +62,6 @@ sales_receipt_join as (
     left join items
         on sales_receipt_lines.sales_item_item_id = items.item_id
         and sales_receipt_lines.source_relation = items.source_relation
-
-    left join drg_accounts
-        on sales_receipt_lines.discount_account_id = drg_accounts.account_id
-        and sales_receipt_lines.source_relation = drg_accounts.source_relation
 
     where coalesce(sales_receipt_lines.discount_account_id, sales_receipt_lines.sales_item_account_id, sales_receipt_lines.sales_item_item_id) is not null
 ),
