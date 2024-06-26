@@ -43,8 +43,7 @@ sales_receipt_join as (
         sales_receipt_lines.index,
         sales_receipts.transaction_date,
         case 
-            when sales_receipt_lines.discount_account_id is not null 
-                and drg_accounts.account_id is not null
+            when sales_receipt_lines.discount_account_id is not null
                 then sales_receipt_lines.amount * (-1)
             else sales_receipt_lines.amount
         end as amount,
