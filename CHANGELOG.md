@@ -1,8 +1,15 @@
-# dbt_quickbooks v0.13.2
-[PR #130](https://github.com/fivetran/dbt_quickbooks/pull/130) includes the following updates:
+# dbt_quickbooks v0.X.X RELEASE TO BE ANNOUNCED
 
+This pull request includes the following updates:
 ## Bug Fix
 - Adjusted logic for discount sales receipt lines in `int_quickbooks__sales_receipt_double_entry` model to bring in these values properly as negative adjusted amounts in the `quickbooks__general_ledger`. 
+[PR #130](https://github.com/fivetran/dbt_quickbooks/pull/130)  
+
+## Under the Hood
+- Added consistency tests within integration tests for the `quickbooks__general_ledger` models.
+
+## Contributors
+- [@mikerenderco](https://github.com/mikerenderco ) ([PR #131](https://github.com/fivetran/dbt_quickbooks/pull/131))
 
 # dbt_quickbooks v0.13.1
 [PR #125](https://github.com/fivetran/dbt_quickbooks/pull/125) includes the following updates:

@@ -4,19 +4,19 @@ version: '0.13.1'
 
 profile: 'integration_tests'
 config-version: 2
-models:
-  quickbooks:
-    +materialized: table
-    double_entry_transactions:
-      +materialized: table
-    transaction_lines:
-      +materialized: table
-    intermediate:
-      +materialized: table
-  quickbooks_source:
-    +materialized: table
-    tmp:
-      +materialized: view
+# models:
+#   quickbooks:
+#     +materialized: table
+#     double_entry_transactions:
+#       +materialized: table
+#     transaction_lines:
+#       +materialized: table
+#     intermediate:
+#       +materialized: table
+#   quickbooks_source:
+#     +materialized: table
+#     tmp:
+#       +materialized: view
 vars:
   quickbooks_source:
     quickbooks_schema: quickbooks_integration_tests_06
@@ -60,6 +60,15 @@ vars:
     quickbooks_vendor_credit_line_identifier: "vendor_credit_line_data"
     quickbooks_vendor_credit_identifier: "vendor_credit_data"
     quickbooks_vendor_identifier: "vendor_data"
+
+
+  # For validation testing. To be commented out before release.
+  
+
+    account_type_exclusions: ['Discount']
+
+models:
+  +schema: "quickbooks_{{ var('directed_schema','dev') }}"
 
 seeds:
   +quote_columns: "{{ true if target.type == 'redshift' else false }}"
