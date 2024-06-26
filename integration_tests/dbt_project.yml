@@ -4,19 +4,21 @@ version: '0.13.1'
 
 profile: 'integration_tests'
 config-version: 2
-# models:
-#   quickbooks:
-#     +materialized: table
-#     double_entry_transactions:
-#       +materialized: table
-#     transaction_lines:
-#       +materialized: table
-#     intermediate:
-#       +materialized: table
-#   quickbooks_source:
-#     +materialized: table
-#     tmp:
-#       +materialized: view
+models:
+  +schema: "quickbooks_{{ var('directed_schema','dev') }}"
+  quickbooks:
+    +materialized: table
+    double_entry_transactions:
+      +materialized: table
+    transaction_lines:
+      +materialized: table
+    intermediate:
+      +materialized: table
+  quickbooks_source:
+    +materialized: table
+    tmp:
+      +materialized: view
+
 vars:
   quickbooks_source:
     quickbooks_schema: quickbooks_integration_tests_06
@@ -63,12 +65,7 @@ vars:
 
 
   # For validation testing. To be commented out before release.
-  
-
-    account_type_exclusions: ['Discount']
-
-models:
-  +schema: "quickbooks_{{ var('directed_schema','dev') }}"
+  # account_type_exclusions: ['Discount']
 
 seeds:
   +quote_columns: "{{ true if target.type == 'redshift' else false }}"
