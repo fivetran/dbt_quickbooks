@@ -105,6 +105,10 @@ invoice_join as (
         case when invoice_lines.bundle_id is not null and invoices.total_amount = 0 then invoices.total_amount
             else invoice_lines.amount
         end as amount,
+        case when invoice_lines.bundle_id is not null and invoices.total_amount = 0 
+            then (invoices.total_amount * coalesce(invoices.exchange_rate, 1))
+            else (invoice_lines.amount * coalesce(invoices.exchange_rate, 1))
+        end as converted_amount,
         case when invoice_lines.detail_type is not null then invoice_lines.detail_type
             when coalesce(invoice_lines.account_id, items.parent_income_account_id, items.income_account_id, bundle_income_accounts.account_id, invoice_lines.sales_item_account_id) is not null then 'SalesItemLineDetail'
             when invoice_lines.discount_account_id is not null then 'DiscountLineDetail'
@@ -114,6 +118,7 @@ invoice_join as (
 
         {% else %}
         invoice_lines.amount as amount,
+        (invoice_lines.amount * coalesce(invoices.exchange_rate, 1)) as converted_amount,
         case when invoice_lines.detail_type is not null then invoice_lines.detail_type
             when coalesce(invoice_lines.account_id, items.parent_income_account_id, items.income_account_id, invoice_lines.sales_item_account_id) is not null then 'SalesItemLineDetail'
             when invoice_lines.discount_account_id is not null then 'DiscountLineDetail'
@@ -162,6 +167,7 @@ final as (
         customer_id,
         cast(null as {{ dbt.type_string() }}) as vendor_id,
         amount,
+        converted_amount,
         account_id,
         class_id,
         department_id,
@@ -183,6 +189,7 @@ final as (
         customer_id,
         cast(null as {{ dbt.type_string() }}) as vendor_id,
         amount,
+        converted_amount,
         ar_accounts.account_id,
         class_id,
         department_id,

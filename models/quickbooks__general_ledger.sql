@@ -12,6 +12,7 @@ gl_union as (
         customer_id,
         vendor_id,
         amount,
+        converted_amount,
         account_id,
         class_id,
         department_id,
@@ -59,7 +60,11 @@ adjusted_gl as (
         case when accounts.transaction_type = gl_union.transaction_type
             then gl_union.amount
             else gl_union.amount * -1
-                end as adjusted_amount
+                end as adjusted_amount,
+        case when accounts.transaction_type = gl_union.transaction_type
+            then gl_union.converted_amount
+            else gl_union.converted_amount * -1
+                end as adjusted_converted_amount
     from gl_union
 
     left join accounts
@@ -72,7 +77,9 @@ final as (
     select
         *,
         sum(adjusted_amount) over (partition by account_id, class_id, source_relation
-            order by source_relation, transaction_date, account_id, class_id rows unbounded preceding) as running_balance
+            order by source_relation, transaction_date, account_id, class_id rows unbounded preceding) as running_balance,
+        sum(adjusted_amount) over (partition by account_id, class_id, source_relation
+            order by source_relation, transaction_date, account_id, class_id rows unbounded preceding) as running_converted_balance
     from adjusted_gl
 )
 

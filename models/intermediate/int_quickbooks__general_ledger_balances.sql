@@ -27,7 +27,8 @@ gl_period_balance as (
         class_id,
         cast({{ dbt.date_trunc("year", "transaction_date") }} as date) as date_year,
         cast({{ dbt.date_trunc("month", "transaction_date") }} as date) as date_month,
-        sum(adjusted_amount) as period_balance
+        sum(adjusted_amount) as period_balance,
+        sum(adjusted_converted_amount) as period_converted_balance
     from general_ledger
 
     {{ dbt_utils.group_by(14) }}
@@ -41,7 +42,12 @@ gl_cumulative_balance as (
             then sum(period_balance) over (partition by account_id, class_id, source_relation 
             order by source_relation, date_month, account_id, class_id rows unbounded preceding) 
             else 0
-                end as cumulative_balance
+                end as cumulative_balance,
+        case when financial_statement_helper = 'balance_sheet'
+            then sum(period_balance) over (partition by account_id, class_id, source_relation 
+            order by source_relation, date_month, account_id, class_id rows unbounded preceding) 
+            else 0
+                end as cumulative_converted_balance
     from gl_period_balance
 ),
 
@@ -67,7 +73,13 @@ gl_beginning_balance as (
             then (cumulative_balance - period_balance) 
             else 0
                 end as period_beginning_balance,
-        cumulative_balance as period_ending_balance  
+        cumulative_balance as period_ending_balance,
+        period_converted_balance as period_net_converted_change,
+        case when financial_statement_helper = 'balance_sheet'
+            then (cumulative_converted_balance - period_converted_balance) 
+            else 0
+                end as period_beginning_converted_balance,
+        cumulative_converted_balance as period_ending_converted_balance
     from gl_cumulative_balance
 ),
 
@@ -100,7 +112,18 @@ gl_patch as (
         case when gl_beginning_balance.period_ending_balance is null and period_index = 1
             then 0
             else gl_beginning_balance.period_ending_balance
-                end as period_ending_balance_starter
+                end as period_ending_balance_starter,
+        gl_beginning_balance.period_net_converted_change,
+        gl_beginning_balance.period_beginning_converted_balance,
+        gl_beginning_balance.period_ending_converted_balance,
+        case when gl_beginning_balance.period_beginning_converted_balance is null and period_index = 1
+            then 0
+            else gl_beginning_balance.period_beginning_converted_balance
+                end as period_beginning_converted_balance_starter,
+        case when gl_beginning_balance.period_ending_converted_balance is null and period_index = 1
+            then 0
+            else gl_beginning_balance.period_ending_converted_balance
+                end as period_ending_converted_balance_starter
     from gl_accounting_periods
 
     left join gl_beginning_balance
@@ -118,7 +141,11 @@ gl_value_partition as (
         sum(case when period_ending_balance_starter is null 
             then 0 
             else 1 
-                end) over (order by source_relation, account_id, class_id, period_last_day rows unbounded preceding) as gl_partition
+                end) over (order by source_relation, account_id, class_id, period_last_day rows unbounded preceding) as gl_partition,
+        sum(case when period_ending_converted_balance_starter is null 
+            then 0 
+            else 1 
+                end) over (order by source_relation, account_id, class_id, period_last_day rows unbounded preceding) as gl_converted_partition
     from gl_patch
 ),
  
@@ -140,13 +167,21 @@ final as (
         date_year,
         period_first_day,
         period_last_day,
-        coalesce(period_net_change,0) as period_net_change,
+        coalesce(period_net_change, 0) as period_net_change,
         coalesce(period_beginning_balance_starter,
             first_value(period_ending_balance_starter) over (partition by gl_partition, source_relation 
             order by source_relation, period_last_day rows unbounded preceding)) as period_beginning_balance,
         coalesce(period_ending_balance_starter,
             first_value(period_ending_balance_starter) over (partition by gl_partition, source_relation 
-            order by source_relation, period_last_day rows unbounded preceding)) as period_ending_balance
+            order by source_relation, period_last_day rows unbounded preceding)) as period_ending_balance,
+        coalesce(period_net_converted_change, 0) as period_net_converted_change,
+        coalesce(period_beginning_converted_balance_starter,
+            first_value(period_ending_converted_balance_starter) over (partition by gl_converted_partition, source_relation 
+            order by source_relation, period_last_day rows unbounded preceding)) as period_beginning_converted_balance,
+        coalesce(period_ending_converted_balance_starter,
+            first_value(period_ending_converted_balance_starter) over (partition by gl_partition, source_relation 
+            order by source_relation, period_last_day rows unbounded preceding)) as period_ending_converted_balance
+
     from gl_value_partition
 )
 
