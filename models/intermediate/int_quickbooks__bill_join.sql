@@ -71,8 +71,10 @@ final as (
         bill_link.vendor_id as vendor_id,
         bill_link.payable_account_id,
         bill_link.total_amount as total_amount,
+        (bill_link.total_amount * coalesce(bill_link.exchange_rate, 1)) as total_converted_amount,
         bill_link.balance as current_balance,
         bill_link.due_date_at as due_date,
+        (bill_payments.total_amount * coalesce(bill_payments.exchange_rate, 1)) as total_current_converted_payment,
         min(bill_payments.transaction_date) as initial_payment_date,
         max(bill_payments.transaction_date) as recent_payment_date,
         sum(coalesce(bill_payment_lines.amount, 0)) as total_current_payment
@@ -89,7 +91,7 @@ final as (
         and bill_link.bill_id = bill_payment_lines.bill_id
         and bill_link.source_relation = bill_payment_lines.source_relation
     
-    {{ dbt_utils.group_by(10) }} 
+    {{ dbt_utils.group_by(12) }} 
 )
 
 select * 

@@ -165,12 +165,18 @@ models:
         description: The status of the invoice estimate (if applicable).
       - name: total_amount
         description: The total monetary amount of the invoice or bill.
-      - name: estimate_amount
+      - name: total_converted_amount
+        description: The total monetary converted amount, with exchange rates applied if available, of the invoice or bill.
+      - name: estimate_total_amount
         description: The total amount estimated of the bill or invoice (if applicable).
+      - name: estimate_total_converted_amount
+        description: The total converted amount, with exchange rates applied if available, estimated of the bill or invoice (if applicable).
       - name: current_balance
         description: The bill or invoice defined remaining balance of the bill or invoice.
       - name: total_current_payment
         description: Sum of all total payments made towards the bill or invoice.
+      - name: total_current_converted_payment
+        description: Sum of all total converted payments, with exchange rates applied if available, made towards the bill or invoice.
       - name: due_date
         description: The due date for the bill or invoice.
       - name: is_overdue
@@ -220,11 +226,16 @@ models:
         description: Integer value to order the account within final cash flow statement reporting. The customer can also configure the ordinal; [see the README for details](https://github.com/fivetran/dbt_quickbooks/blob/main/README.md#customize-the-cash-flow-model).
       - name: cash_ending_period
         description: The total ending period balance cash for every cash flow account line.
+      - name: cash_converted_ending_period
+        description: The total ending period balance cash, converted with exchange rates applied if available, for every cash flow account line.
       - name: cash_beginning_period
         description: The total beginning period balance cash for every cash flow account line.
+      - name: cash_converted_beginning_period
+        description: The total beginning period balance cash, converted with exchange rates applied if available, for every cash flow account line.
       - name: cash_net_period
         description: The net cash change from the beginning to the end of the period for every cash flow account line.
-
+      - name: cash_converted_net_period
+        description: The net cash change, converted with exchange rates applied if available, from the beginning to the end of the period for every cash flow account line.
 
   - name: quickbooks__expenses_sales_enhanced
     description: "{{ doc('expenses_sales_enhanced_table') }}" 
@@ -284,8 +295,12 @@ models:
         description: Description given to either the expense or sale transaction.
       - name: amount
         description: Monetary amount of either the expense or sale line item.
+      - name: converted_amount
+        description: Monetary amount, converted with exchange rates applied if available, of either the expense or sale line item.
       - name: total_amount
         description: Total monetary amount of either the expense or sale.
+      - name: total_converted_amount
+        description: Total monetary amount, converted with exchange rates applied if available, of either the expense or sale.
 
   - name: quickbooks__general_ledger
     description: "{{ doc('general_ledger_table') }}"
@@ -345,9 +360,13 @@ models:
         description: Identifier of whether the account is increased by either a debit or credit entry.
       - name: adjusted_amount
         description: The amount that impacts the account. If the transaction_type = account_transaction_type then the impact will increase, otherwise it will decrease the account.
+      - name: adjusted_converted_amount
+        description: The amount, converted with exchange rates applied if available, that impacts the account. If the transaction_type = account_transaction_type then the impact will increase, otherwise it will decrease the account.
       - name: running_balance
         description: The running balance of the account by each individual day.
-  
+      - name: running_converted_balance
+        description: The running balance of the account by each individual day, --converted with exchange rates applied if available.
+
   - name: quickbooks__general_ledger_by_period
     description: "{{ doc('general_ledger_by_period_table') }}"
     tests:
@@ -394,6 +413,12 @@ models:
         description: Balance of the account as of the first date of the period. 
       - name: period_ending_balance
         description: Sum of all transaction line adjusted_balances of the account for the period.
+      - name: period_net_converted_change
+        description: Account balance difference, converted with exchange rates applied if available, from the beginning and ending of the period.
+      - name: period_beginning_converted_change
+        description: Balance of the account, converted with exchange rates applied if available, as of the first date of the period. 
+      - name: period_ending_converted_change
+        description: Sum of all transaction line adjusted_balances of the account for the period, converted with exchange rates applied if available.
       - name: account_ordinal
         description: "{{ doc('account_ordinal') }}"
 
@@ -437,6 +462,8 @@ models:
         description: "{{ doc('account_name') }} with the profit and loss line."
       - name: amount
         description: The total period net change for the period.
+      - name: converted_amount
+        description: The total period net change for the period, converted with exchange rates applied if available.
       - name: account_ordinal
         description: "{{ doc('account_ordinal') }}"
   
@@ -481,5 +508,7 @@ models:
         description: "{{ doc('source_relation') }}"
       - name: amount
         description: The total ending period balance.
+      - name: converted_amount
+        description: The total ending period balance, converted with exchange rates applied if available,
       - name: account_ordinal
         description: "{{ doc('account_ordinal') }}"

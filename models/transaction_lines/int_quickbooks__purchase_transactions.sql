@@ -35,10 +35,18 @@ final as (
             then -1 * purchase_lines.amount
             else purchase_lines.amount
         end as amount,
+        case when coalesce(purchases.credit, false)
+            then purchase_lines.amount * coalesce(-purchases.exchange_rate, -1)
+            else purchase_lines.amount * coalesce(purchases.exchange_rate, 1)
+        end as converted_amount,
         case when coalesce(purchases.credit, false) 
             then -1 * purchases.total_amount
             else purchases.total_amount
-        end as total_amount
+        end as total_amount,
+        case when coalesce(purchases.credit, false) 
+            then purchases.total_amount * coalesce(-purchases.exchange_rate, -1)
+            else purchases.total_amount * coalesce(purchases.exchange_rate, 1)
+        end as total_converted_amount
     from purchases
 
     inner join purchase_lines 

@@ -39,7 +39,7 @@ revenue_total as (
 
 expense_total as (
     select 
-        'expene' as income_statement_type, 
+        'expense' as income_statement_type, 
         sum(ending_balance) as ending_balance,
         sum(ending_converted_balance) as ending_converted_balance
     from expense

@@ -60,11 +60,11 @@ adjusted_gl as (
         case when accounts.transaction_type = gl_union.transaction_type
             then gl_union.amount
             else gl_union.amount * -1
-                end as adjusted_amount,
+        end as adjusted_amount,
         case when accounts.transaction_type = gl_union.transaction_type
             then gl_union.converted_amount
             else gl_union.converted_amount * -1
-                end as adjusted_converted_amount
+        end as adjusted_converted_amount
     from gl_union
 
     left join accounts

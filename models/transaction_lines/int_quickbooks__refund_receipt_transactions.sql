@@ -42,7 +42,9 @@ final as (
         cast(null as {{ dbt.type_string() }}) as billable_status,
         refund_receipt_lines.description,
         refund_receipt_lines.amount * -1 as amount,
-        refund_receipts.total_amount * -1 as total_amount
+        refund_receipt_lines.amount * coalesce(-refund_receipts.exchange_rate, -1) as converted_amount,
+        refund_receipts.total_amount * -1 as total_amount,
+        refund_receipts.total_amount * coalesce(-refund_receipts.exchange_rate, -1) as total_converted_amount
     from refund_receipts
 
     inner join refund_receipt_lines

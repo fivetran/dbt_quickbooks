@@ -32,8 +32,13 @@ final as (
         case when lower(journal_entry_lines.posting_type) = 'credit'
             then journal_entry_lines.amount * -1 
             else journal_entry_lines.amount 
-                end as amount,
-        journal_entries.total_amount
+        end as amount,
+        case when lower(journal_entry_lines.posting_type) = 'credit'
+            then journal_entry_lines.amount * coalesce(-journal_entries.exchange_rate, -1)
+            else journal_entry_lines.amount * coalesce(journal_entries.exchange_rate, 1)
+        end as converted_amount,
+        journal_entries.total_amount,
+        journal_entries.total_amount * coalesce(journal_entries.exchange_rate, 1) as total_converted_amount
     from journal_entries
 
     inner join journal_entry_lines
