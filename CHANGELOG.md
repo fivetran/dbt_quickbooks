@@ -19,7 +19,8 @@
 | [quickbooks__expenses_sales_enhanced](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.quickbooks__expenses_sales_enhanced) | `total_converted_amount`, `converted_amount` |  `total_amount`, `amount` |
 <!--section-end-->
 
-- Introduced `*_converted_*` type fields in our intermediate models to convert amounts where exchange rates exist for those transactions. If there is no exchange rate, `converted_amount` will default back to the regular `amount` values, and all downstream calculations should match the single currency amount, balance and cash values. [PR #134](https://github.com/fivetran/dbt_quickbooks/pull/134)
+- Introduced `*_converted_*` type fields in our intermediate models to convert amounts where exchange rates exist for those transactions. If there is no exchange rate, these `*_converted_*` fields will default back to the already existing fields created for single currency, and all downstream calculations should match the single currency amount, balance and cash values. [PR #134](https://github.com/fivetran/dbt_quickbooks/pull/134)
+- For double-entry models that applied a cross-join to either AP/AR accounts, we added joins based on the `currency_id` value in the `accounts` source table for those transactions.
 - In the `analysis` folder, added the `converted_balance` to the `quickbooks__balance_sheet` and `ending_converted_balance` to the `quickbooks__income_statement` models.
 
 ## Bug Fix
