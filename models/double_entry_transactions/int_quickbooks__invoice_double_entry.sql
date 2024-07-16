@@ -91,6 +91,8 @@ ar_accounts as (
     from accounts
 
     where account_type = '{{ var('quickbooks__accounts_receivable_reference', 'Accounts Receivable') }}'
+        and is_active
+        and not is_sub_account
 ),
 
 invoice_join as (
