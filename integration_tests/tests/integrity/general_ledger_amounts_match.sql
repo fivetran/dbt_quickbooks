@@ -6,10 +6,10 @@
 
 with unioned_models as (
 
-    {{ dbt_utils.union_relations(get_enabled_unioned_models()) }}
+    {{ dbt_utils.union_relations(quickbooks.get_enabled_unioned_models()) }}
 ),
 
-accounts (
+accounts as (
 
     select *
     from {{ ref('int_quickbooks__account_classifications') }}
@@ -21,7 +21,7 @@ general_ledger_source as (
     select  
         unioned_models.transaction_id,
         unioned_models.source_relation,
-        unioned_models.transaction_index,
+        unioned_models.index as transaction_index,
         unioned_models.account_id,
         unioned_models.transaction_type,
         unioned_models.transaction_source,

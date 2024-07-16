@@ -66,6 +66,11 @@ vars:
 
   # For validation testing. This exclusion is only needed for validation testing up to the v0.14.0 release. It can be leveraged if needed in future package updates.
   # account_type_exclusions: ('Discount')
+  
+  # This below vars configuration is needed for the `general_ledger_amounts_match` macro.
+  # using_bill: true
+  # using_credit_card_payment_txn: true
+
 
 seeds:
   +quote_columns: "{{ true if target.type == 'redshift' else false }}"
