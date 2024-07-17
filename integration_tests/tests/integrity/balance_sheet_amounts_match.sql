@@ -8,8 +8,8 @@ with balance_sheet_source as (
 
     select 
         period_first_day,
-        sum(period_net_change) as period_amount_source,
-        sum(period_net_converted_change) as period_converted_amount_source
+        sum(period_ending_balance) as period_amount_source,
+        sum(period_ending_converted_balance) as period_converted_amount_source
     from {{ ref('int_quickbooks__general_ledger_balances') }}
     where financial_statement_helper = 'balance_sheet'
     group by 1

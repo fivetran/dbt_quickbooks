@@ -29,7 +29,7 @@ New major feature alert! Multicurrency is here!
 - Applied filter in `int_quickbooks__invoice_double_entry` to filter out 'Accounts Receivable' accounts that are inactive. ([PR #134](https://github.com/fivetran/dbt_quickbooks/pull/134)) 
 
 ## Under the Hood
-- Added consistency and integrity tests within integration tests for the `quickbooks__general_ledger`, `quickbooks__general_ledger_by_period`, `quickbooks__balance_sheet`, `quickbooks__cash_flow_statement` and `quickbooks__profit_and_loss` models. ([PR #130](https://github.com/fivetran/dbt_quickbooks/pull/130)) & ([PR 134](https://github.com/fivetran/dbt_quickbooks/pull/134))
+- Added consistency and integrity tests within integration tests for all end models. ([PR #130](https://github.com/fivetran/dbt_quickbooks/pull/130)) & ([PR 134](https://github.com/fivetran/dbt_quickbooks/pull/134))
 
 ## Documentation Update
 - Updated README to [reflect the new multicurrency support](https://github.com/fivetran/dbt_quickbooks?tab=readme-ov-file#multicurrency-vs-single-currency-configuration). ([PR #134](https://github.com/fivetran/dbt_quickbooks/pull/134))
