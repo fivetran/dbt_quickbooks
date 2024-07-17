@@ -64,9 +64,7 @@ vars:
     quickbooks_vendor_identifier: "vendor_data"
 
 
-  # For validation testing. This exclusion is only needed for validation testing up to the v0.14.0 release. It can be leveraged if needed in future package updates.
-  # account_type_exclusions: ('Discount')
-  
+  # For validation testing.  
   # This below vars configuration is needed for the `general_ledger_amounts_match` macro.
   # using_bill: true
   # using_credit_card_payment_txn: true

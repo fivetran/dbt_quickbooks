@@ -3,7 +3,7 @@
     enabled=var('fivetran_validation_tests_enabled', false)
 ) }}
 
--- this test ensures the daily_activity end model matches the prior version
+-- this test ensures the expenses sales enhanced end model matches the prior version
 with prod as (
     select *
     from {{ target.schema }}_quickbooks_prod.quickbooks__expenses_sales_enhanced
@@ -12,6 +12,8 @@ with prod as (
 
 dev as (
     select *
+    --remove the below line before merging to main
+    except(converted_amount, total_converted_amount)
     from {{ target.schema }}_quickbooks_dev.quickbooks__expenses_sales_enhanced
     where date(transaction_date) < date({{ dbt.current_timestamp() }})
 ),

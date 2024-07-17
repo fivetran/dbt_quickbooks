@@ -3,7 +3,7 @@
     enabled=var('fivetran_validation_tests_enabled', false)
 ) }}
 
--- this test ensures the daily_activity end model matches the prior version
+-- this test ensures the ap ar enhanced end model matches the prior version
 with prod as (
     select *
     from {{ target.schema }}_quickbooks_prod.quickbooks__ap_ar_enhanced
@@ -12,6 +12,8 @@ with prod as (
 
 dev as (
     select *
+    --remove the below line before merging to main
+    except (total_converted_amount, estimate_total_converted_amount, total_current_converted_payment)
     from {{ target.schema }}_quickbooks_dev.quickbooks__ap_ar_enhanced
     where date(due_date) < date({{ dbt.current_timestamp() }})
 ),

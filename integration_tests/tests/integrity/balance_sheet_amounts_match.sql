@@ -4,16 +4,34 @@
 ) }}
 
 
-with balance_sheet_source as (
+with balance_sheet_source_union as (
+
+    select 
+        period_first_day,
+        period_ending_balance,
+        period_ending_converted_balance
+    from {{ ref('int_quickbooks__general_ledger_balances') }}
+    where financial_statement_helper = 'balance_sheet'
+
+    union all
+
+    select 
+        period_first_day,
+        period_ending_balance as period_amount_source,
+        period_ending_converted_balance as period_converted_amount_source
+    from {{ ref('int_quickbooks__retained_earnings') }}
+    where financial_statement_helper = 'balance_sheet'
+), 
+
+balance_sheet_source as (
 
     select 
         period_first_day,
         sum(period_ending_balance) as period_amount_source,
         sum(period_ending_converted_balance) as period_converted_amount_source
-    from {{ ref('int_quickbooks__general_ledger_balances') }}
-    where financial_statement_helper = 'balance_sheet'
+    from balance_sheet_source_union
     group by 1
-), 
+),
 
 balance_sheet_end as (
 
