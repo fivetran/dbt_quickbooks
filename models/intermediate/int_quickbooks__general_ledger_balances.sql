@@ -148,7 +148,7 @@ gl_value_partition as (
                 end) over (order by source_relation, account_id, class_id, period_last_day rows unbounded preceding) as gl_converted_partition
     from gl_patch
 ),
- 
+
 final as (
     
     select
