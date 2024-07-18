@@ -8,6 +8,8 @@ with prod as (
     select
         transaction_id,
         sum(adjusted_amount) as adjusted_amount_cumulative
+-- Uncomment below code before attempting next validation test 
+-- , sum(adjusted_converted_amount) as adjusted_converted_amount_cumulative
     from {{ target.schema }}_quickbooks_prod.quickbooks__general_ledger
     {{ "where account_type not in " ~ var('account_type_exclusions', []) ~ "" if var('account_type_exclusions', []) }}
     group by 1
@@ -18,6 +20,8 @@ dev as (
     select         
         transaction_id,
         sum(adjusted_amount) as adjusted_amount_cumulative
+-- Uncomment below code before attempting next validation test 
+-- , sum(adjusted_converted_amount) as adjusted_converted_amount_cumulative
     from {{ target.schema }}_quickbooks_dev.quickbooks__general_ledger
     {{ "where account_type not in " ~ var('account_type_exclusions', []) ~ "" if var('account_type_exclusions', []) }}
     group by 1
@@ -29,6 +33,9 @@ final as (
         prod.transaction_id,
         prod.adjusted_amount_cumulative as prod_adjusted_amount_cumulative,
         dev.adjusted_amount_cumulative as dev_adjusted_amount_cumulative
+-- Uncomment below code before attempting next validation test 
+-- , sum(prod.adjusted_converted_amount_cumulative) as prod_adjusted_converted_amount_cumulative
+-- , sum(dev.adjusted_converted_amount_cumulative) as dev_adjusted_converted_amount_cumulative
     from prod
     full outer join dev
         on dev.transaction_id = prod.transaction_id
@@ -37,3 +44,5 @@ final as (
 select * 
 from final
 where abs(prod_adjusted_amount_cumulative - dev_adjusted_amount_cumulative) >= 0.01
+-- Uncomment below code before attempting next validation test 
+-- or (abs prod_adjusted_converted_amount_cumulative - dev_adjusted_converted_amount_cumulative) >= 0.01

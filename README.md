@@ -53,24 +53,11 @@ The following table provides a detailed list of all models materialized within t
 | [quickbooks__expenses_sales_enhanced](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.quickbooks__expenses_sales_enhanced) | Table providing enhanced customer, vendor, and account details for each expense and sale transaction. |
 <!--section-end-->
 
-## Multicurrency vs. Single Currency Configuration 
+## Multicurrency Support (And Existing Limitations)
 
-> [dbt_quickbooks](https://github.com/fivetran/dbt_quickbooks) and [dbt_quickbooks_source](https://github.com/fivetran/dbt_quickbooks_source) now supports multicurrency. 
+> [dbt_quickbooks](https://github.com/fivetran/dbt_quickbooks) and [dbt_quickbooks_source](https://github.com/fivetran/dbt_quickbooks_source) now supports multicurrency by bringing in values by specifying `*_converted_*` values for cash. More details are [available in the DECISIONLOG](https://github.com/fivetran/dbt_quickbooks/blob/main/DECISIONLOG.md#multicurrency-vs-single-currency-configuration).
 
-Please leverage the below fields in your end models for your financial statements depending on what your currency configuration looks like.
-
-<!--section="new_multicurrency_fields_map"-->
-
-| **Model** | **Multicurrency Fields** | **Single Currency Fields** |
-| ------------------------ | ------------------------------------------------------------------------------------------------------- | ------------------------------------------ |    
-| [quickbooks__general_ledger](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.quickbooks__general_ledger) | `adjusted_converted_amount`,  `running_converted_balance` |  `adjusted_amount`, `running_balance` | 
-|[quickbooks__general_ledger_by_period](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.quickbooks__general_ledger_by_period) | `period_net_converted_change`, `period_beginning_converted_balance`, `period_ending_converted_balance`  | `period_net_change`, `period_beginning_balance`, `period_ending_balance`  |
-| [quickbooks__profit_and_loss](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.quickbooks__profit_and_loss) |  `converted_amount` | `amount`  |
-| [quickbooks__balance_sheet](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.quickbooks__balance_sheet) | `converted_amount` | `amount` |
-| [quickbooks__cash_flow_statement](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.quickbooks__cash_flow_statement) |  `cash_converted_ending_period`, `cash_converted_beginning_period`, `cash_converted_net_period` | `cash_ending_period`, `cash_beginning_period`, `cash_net_period` |
-| [quickbooks__ap_ar_enhanced](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.quickbooks__ap_ar_enhanced) | `total_converted_amount`, `estimate_total_converted_amount`, `total_current_converted_payment` | `total_amount`, `estimate_total_amount`, `total_current_payment` |
-| [quickbooks__expenses_sales_enhanced](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.quickbooks__expenses_sales_enhanced) | `total_converted_amount`, `converted_amount` |  `total_amount`, `amount` |
-<!--section-end-->
+There are specific limitations if you need converted amounts for credit card payments and transfers, as we do not currently have the ability to validate a best approach to convert the original amounts into their proper home currency. [Please open an issue with us](https://github.com/fivetran/dbt_quickbooks/issues/new/choose) if this is critical and/or you believe you can help contribute to scoping out adding that functionality in..
 
 # 🎯 How do I use the dbt package?
 ## Step 1: Prerequisites

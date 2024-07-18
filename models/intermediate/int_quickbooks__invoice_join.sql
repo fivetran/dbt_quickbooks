@@ -112,10 +112,10 @@ final as (
         {% endif %}
 
         invoice_link.due_date as due_date,
-        (payments.total_amount * coalesce(payments.exchange_rate, 1)) as total_current_converted_payment,
         min(payments.transaction_date) as initial_payment_date,
         max(payments.transaction_date) as recent_payment_date,
-        sum(coalesce(payment_lines_payment.amount, 0)) as total_current_payment
+        sum(coalesce(payment_lines_payment.amount, 0)) as total_current_payment,
+        sum(coalesce(payment_lines_payment.amount, 0) * coalesce(payments.exchange_rate, 1)) as total_current_converted_payment
 
     from invoice_link
 
@@ -135,7 +135,7 @@ final as (
         and invoice_link.source_relation = payment_lines_payment.source_relation
 
 
-    {{ dbt_utils.group_by(18) }} 
+    {{ dbt_utils.group_by(17) }} 
 )
 
 select * 

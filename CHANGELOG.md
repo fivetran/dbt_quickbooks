@@ -2,8 +2,9 @@
 New major feature alert! Multicurrency is here!
 
 ## 🚨 Breaking Changes 🚨
-### Feature Requests: Multicurrency Support
+### Feature Updates: Multicurrency Support
 - We have introduced multicurrency support to the following models by providing these new fields that convert transaction amounts by their exchange rates. ([PR #134](https://github.com/fivetran/dbt_quickbooks/pull/134))
+- **IMPORTANT**: We do not yet have proper `converted_amount` values for credit card payments and transfers. Currently it is being brought in as the equivalent of `amount`, so you might see slight discrepancies if need these values converted as well. [Please open an issue with us](https://github.com/fivetran/dbt_quickbooks/issues/new/choose) to help work with us to support this feature. 
 - We have kept the existing cash value fields that provides amounts and balances to ensure full coverage to customers regardless of their currency setup. ([PR #134](https://github.com/fivetran/dbt_quickbooks/pull/134))
 - The new multicurrency fields that fulfill the same function as the respective existing fields is below:
 
@@ -21,7 +22,7 @@ New major feature alert! Multicurrency is here!
 <!--section-end-->
 
 - Introduced `*_converted_*` type fields in our intermediate models to convert amounts where exchange rates exist for those transactions. If there is no exchange rate, these `*_converted_*` fields will default back to the already existing fields created for single currency, and all downstream calculations should match the single currency amount, balance and cash values. ([PR #134](https://github.com/fivetran/dbt_quickbooks/pull/134))
-- For double-entry models that applied a cross-join to either AP/AR accounts, we added joins based on the `currency_id` value in the `accounts` source table for those transactions. ([PR #134](https://github.com/fivetran/dbt_quickbooks/pull/134))
+- For double-entry models that applied a cross-join to either AP/AR accounts, we are now mapping those accounts based on the `currency_id` value in the `accounts` source table for those transactions. ([PR #134](https://github.com/fivetran/dbt_quickbooks/pull/134))
 - In the `analysis` folder, added the `converted_balance` to the `quickbooks__balance_sheet` and `ending_converted_balance` to the `quickbooks__income_statement` models. ([PR #134](https://github.com/fivetran/dbt_quickbooks/pull/134))
 ## Bug Fixes
 - Adjusted logic for discount sales receipt lines in `int_quickbooks__sales_receipt_double_entry` model to bring in these values properly as negative adjusted amounts in the `quickbooks__general_ledger`. 

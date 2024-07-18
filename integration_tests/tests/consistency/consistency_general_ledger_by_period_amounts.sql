@@ -10,7 +10,9 @@ with prod as (
         class_id,
         source_relation,
         period_first_day,
-        period_net_change
+        period_net_change,
+-- Uncomment below code before attempting next validation test 
+--   , period_net_converted_change
     from {{ target.schema }}_quickbooks_prod.quickbooks__general_ledger_by_period
     {{ "where account_type not in " ~ var('account_type_exclusions', []) ~ "" if var('account_type_exclusions', []) }}
 ),
@@ -23,6 +25,8 @@ dev as (
         source_relation,
         period_first_day,
         period_net_change
+-- Uncomment below code before attempting next validation test 
+--   , period_net_converted_change
     from {{ target.schema }}_quickbooks_dev.quickbooks__general_ledger_by_period
     {{ "where account_type not in " ~ var('account_type_exclusions', []) ~ "" if var('account_type_exclusions', []) }}
 ),
@@ -36,7 +40,10 @@ final as (
         prod.period_first_day,
         prod.period_net_change as prod_period_net_change,
         dev.period_net_change as dev_period_net_change
-    from prod
+-- Uncomment below code before attempting next validation test 
+-- , prod.period_net_converted_change as prod_period_net_converted_change
+-- , dev.period_net_converted_change as dev_period_net_converted_change
+    from prod   
     full outer join dev
         on dev.account_id = prod.account_id
         and dev.class_id = prod.class_id
@@ -47,3 +54,5 @@ final as (
 select * 
 from final
 where abs(prod_period_net_change - dev_period_net_change) >= 0.01
+-- Uncomment below code before attempting next validation test 
+-- or abs(prod_period_net_converted_change - dev_period_net_converted_change) >= 0.01

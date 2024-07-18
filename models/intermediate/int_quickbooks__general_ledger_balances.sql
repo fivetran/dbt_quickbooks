@@ -44,7 +44,7 @@ gl_cumulative_balance as (
             else 0
                 end as cumulative_balance,
         case when financial_statement_helper = 'balance_sheet'
-            then sum(period_balance) over (partition by account_id, class_id, source_relation 
+            then sum(period_converted_balance) over (partition by account_id, class_id, source_relation 
             order by source_relation, date_month, account_id, class_id rows unbounded preceding) 
             else 0
                 end as cumulative_converted_balance
