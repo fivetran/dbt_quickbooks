@@ -38,11 +38,12 @@ sales_receipt_join as (
         sales_receipts.transaction_date,
         case 
             when sales_receipt_lines.discount_account_id is not null 
-                then sales_receipt_lines.amount * (-1)
+            then sales_receipt_lines.amount * (-1)
             else sales_receipt_lines.amount
         end as amount,
-        case when sales_receipt_lines.discount_account_id is not null 
-                then (sales_receipt_lines.amount * coalesce(-sales_receipts.exchange_rate, -1))
+        case 
+            when sales_receipt_lines.discount_account_id is not null 
+            then (sales_receipt_lines.amount * coalesce(-sales_receipts.exchange_rate, -1))
             else (sales_receipt_lines.amount * coalesce(sales_receipts.exchange_rate, 1))
         end as converted_amount,
         sales_receipts.deposit_to_account_id as debit_to_account_id,
