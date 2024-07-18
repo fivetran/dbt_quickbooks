@@ -55,9 +55,9 @@ The following table provides a detailed list of all models materialized within t
 
 ## Multicurrency Support (And Existing Limitations)
 
-> [dbt_quickbooks](https://github.com/fivetran/dbt_quickbooks) and [dbt_quickbooks_source](https://github.com/fivetran/dbt_quickbooks_source) now supports multicurrency by bringing in values by specifying `*_converted_*` values for cash. More details are [available in the DECISIONLOG](https://github.com/fivetran/dbt_quickbooks/blob/main/DECISIONLOG.md#multicurrency-vs-single-currency-configuration).
+> [dbt_quickbooks](https://github.com/fivetran/dbt_quickbooks) and [dbt_quickbooks_source](https://github.com/fivetran/dbt_quickbooks_source) now supports multicurrency by bringing in values by specifying `*_converted_*` values for cash amounts. More details are [available in the DECISIONLOG](https://github.com/fivetran/dbt_quickbooks/blob/main/DECISIONLOG.md#multicurrency-vs-single-currency-configuration).
 
-There are specific limitations if you need converted amounts for credit card payments and transfers, as we do not currently have the ability to validate a best approach to convert the original amounts into their proper home currency. [Please open an issue with us](https://github.com/fivetran/dbt_quickbooks/issues/new/choose) if this is critical and/or you believe you can help contribute to scoping out adding that functionality in..
+There are specific limitations if you need converted amounts for credit card payments and transfers, as we do not currently have the ability to validate a best approach to convert the original amounts into their proper home currency. [Please open an issue with us](https://github.com/fivetran/dbt_quickbooks/issues/new/choose) if this is critical and/or you believe you can help contribute to scoping out adding that functionality in.
 
 # 🎯 How do I use the dbt package?
 ## Step 1: Prerequisites
