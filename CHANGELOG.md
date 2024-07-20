@@ -24,6 +24,7 @@ New major feature alert! Multicurrency is here!
 - Introduced `*_converted_*` type fields in our intermediate models to convert amounts where exchange rates exist for those transactions. If there is no exchange rate, these `*_converted_*` fields will default back to the already existing fields created for single currency, and all downstream calculations should match the single currency amount, balance and cash values. ([PR #134](https://github.com/fivetran/dbt_quickbooks/pull/134))
 - For double-entry models that applied a cross-join to either AP/AR accounts, we are now mapping those accounts based on the `currency_id` value in the `accounts` source table for those transactions. ([PR #134](https://github.com/fivetran/dbt_quickbooks/pull/134))
 - In the `analysis` folder, added the `converted_balance` to the `quickbooks__balance_sheet` and `ending_converted_balance` to the `quickbooks__income_statement` models. ([PR #134](https://github.com/fivetran/dbt_quickbooks/pull/134))
+
 ## Bug Fixes
 - Adjusted logic for discount sales receipt lines in `int_quickbooks__sales_receipt_double_entry` model to bring in these values properly as negative adjusted amounts in the `quickbooks__general_ledger`. 
 ([PR #130](https://github.com/fivetran/dbt_quickbooks/pull/130))  
@@ -31,6 +32,7 @@ New major feature alert! Multicurrency is here!
 
 ## Under the Hood
 - Added consistency and integrity tests within integration tests for all end models. ([PR #130](https://github.com/fivetran/dbt_quickbooks/pull/130)) & ([PR 134](https://github.com/fivetran/dbt_quickbooks/pull/134))
+- Appended `using_credit_card_payment_txn` check in  `get_enabled_unioned_models` macro to `false` to match consistency of how the variable is defined throughout our Quickbooks models by default.
 
 ## Documentation Update
 - Updated README to [reflect the new multicurrency support](https://github.com/fivetran/dbt_quickbooks?tab=readme-ov-file#multicurrency-vs-single-currency-configuration). ([PR #134](https://github.com/fivetran/dbt_quickbooks/pull/134))
