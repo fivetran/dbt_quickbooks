@@ -12,8 +12,6 @@ with prod as (
 
 dev as (
     select *
-    --remove the below line before merging to main
-    except(converted_amount, total_converted_amount)
     from {{ target.schema }}_quickbooks_dev.quickbooks__expenses_sales_enhanced
     where date(transaction_date) < date({{ dbt.current_timestamp() }})
 ),

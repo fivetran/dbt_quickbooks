@@ -12,8 +12,6 @@ with prod as (
 
 dev as (
     select *
-    --remove the below line before merging to main
-    except (total_converted_amount, estimate_total_converted_amount, total_current_converted_payment)
     from {{ target.schema }}_quickbooks_dev.quickbooks__ap_ar_enhanced
     where date(due_date) < date({{ dbt.current_timestamp() }})
 ),
