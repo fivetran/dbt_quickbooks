@@ -47,3 +47,22 @@ The corresponding entry that would result from the `int_quickbooks__invoice_doub
       - Cash basis, which records revenue and expenses when cash related to transactions actually is received or dispensed.  
 - For our initial build of `quickbooks__profit_and_loss`, `quickbooks__general_ledger_by_period`, and `quickbooks__balance_sheet`, we used the accrual accounting method rather than cash, as it is approved by GAAP (generally accepted accounting principles). Accrual accounting requires companies match revenues with expenses incurred to generate them.
 - If you'd like models that rely on the cash basis accounting, [please comment on this feature and we can prioritize it for future development](https://github.com/fivetran/dbt_quickbooks/issues/111).
+
+## Multicurrency vs. Single Currency Configuration 
+We introduced multicurrency support in our v0.14.0 release. We introduced new fields to allow you the ability to pick and choose which amount, balance, and cash fields provide the most value to your end models. 
+
+These fields will be in the `*_converted_*` format of the original single currency amount/balance/cash fields. If you are single currency customer, you should still leverage the original version of the fields
+
+There are still some limitations [for multicurrency support](https://github.com/fivetran/dbt_quickbooks/blob/main/README.md#multicurrency-support-and-existing-limitations), particularly with regards to calculating credit card payment and transfer currency converted amounts. [Please open an issue with us if this is critical to resolve](https://github.com/fivetran/dbt_quickbooks/issues/new/choose), especially if you think you can help contribute based on your knowledge of the Quickbooks data models. 
+
+Please leverage the below fields in your end models for your financial statements depending on what your currency configuration looks like.
+
+| **Model** | **Multicurrency Fields** | **Single Currency Fields** |
+| ------------------------ | ------------------------------------------------------------------------------------------------------- | ------------------------------------------ |    
+| [quickbooks__general_ledger](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.quickbooks__general_ledger) | `adjusted_converted_amount`,  `running_converted_balance` |  `adjusted_amount`, `running_balance` | 
+|[quickbooks__general_ledger_by_period](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.quickbooks__general_ledger_by_period) | `period_net_converted_change`, `period_beginning_converted_balance`, `period_ending_converted_balance`  | `period_net_change`, `period_beginning_balance`, `period_ending_balance`  |
+| [quickbooks__profit_and_loss](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.quickbooks__profit_and_loss) |  `converted_amount` | `amount`  |
+| [quickbooks__balance_sheet](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.quickbooks__balance_sheet) | `converted_amount` | `amount` |
+| [quickbooks__cash_flow_statement](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.quickbooks__cash_flow_statement) |  `cash_converted_ending_period`, `cash_converted_beginning_period`, `cash_converted_net_period` | `cash_ending_period`, `cash_beginning_period`, `cash_net_period` |
+| [quickbooks__ap_ar_enhanced](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.quickbooks__ap_ar_enhanced) | `total_converted_amount`, `estimate_total_converted_amount`, `total_current_converted_payment` | `total_amount`, `estimate_total_amount`, `total_current_payment` |
+| [quickbooks__expenses_sales_enhanced](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.quickbooks__expenses_sales_enhanced) | `total_converted_amount`, `converted_amount` |  `total_amount`, `amount` |

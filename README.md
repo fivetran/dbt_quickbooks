@@ -53,9 +53,11 @@ The following table provides a detailed list of all models materialized within t
 | [quickbooks__expenses_sales_enhanced](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.quickbooks__expenses_sales_enhanced) | Table providing enhanced customer, vendor, and account details for each expense and sale transaction. |
 <!--section-end-->
 
-## Currency Package Compatibility
+## Multicurrency Support (And Existing Limitations)
 
-> Please be aware that the [dbt_quickbooks](https://github.com/fivetran/dbt_quickbooks) and [dbt_quickbooks_source](https://github.com/fivetran/dbt_quickbooks_source) packages were developed with single currency company data. As such, the package models will not reflect accurate totals if your QuickBooks account has Multi-Currency enabled.
+> [dbt_quickbooks](https://github.com/fivetran/dbt_quickbooks) and [dbt_quickbooks_source](https://github.com/fivetran/dbt_quickbooks_source) now supports multicurrency by bringing in values by specifying `*_converted_*` values for cash amounts. More details are [available in the DECISIONLOG](https://github.com/fivetran/dbt_quickbooks/blob/main/DECISIONLOG.md#multicurrency-vs-single-currency-configuration).
+
+There are specific limitations if you need converted amounts for credit card payments and transfers, as we do not currently have the ability to validate a best approach to convert the original amounts into their proper home currency. [Please open an issue with us](https://github.com/fivetran/dbt_quickbooks/issues/new/choose) if this is critical and/or you believe you can help contribute to scoping out adding that functionality in.
 
 # 🎯 How do I use the dbt package?
 ## Step 1: Prerequisites
@@ -71,7 +73,7 @@ Include the following QuickBooks package version in your `packages.yml` file.
 ```yaml
 packages:
   - package: fivetran/quickbooks
-    version: [">=0.13.0", "<0.14.0"] # we recommend using ranges to capture non-breaking changes automatically
+    version: [">=0.14.0", "<0.15.0"] # we recommend using ranges to capture non-breaking changes automatically
 ```
 
 Do NOT include the `quickbooks_source` package in this file. The transformation package itself has a dependency on it and will install the source package as well.
@@ -252,4 +254,3 @@ This dbt package takes an opinionated stance on how to define the ordering and c
 # 🏪 Are there any resources available?
 - If you have questions or want to reach out for help, please refer to the [GitHub Issue](https://github.com/fivetran/dbt_quickbooks/issues/new/choose) section to find the right avenue of support for you.
 - If you would like to provide feedback to the dbt package team at Fivetran or would like to request a new dbt package, fill out our [Feedback Form](https://www.surveymonkey.com/r/DQ7K7WW).
-- Have questions or want to be part of the community discourse? Create a post in the [Fivetran community](https://community.fivetran.com/t5/user-group-for-dbt/gh-p/dbt-user-group) and our team along with the community can join in on the discussion!

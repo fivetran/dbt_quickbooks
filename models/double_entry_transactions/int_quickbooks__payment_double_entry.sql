@@ -27,6 +27,7 @@ ar_accounts as (
 
     select
         account_id,
+        currency_id,
         source_relation
     from accounts
 
@@ -44,9 +45,11 @@ payment_join as (
             order by payments.source_relation, payments.transaction_date) - 1 as index,
         payments.transaction_date,
         payments.total_amount as amount,
+        (payments.total_amount * coalesce(payments.exchange_rate, 1)) as converted_amount,
         payments.deposit_to_account_id,
         payments.receivable_account_id,
-        payments.customer_id
+        payments.customer_id,
+        payments.currency_id
     from payments
 ),
 
@@ -60,6 +63,7 @@ final as (
         customer_id,
         cast(null as {{ dbt.type_string() }}) as vendor_id,
         amount,
+        converted_amount,
         deposit_to_account_id as account_id,
         cast(null as {{ dbt.type_string() }}) as class_id,
         cast(null as {{ dbt.type_string() }}) as department_id,
@@ -77,6 +81,7 @@ final as (
         customer_id,
         cast(null as {{ dbt.type_string() }}) as vendor_id,
         amount,
+        converted_amount,
         coalesce(receivable_account_id, ar_accounts.account_id) as account_id,
         cast(null as {{ dbt.type_string() }}) as class_id,
         cast(null as {{ dbt.type_string() }}) as department_id,
@@ -85,7 +90,8 @@ final as (
     from payment_join
 
     left join ar_accounts
-        on ar_accounts.source_relation = payment_join.source_relation
+        on ar_accounts.currency_id = payment_join.currency_id
+        and ar_accounts.source_relation = payment_join.source_relation
 )
 
 select *

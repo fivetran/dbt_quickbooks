@@ -1,3 +1,46 @@
+# dbt_quickbooks v0.14.0
+New major feature alert! Multicurrency is here!
+
+## 🚨 Breaking Changes 🚨
+### Feature Updates: Multicurrency Support
+- We have introduced multicurrency support to the following models by providing these new fields that convert transaction amounts by their exchange rates. ([PR #134](https://github.com/fivetran/dbt_quickbooks/pull/134))
+- **IMPORTANT**: We do not yet have proper `converted_amount` values for credit card payments and transfers. Currently it is being brought in as the equivalent of `amount`, so you might see slight discrepancies if need these values converted as well. [Please open an issue with us](https://github.com/fivetran/dbt_quickbooks/issues/new/choose) to help work with us to support this feature. 
+- We have kept the existing cash value fields that provides amounts and balances to ensure full coverage to customers regardless of their currency setup. ([PR #134](https://github.com/fivetran/dbt_quickbooks/pull/134))
+- The new multicurrency fields that fulfill the same function as the respective existing fields is below:
+
+<!--section="new_multicurrency_fields_map"-->
+
+| **Model** | **New Multicurrency Fields** | **Respective Single Currency Fields** |
+| ------------------------ | ------------------------------------------------------------------------------------------------------- | ------------------------------------------ |    
+| [quickbooks__general_ledger](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.quickbooks__general_ledger) | `adjusted_converted_amount`,  `running_converted_balance` |  `adjusted_amount`, `running_balance` | 
+|[quickbooks__general_ledger_by_period](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.quickbooks__general_ledger_by_period) | `period_net_converted_change`, `period_beginning_converted_balance`, `period_ending_converted_balance`  | `period_net_change`, `period_beginning_balance`, `period_ending_balance`  |
+| [quickbooks__profit_and_loss](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.quickbooks__profit_and_loss) |  `converted_amount` | `amount`  |
+| [quickbooks__balance_sheet](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.quickbooks__balance_sheet) | `converted_amount` | `amount` |
+| [quickbooks__cash_flow_statement](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.quickbooks__cash_flow_statement) |  `cash_converted_ending_period`, `cash_converted_beginning_period`, `cash_converted_net_period` | `cash_ending_period`, `cash_beginning_period`, `cash_net_period` |
+| [quickbooks__ap_ar_enhanced](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.quickbooks__ap_ar_enhanced) | `total_converted_amount`, `estimate_total_converted_amount`, `total_current_converted_payment` | `total_amount`, `estimate_total_amount`, `total_current_payment` |
+| [quickbooks__expenses_sales_enhanced](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.quickbooks__expenses_sales_enhanced) | `total_converted_amount`, `converted_amount` |  `total_amount`, `amount` |
+<!--section-end-->
+
+- Introduced `*_converted_*` type fields in our intermediate models to convert amounts where exchange rates exist for those transactions. If there is no exchange rate, these `*_converted_*` fields will default back to the already existing fields created for single currency, and all downstream calculations should match the single currency amount, balance and cash values. ([PR #134](https://github.com/fivetran/dbt_quickbooks/pull/134))
+- For double-entry models that applied a cross-join to either AP/AR accounts, we are now mapping those accounts based on the `currency_id` value in the `accounts` source table for those transactions. ([PR #134](https://github.com/fivetran/dbt_quickbooks/pull/134))
+- In the `analysis` folder, added the `converted_balance` to the `quickbooks__balance_sheet` and `ending_converted_balance` to the `quickbooks__income_statement` models. ([PR #134](https://github.com/fivetran/dbt_quickbooks/pull/134))
+
+## Bug Fixes
+- Adjusted logic for discount sales receipt lines in `int_quickbooks__sales_receipt_double_entry` model to bring in these values properly as negative adjusted amounts in the `quickbooks__general_ledger`. 
+([PR #130](https://github.com/fivetran/dbt_quickbooks/pull/130))  
+- Applied filter in `int_quickbooks__invoice_double_entry` to filter out 'Accounts Receivable' accounts that are inactive. ([PR #134](https://github.com/fivetran/dbt_quickbooks/pull/134)) 
+
+## Under the Hood
+- Added consistency and integrity tests within integration tests for all end models. ([PR #130](https://github.com/fivetran/dbt_quickbooks/pull/130)) & ([PR 134](https://github.com/fivetran/dbt_quickbooks/pull/134))
+- Appended `using_credit_card_payment_txn` check in  `get_enabled_unioned_models` macro to `false` to match consistency of how the variable is defined throughout our Quickbooks models by default.
+
+## Documentation Update
+- Updated README to [reflect the new multicurrency support](https://github.com/fivetran/dbt_quickbooks?tab=readme-ov-file#multicurrency-vs-single-currency-configuration). ([PR #134](https://github.com/fivetran/dbt_quickbooks/pull/134))
+- Added yml documentation with the new multicurrency fields and descriptions. ([PR #134](https://github.com/fivetran/dbt_quickbooks/pull/134))
+
+## Contributors
+- [@mikerenderco](https://github.com/mikerenderco) ([PR #131](https://github.com/fivetran/dbt_quickbooks/pull/131))
+
 # dbt_quickbooks v0.13.1
 [PR #125](https://github.com/fivetran/dbt_quickbooks/pull/125) includes the following updates:
 
@@ -42,7 +85,8 @@
   - The default end date will be the current date
 
 ## Under the Hood
-- Updated the maintainer PR template to resemble the most up to date format.
+- Updated the maintainer PR template to resemble the most 
+up to date format.
 - Removed the check docs GitHub Action as it is no longer necessary.
 
 # dbt_quickbooks v0.12.2

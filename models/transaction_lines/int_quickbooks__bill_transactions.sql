@@ -36,7 +36,9 @@ final as (
         coalesce(bill_lines.account_expense_billable_status, bill_lines.item_expense_billable_status) as billable_status,
         coalesce(bill_lines.description, items.name) as description,
         bill_lines.amount,
-        bills.total_amount
+        bill_lines.amount * (coalesce(bills.exchange_rate, 1)) as converted_amount,
+        bills.total_amount,
+        bills.total_amount * (coalesce(bills.exchange_rate, 1)) as total_converted_amount
     from bills
 
     inner join bill_lines 

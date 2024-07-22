@@ -24,7 +24,7 @@
     {{ enabled_unioned_models.append(ref('int_quickbooks__bill_payment_double_entry')) }}
 {% endif %}
 
-{% if var('using_credit_card_payment_txn', True) %}
+{% if var('using_credit_card_payment_txn', False) %}
     {{ enabled_unioned_models.append(ref('int_quickbooks__credit_card_pymt_double_entry')) }}
 {% endif %}
 

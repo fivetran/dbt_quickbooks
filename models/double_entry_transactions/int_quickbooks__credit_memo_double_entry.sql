@@ -33,6 +33,7 @@ df_accounts as (
 
     select
         account_id as account_id,
+        currency_id,
         source_relation
     from accounts
 
@@ -49,10 +50,12 @@ credit_memo_join as (
         credit_memo_lines.index,
         credit_memos.transaction_date,
         credit_memo_lines.amount,
+        (credit_memo_lines.amount * coalesce(credit_memos.exchange_rate, 1)) as converted_amount,
         coalesce(credit_memo_lines.sales_item_account_id, items.income_account_id, items.expense_account_id) as account_id,
         credit_memos.customer_id,
         coalesce(credit_memo_lines.sales_item_class_id, credit_memo_lines.discount_class_id, credit_memos.class_id) as class_id,
-        credit_memos.department_id
+        credit_memos.department_id,
+        credit_memos.currency_id
 
     from credit_memos
 
@@ -77,6 +80,7 @@ final as (
         customer_id,
         cast(null as {{ dbt.type_string() }}) as vendor_id,
         amount * -1 as amount,
+        converted_amount * -1 as converted_amount,
         account_id,
         class_id,
         department_id,
@@ -94,6 +98,7 @@ final as (
         customer_id,
         cast(null as {{ dbt.type_string() }}) as vendor_id,
         amount * -1 as amount,
+        converted_amount * -1 as converted_amount,
         df_accounts.account_id,
         class_id,
         department_id,
@@ -102,7 +107,8 @@ final as (
     from credit_memo_join
 
     left join df_accounts
-        on df_accounts.source_relation = credit_memo_join.source_relation
+        on df_accounts.currency_id = credit_memo_join.currency_id
+        and df_accounts.source_relation = credit_memo_join.source_relation
 )
 
 select *

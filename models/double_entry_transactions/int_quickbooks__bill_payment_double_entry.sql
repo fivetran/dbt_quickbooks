@@ -27,6 +27,7 @@ ap_accounts as (
 
     select
         account_id,
+        currency_id,
         source_relation
     from accounts
 
@@ -44,6 +45,7 @@ bill_payment_join as (
             order by bill_payments.source_relation, bill_payments.transaction_date) - 1 as index,
         bill_payments.transaction_date,
         bill_payments.total_amount as amount,
+        (bill_payments.total_amount * coalesce(bill_payments.exchange_rate, 1)) as converted_amount,
         coalesce(bill_payments.credit_card_account_id,bill_payments.check_bank_account_id) as payment_account_id,
         ap_accounts.account_id,
         bill_payments.vendor_id,
@@ -51,7 +53,8 @@ bill_payment_join as (
     from bill_payments
 
     left join ap_accounts
-        on ap_accounts.source_relation = bill_payments.source_relation
+        on ap_accounts.currency_id = bill_payments.currency_id
+        and ap_accounts.source_relation = bill_payments.source_relation
 ),
 
 final as (
@@ -64,6 +67,7 @@ final as (
         cast(null as {{ dbt.type_string() }}) as customer_id,
         vendor_id,
         amount,
+        converted_amount,
         payment_account_id as account_id,
         cast(null as {{ dbt.type_string() }}) as class_id,
         department_id,
@@ -81,6 +85,7 @@ final as (
         cast(null as {{ dbt.type_string() }}) as customer_id,
         vendor_id,
         amount,
+        converted_amount,
         account_id,
         cast(null as {{ dbt.type_string() }}) as class_id,
         department_id,

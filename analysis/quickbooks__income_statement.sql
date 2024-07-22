@@ -6,7 +6,8 @@ with general_ledger_by_period as (
 revenue as (
     select 
         account_id, 
-        sum(period_net_change) as ending_balance 
+        sum(period_net_change) as ending_balance,
+        sum(period_net_converted_change) as ending_converted_balance
     from general_ledger_by_period
 
     where account_class = 'Revenue'
@@ -18,7 +19,8 @@ revenue as (
 expense as (
     select 
         account_id, 
-        sum(period_net_change) as ending_balance 
+        sum(period_net_change) as ending_balance,
+        sum(period_net_converted_change) as ending_converted_balance
     from general_ledger_by_period
 
     where account_class = 'Expense'
@@ -30,14 +32,16 @@ expense as (
 revenue_total as (
     select 
         'revenue' as income_statement_type, 
-        sum(ending_balance) 
+        sum(ending_balance) as ending_balance,
+        sum(ending_converted_balance) as ending_converted_balance
     from revenue
 ),
 
 expense_total as (
     select 
-        'expene' as income_statement_type, 
-        sum(ending_balance) 
+        'expense' as income_statement_type, 
+        sum(ending_balance) as ending_balance,
+        sum(ending_converted_balance) as ending_converted_balance
     from expense
 )
 

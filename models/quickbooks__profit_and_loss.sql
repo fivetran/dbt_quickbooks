@@ -22,6 +22,7 @@ final as (
         account_id,
         account_name,
         period_net_change as amount,
+        period_net_converted_change as converted_amount,
         account_ordinal
     from general_ledger_by_period
 )

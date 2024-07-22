@@ -36,7 +36,16 @@ sales_receipt_join as (
         sales_receipts.source_relation,
         sales_receipt_lines.index,
         sales_receipts.transaction_date,
-        sales_receipt_lines.amount,
+        case 
+            when sales_receipt_lines.discount_account_id is not null 
+            then sales_receipt_lines.amount * (-1)
+            else sales_receipt_lines.amount
+        end as amount,
+        case 
+            when sales_receipt_lines.discount_account_id is not null 
+            then (sales_receipt_lines.amount * coalesce(-sales_receipts.exchange_rate, -1))
+            else (sales_receipt_lines.amount * coalesce(sales_receipts.exchange_rate, 1))
+        end as converted_amount,
         sales_receipts.deposit_to_account_id as debit_to_account_id,
         coalesce(sales_receipt_lines.discount_account_id, sales_receipt_lines.sales_item_account_id, items.parent_income_account_id, items.income_account_id) as credit_to_account_id,
         sales_receipts.customer_id,
@@ -65,6 +74,7 @@ final as (
         customer_id,
         cast(null as {{ dbt.type_string() }}) as vendor_id,
         amount,
+        converted_amount,
         debit_to_account_id as account_id,
         class_id,
         department_id,
@@ -82,6 +92,7 @@ final as (
         customer_id,
         cast(null as {{ dbt.type_string() }}) as vendor_id,
         amount,
+        converted_amount,
         credit_to_account_id as account_id,
         class_id,
         department_id,

@@ -42,7 +42,9 @@ final as (
         cast(null as {{ dbt.type_string() }}) as billable_status,
         credit_memo_lines.description,
         credit_memo_lines.amount * -1 as amount,
-        credit_memos.total_amount * -1 as total_amount
+        credit_memo_lines.amount * coalesce(-credit_memos.exchange_rate, -1) as converted_amount,
+        credit_memos.total_amount * -1 as total_amount,
+        credit_memos.total_amount * coalesce(-credit_memos.exchange_rate, -1) as total_converted_amount
     from credit_memos
 
     inner join credit_memo_lines
