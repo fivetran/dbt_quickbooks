@@ -2,7 +2,7 @@
 {{ config(enabled=var('using_deposit', True)) }}
 
 with deposits as (
-     
+
     select *
     from {{ ref('stg_quickbooks__deposit') }}
 ), 
@@ -14,6 +14,7 @@ deposit_lines as (
 ),
 
 final as (
+
     select
         deposits.deposit_id as transaction_id,
         deposits.source_relation,
@@ -29,7 +30,9 @@ final as (
         cast(null as {{ dbt.type_string() }}) as billable_status,
         deposit_lines.description,
         deposit_lines.amount,
-        deposits.total_amount
+        deposit_lines.amount * (coalesce(deposits.home_total_amount/deposits.total_amount, 1)) as converted_amount,
+        deposits.total_amount,
+        deposits.total_amount * (coalesce(deposits.home_total_amount/deposits.total_amount, 1)) as total_converted_amount
     from deposits
     
     inner join deposit_lines 

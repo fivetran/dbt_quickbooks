@@ -20,6 +20,7 @@ transfer_body as (
             order by source_relation, transaction_date) - 1 as index,
         transaction_date,
         amount,
+        amount as converted_amount,
         from_account_id as credit_to_account_id,
         to_account_id as debit_to_account_id
     from transfers
@@ -35,6 +36,7 @@ final as (
         cast(null as {{ dbt.type_string() }}) as customer_id,
         cast(null as {{ dbt.type_string() }}) as vendor_id,
         amount,
+        converted_amount,
         credit_to_account_id as account_id,
         cast(null as {{ dbt.type_string() }}) as class_id,
         cast(null as {{ dbt.type_string() }}) as department_id,
@@ -52,6 +54,7 @@ final as (
         cast(null as {{ dbt.type_string() }}) as customer_id,
         cast(null as {{ dbt.type_string() }}) as vendor_id,
         amount,
+        converted_amount,
         debit_to_account_id as account_id,
         cast(null as {{ dbt.type_string() }}) as class_id,
         cast(null as {{ dbt.type_string() }}) as department_id,

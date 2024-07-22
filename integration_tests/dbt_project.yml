@@ -1,6 +1,6 @@
 name: 'quickbooks_integration_tests'
 
-version: '0.13.1'
+version: '0.14.0'
 
 profile: 'integration_tests'
 config-version: 2
@@ -21,7 +21,7 @@ models:
 
 vars:
   quickbooks_source:
-    quickbooks_schema: quickbooks_integration_tests_07
+    quickbooks_schema: quickbooks_integration_tests_12
     quickbooks_account_identifier: "account_data"
     quickbooks_address_identifier: "address_data"
     quickbooks_bill_line_identifier: "bill_line_data"
@@ -64,8 +64,11 @@ vars:
     quickbooks_vendor_identifier: "vendor_data"
 
 
-  # For validation testing. This exclusion is only needed for validation testing up to the v0.14.0 release. It can be leveraged if needed in future package updates.
-  # account_type_exclusions: ('Discount')
+  # For validation testing.  
+  # This below vars configuration is needed for the `general_ledger_amounts_match` macro.
+  # using_bill: true
+  # using_credit_card_payment_txn: true
+
 
 seeds:
   +quote_columns: "{{ true if target.type == 'redshift' else false }}"

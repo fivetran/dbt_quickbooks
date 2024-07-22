@@ -93,7 +93,9 @@ final as (
         sales_union.billable_status,
         sales_union.description,
         sales_union.amount,
-        sales_union.total_amount
+        sales_union.converted_amount,
+        sales_union.total_amount,
+        sales_union.total_converted_amount
     from sales_union
 
     inner join income_accounts

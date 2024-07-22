@@ -88,7 +88,9 @@ final as (
         expense_union.billable_status,
         expense_union.description,
         expense_union.amount,
-        expense_union.total_amount
+        expense_union.converted_amount,
+        expense_union.total_amount,
+        expense_union.total_converted_amount
 
     from expense_union
 

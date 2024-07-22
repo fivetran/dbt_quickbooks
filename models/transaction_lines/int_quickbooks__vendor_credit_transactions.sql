@@ -39,7 +39,9 @@ final as (
         coalesce(vendor_credit_lines.account_expense_billable_status, vendor_credit_lines.item_expense_billable_status) as billable_status,
         vendor_credit_lines.description,
         vendor_credit_lines.amount * -1 as amount,
-        vendor_credits.total_amount * -1 as total_amount
+        vendor_credit_lines.amount * coalesce(-vendor_credits.exchange_rate, -1) as converted_amount,
+        vendor_credits.total_amount * -1 as total_amount,
+        vendor_credits.total_amount * coalesce(-vendor_credits.exchange_rate, -1) as total_converted_amount
     from vendor_credits
 
     inner join vendor_credit_lines

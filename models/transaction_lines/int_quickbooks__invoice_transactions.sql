@@ -42,7 +42,9 @@ final as (
         cast(null as {{ dbt.type_string() }}) as billable_status,
         invoice_lines.description,
         invoice_lines.amount,
-        invoices.total_amount
+        invoice_lines.amount * coalesce(invoices.exchange_rate, 1) as converted_amount,
+        invoices.total_amount,
+        invoices.total_amount * coalesce(invoices.exchange_rate, 1) as total_converted_amount
     from invoices
 
     inner join invoice_lines
