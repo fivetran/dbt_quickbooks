@@ -30,9 +30,9 @@ final as (
         cast(null as {{ dbt.type_string() }}) as billable_status,
         deposit_lines.description,
         deposit_lines.amount,
-        deposit_lines.amount * (coalesce(deposits.home_total_amount/deposits.total_amount, 1)) as converted_amount,
+        deposit_lines.amount * (coalesce(deposits.home_total_amount/nullif(deposits.total_amount, 0), 1)) as converted_amount,
         deposits.total_amount,
-        deposits.total_amount * (coalesce(deposits.home_total_amount/deposits.total_amount, 1)) as total_converted_amount
+        deposits.total_amount * (coalesce(deposits.home_total_amount/nullif(deposits.total_amount, 0), 1)) as total_converted_amount
     from deposits
     
     inner join deposit_lines 

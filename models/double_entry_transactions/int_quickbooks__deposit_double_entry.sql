@@ -44,7 +44,7 @@ deposit_join as (
         deposit_lines.index,
         deposits.transaction_date,
         deposit_lines.amount,
-        deposit_lines.amount * (coalesce(deposits.home_total_amount/deposits.total_amount, 1)) as converted_amount,
+        deposit_lines.amount * (coalesce(deposits.home_total_amount/nullif(deposits.total_amount, 0), 1)) as converted_amount,
         deposits.account_id as deposit_to_acct_id,
         coalesce(deposit_lines.deposit_account_id, uf_accounts.account_id) as deposit_from_acct_id,
         deposit_customer_id as customer_id,

@@ -1,3 +1,14 @@
+# dbt_quickbooks v0.14.1
+[PR #138](https://github.com/fivetran/dbt_quickbooks/pull/138) introduces the following updates:
+
+## Bug Fixes
+- Added `nullif` logic to account for "divide by zero" errors in `int_quickbooks__deposit_double_entry` and `int_quickbooks__deposit_transactions` for when `total_amount` values from the `deposit` source table 
+are zero.
+
+## Under the Hood
+- Added integrity test within integration tests to compare deposit amounts between `int_quickbooks__deposit_double_entry` and deposit `transaction_type` values in `quickbooks__general_ledger`.
+- Modified seed files in `integration_tests` to reproduce issue and confirm fixes.
+
 # dbt_quickbooks v0.14.0
 New major feature alert! Multicurrency is here!
 
