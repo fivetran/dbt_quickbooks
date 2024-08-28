@@ -16,33 +16,33 @@
 # QuickBooks dbt Package ([Docs](https://fivetran.github.io/dbt_quickbooks/))
 
 ## Table of Contents
-- [ What does this dbt package do?](https://github.com/fivetran/dbt_quickbooks/#-what-does-this-dbt-package-do)
-- [ How do I use the dbt package?](https://github.com/fivetran/dbt_quickbooks_source/#-how-do-i-use-the-dbt-package)
+- [What does this dbt package do?](https://github.com/fivetran/dbt_quickbooks/#-what-does-this-dbt-package-do)
+- [How do I use the dbt package?](https://github.com/fivetran/dbt_quickbooks_source/#-how-do-i-use-the-dbt-package)
     - [Required steps](https://github.com/fivetran/dbt_quickbooks/#step-1-prerequisites)
     - [Additional options](https://github.com/fivetran/dbt_quickbooks/#optional-step-5-additional-configurations)
-- [ Does this package have dependencies?](https://github.com/fivetran/dbt_quickbooks/#-does-this-package-have-dependencies)
-- [ How is this package maintained and can I contribute?](https://github.com/fivetran/dbt_quickbooks/#-how-is-this-package-maintained-and-can-i-contribute)
+  - [Does this package have dependencies?](https://github.com/fivetran/dbt_quickbooks/#-does-this-package-have-dependencies)
+  - [How is this package maintained and can I contribute?](https://github.com/fivetran/dbt_quickbooks/#-how-is-this-package-maintained-and-can-i-contribute)
 - [Package Maintenance](https://github.com/fivetran/dbt_quickbooks/#package-maintenance)
 - [Contributions](https://github.com/fivetran/dbt_quickbooks/#contributions)
-- [ Are there any resources available?](https://github.com/fivetran/dbt_quickbooks/#-are-there-any-resources-available)
+- [Are there any resources available?](https://github.com/fivetran/dbt_quickbooks/#-are-there-any-resources-available)
 
 ## What does this dbt package do?
 - Produces modeled tables that leverage QuickBooks data from [Fivetran's connector](https://fivetran.com/docs/applications/quickbooks) in the format described by [this ERD](https://fivetran.com/docs/applications/quickbooks#schemainformation) and builds off the output of our [QuickBooks source package](https://github.com/fivetran/dbt_quickbooks_source).
 
 - Enables users with insights into their QuickBooks data that can be used for financial statement reporting and deeper analysis. The package achieves this by:
-- Creating a comprehensive general ledger that can be used to create financial statements with additional flexibility.
-- Providing historical general ledger month beginning balances, ending balances, and net change for each account.
-- Enhancing Accounts Payable and Accounts Receivables data by providing past and present aging of bills and invoices.
-- Pairing all expense and sales transactions in one table with accompanying data to provide enhanced analysis.
-- Producing end financial statement models like balance sheet, profit and loss, and cash flow for optimized financial reporting.
+  - Creating a comprehensive general ledger that can be used to create financial statements with additional flexibility.
+  - Providing historical general ledger month beginning balances, ending balances, and net change for each account.
+  - Enhancing Accounts Payable and Accounts Receivables data by providing past and present aging of bills and invoices.
+  - Pairing all expense and sales transactions in one table with accompanying data to provide enhanced analysis.
+  - Producing end financial statement models like balance sheet, profit and loss, and cash flow for optimized financial reporting.
 - Generates a comprehensive data dictionary of your source and modeled QuickBooks data through the [dbt docs site](https://fivetran.github.io/dbt_quickbooks/).
 
 <!--section="quickbooks_transformation_model"-->
-The following table provides a detailed list of all models materialized within this package by default. A dependency on the source package is declared in this package's `packages.yml` file, so it will automatically download when you run `dbt deps`. The primary outputs of this package are described below. Intermediate models are used to create these output models.
+The following table provides a detailed list of all tables materialized within this package by default. The primary outputs of this package are described below. Intermediate tables are used to create these output models.
 
-> TIP: See more details about these models in the package's [dbt docs site](https://fivetran.github.io/dbt_quickbooks/#!/overview?g_v=1&g_e=seeds).
+> TIP: See more details about these tables in the package's [dbt docs site](https://fivetran.github.io/dbt_quickbooks/#!/overview?g_v=1&g_e=seeds).
 
-| **Model**                | **Description**                                                                                                                                |
+| **Table**                | **Description**                                                                                                                                |
 | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- |
 | [quickbooks__general_ledger](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.quickbooks__general_ledger) | Table containing a comprehensive list of all transactions with offsetting debit and credit entries to accounts. |
 | [quickbooks__general_ledger_by_period](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.quickbooks__general_ledger_by_period) | Table containing the beginning balance, ending balance, and net change of the dollar amount for each month since the first transaction. This table can be used to generate a balance sheet and income statement for your business. |
