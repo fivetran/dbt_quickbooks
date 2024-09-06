@@ -38,7 +38,7 @@
 - Generates a comprehensive data dictionary of your source and modeled QuickBooks data through the [dbt docs site](https://fivetran.github.io/dbt_quickbooks/).
 
 <!--section="quickbooks_transformation_model"-->
-The following table provides a detailed list of all tables materialized within this package by default. The primary outputs of this package are described below. Intermediate tables are used to create these output models.
+The following table provides a detailed list of all tables materialized within this package by default. The primary outputs of this package are described below. Intermediate tables are used to create these outputs.
 
 > TIP: See more details about these tables in the package's [dbt docs site](https://fivetran.github.io/dbt_quickbooks/#!/overview?g_v=1&g_e=seeds).
 
@@ -165,7 +165,7 @@ These are our recommended best practices to follow with your seed file (you can 
 - In `cash_flow_statement_type_ordinal_example`, we recommend creating ordinals for each `cash_flow_type` value available (the default types are `Cash or Cash Equivalents`, `Operating`, `Investing`, `Financing` as per best financial practices, but you can configure as you like in your seed file) to make sure each cash flow statement type can be easily ordered. Then you can create any additional customization as needed with the more specific account fields to order even further.   
 - In `cash_flow_statement_type_ordinal_example`, the `report` field should always be `Cash Flow`.  
 
-We'd love for you to share your experiences with the cash flow seed file with us [in the Fivetran community user group](https://community.fivetran.com/t5/user-group-for-dbt/gh-p/dbt-user-group) so we can make these model and seed configurations even better for you in the future! 
+We'd love for you to share your experiences with the cash flow seed file with us [in the Fivetran community user group](https://community.fivetran.com/t5/user-group-for-dbt/gh-p/dbt-user-group) so we can make these model and seed configurations even better for you in the future!.
 
 ### Customize the account ordering of your financial models. 
 [The current default numbering for ordinals](https://github.com/fivetran/dbt_quickbooks/blob/main/models/quickbooks__general_ledger_by_period.sql#L44-L50) is based on best practices for balance sheets and profit-and-loss statements in accounting. You can see these ordinals in action in the `quickbooks__general_ledger_by_period`, `quickbooks__balance_sheet` and `quickbooks__profit_and_loss` models. The ordinals are assigned off of the `account_class` values.
