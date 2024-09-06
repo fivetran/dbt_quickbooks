@@ -60,3 +60,13 @@ destination_configurations:
     dispatch:
       - macro_namespace: dbt_utils
         search_order: [ 'spark_utils', 'dbt_utils' ]
+
+public_models: [
+  "quickbooks__balance_sheet",
+  "quickbooks__general_ledger_by_period",
+  "quickbooks__general_ledger",
+  "quickbooks__profit_and_loss",
+  "quickbooks__expenses_sales_enhanced",
+  "quickbooks__ap_ar_enhanced",
+  "quickbooks__cash_flow_statement"
+]
