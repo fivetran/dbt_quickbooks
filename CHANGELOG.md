@@ -1,8 +1,9 @@
 # dbt_quickbooks v0.15.0
-[PR #TBD](https://github.com/fivetran/dbt_quickbooks/pull/TBD) introduces the following updates:
+[PR #142](https://github.com/fivetran/dbt_quickbooks/pull/142) introduces the following updates:
 
 ## Bug Fixes
 - Updates the `int_quickbooks__sales_receipt_double_entry` model to prioritize the `invoice_lines.sales_item_account_id` as the second viable option in the `account_id` coalesce statements. This field was previously prioritized last. However, recent observations have made it apparent that when prioritized last, invoice transactions could be attributed to the wrong accounts.
+  - While not a traditional breaking change, we made this a minor upgrade to account for scenarios where the end model results will likely change due to invoices being attributed to the correct accounts.
 
 # dbt_quickbooks v0.14.1
 [PR #138](https://github.com/fivetran/dbt_quickbooks/pull/138) introduces the following updates:
