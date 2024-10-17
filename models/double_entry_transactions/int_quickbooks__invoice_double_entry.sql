@@ -112,21 +112,21 @@ invoice_join as (
             else (invoice_lines.amount * coalesce(invoices.exchange_rate, 1))
         end as converted_amount,
         case when invoice_lines.detail_type is not null then invoice_lines.detail_type
-            when coalesce(invoice_lines.account_id, items.parent_income_account_id, items.income_account_id, bundle_income_accounts.account_id, invoice_lines.sales_item_account_id) is not null then 'SalesItemLineDetail'
+            when coalesce(invoice_lines.account_id, invoice_lines.sales_item_account_id, items.parent_income_account_id, items.income_account_id, bundle_income_accounts.account_id) is not null then 'SalesItemLineDetail'
             when invoice_lines.discount_account_id is not null then 'DiscountLineDetail'
-            when coalesce(invoice_lines.account_id, items.parent_income_account_id, items.income_account_id, bundle_income_accounts.account_id, invoice_lines.discount_account_id, invoice_lines.sales_item_account_id) is null then 'NoAccountMapping'
+            when coalesce(invoice_lines.account_id, invoice_lines.sales_item_account_id, items.parent_income_account_id, items.income_account_id, bundle_income_accounts.account_id, invoice_lines.discount_account_id) is null then 'NoAccountMapping'
         end as invoice_line_transaction_type,
-        coalesce(invoice_lines.account_id, items.parent_income_account_id, items.income_account_id, bundle_income_accounts.account_id, invoice_lines.discount_account_id, invoice_lines.sales_item_account_id) as account_id,
+        coalesce(invoice_lines.account_id, invoice_lines.sales_item_account_id, items.parent_income_account_id, items.income_account_id, bundle_income_accounts.account_id, invoice_lines.discount_account_id) as account_id,
 
         {% else %}
         invoice_lines.amount as amount,
         (invoice_lines.amount * coalesce(invoices.exchange_rate, 1)) as converted_amount,
         case when invoice_lines.detail_type is not null then invoice_lines.detail_type
-            when coalesce(invoice_lines.account_id, items.parent_income_account_id, items.income_account_id, invoice_lines.sales_item_account_id) is not null then 'SalesItemLineDetail'
+            when coalesce(invoice_lines.account_id, invoice_lines.sales_item_account_id, items.parent_income_account_id, items.income_account_id) is not null then 'SalesItemLineDetail'
             when invoice_lines.discount_account_id is not null then 'DiscountLineDetail'
-            when coalesce(invoice_lines.account_id, items.parent_income_account_id, items.income_account_id, invoice_lines.discount_account_id, invoice_lines.sales_item_account_id) is null then 'NoAccountMapping'
+            when coalesce(invoice_lines.account_id, invoice_lines.sales_item_account_id, items.parent_income_account_id, items.income_account_id, invoice_lines.discount_account_id) is null then 'NoAccountMapping'
         end as invoice_line_transaction_type,
-        coalesce(invoice_lines.account_id, items.income_account_id, invoice_lines.discount_account_id, invoice_lines.sales_item_account_id) as account_id,
+        coalesce(invoice_lines.account_id, invoice_lines.sales_item_account_id, items.income_account_id, invoice_lines.discount_account_id) as account_id,
         {% endif %}
 
         coalesce(invoice_lines.sales_item_class_id, invoice_lines.discount_class_id, invoices.class_id) as class_id,
