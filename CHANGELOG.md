@@ -1,3 +1,21 @@
+# dbt_quickbooks v0.16.0
+[PR #143](https://github.com/fivetran/dbt_quickbooks/pull/143) introduces the following updates:
+
+## Upstream Source Package Updates
+- Deleted records have been previously been brought into the `dbt_quickbooks` package. To ensure accuracy in reporting, the following updates were made in the [v0.11.0 release](https://github.com/fivetran/dbt_quickbooks_source/releases/tag/v0.11.0) of `dbt_quickbooks_source`:
+- We introduced the `_fivetran_deleted` field to filter out deleted records from the following staging models:
+  - `stg_quickbooks__account`
+  - `stg_quickbooks__bundle`
+  - `stg_quickbooks__customer`
+  - `stg_quickbooks__department`
+  - `stg_quickbooks__item`
+  - `stg_quickbooks__vendor`
+- As this will filter out deleted records that were previously being counted and we are adding a new field to these staging models, this will be a breaking change here and in `dbt_quickbooks`. 
+- Because deleted records are now being removed from these staging tables that then flow into `dbt_quickbooks` reports, these are **breaking changes** for this package. 
+
+## Documentation update
+- Added the `_fivetran_deleted` field to the above corresponding seed files in integration tests.
+
 # dbt_quickbooks v0.15.0
 [PR #142](https://github.com/fivetran/dbt_quickbooks/pull/142) introduces the following updates:
 
