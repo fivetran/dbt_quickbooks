@@ -10,7 +10,7 @@
   - `stg_quickbooks__department`
   - `stg_quickbooks__item`
   - `stg_quickbooks__vendor`
-- As these updates will impact all downstream models in `dbt_quickbooks`, will filter out deleted records that were previously being counted, and we are adding a new field to these staging models, this will be a **breaking change** here and in `dbt_quickbooks`.
+- Since filtering out deleted records that were previously being counted impact all output models, this is being treated as a breaking change.
 
 ## Documentation update
 - Added the `_fivetran_deleted` field to the above corresponding seed files in integration tests.
