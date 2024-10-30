@@ -10,11 +10,13 @@
   - `stg_quickbooks__department`
   - `stg_quickbooks__item`
   - `stg_quickbooks__vendor`
-- As this will filter out deleted records that were previously being counted and we are adding a new field to these staging models, this will be a breaking change here and in `dbt_quickbooks`. 
-- Because deleted records are now being removed from these staging tables that then flow into `dbt_quickbooks` reports, these are **breaking changes** for this package. 
+- As these updates will impact all downstream models in `dbt_quickbooks`, will filter out deleted records that were previously being counted, and we are adding a new field to these staging models, this will be a **breaking change** here and in `dbt_quickbooks`.
 
 ## Documentation update
 - Added the `_fivetran_deleted` field to the above corresponding seed files in integration tests.
+
+## Under The Hood
+- Updated the `consistency_*_amounts` tests to include the `converted_amount` comparisons. They were previously commented out due to introducing multicurrency support in a previous release that would have led to test failures, but can now be brought in to properly validate these changes.
 
 # dbt_quickbooks v0.15.0
 [PR #142](https://github.com/fivetran/dbt_quickbooks/pull/142) introduces the following updates:
