@@ -73,7 +73,7 @@ Include the following QuickBooks package version in your `packages.yml` file.
 ```yaml
 packages:
   - package: fivetran/quickbooks
-    version: [">=0.15.0", "<0.16.0"] # we recommend using ranges to capture non-breaking changes automatically
+    version: [">=0.16.0", "<0.17.0"] # we recommend using ranges to capture non-breaking changes automatically
 ```
 
 Do NOT include the `quickbooks_source` package in this file. The transformation package itself has a dependency on it and will install the source package as well.
@@ -163,9 +163,7 @@ These are our recommended best practices to follow with your seed file (you can 
 - REQUIRED: Every row should have a non-null `ordinal` and `cash_flow_type` column value. 
 - REQUIRED: In each row of the seed file, only populate **ONE** of the `account_class`, `account_type`, `account_sub_type`, and `account_number` columns to avoid duplicated ordinals and cash flow types and test failures. This should also make the logic cleaner in defining which account value takes precedence in the ordering hierarchy. 
 - In `cash_flow_statement_type_ordinal_example`, we recommend creating ordinals for each `cash_flow_type` value available (the default types are `Cash or Cash Equivalents`, `Operating`, `Investing`, `Financing` as per best financial practices, but you can configure as you like in your seed file) to make sure each cash flow statement type can be easily ordered. Then you can create any additional customization as needed with the more specific account fields to order even further.   
-- In `cash_flow_statement_type_ordinal_example`, the `report` field should always be `Cash Flow`.  
-
-We'd love for you to share your experiences with the cash flow seed file with us [in the Fivetran community user group](https://community.fivetran.com/t5/user-group-for-dbt/gh-p/dbt-user-group) so we can make these model and seed configurations even better for you in the future!.
+- In `cash_flow_statement_type_ordinal_example`, the `report` field should always be `Cash Flow`.
 
 ### Customize the account ordering of your financial models. 
 [The current default numbering for ordinals](https://github.com/fivetran/dbt_quickbooks/blob/main/models/quickbooks__general_ledger_by_period.sql#L44-L50) is based on best practices for balance sheets and profit-and-loss statements in accounting. You can see these ordinals in action in the `quickbooks__general_ledger_by_period`, `quickbooks__balance_sheet` and `quickbooks__profit_and_loss` models. The ordinals are assigned off of the `account_class` values.
@@ -188,8 +186,6 @@ These are our recommended best practices to follow with your seed file ([you can
 - We recommend creating ordinals for each `account_class` value available (usually 'Asset', 'Liability', 'Equity' for the Profit and Loss sheet, and 'Revenue' and 'Expense' for the Balance Sheet) to make sure each financial reporting line has an ordinal assigned to it. Then you can create any additional customization as needed with the more specific account fields to order even further.
 - Fill out the `report` field as either `Balance Sheet` if the particular row belongs in `quickbooks__balance_sheet`, or `Profit and Loss` for `quickbooks__profit_and_loss`.
 - We recommend ordering the `ordinal` for each report separately in the seed, i.e. have ordinals for `quickbooks__balance_sheet` and `quickbooks__profit_and_loss` start at 1 each, to make your reporting more clean.
-
-We'd love for you to share your experiences with the ordinal seed file with us [in the Fivetran community user group](https://community.fivetran.com/t5/user-group-for-dbt/gh-p/dbt-user-group) so we can make these model and seed configurations even better for you in the future.
 
 #### Changing the Build Schema
 By default this package will build the QuickBooks staging models within a schema titled (<target_schema> + `_quickbooks_staging`), QuickBooks intermediate (particularly the double entry) models within a schema titled (<target_schema> + `_quickbooks_intermediate`), and QuickBooks final models within a schema titled (<target_schema> + `_quickbooks`) in your target database. If this is not where you would like your modeled QuickBooks data to be written to, add the following configuration to your `dbt_project.yml` file:
@@ -230,7 +226,7 @@ This dbt package is dependent on the following dbt packages. These dependencies 
 ```yml
 packages:
     - package: fivetran/quickbooks_source
-      version: [">=0.10.0", "<0.11.0"]
+      version: [">=0.11.0", "<0.12.0"]
 
     - package: fivetran/fivetran_utils
       version: [">=0.4.0", "<0.5.0"]
