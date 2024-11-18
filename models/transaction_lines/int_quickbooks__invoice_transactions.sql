@@ -41,6 +41,8 @@ final as (
         cast(null as {{ dbt.type_string() }}) as vendor_id,
         cast(null as {{ dbt.type_string() }}) as billable_status,
         invoice_lines.description,
+        invoices.created_at,
+        invoices.updated_at,
         invoice_lines.amount,
         invoice_lines.amount * coalesce(invoices.exchange_rate, 1) as converted_amount,
         invoices.total_amount,

@@ -38,6 +38,8 @@ final as (
         cast(null as {{ dbt.type_string() }}) as vendor_id,
         cast(null as {{ dbt.type_string() }}) as billable_status,
         sales_receipt_lines.description,
+        sales_receipts.created_at,
+        sales_receipts.updated_at,
         sales_receipt_lines.amount,
         sales_receipt_lines.amount * (coalesce(sales_receipts.exchange_rate, 1)) as converted_amount,
         sales_receipts.total_amount,

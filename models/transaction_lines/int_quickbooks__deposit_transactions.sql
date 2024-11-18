@@ -29,6 +29,8 @@ final as (
         cast(null as {{ dbt.type_string() }}) as vendor_id,
         cast(null as {{ dbt.type_string() }}) as billable_status,
         deposit_lines.description,
+        deposits.created_at,
+        deposits.updated_at,
         deposit_lines.amount,
         deposit_lines.amount * (coalesce(deposits.home_total_amount/nullif(deposits.total_amount, 0), 1)) as converted_amount,
         deposits.total_amount,

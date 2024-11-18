@@ -17,7 +17,9 @@ gl_union as (
         class_id,
         department_id,
         transaction_type,
-        transaction_source 
+        transaction_source,
+        created_at,
+        updated_at
     from unioned_models
 ),
 
@@ -57,6 +59,8 @@ adjusted_gl as (
         gl_union.transaction_type,
         gl_union.transaction_source,
         accounts.transaction_type as account_transaction_type,
+        gl_union.created_at,
+        gl_union.updated_at,
         case when accounts.transaction_type = gl_union.transaction_type
             then gl_union.amount
             else gl_union.amount * -1

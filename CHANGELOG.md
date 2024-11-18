@@ -1,3 +1,5 @@
+# dbt_quickbooks v0.17.0
+
 # dbt_quickbooks v0.16.0
 [PR #143](https://github.com/fivetran/dbt_quickbooks/pull/143) introduces the following updates:
 

@@ -35,6 +35,8 @@ final as (
         bills.vendor_id,
         coalesce(bill_lines.account_expense_billable_status, bill_lines.item_expense_billable_status) as billable_status,
         coalesce(bill_lines.description, items.name) as description,
+        bills.created_at,
+        bills.updated_at,
         bill_lines.amount,
         bill_lines.amount * (coalesce(bills.exchange_rate, 1)) as converted_amount,
         bills.total_amount,
