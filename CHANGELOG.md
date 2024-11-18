@@ -1,5 +1,4 @@
 # dbt_quickbooks v0.17.0
-[PR #147](https://github.com/fivetran/dbt_quickbooks/pull/147) introduces the following updates:
 
 ## Bug Fix
 - Updated the logic in `int_quickbooks__retained_earnings` to ensure accounting periods with no revenue and expense class lines were accounted for. 
