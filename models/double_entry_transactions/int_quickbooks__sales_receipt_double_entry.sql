@@ -50,7 +50,9 @@ sales_receipt_join as (
         coalesce(sales_receipt_lines.discount_account_id, sales_receipt_lines.sales_item_account_id, items.parent_income_account_id, items.income_account_id) as credit_to_account_id,
         sales_receipts.customer_id,
         coalesce(sales_receipt_lines.sales_item_class_id, sales_receipt_lines.discount_class_id, sales_receipts.class_id) as class_id,
-        sales_receipts.department_id
+        sales_receipts.department_id,
+        sales_receipts.created_at,
+        sales_receipts.updated_at
     from sales_receipts
 
     inner join sales_receipt_lines
@@ -78,6 +80,8 @@ final as (
         debit_to_account_id as account_id,
         class_id,
         department_id,
+        created_at,
+        updated_at,
         'debit' as transaction_type,
         'sales_receipt' as transaction_source
     from sales_receipt_join
@@ -96,6 +100,8 @@ final as (
         credit_to_account_id as account_id,
         class_id,
         department_id,
+        created_at,
+        updated_at,
         'credit' as transaction_type,
         'sales_receipt' as transaction_source
     from sales_receipt_join

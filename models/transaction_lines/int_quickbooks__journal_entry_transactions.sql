@@ -29,8 +29,6 @@ final as (
         journal_entry_lines.vendor_id,
         cast(billable_status as {{ dbt.type_string() }}) as billable_status,
         journal_entry_lines.description,
-        journal_entries.created_at,
-        journal_entries.updated_at,
         case when lower(journal_entry_lines.posting_type) = 'credit'
             then journal_entry_lines.amount * -1 
             else journal_entry_lines.amount 

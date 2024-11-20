@@ -38,8 +38,6 @@ final as (
         vendor_credits.vendor_id,
         coalesce(vendor_credit_lines.account_expense_billable_status, vendor_credit_lines.item_expense_billable_status) as billable_status,
         vendor_credit_lines.description,
-        vendor_credits.created_at,
-        vendor_credits.updated_at,
         vendor_credit_lines.amount * -1 as amount,
         vendor_credit_lines.amount * coalesce(-vendor_credits.exchange_rate, -1) as converted_amount,
         vendor_credits.total_amount * -1 as total_amount,

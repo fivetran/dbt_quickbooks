@@ -43,7 +43,9 @@ vendor_credit_join as (
         coalesce(account_expense_customer_id, item_expense_customer_id) as customer_id,
         coalesce(item_expense_class_id, account_expense_class_id) as class_id,
         vendor_credits.vendor_id,
-        vendor_credits.department_id
+        vendor_credits.department_id,
+        vendor_credits.created_at,
+        vendor_credits.updated_at
     from vendor_credits
 
     inner join vendor_credit_lines
@@ -68,6 +70,8 @@ final as (
         credit_account_id as account_id,
         class_id,
         department_id,
+        created_at,
+        updated_at,
         'credit' as transaction_type,
         'vendor_credit' as transaction_source
     from vendor_credit_join
@@ -86,6 +90,8 @@ final as (
         debit_to_account_id as account_id,
         class_id,
         department_id,
+        created_at,
+        updated_at,
         'debit' as transaction_type,
         'vendor_credit' as transaction_source
     from vendor_credit_join

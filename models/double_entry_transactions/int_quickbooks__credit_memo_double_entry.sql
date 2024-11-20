@@ -55,7 +55,9 @@ credit_memo_join as (
         credit_memos.customer_id,
         coalesce(credit_memo_lines.sales_item_class_id, credit_memo_lines.discount_class_id, credit_memos.class_id) as class_id,
         credit_memos.department_id,
-        credit_memos.currency_id
+        credit_memos.currency_id,
+        credit_memos.created_at,
+        credit_memos.updated_at
 
     from credit_memos
 
@@ -84,6 +86,8 @@ final as (
         account_id,
         class_id,
         department_id,
+        created_at,
+        updated_at,
         'credit' as transaction_type,
         'credit_memo' as transaction_source
     from credit_memo_join
@@ -102,6 +106,8 @@ final as (
         df_accounts.account_id,
         class_id,
         department_id,
+        created_at,
+        updated_at,
         'debit' as transaction_type,
         'credit_memo' as transaction_source
     from credit_memo_join

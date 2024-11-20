@@ -27,7 +27,9 @@ credit_card_payment_prep as (
         cast(null as {{ dbt.type_string() }}) as customer_id,
         cast(null as {{ dbt.type_string() }}) as vendor_id,
         cast(null as {{ dbt.type_string() }}) as class_id,
-        cast(null as {{ dbt.type_string() }}) as department_id
+        cast(null as {{ dbt.type_string() }}) as department_id,
+        created_at,
+        updated_at
     from credit_card_payments
 ),
 
