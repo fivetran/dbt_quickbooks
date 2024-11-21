@@ -1,12 +1,12 @@
 # dbt_quickbooks v0.17.0
 [PR #146](https://github.com/fivetran/dbt_quickbooks/pull/146) introduces the following updates:
 
-## Feature Updates
+## Breaking Changes
 - We have introduced the following fields in the `quickbooks__general_ledger` to better analyze real-time transaction data:
   - `created_at`: The time a transaction was first created.
   - `updated_at`: The time a transaction was last updated.
-  - This required updates to all our double entry transaction models to bring in these specific fields for each transaction type. 
-- This isn't necessarily a breaking change, but as this introduces new fields to an end model, we determined it was best to bump the version up.
+  - This required updates to all our double entry transaction models to bring in these specific fields for each transaction type.
+- This is a breaking change as this adds new fields to the existing schema for one of our end models. 
 
 # dbt_quickbooks v0.16.0
 [PR #143](https://github.com/fivetran/dbt_quickbooks/pull/143) introduces the following updates:

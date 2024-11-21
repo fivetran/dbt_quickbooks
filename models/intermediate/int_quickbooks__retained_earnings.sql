@@ -40,7 +40,6 @@ net_income_loss as (
     join expense_starter 
         using (period_first_day, source_relation)
 ),
-
 retained_earnings_starter as (
 
     select
