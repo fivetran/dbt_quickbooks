@@ -1,3 +1,9 @@
+# dbt_quickbooks v0.17.0-a1
+
+## Bug Fix
+- Updated the logic in `int_quickbooks__retained_earnings` to ensure accounting periods with no revenue and expense class lines were accounted for. 
+  - This will ensure the net income adjustment is available regardless of existing revenue or expenses.
+
 # dbt_quickbooks v0.16.0
 [PR #143](https://github.com/fivetran/dbt_quickbooks/pull/143) introduces the following updates:
 
