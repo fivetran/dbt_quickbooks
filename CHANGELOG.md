@@ -1,8 +1,12 @@
-# dbt_quickbooks v0.17.0-a1
+# dbt_quickbooks v0.17.0
+[PR #146](https://github.com/fivetran/dbt_quickbooks/pull/146) introduces the following updates:
 
-## Bug Fix
-- Updated the logic in `int_quickbooks__retained_earnings` to ensure accounting periods with no revenue and expense class lines were accounted for. 
-  - This will ensure the net income adjustment is available regardless of existing revenue or expenses.
+## Breaking Changes
+- Introduced the following fields in the `quickbooks__general_ledger` model to better analyze real-time transaction data::
+  - `created_at`: The time a transaction was first created.
+  - `updated_at`: The time a transaction was last updated.
+  - Updated the `*_double_entry` models to add these fields for each transaction type.
+- This is a breaking change as this adds new fields to the existing schema. 
 
 # dbt_quickbooks v0.16.0
 [PR #143](https://github.com/fivetran/dbt_quickbooks/pull/143) introduces the following updates:

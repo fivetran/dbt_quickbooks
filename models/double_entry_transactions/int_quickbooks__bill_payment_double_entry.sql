@@ -49,7 +49,9 @@ bill_payment_join as (
         coalesce(bill_payments.credit_card_account_id,bill_payments.check_bank_account_id) as payment_account_id,
         ap_accounts.account_id,
         bill_payments.vendor_id,
-        bill_payments.department_id
+        bill_payments.department_id,
+        bill_payments.created_at,
+        bill_payments.updated_at
     from bill_payments
 
     left join ap_accounts
@@ -71,6 +73,8 @@ final as (
         payment_account_id as account_id,
         cast(null as {{ dbt.type_string() }}) as class_id,
         department_id,
+        created_at,
+        updated_at,
         'credit' as transaction_type,
         'bill payment' as transaction_source
     from bill_payment_join
@@ -89,6 +93,8 @@ final as (
         account_id,
         cast(null as {{ dbt.type_string() }}) as class_id,
         department_id,
+        created_at,
+        updated_at,
         'debit' as transaction_type,
         'bill payment' as transaction_source
     from bill_payment_join

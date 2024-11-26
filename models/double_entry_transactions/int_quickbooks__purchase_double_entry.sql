@@ -41,7 +41,9 @@ purchase_join as (
         purchases.customer_id,
         coalesce(purchase_lines.item_expense_class_id, purchase_lines.account_expense_class_id) as class_id,
         purchases.vendor_id,
-        purchases.department_id
+        purchases.department_id,
+        purchases.created_at,
+        purchases.updated_at
     from purchases
 
     inner join purchase_lines
@@ -67,6 +69,8 @@ final as (
         payed_from_account_id as account_id,
         class_id,
         department_id,
+        created_at,
+        updated_at,
         payed_from_transaction_type as transaction_type,
         'purchase' as transaction_source
     from purchase_join
@@ -85,6 +89,8 @@ final as (
         payed_to_account_id as account_id,
         class_id,
         department_id,
+        created_at,
+        updated_at,
         payed_to_transaction_type as transaction_type,
         'purchase' as transaction_source
     from purchase_join

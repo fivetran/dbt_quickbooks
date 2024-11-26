@@ -42,7 +42,9 @@ refund_receipt_join as (
         coalesce(refund_receipt_lines.discount_account_id, refund_receipt_lines.sales_item_account_id, items.parent_income_account_id, items.income_account_id) as debit_account_id,
         refund_receipts.customer_id,
         coalesce(refund_receipt_lines.sales_item_class_id, refund_receipt_lines.discount_class_id, refund_receipts.class_id) as class_id,
-        refund_receipts.department_id
+        refund_receipts.department_id,
+        refund_receipts.created_at,
+        refund_receipts.updated_at
     from refund_receipts
 
     inner join refund_receipt_lines
@@ -70,6 +72,8 @@ final as (
         credit_to_account_id as account_id,
         class_id,
         department_id,
+        created_at,
+        updated_at,
         'credit' as transaction_type,
         'refund_receipt' as transaction_source
     from refund_receipt_join
@@ -88,6 +92,8 @@ final as (
         debit_account_id as account_id,
         class_id,
         department_id,
+        created_at,
+        updated_at,
         'debit' as transaction_type,
         'refund_receipt' as transaction_source
     from refund_receipt_join

@@ -43,7 +43,9 @@ bill_join as (
         coalesce(bill_lines.account_expense_customer_id, bill_lines.item_expense_customer_id) as customer_id,
         coalesce(bill_lines.item_expense_class_id, bill_lines.account_expense_class_id) as class_id,
         bills.vendor_id,
-        bills.department_id
+        bills.department_id,
+        bills.created_at,
+        bills.updated_at
     from bills
 
     inner join bill_lines
@@ -68,6 +70,8 @@ final as (
         payed_to_account_id as account_id,
         class_id,
         department_id,
+        created_at,
+        updated_at,
         'debit' as transaction_type,
         'bill' as transaction_source
     from bill_join
@@ -86,6 +90,8 @@ final as (
         payable_account_id as account_id,
         class_id,
         department_id,
+        created_at,
+        updated_at,
         'credit' as transaction_type,
         'bill' as transaction_source
     from bill_join

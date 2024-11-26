@@ -22,7 +22,9 @@ transfer_body as (
         amount,
         amount as converted_amount,
         from_account_id as credit_to_account_id,
-        to_account_id as debit_to_account_id
+        to_account_id as debit_to_account_id,
+        created_at,
+        updated_at
     from transfers
 ),
 
@@ -40,6 +42,8 @@ final as (
         credit_to_account_id as account_id,
         cast(null as {{ dbt.type_string() }}) as class_id,
         cast(null as {{ dbt.type_string() }}) as department_id,
+        created_at,
+        updated_at,
         'credit' as transaction_type,
         'transfer' as transaction_source
     from transfer_body
@@ -58,6 +62,8 @@ final as (
         debit_to_account_id as account_id,
         cast(null as {{ dbt.type_string() }}) as class_id,
         cast(null as {{ dbt.type_string() }}) as department_id,
+        created_at,
+        updated_at,
         'debit' as transaction_type,
         'transfer' as transaction_source
     from transfer_body

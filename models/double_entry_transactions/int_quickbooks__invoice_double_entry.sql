@@ -132,7 +132,9 @@ invoice_join as (
         coalesce(invoice_lines.sales_item_class_id, invoice_lines.discount_class_id, invoices.class_id) as class_id,
 
         invoices.customer_id,
-        invoices.department_id
+        invoices.department_id,
+        invoices.created_at,
+        invoices.updated_at
 
     from invoices
 

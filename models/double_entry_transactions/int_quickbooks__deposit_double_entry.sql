@@ -49,7 +49,9 @@ deposit_join as (
         coalesce(deposit_lines.deposit_account_id, uf_accounts.account_id) as deposit_from_acct_id,
         deposit_customer_id as customer_id,
         deposit_lines.deposit_class_id as class_id,
-        deposits.department_id
+        deposits.department_id,
+        deposits.created_at,
+        deposits.updated_at
 
     from deposits
 
@@ -76,6 +78,8 @@ final as (
         deposit_to_acct_id as account_id,
         class_id,
         department_id,
+        created_at,
+        updated_at,
         'debit' as transaction_type,
         'deposit' as transaction_source
     from deposit_join
@@ -94,6 +98,8 @@ final as (
         deposit_from_acct_id as account_id,
         class_id,
         department_id,
+        created_at,
+        updated_at,
         'credit' as transaction_type,
         'deposit' as transaction_source
     from deposit_join

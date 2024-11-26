@@ -356,6 +356,10 @@ models:
         description: Identifier of whether the transaction is a debit or credit entry.
       - name: transaction_source
         description: Field signifying the source of transaction (eg. Bill, Invoice, Deposit, Journal Entry, etc.).
+      - name: created_at
+        description: Time at which the transaction was created.
+      - name: updated_at
+        description: Time at which the transaction was last updated.
       - name: account_transaction_type
         description: Identifier of whether the account is increased by either a debit or credit entry.
       - name: adjusted_amount

@@ -31,6 +31,8 @@ final as (
         journal_entry_lines.account_id,
         class_id,
         journal_entry_lines.department_id,
+        journal_entries.created_at,
+        journal_entries.updated_at,
         lower(journal_entry_lines.posting_type) as transaction_type,
         'journal_entry' as transaction_source
     from journal_entries
