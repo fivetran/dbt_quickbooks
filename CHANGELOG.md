@@ -1,3 +1,8 @@
+# dbt_quickbooks v0.RELEASE.RELEASE
+
+## Under the Hood
+- Updated `catalog.json` and `manifest.json` to resolve undefined [docs errors](https://fivetran.github.io/dbt_quickbooks/#!/overview).
+
 # dbt_quickbooks v0.17.0
 [PR #146](https://github.com/fivetran/dbt_quickbooks/pull/146) introduces the following updates:
 
