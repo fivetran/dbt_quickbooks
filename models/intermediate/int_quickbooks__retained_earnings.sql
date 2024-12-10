@@ -4,42 +4,19 @@ with general_ledger_balances as (
     from {{ ref('int_quickbooks__general_ledger_balances') }}
 ),
 
-revenue_starter as (
+net_income_loss as (
 
     select
         period_first_day,
         source_relation,
-        sum(period_net_change) as revenue_net_change,
-        sum(period_net_converted_change) as revenue_net_converted_change
+        sum(case when account_class = 'Revenue' then period_net_change else 0 end) as revenue_net_change,
+        sum(case when account_class = 'Revenue' then period_net_converted_change else 0 end) as revenue_net_converted_change,
+        sum(case when account_class = 'Expense' then period_net_change else 0 end) as expense_net_change,
+        sum(case when account_class = 'Expense' then period_net_converted_change else 0 end) as expense_net_converted_change
     from general_ledger_balances
-    
-    where account_class = 'Revenue'
-
     {{ dbt_utils.group_by(2) }} 
 ),
 
-expense_starter as (
-
-    select 
-        period_first_day,
-        source_relation,
-        sum(period_net_change) as expense_net_change,
-        sum(period_net_converted_change) as expense_net_converted_change
-    from general_ledger_balances
-    
-    where account_class = 'Expense'
-
-    {{ dbt_utils.group_by(2) }} 
-),
-
-net_income_loss as (
-
-    select *
-    from revenue_starter
-
-    join expense_starter 
-        using (period_first_day, source_relation)
-),
 retained_earnings_starter as (
 
     select
