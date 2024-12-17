@@ -1,4 +1,4 @@
-# dbt_quickbooks v0.17.1-a1
+# dbt_quickbooks v0.17.1
 
 ## Bug Fix
 - Updated the logic in `int_quickbooks__retained_earnings` to ensure accounting periods with no revenue and expense class lines were accounted for. 
