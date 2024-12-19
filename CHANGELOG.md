@@ -1,3 +1,11 @@
+# dbt_quickbooks v0.17.1
+[PR #149](https://github.com/fivetran/dbt_quickbooks/pull/149) introduces the following updates:
+
+## Bug Fix
+- Updated the logic in `int_quickbooks__retained_earnings` to ensure accounting periods with no revenue and expense class lines were accounted for. 
+  - This will ensure the net income adjustment is available regardless of existing revenue or expenses.
+- Brought in `created_at` and `updated_at` fields for the `credit_card_pymt` and `invoice` intermediate `*_double_entry` models to provide full support for the [`v0.17.0` release update](https://github.com/fivetran/dbt_quickbooks/releases/tag/v0.17.0). 
+
 # dbt_quickbooks v0.17.0
 [PR #146](https://github.com/fivetran/dbt_quickbooks/pull/146) introduces the following updates:
 
