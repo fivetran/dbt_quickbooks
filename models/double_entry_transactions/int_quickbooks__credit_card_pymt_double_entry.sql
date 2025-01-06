@@ -47,6 +47,8 @@ final as (
         cast(bank_account_id as {{ dbt.type_string() }}) as account_id,
         class_id,
         department_id,
+        created_at,
+        updated_at,
         'credit' as transaction_type,
         'credit card payment' as transaction_source
     from credit_card_payment_prep
@@ -65,6 +67,8 @@ final as (
         cast(credit_card_account_id as {{ dbt.type_string() }}) as account_id,
         class_id,
         department_id,
+        created_at,
+        updated_at,
         'debit' as transaction_type,
         'credit card payment' as transaction_source
     from credit_card_payment_prep
