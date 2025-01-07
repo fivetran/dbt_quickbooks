@@ -1,3 +1,9 @@
+# dbt_quickbooks version.version
+
+## Documentation
+- Added Quickstart model counts to README. ([#152](https://github.com/fivetran/dbt_quickbooks/pull/152))
+- Corrected references to connectors and connections in the README. ([#152](https://github.com/fivetran/dbt_quickbooks/pull/152))
+
 # dbt_quickbooks v0.17.1
 [PR #149](https://github.com/fivetran/dbt_quickbooks/pull/149) introduces the following updates:
 
