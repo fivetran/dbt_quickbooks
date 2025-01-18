@@ -51,6 +51,9 @@ The following table provides a detailed list of all tables materialized within t
 | [quickbooks__cash_flow_statement](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.quickbooks__cash_flow_statement) | Table containing all cash or cash equivalents, investing, operating, and financing cash flow types by calendar year and month enriched with account type, class, and parent information, as well as ordering configuration. **IMPORTANT**: It is very likely you will need to configure the cash flow types for your own unique use case. [Scroll below to get full instructions for how to configure your cash flow types](https://github.com/fivetran/dbt_quickbooks/blob/main/README.md#customize-the-cash-flow-types-and-account-ordering-of-your-cash-flow-statement). |
 | [quickbooks__ap_ar_enhanced](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.quickbooks__ap_ar_enhanced) | Table providing the amount, amount paid, due date, and days overdue of all bills and invoices your company has received and paid along with customer, vendor, department, and address information for each invoice or bill. |
 | [quickbooks__expenses_sales_enhanced](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.quickbooks__expenses_sales_enhanced) | Table providing enhanced customer, vendor, and account details for each expense and sale transaction. |
+
+### Materialized Models
+Each Quickstart transformation job run materializes 94 models if all components of this data model are enabled. This count includes all staging, intermediate, and final models materialized as `view`, `table`, or `incremental`.
 <!--section-end-->
 
 ### Multicurrency Support (And Existing Limitations)
@@ -63,7 +66,7 @@ There are specific limitations if you need converted amounts for credit card pay
 ### Step 1: Prerequisites
 To use this dbt package, you must have the following:
 
-- At least one Fivetran QuickBooks connector syncing data into your destination.
+- At least one Fivetran QuickBooks connection syncing data into your destination.
 - A **BigQuery**, **Snowflake**, **Redshift**, **PostgreSQL**, or **Databricks** destination.
 
 ### Step 2: Install the package
@@ -89,7 +92,7 @@ vars:
 ```
 
 ### Step 4: Enabling/Disabling Models
-Your QuickBooks connector might not sync every table that this package expects. This package takes into consideration that not every QuickBooks account utilizes the same transactional tables.
+Your QuickBooks connection might not sync every table that this package expects. This package takes into consideration that not every QuickBooks account utilizes the same transactional tables.
 
 By default, most variables' values are assumed to be `true` (with exception of `using_credit_card_payment_txn` and `using_purchase_order`). In other to enable or disable the relevant functionality in the package, you will need to add the relevant variables:
 
@@ -115,8 +118,8 @@ vars:
 
 ### (Optional) Step 5: Additional Configurations
 
-#### Unioning Multiple Quickbooks Connectors
-If you have multiple Quickbooks connectors in Fivetran and would like to use this package on all of them simultaneously, we have provided functionality to do so. The package will union all of the data together and pass the unioned table into the transformations. You will be able to see which source it came from in the `source_relation` column of each model. To use this functionality, you will need to set either the `quickbooks_union_schemas` or `quickbooks_union_databases` variables:
+#### Unioning Multiple Quickbooks Connections
+If you have multiple Quickbooks connections in Fivetran and would like to use this package on all of them simultaneously, we have provided functionality to do so. The package will union all of the data together and pass the unioned table into the transformations. You will be able to see which source it came from in the `source_relation` column of each model. To use this functionality, you will need to set either the `quickbooks_union_schemas` or `quickbooks_union_databases` variables:
 
 ```yml
 # dbt_project.yml
