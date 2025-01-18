@@ -35,7 +35,7 @@ final as (
         dev.adjusted_converted_amount_cumulative as dev_adjusted_converted_amount_cumulative
     from prod
     full outer join dev
-        on dev.transaction_id = prod.transaction_id 
+        on dev.transaction_id = prod.transaction_id
 )
 
 select * 
