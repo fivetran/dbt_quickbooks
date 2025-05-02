@@ -1,4 +1,5 @@
 # dbt_quickbooks v0.17.2
+[PR #155](https://github.com/fivetran/dbt_quickbooks/pull/155) introduces the following updates:
 
 ## Bug Fixes
 - Modified `int_quickbooks__bill_payment_double_entry model` to ensuree bill payment accuracy by updating the `converted_amount` logic:
