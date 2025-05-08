@@ -1,13 +1,15 @@
 # dbt_quickbooks v0.17.2
-[PR #155](https://github.com/fivetran/dbt_quickbooks/pull/155) introduces the following updates:
+This release introduces the following updates.
 
 ## Bug Fixes
-- Modified `int_quickbooks__bill_payment_double_entry model` to ensuree bill payment accuracy by updating the `converted_amount` logic:
-  - Utilized the line-level `amount` from bill payment lines instead of `total_amount` from bill payments.
+- Modified `int_quickbooks__bill_payment_double_entry model` to ensure bill payment accuracy by updating the `converted_amount` logic. These changes improve the integrity and granularity of debit/credit entries for bill payments. ([PR #155](https://github.com/fivetran/dbt_quickbooks/pull/155))
+  - Utilized the line-level `amount` from bill payment lines instead of `total_amount` from bill payments, then aggregated that upward. Bill payment lines in a bill payment can have different exchange rates applied depending on which bill it's associated with, so the bill exchange rate can come into play.
   - Applied `exchange_rate` from the associated bill where available, falling back to the bill payment exchange rate otherwise.
   - Inverted the sign of the `amount` when associated with a journal entry (to correctly reflect the accounting direction).
   - Updated joins to link bill payments with related bills and bill payment lines via the `bill_linked_txn` table to support more accurate allocation of payment amounts.
-- These changes improve the integrity and granularity of debit/credit entries for bill payments.
+
+## Under the Hood
+- Added general ledger consistency test to ensure matching records between production and development models. ([#155](https://github.com/fivetran/dbt_quickbooks/pull/155))
 
 ## Documentation
 - Added Quickstart model counts to README. ([#152](https://github.com/fivetran/dbt_quickbooks/pull/152))
