@@ -9,7 +9,7 @@ models:
 
 vars:
   quickbooks_source:
-    quickbooks_schema: quickbooks_integration_tests_20
+    quickbooks_schema: zz_dbt_avinash_seed
     quickbooks_account_identifier: "account_data"
     quickbooks_address_identifier: "address_data"
     quickbooks_bill_line_identifier: "bill_line_data"
@@ -61,17 +61,44 @@ vars:
 seeds:
   +quote_columns: "{{ true if target.type == 'redshift' else false }}"
   quickbooks_integration_tests:
-    +column_types:
-      transaction_date: date
-      due_date: date
+    bill_data:
+      +column_types:
+        due_date: date
+        transaction_date: date
     bill_line_data:
       +column_types:
         item_expense_billable_status: "{{ 'varchar(100)' if target.name in ('redshift', 'postgres') else 'string' }}"
         account_expense_billable_status: "{{ 'varchar(100)' if target.name in ('redshift', 'postgres') else 'string' }}"
+    bill_payment_data:
+      +column_types:
+        transaction_date: date
+    credit_card_payment_txn_data:
+      +column_types:
+        transaction_date: date
+    credit_memo_data:
+      +column_types:
+        transaction_date: date
+    deposit_data:
+      +column_types:
+        transaction_date: date
     deposit_line_data:
       +column_types:
         deposit_account_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
         deposit_class_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
+    estimate_data:
+      +column_types:
+        due_date: date
+        transaction_date: date
+    invoice_data:
+      +column_types:
+        due_date: date
+        transaction_date: date
+    journal_entry_data:
+      +column_types:
+        transaction_date: date
+    payment_data:
+      +column_types:
+        transaction_date: date
     purchase_line_data:
       +column_types:
         item_expense_billable_status: "{{ 'varchar(100)' if target.name in ('redshift', 'postgres') else 'string' }}"
@@ -79,10 +106,27 @@ seeds:
     purchase_data:
       +column_types:
         credit: "{{ 'boolean' if target.name in ('snowflake', 'spark', 'databricks') else 'bool' }}"
+        transaction_date: date
+    purchase_order_data:
+      +column_types:
+        due_date: date
+        transaction_date: date
+    refund_receipt_data:
+      +column_types:
+        transaction_date: date
+    sales_receipt_data:
+      +column_types:
+        transaction_date: date
+    transfer_data:
+      +column_types:
+        transaction_date: date
     vendor_credit_line_data:
       +column_types:
         item_expense_billable_status: "{{ 'varchar(100)' if target.name in ('redshift', 'postgres') else 'string' }}"
         account_expense_billable_status: "{{ 'varchar(100)' if target.name in ('redshift', 'postgres') else 'string' }}"
+    vendor_credit_data:
+      +column_types:
+        transaction_date: date
     vendor_data:
       +column_types:
         id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
