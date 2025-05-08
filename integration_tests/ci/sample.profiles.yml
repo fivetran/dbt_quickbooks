@@ -42,7 +42,7 @@ integration_tests:
       pass: "{{ env_var('CI_POSTGRES_DBT_PASS') }}"
       dbname: "{{ env_var('CI_POSTGRES_DBT_DBNAME') }}"
       port: 5432
-      schema: quickbooks_integration_tests_21
+      schema: quickbooks_integration_tests_20
       threads: 8
     databricks:
       catalog: "{{ env_var('CI_DATABRICKS_DBT_CATALOG') }}"
