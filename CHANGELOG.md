@@ -7,6 +7,7 @@ This release introduces the following updates.
   - Applied `exchange_rate` from the associated bill where available, falling back to the bill payment exchange rate otherwise.
   - Inverted the sign of the `amount` when associated with a journal entry (to correctly reflect the accounting direction).
   - Updated joins to link bill payments with related bills and bill payment lines via the `bill_linked_txn` table to support more accurate allocation of payment amounts.
+- We've made this a **breaking change**, as this update could potentially change the output of the end models.
 
 ## Under the Hood
 - Added general ledger consistency test to ensure matching records between production and development models. ([#155](https://github.com/fivetran/dbt_quickbooks/pull/155))
