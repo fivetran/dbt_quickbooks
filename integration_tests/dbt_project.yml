@@ -9,7 +9,7 @@ models:
 
 vars:
   quickbooks_source:
-    quickbooks_schema: zz_dbt_avinash_seed
+    quickbooks_schema: quickbooks_integration_tests_20
     quickbooks_account_identifier: "account_data"
     quickbooks_address_identifier: "address_data"
     quickbooks_bill_line_identifier: "bill_line_data"
