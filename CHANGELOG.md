@@ -1,4 +1,4 @@
-# dbt_quickbooks v0.17.2
+# dbt_quickbooks v0.18.0
 This release introduces the following updates.
 
 ## Bug Fixes
