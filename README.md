@@ -76,7 +76,7 @@ Include the following QuickBooks package version in your `packages.yml` file.
 ```yaml
 packages:
   - package: fivetran/quickbooks
-    version: [">=0.17.0", "<0.18.0"] # we recommend using ranges to capture non-breaking changes automatically
+    version: [">=0.18.0", "<0.19.0"] # we recommend using ranges to capture non-breaking changes automatically
 ```
 
 Do NOT include the `quickbooks_source` package in this file. The transformation package itself has a dependency on it and will install the source package as well.
@@ -158,11 +158,12 @@ If you'd like to modify either of these configurations, take the following steps
   ```yml
   vars:
      cash_flow_statement_type_ordinal: "{{ ref('quickbooks_cash_flow_types_ordinals') }}"
+  ```
 
 2) Examine [the `cash_flow_statement_type_ordinal_example` file](https://github.com/fivetran/dbt_quickbooks/tree/main/example_ordinal_seeds/cash_flow_statement_type_ordinal_example.csv) to see what your sample seed file should look like. (NOTE: Make sure that your file name you place in your `seeds` folder is different from `cash_flow_statement_type_ordinal_example` to avoid errors.). You can use this file as an example and follow the steps in (1) to see what the cash flow type and ordering of the data looks like for your configuration, then modify as needed. 
 3) When adding and making changes to the seed file, you will need to run the `dbt build` command to compile the updated seed data into the above financial reporting models.
 
-These are our recommended best practices to follow with your seed file (you can see them in action in [the `cash_flow_statement_type_ordinal_example` files](https://github.com/fivetran/dbt_quickbooks/tree/main/example_ordinal_seeds/cash_flow_statement_type_ordinal_example.csv): 
+These are our recommended best practices to follow with your seed file--you can see them in action in [the `cash_flow_statement_type_ordinal_example` files](https://github.com/fivetran/dbt_quickbooks/tree/main/example_ordinal_seeds/cash_flow_statement_type_ordinal_example.csv): 
 - REQUIRED: Every row should have a non-null `ordinal` and `cash_flow_type` column value. 
 - REQUIRED: In each row of the seed file, only populate **ONE** of the `account_class`, `account_type`, `account_sub_type`, and `account_number` columns to avoid duplicated ordinals and cash flow types and test failures. This should also make the logic cleaner in defining which account value takes precedence in the ordering hierarchy. 
 - In `cash_flow_statement_type_ordinal_example`, we recommend creating ordinals for each `cash_flow_type` value available (the default types are `Cash or Cash Equivalents`, `Operating`, `Investing`, `Financing` as per best financial practices, but you can configure as you like in your seed file) to make sure each cash flow statement type can be easily ordered. Then you can create any additional customization as needed with the more specific account fields to order even further.   
