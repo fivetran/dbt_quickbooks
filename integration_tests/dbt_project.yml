@@ -54,7 +54,6 @@ vars:
 
   # For validation testing.  
   # This below vars configuration is needed for the `general_ledger_amounts_match` macro.
-  # using_bill: true
   # using_credit_card_payment_txn: true
 
 seeds:
