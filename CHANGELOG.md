@@ -1,3 +1,13 @@
+# dbt_quickbooks v0.18.1
+[PR #159](https://github.com/fivetran/dbt_quickbooks/pull/159) introduces the following updates:
+
+## Bug Fixes
+- Updated `int_quickbooks__expenses_union` to filter on account classifications rather than types. This will now correctly include 'Other Expense' and 'Cost of Goods Sold' account types as Expense accounts in the `quickbooks__expenses_sales_enhanced` model.
+
+## Under the Hood
+- Updated seed files to properly populate and validate the `quickbooks__expenses_sales_enhanced` model works as expected.
+- Created integrity test to compare source and end model transactions in the `quickbooks__expenses_sales_enhanced` model.
+
 # dbt_quickbooks v0.18.0
 This release introduces the following updates.
 

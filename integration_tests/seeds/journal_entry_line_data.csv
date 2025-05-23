@@ -9,3 +9,5 @@ index,journal_entry_id,_fivetran_synced,account_id,amount,billable_status,class_
 2,116,2020-10-14 18:47:33,50,85245,,,10,,Debit,,,,Debit,,,,
 2,44,2020-06-23 3:58:59,50,99205,,,10,,Debit,,,,Debit,,,,
 2,395,2020-12-10 0:02:05,50,62405,,,10,,Debit,,,,Debit,,,,
+0,92011,2024-01-20 09:00:00,51515,100,,,10,,Test JE to Expense,2024-01-20,,10,Debit,,,,
+0,92012,2024-01-20 09:00:00,52525,200,,,10,,Test JE to COGS,2024-01-20,,10,Debit,,,,

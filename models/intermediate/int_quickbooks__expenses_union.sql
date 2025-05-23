@@ -56,7 +56,7 @@ expense_accounts as (
 
     select *
     from {{ ref('int_quickbooks__account_classifications') }}
-    where account_type = 'Expense'
+    where classification = 'Expense'
 ),
 
 final as (
