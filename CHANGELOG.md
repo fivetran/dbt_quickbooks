@@ -3,6 +3,7 @@
 
 ## Bug Fixes
 - Updated `int_quickbooks__expenses_union` to filter on account classifications rather than types. This will now correctly include 'Other Expense' and 'Cost of Goods Sold' account types as Expense accounts in the `quickbooks__expenses_sales_enhanced` model.
+- Updated `docs.md` to fix incorrect `{% enddocs %}` statement.
 
 ## Under the Hood
 - Updated seed files to properly populate and validate the `quickbooks__expenses_sales_enhanced` model works as expected.
