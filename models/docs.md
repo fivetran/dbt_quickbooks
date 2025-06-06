@@ -53,7 +53,7 @@ The type of account associated
 
 {% docs calendar_date %}
 Timestamp of the first calendar date of the month. This is slated to be deprecated, and the fields `period_first_day` and `period_last_day` are both offered as replacements, depending on how your company performs their financial reporting.
-{% enddocs calendar_date %}
+{% enddocs %}
 
 {% docs is_sub_account %}
 Boolean indicating whether the account is a sub account (true) or a parent account (false).
