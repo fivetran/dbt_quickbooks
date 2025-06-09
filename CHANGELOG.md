@@ -1,3 +1,11 @@
+# dbt_quickbooks v0.18.2
+
+## Documentation Fixes
+- Updated `docs.md` to fix incorrect `{% enddocs %}` statement. ([PR #161](https://github.com/fivetran/dbt_quickbooks/pull/161))
+
+## Contributors
+- [@kennymiller-point](https://github.com/kennymiller-point) ([PR #161](https://github.com/fivetran/dbt_quickbooks/pull/161))
+
 # dbt_quickbooks v0.18.1
 [PR #159](https://github.com/fivetran/dbt_quickbooks/pull/159) introduces the following updates:
 
