@@ -1,3 +1,8 @@
+# dbt_quickbooks v0.19.0
+
+## Bug Fixes
+- Reverted `converted_amount` updates within the `int_quickbooks__bill_payment_double_entry` model introduced within the v0.18.0 release.
+
 # dbt_quickbooks v0.18.2
 
 ## Documentation Fixes
