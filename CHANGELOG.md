@@ -1,3 +1,8 @@
+# dbt_quickbooks v0.19.0
+
+## Bug Fixes
+- Applies the bugfix from the [v0.19.0-a1](https://github.com/fivetran/dbt_quickbooks/releases/tag/v0.19.0-a1) release to revert the `converted_amount` updates within the `int_quickbooks__bill_payment_double_entry` model introduced within the v0.18.0 release. ([PR #164](https://github.com/fivetran/dbt_quickbooks/pull/164))
+
 # dbt_quickbooks v0.19.0-a1
 
 ## Bug Fixes
