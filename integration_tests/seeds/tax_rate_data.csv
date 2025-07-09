@@ -1,0 +1,11 @@
+_fivetran_synced,active,created_at,description,display_type,effective_tax_rate,id,name,rate_value,special_tax_type,sync_token,tax_agency_id,updated_at
+2025-06-30 12:00:00,TRUE,2024-01-31 00:00:00,State tax,ReadOnly,1.5,5,California,1.5,None,3,1,2024-01-31 00:00:00
+2025-06-30 12:00:00,TRUE,2024-02-01 00:00:00,Local tax,ReadOnly,2.25,6,San Francisco,2.25,Local,2,2,2024-02-01 00:00:00
+2025-06-30 12:00:00,FALSE,2024-02-02 00:00:00,Deprecated tax code,Hidden,0.0,7,Old Code,0.0,None,1,3,2024-02-02 00:00:00
+2025-06-30 12:00:00,TRUE,2024-02-03 00:00:00,Online sales tax,ReadOnly,1.75,8,Digital Goods,1.75,Digital,4,4,2024-02-03 00:00:00
+2025-06-30 12:00:00,TRUE,2024-02-04 00:00:00,Hotel tax,ReadOnly,3.0,9,Lodging,3.0,Hospitality,2,5,2024-02-04 00:00:00
+2025-06-30 12:00:00,TRUE,2024-02-05 00:00:00,County tax,ReadOnly,1.25,10,Harris County,1.25,County,1,6,2024-02-05 00:00:00
+2025-06-30 12:00:00,FALSE,2024-02-06 00:00:00,Archived tax rate,Hidden,0.0,11,Archived Rate,0.0,None,3,7,2024-02-06 00:00:00
+2025-06-30 12:00:00,TRUE,2024-02-07 00:00:00,Environmental fee,ReadOnly,0.5,12,Green Fee,0.5,Environmental,2,8,2024-02-07 00:00:00
+2025-06-30 12:00:00,TRUE,2024-02-08 00:00:00,City tax,ReadOnly,2.0,13,NYC Tax,2.0,Municipal,4,9,2024-02-08 00:00:00
+2025-06-30 12:00:00,TRUE,2024-02-09 00:00:00,Standard rate,ReadOnly,1.0,14,General,1.0,None,2,10,2024-02-09 00:00:00

@@ -6,16 +6,19 @@ Table that creates a debit record to accounts receivable and a credit record to 
 {{ config(enabled=var('using_invoice', True)) }}
 
 with invoices as (
+
     select *
     from {{ ref('stg_quickbooks__invoice') }}
 ),
 
 invoice_lines as (
+
     select *
     from {{ ref('stg_quickbooks__invoice_line') }}
 ),
 
 items as (
+
     select
         item.*,
         parent.income_account_id as parent_income_account_id
@@ -27,10 +30,41 @@ items as (
 ),
 
 accounts as (
+
     select *
     from {{ ref('stg_quickbooks__account') }}
 ),
 
+{% if var('using_invoice_tax_line', True) %}
+
+invoice_tax_lines as (
+
+    select invoice_id,
+        source_relation,
+        index + 10000 as index,
+        tax_rate_id,
+        amount,
+        tax_percent
+    from {{ ref('stg_quickbooks__invoice_tax_line') }}
+),
+{% endif %}
+
+
+{% if var('using_tax_agency', True) %}
+tax_agencies as (
+
+    select *
+    from {{ ref('stg_quickbooks__tax_agency') }}
+),
+{% endif %}
+
+{% if var('using_tax_rate', True) %}
+tax_rates as (
+
+    select *
+    from {{ ref('stg_quickbooks__tax_rate') }}
+),
+{% endif %}
 
 {% if var('using_invoice_bundle', True) %}
 
@@ -93,7 +127,62 @@ ar_accounts as (
     where account_type = '{{ var('quickbooks__accounts_receivable_reference', 'Accounts Receivable') }}'
         and is_active
         and not is_sub_account
+), 
+
+liability_accounts as (
+
+    select
+        account_id,
+        name,
+        source_relation
+    from accounts
+    where classification = 'Liability' 
+        and is_active
 ),
+
+sales_tax_account as (
+
+    select
+        account_id,
+        source_relation,
+    from accounts
+    where name = 'Sales Tax Payable' 
+        and is_active
+),
+
+global_tax_account as (
+
+    select
+        account_id,
+        source_relation
+    from accounts
+    where name = 'Global Tax Payable' 
+        and is_active 
+),
+
+{% if var('using_tax_agency', True) %}
+tax_account_join as (
+
+    select 
+        tax_agencies.tax_agency_id,
+        tax_agencies.display_name,
+        coalesce(liability_accounts.account_id, sales_tax_account.account_id, global_tax_account.account_id) as account_id,
+        coalesce(liability_accounts.source_relation, sales_tax_account.source_relation, global_tax_account.source_relation) as source_relation
+
+    from tax_agencies
+    
+    left join liability_accounts
+        on {{ dbt.concat([
+            "tax_agencies.display_name", 
+            "' Payable'"]) }} = liability_accounts.name
+        and tax_agencies.source_relation = liability_accounts.source_relation
+    left join sales_tax_account
+        on liability_accounts.source_relation = sales_tax_account.source_relation
+
+    left join global_tax_account
+        on liability_accounts.source_relation = global_tax_account.source_relation
+),
+{% endif %}
 
 invoice_join as (
 
@@ -151,6 +240,38 @@ invoice_join as (
         on bundle_income_accounts.bundle_id = invoice_lines.bundle_id
         and bundle_income_accounts.source_relation = invoice_lines.source_relation
 
+    {% endif %}
+
+    union all
+
+    {% if var('using_invoice_tax_line', True) and var('using_tax_rate', True) and var('using_tax_agency', True) %}
+    select 
+        invoice_tax_lines.invoice_id as transaction_id,
+        invoice_tax_lines.source_relation,
+        invoice_tax_lines.index,
+        invoices.transaction_date,
+        invoice_tax_lines.amount,
+        (invoice_tax_lines.amount * coalesce(invoices.exchange_rate, 1)) as converted_amount,
+        'TaxLineDetail' as invoice_line_transaction_type,
+        tax_account_join.account_id,
+        cast(null as {{ dbt.type_string() }}) as class_id,
+        invoices.customer_id,
+        invoices.department_id,
+        invoices.created_at,
+        invoices.updated_at
+    from invoice_tax_lines
+    inner join invoices 
+        on invoice_tax_lines.invoice_id = invoices.invoice_id
+        and invoice_tax_lines.source_relation = invoices.source_relation 
+
+    left join tax_rates
+        on invoice_tax_lines.tax_rate_id = tax_rates.tax_rate_id
+        and invoice_tax_lines.source_relation = tax_rates.source_relation
+
+    left join tax_account_join
+        on tax_rates.tax_agency_id = tax_account_join.tax_agency_id
+        and tax_rates.source_relation = tax_account_join.source_relation
+    
     {% endif %}
 ),
 
