@@ -1,3 +1,48 @@
+# dbt_quickbooks v0.20.0
+
+[PR #165](https://github.com/fivetran/dbt_quickbooks/pull/165) includes the following updates:
+
+## Breaking Change for dbt Core < 1.9.6
+
+> *Note: This is not relevant to Fivetran Quickstart users.*
+
+Migrated `freshness` from a top-level source property to a source `config` in alignment with [recent updates](https://github.com/dbt-labs/dbt-core/issues/11506) from dbt Core ([QuickBooks Source v0.13.0](https://github.com/fivetran/dbt_quickbooks_source/releases/tag/v0.13.0)). This will resolve the following deprecation warning that users running dbt >= 1.9.6 may have received:
+
+```
+[WARNING]: Deprecated functionality
+Found `freshness` as a top-level property of `quickbooks` in file
+`models/src_quickbooks.yml`. The `freshness` top-level property should be moved
+into the `config` of `quickbooks`.
+```
+
+**IMPORTANT:** Users running dbt Core < 1.9.6 will not be able to utilize freshness tests in this release or any subsequent releases, as older versions of dbt will not recognize freshness as a source `config` and therefore not run the tests.
+
+If you are using dbt Core < 1.9.6 and want to continue running QuickBooks freshness tests, please elect **one** of the following options:
+  1. (Recommended) Upgrade to dbt Core >= 1.9.6
+  2. Do not upgrade your installed version of the `quickbooks` package. Pin your dependency on v0.19.0 in your `packages.yml` file.
+  3. Utilize a dbt [override](https://docs.getdbt.com/reference/resource-properties/overrides) to overwrite the package's `quickbooks` source and apply freshness via the previous release top-level property route. This will require you to copy and paste the entirety of the previous release `src_quickbooks.yml` file and add an `overrides: quickbooks_source` property.
+
+## Under the Hood
+- Updates to ensure integration tests use latest version of dbt.
+
+# dbt_quickbooks v0.19.0
+
+## Bug Fixes
+- Applies the bugfix from the [v0.19.0-a1](https://github.com/fivetran/dbt_quickbooks/releases/tag/v0.19.0-a1) release to revert the `converted_amount` updates within the `int_quickbooks__bill_payment_double_entry` model introduced within the v0.18.0 release. ([PR #164](https://github.com/fivetran/dbt_quickbooks/pull/164))
+
+# dbt_quickbooks v0.19.0-a1
+
+## Bug Fixes
+- Reverted `converted_amount` updates within the `int_quickbooks__bill_payment_double_entry` model introduced within the v0.18.0 release. ([PR #164](https://github.com/fivetran/dbt_quickbooks/pull/164))
+
+# dbt_quickbooks v0.18.2
+
+## Documentation Fixes
+- Updated `docs.md` to fix incorrect `{% enddocs %}` statement. ([PR #161](https://github.com/fivetran/dbt_quickbooks/pull/161))
+
+## Contributors
+- [@kennymiller-point](https://github.com/kennymiller-point) ([PR #161](https://github.com/fivetran/dbt_quickbooks/pull/161))
+
 # dbt_quickbooks v0.18.1
 [PR #159](https://github.com/fivetran/dbt_quickbooks/pull/159) introduces the following updates:
 

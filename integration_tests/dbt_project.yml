@@ -1,6 +1,6 @@
 name: 'quickbooks_integration_tests'
 
-version: '0.18.1'
+version: '0.20.0'
 
 profile: 'integration_tests'
 config-version: 2
@@ -137,3 +137,6 @@ clean-targets:
 dispatch:
   - macro_namespace: dbt_utils
     search_order: ['spark_utils', 'dbt_utils']
+
+flags:
+  send_anonymous_usage_stats: False
