@@ -1,3 +1,33 @@
+# dbt_quickbooks v0.21.0-a1
+[PR #166](https://github.com/fivetran/dbt_quickbooks/pull/166s) is a pre-release that introduces the following updates. 
+
+## Schema Updates
+**8 new models -- 8 potential breaking changes**
+
+| Data Model                                                                                                                                               | Change Type | Old Name                     | New Name                                             | Notes                                                                                    |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- | ---------------------------- | ---------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| `stg_quickbooks__invoice_tax_line`             |  New Staging Model |   |          | Source: `invoice_tax_line` table.    |
+| `stg_quickbooks__tax_agency`                  | New Staging Model |   |          | Source: `tax_agency`  table.     |
+| `stg_quickbooks__tax_code`                     | New Staging Model |   |          | Source: `tax_code` table.    |
+| `stg_quickbooks__tax_rate`                  | New Staging Model |   |          | Source: `tax_rate`  table.     |
+| `stg_quickbooks__invoice_tax_line_tmp`             |  New Temp Model |   |          | Source: `invoice_tax_line` table.    |
+| `stg_quickbooks__tax_agency_tmp`                  | New Temp Model |   |          | Source: `tax_agency`  table.     |
+| `stg_quickbooks__tax_code_tmp`                     | New Temp Model |   |          | Source: `tax_code` table.    |
+| `stg_quickbooks__tax_rate_tmp`                  | New Temp Model |   |          | Source: `tax_rate`  table.     |
+
+
+## Breaking Changes
+- This update incorporates invoice tax lines into the `int_quickbooks__invoice_double_entry` model. We now recognize these line items as tax liability owed to a specific tax agency.
+  - Assigned the account for each invoice tax line to the tax agency associated with an account. We provide fallbacks to the 'Sales Tax Payable' and 'Global Tax Payable' accounts if needed. 
+  - Created equivalent double entry line for a tax item that associates with the invoice's existing Accounts Receivable account. 
+
+## Under the Hood
+- Updated `quickstart.yml` with the new variables to enable/disable based on source tables.
+- Updated `run_models.sh` with behavior for when the new variables are disabled. 
+
+## Documentation Update
+- Updated README with instructions on how to disable/enable the new variables we created in this release. 
+
 # dbt_quickbooks v0.20.0
 
 [PR #165](https://github.com/fivetran/dbt_quickbooks/pull/165) includes the following updates:

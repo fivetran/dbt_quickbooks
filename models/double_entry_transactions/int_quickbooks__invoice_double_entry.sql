@@ -144,7 +144,7 @@ sales_tax_account as (
 
     select
         account_id,
-        source_relation,
+        source_relation
     from accounts
     where name = 'Sales Tax Payable' 
         and is_active
@@ -177,10 +177,10 @@ tax_account_join as (
             "' Payable'"]) }} = liability_accounts.name
         and tax_agencies.source_relation = liability_accounts.source_relation
     left join sales_tax_account
-        on liability_accounts.source_relation = sales_tax_account.source_relation
+        on tax_agencies.source_relation = sales_tax_account.source_relation
 
     left join global_tax_account
-        on liability_accounts.source_relation = global_tax_account.source_relation
+        on tax_agencies.source_relation = global_tax_account.source_relation
 ),
 {% endif %}
 
@@ -242,9 +242,9 @@ invoice_join as (
 
     {% endif %}
 
+    {% if var('using_invoice_tax_line', True) and var('using_tax_rate', True) and var('using_tax_agency', True) %}
     union all
 
-    {% if var('using_invoice_tax_line', True) and var('using_tax_rate', True) and var('using_tax_agency', True) %}
     select 
         invoice_tax_lines.invoice_id as transaction_id,
         invoice_tax_lines.source_relation,

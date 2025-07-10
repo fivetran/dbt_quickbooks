@@ -106,6 +106,7 @@ vars:
   using_estimate: false # disable if you don't have estimates in QuickBooks
   using_invoice: false # disable if you don't have invoices in QuickBooks
   using_invoice_bundle: false # disable if you don't have invoice bundles in QuickBooks
+  using_invoice_tax_line: false # disable if you don't have invoice tax lines in QuickBooks
   using_journal_entry: false # disable if you don't have journal entries in QuickBooks
   using_payment: false # disable if you don't have payments in QuickBooks
   using_refund_receipt: false # disable if you don't have refund receipts in QuickBooks
