@@ -31,6 +31,8 @@ table_variables:
     - bundle_item
     - bundle
     - invoice_line_bundle
+  using_invoice_tax_line:
+    - invoice_tax_line
   using_journal_entry:
     - journal_entry_line
     - journal_entry
@@ -40,6 +42,12 @@ table_variables:
   using_refund_receipt:
     - refund_receipt_line
     - refund_receipt
+  using_tax_agency:
+    - tax_agency
+  using_tax_code:
+    - tax_code
+  using_tax_rate:
+    - tax_rate
   using_transfer:
     - transfer
   using_vendor_credit:
