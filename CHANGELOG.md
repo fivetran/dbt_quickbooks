@@ -1,3 +1,12 @@
+# dbt_quickbooks v0.20.1
+[PR #169](https://github.com/fivetran/dbt_quickbooks/pull/169) includes the following updates:
+
+## Bug Fix
+- Updated `quickbooks__balance_sheet` and `quickbooks__income_statement` analysis models to end in `*_analysis` to stop duplicate model errors in dbt Fusion, as these are existing end models within the package.
+
+## Contributors
+- [@kennymiller-point](https://github.com/kennymiller-point) ([PR #167](https://github.com/fivetran/dbt_quickbooks/pull/167))
+
 # dbt_quickbooks v0.20.0
 
 [PR #165](https://github.com/fivetran/dbt_quickbooks/pull/165) includes the following updates:
