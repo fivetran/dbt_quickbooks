@@ -4,6 +4,9 @@
 ## Bug Fix
 - Updated `quickbooks__balance_sheet` and `quickbooks__income_statement` analysis models to end in `*_analysis` to stop duplicate model errors in dbt Fusion, as these are existing end models within the package.
 
+## Documentation
+- Updated analysis README with new model references.
+
 ## Contributors
 - [@kennymiller-point](https://github.com/kennymiller-point) ([PR #167](https://github.com/fivetran/dbt_quickbooks/pull/167))
 

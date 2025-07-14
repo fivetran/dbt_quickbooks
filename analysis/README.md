@@ -10,8 +10,8 @@ values prior to using this package, we encourage you to use the compiled sql pro
 ## Analysis SQL
 | **sql**                | **description**                                                                                                                                |
 | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| [quickbooks__balance_sheet](https://github.com/fivetran/dbt_quickbooks/blob/master/analysis/quickbooks__balance_sheet.sql) | The output of the compiled sql will generate three records: Assets, Liabilities, Equity. The SQL command references the quickbooks__general_ledger_by_period model and pulls all balance sheet account ending balances as of the most recent transaction month. These balances are then added for each respective balance sheet type. This will ensure your total balance sheet balances ties to what you expect. **Note**: you will need to ending date order to generate accurate balance sheet balances for your defined as of date. |
-| [quickbooks__income_statement](https://github.com/fivetran/dbt_quickbooks/blob/master/analysis/quickbooks__income_statement.sql) | The output of the compiled sql will generate two records: Revenue, Expense. The SQL command references the quickbooks__general_ledger_by_period model and sums all period net change for Revenue and Expense accounts respectively. **Note**: you will need to set the date range in order to generate an accurate revenue and expense totals for your defined time period. |
+| [quickbooks__balance_sheet_analysis](https://github.com/fivetran/dbt_quickbooks/blob/master/analysis/quickbooks__balance_sheet_analysis.sql) | The output of the compiled sql will generate three records: Assets, Liabilities, Equity. The SQL command references the `quickbooks__general_ledger_by_period` model and pulls all balance sheet account ending balances as of the most recent transaction month. These balances are then added for each respective balance sheet type. This will ensure your total balance sheet balances ties to what you expect. **Note**: you will need to ending date order to generate accurate balance sheet balances for your defined as of date. |
+| [quickbooks__income_statement_analysis](https://github.com/fivetran/dbt_quickbooks/blob/master/analysis/quickbooks__income_statement.sql) | The output of the compiled sql will generate two records: Revenue, Expense. The SQL command references the `quickbooks__general_ledger_by_period` model and sums all period net change for Revenue and Expense accounts respectively. **Note**: you will need to set the date range in order to generate an accurate revenue and expense totals for your defined time period. |
 
 ## SQL Compile Instructions
 Leveraging the above sql is made possible by the [analysis functionality of dbt](https://docs.getdbt.com/docs/building-a-dbt-project/analyses/). In order to
@@ -19,9 +19,9 @@ compile the sql, you will perform the following steps:
 - Execute `dbt run` to create the package models.
 - Execute `dbt compile` to generate the target specific sql.
 - Navigate to your project's `/target/compiled/quickbooks/analysis` directory.
-- Copy the `quickbooks__balance_sheet` code and run in your data warehouse.
+- Copy the `quickbooks__balance_sheet_analysis` code and run in your data warehouse.
 - Confirm the balance sheet totals match your expected results.
-- Copy the `quickbooks__income_statement` code and run in your data warehouse.
+- Copy the `quickbooks__income_statement_analysis` code and run in your data warehouse.
 - Confirm the income statement totals match your expected results.
 
 ## Contributions
@@ -32,15 +32,6 @@ Please create issues or open PRs against `master`. Check out [this post](https:/
 ## Database Support
 This package has been tested on BigQuery, Snowflake and Redshift.
 
-## Resources:
-- Provide [feedback](https://www.surveymonkey.com/r/DQ7K7WW) on our existing dbt packages or what you'd like to see next
-- Have questions or feedback, or need help? Book a time during our office hours [here](https://calendly.com/fivetran-solutions-team/fivetran-solutions-team-office-hours) or shoot us an email at solutions@fivetran.com
-- Find all of Fivetran's pre-built dbt packages in our [dbt hub](https://hub.getdbt.com/fivetran/)
-- Learn how to orchestrate dbt transformations with Fivetran [here](https://fivetran.com/docs/transformations/dbt)
-- Learn more about Fivetran overall [in our docs](https://fivetran.com/docs)
-- Check out [Fivetran's blog](https://fivetran.com/blog)
-- Learn more about dbt [in the dbt docs](https://docs.getdbt.com/docs/introduction)
-- Check out [Discourse](https://discourse.getdbt.com/) for commonly asked questions and answers
-- Join the [chat](http://slack.getdbt.com/) on Slack for live discussions and support
-- Find [dbt events](https://events.getdbt.com) near you
-- Check out [the dbt blog](https://blog.getdbt.com/) for the latest news on dbt's development and best practices
+## Are there any resources available?
+- If you have questions or want to reach out for help, see the [GitHub Issue](https://github.com/fivetran/dbt_quickbooks/issues/new/choose) section to find the right avenue of support for you.
+- If you would like to provide feedback to the dbt package team at Fivetran or would like to request a new dbt package, fill out our [Feedback Form](https://www.surveymonkey.com/r/DQ7K7WW).
