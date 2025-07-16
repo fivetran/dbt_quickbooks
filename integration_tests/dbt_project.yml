@@ -57,6 +57,8 @@ vars:
   # using_credit_card_payment_txn: true
 
 seeds:
+  +docs:
+    show: False
   +quote_columns: "{{ true if target.type == 'redshift' else false }}"
   quickbooks_integration_tests:
     bill_data:
@@ -140,3 +142,5 @@ dispatch:
 
 flags:
   send_anonymous_usage_stats: False
+
+  use_colors: True
