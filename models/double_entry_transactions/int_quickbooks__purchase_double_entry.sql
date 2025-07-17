@@ -13,7 +13,7 @@ purchase_lines as (
     from {{ ref('stg_quickbooks__purchase_line') }}
 ),
 
-{% if var('using_purchase_tax_line', True) %}
+{% if var('using_purchase_tax_line', False) %}
 
 purchase_tax_lines as (
 
@@ -68,7 +68,7 @@ purchase_join as (
         on purchase_lines.item_expense_item_id = items.item_id
         and purchase_lines.source_relation = items.source_relation
 
-    {% if var('using_purchase_tax_line', True) %}
+    {% if var('using_purchase_tax_line', False) %}
     union all
 
     select
@@ -98,7 +98,7 @@ purchase_join as (
     left join items
         on purchase_lines.item_expense_item_id = items.item_id
         and purchase_lines.source_relation = items.source_relation
-   {% endif %}
+    {% endif %}
 ),
 
 final as (

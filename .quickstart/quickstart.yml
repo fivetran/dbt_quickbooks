@@ -36,12 +36,20 @@ table_variables:
   using_journal_entry:
     - journal_entry_line
     - journal_entry
+  using_journal_entry_tax_line:
+    - journal_entry_tax_line
   using_payment:
     - payment_line
     - payment
+  using_payment_tax_line:
+    - payment_tax_line
   using_refund_receipt:
     - refund_receipt_line
     - refund_receipt
+  using_refund_receipt_tax_line:
+    - refund_receipt_tax_line
+  using_sales_receipt_tax_line:
+    - sales_receipt_tax_line
   using_tax_agency:
     - tax_agency
   using_tax_code:

@@ -17,7 +17,7 @@ journal_entry_lines as (
     from {{ ref('stg_quickbooks__journal_entry_line') }}
 ),
 
-{% if var('using_journal_entry_tax_line', True) %}
+{% if var('using_journal_entry_tax_line', False) %}
 
 journal_entry_tax_lines as (
 
@@ -57,7 +57,7 @@ final as (
 
     where journal_entry_lines.amount is not null
 
-   {% if var('using_journal_entry_tax_line', True) %}
+    {% if var('using_journal_entry_tax_line', False) %}
     union all
 
     select

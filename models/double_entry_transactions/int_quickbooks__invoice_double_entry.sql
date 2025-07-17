@@ -35,7 +35,7 @@ accounts as (
     from {{ ref('stg_quickbooks__account') }}
 ),
 
-{% if var('using_invoice_tax_line', True) %}
+{% if var('using_invoice_tax_line', False) %}
 
 invoice_tax_lines as (
 
@@ -49,8 +49,7 @@ invoice_tax_lines as (
 ),
 {% endif %}
 
-
-{% if var('using_tax_agency', True) %}
+{% if var('using_tax_agency', False) %}
 tax_agencies as (
 
     select *
@@ -58,7 +57,7 @@ tax_agencies as (
 ),
 {% endif %}
 
-{% if var('using_tax_rate', True) %}
+{% if var('using_tax_rate', False) %}
 tax_rates as (
 
     select *
@@ -66,7 +65,7 @@ tax_rates as (
 ),
 {% endif %}
 
-{% if var('using_invoice_bundle', True) %}
+{% if var('using_invoice_bundle', False) %}
 
 invoice_bundles as (
 
@@ -160,7 +159,7 @@ global_tax_account as (
         and is_active 
 ),
 
-{% if var('using_tax_agency', True) %}
+{% if var('using_tax_agency', False) %}
 tax_account_join as (
 
     select 
@@ -242,7 +241,7 @@ invoice_join as (
 
     {% endif %}
 
-    {% if var('using_invoice_tax_line', True) and var('using_tax_rate', True) and var('using_tax_agency', True) %}
+    {% if var('using_invoice_tax_line', False) and var('using_tax_rate', False) and var('using_tax_agency', False) %}
     union all
 
     select 
