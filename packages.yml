@@ -2,5 +2,5 @@ packages:
   # - package: fivetran/quickbooks_source
   #   version: 0.14.0-a1
   - git: https://github.com/fivetran/dbt_quickbooks_source.git
-    revision: feature/invoice-tax-line
+    revision: feature/add-all-tax-lines
     warn-unpinned: false

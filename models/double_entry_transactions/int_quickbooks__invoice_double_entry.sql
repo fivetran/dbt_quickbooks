@@ -146,7 +146,7 @@ sales_tax_account as (
         account_id,
         source_relation
     from accounts
-    where name = 'Sales Tax Payable' 
+    where name = '{{ var('quickbooks__sales_tax_account_reference', 'Sales Tax Payable') }}'
         and is_active
 ),
 
@@ -156,7 +156,7 @@ global_tax_account as (
         account_id,
         source_relation
     from accounts
-    where name = 'Global Tax Payable' 
+    where name = '{{ var('quickbooks__global_tax_account_reference', 'Global Tax Payable') }}'
         and is_active 
 ),
 

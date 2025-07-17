@@ -13,6 +13,20 @@ purchase_lines as (
     from {{ ref('stg_quickbooks__purchase_line') }}
 ),
 
+{% if var('using_purchase_tax_line', True) %}
+
+purchase_tax_lines as (
+
+    select refund_receipt_id,
+        source_relation,
+        index + 10000 as index,
+        tax_rate_id,
+        amount,
+        tax_percent
+    from {{ ref('stg_quickbooks__purchase_tax_line') }}
+),
+{% endif %}
+
 items as (
 
     select
@@ -35,9 +49,9 @@ purchase_join as (
         purchase_lines.amount,
         (purchase_lines.amount * coalesce(purchases.exchange_rate, 1)) as converted_amount,
         coalesce(purchase_lines.account_expense_account_id, items.parent_expense_account_id, items.expense_account_id) as payed_to_account_id,
-        purchases.account_id as payed_from_account_id,
-        case when coalesce(purchases.credit, false) = true then 'debit' else 'credit' end as payed_from_transaction_type,
-        case when coalesce(purchases.credit, false) = true then 'credit' else 'debit' end as payed_to_transaction_type,
+        purchases.account_id as paid_from_account_id,
+        case when coalesce(purchases.credit, false) = true then 'debit' else 'credit' end as paid_from_transaction_type,
+        case when coalesce(purchases.credit, false) = true then 'credit' else 'debit' end as paid_to_transaction_type,
         purchases.customer_id,
         coalesce(purchase_lines.item_expense_class_id, purchase_lines.account_expense_class_id) as class_id,
         purchases.vendor_id,
@@ -53,6 +67,38 @@ purchase_join as (
     left join items
         on purchase_lines.item_expense_item_id = items.item_id
         and purchase_lines.source_relation = items.source_relation
+
+    {% if var('using_purchase_tax_line', True) %}
+    union all
+
+    select
+        purchase_tax_lines.purchase_id as transaction_id,
+        purchase_tax_lines.source_relation,
+        purchase_tax_lines.index,
+        purchases.transaction_date,
+        purchase_lines.amount,
+        (purchase_lines.amount * coalesce(purchases.exchange_rate, 1)) as converted_amount,
+        coalesce(purchase_lines.account_expense_account_id, items.parent_expense_account_id, items.expense_account_id) as payed_to_account_id,
+        purchases.account_id as paid_from_account_id,
+        case when coalesce(purchases.credit, false) = true then 'debit' else 'credit' end as paid_from_transaction_type,
+        case when coalesce(purchases.credit, false) = true then 'credit' else 'debit' end as paid_to_transaction_type,
+        purchases.customer_id,
+        coalesce(purchase_lines.item_expense_class_id, purchase_lines.account_expense_class_id) as class_id,
+        purchases.vendor_id,
+        purchases.department_id,
+        purchases.created_at,
+        purchases.updated_at
+    from purchase_tax_lines
+    inner join purchases
+        on purchases.purchase_id = purchase_tax_lines.purchase_id
+        and purchases.source_relation = purchase_tax_lines.source_relation
+    inner join purchase_lines
+        on purchases.purchase_id = purchase_lines.purchase_id
+        and purchases.source_relation = purchase_lines.source_relation
+    left join items
+        on purchase_lines.item_expense_item_id = items.item_id
+        and purchase_lines.source_relation = items.source_relation
+   {% endif %}
 ),
 
 final as (
