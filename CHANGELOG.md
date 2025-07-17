@@ -30,19 +30,19 @@
   - `int_quickbooks__purchase_double_entry`
   - `int_quickbooks__refund_receipt_double_entry`
   - `int_quickbooks__sales_receipt_double_entry`
-- For all but the `int_quickbooks__purchase_double_entry` model, we created logic to the account for each invoice tax line to the tax agency associated with an account. We provide fallbacks to the 'Sales Tax Payable' and 'Global Tax Payable' accounts if needed. 
--
-- Created equivalent double entry line for a tax item that associates with the invoice's existing Accounts Receivable account. 
+- For all but the `int_quickbooks__purchase_double_entry` model, we created logic to the account for each invoice tax line to the tax agency associated with an account.
+  - We provide fallbacks to the 'Sales Tax Payable' and 'Global Tax Payable' accounts if needed. 
+  - Created equivalent double entry line for a tax item that associates with the invoice's existing Accounts Receivable account. 
 - To avoid uniqueness issues with line items, we increased the tax line `index` in each double entry model by 10000.
-  - Created enable/disable variables for each model, which are all disabled by default.
+- Created enable/disable variables to map to each of the new source tables and their downstream dependencies, which are all disabled by default; [see the README](https://github.com/fivetran/dbt_quickbooks_source/blob/main/README.md#step-4-enablingdisabling-models) for more details about how to configure these variables.
 
 ## Under the Hood
 - Updated `quickstart.yml` with the new variables for each new table to enable/disable based on the whether the source tables are being utilized.
 - Created new seed files for the above source tables to test and validate new models work as expected.
 - Updated `run_models.sh` to execute for when the new variables are disabled. 
+- Removed redundant default variable configs from the `dbt_project.yml`.
 
 ## Documentation Update
-- Updated README with instructions on how to disable/enable the new variables we created in this release. 
 - Updated maintainer pull request template.
 
 # dbt_quickbooks v0.20.1

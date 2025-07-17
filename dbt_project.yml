@@ -63,22 +63,6 @@ vars:
     financial_statement_ordinal: []
     cash_flow_statement_type_ordinal: []
 
-    using_address: true
-    using_bill: true
-    using_credit_memo: true
-    using_department: true
-    using_deposit: true
-    using_estimate: true
-    using_invoice: true
-    using_invoice_bundle: true
-    using_journal_entry: true
-    using_payment: true
-    using_refund_receipt: true
-    using_transfer: true
-    using_vendor_credit: true
-    using_sales_receipt: true
-    using_credit_card_payment_txn: false
-
 analysis-paths: ["analysis"]
 clean-targets:
 - target

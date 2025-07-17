@@ -112,16 +112,41 @@ seeds:
       +column_types:
         due_date: date
         transaction_date: date
+    invoice_tax_line_data:
+      +column_types:
+        amount: float
+        net_amount_taxable: float
+        override_delta_amount: float
+        tax_inclusive_amount: float
+        tax_percent: float
     journal_entry_data:
       +column_types:
-        transaction_date: date
+        transaction_date: date 
+        total_amount: float
+        exchange_rate: float
+        total_tax: float
+    journal_entry_tax_line_data:
+      +column_types:
+        amount: float
+        net_amount_taxable: float
+        override_delta_amount: float
+        tax_inclusive_amount: float
+        tax_percent: float
     payment_data:
       +column_types:
+        credit: "{{ 'boolean' if target.name in ('snowflake', 'spark', 'databricks') else 'bool' }}"
         transaction_date: date
     purchase_line_data:
       +column_types:
         item_expense_billable_status: "{{ 'varchar(100)' if target.name in ('redshift', 'postgres') else 'string' }}"
         account_expense_account_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
+    purchase_tax_line_data:
+      +column_types:
+        amount: float
+        net_amount_taxable: float
+        override_delta_amount: float
+        tax_inclusive_amount: float
+        tax_percent: float
     purchase_data:
       +column_types:
         credit: "{{ 'boolean' if target.name in ('snowflake', 'spark', 'databricks') else 'bool' }}"
@@ -133,9 +158,23 @@ seeds:
     refund_receipt_data:
       +column_types:
         transaction_date: date
+    refund_receipt_tax_line_data:
+      +column_types:
+        amount: float
+        net_amount_taxable: float
+        override_delta_amount: float
+        tax_inclusive_amount: float
+        tax_percent: float
     sales_receipt_data:
       +column_types:
         transaction_date: date
+    sales_receipt_tax_line_data:
+      +column_types:
+        amount: float
+        net_amount_taxable: float
+        override_delta_amount: float
+        tax_inclusive_amount: float
+        tax_percent: float
     transfer_data:
       +column_types:
         transaction_date: date
