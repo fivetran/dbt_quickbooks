@@ -41,8 +41,8 @@ table_variables:
   using_payment:
     - payment_line
     - payment
-  using_payment_tax_line:
-    - payment_tax_line
+  using_purchase_tax_line:
+    - purchase_tax_line
   using_refund_receipt:
     - refund_receipt_line
     - refund_receipt
