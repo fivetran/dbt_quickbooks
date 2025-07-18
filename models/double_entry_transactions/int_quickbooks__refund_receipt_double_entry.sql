@@ -149,7 +149,7 @@ refund_receipt_join as (
 
     where coalesce(refund_receipt_lines.discount_account_id, refund_receipt_lines.sales_item_account_id, refund_receipt_lines.sales_item_item_id) is not null
 
-    {% if var('using_sales_receipt_tax_line', False) and var('using_tax_rate', False) and var('using_tax_agency', False) %}
+    {% if var('using_refund_receipt_tax_line', False) and var('using_tax_rate', False) and var('using_tax_agency', False) %}
     union all
 
     select
@@ -168,12 +168,12 @@ refund_receipt_join as (
         refund_receipts.updated_at
     from refund_receipt_tax_lines
     inner join refund_receipts 
-        on refund_receipt_tax_lines.refund_receipt_id = refund_receipts.refund_receipt_id
+        on refund_receipt_tax_lines.refund_receipt_id = refund_receipts.refund_id
         and refund_receipt_tax_lines.source_relation = refund_receipts.source_relation
     
     left join tax_rates
-        on sales_receipt_tax_lines.tax_rate_id = tax_rates.tax_rate_id
-        and sales_receipt_tax_lines.source_relation = tax_rates.source_relation
+        on refund_receipt_tax_lines.tax_rate_id = tax_rates.tax_rate_id
+        and refund_receipt_tax_lines.source_relation = tax_rates.source_relation
     
     left join tax_account_join
         on tax_rates.tax_agency_id = tax_account_join.tax_agency_id

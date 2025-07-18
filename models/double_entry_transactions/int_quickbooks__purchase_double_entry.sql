@@ -17,7 +17,7 @@ purchase_lines as (
 
 purchase_tax_lines as (
 
-    select refund_receipt_id,
+    select purchase_id,
         source_relation,
         index + 10000 as index,
         tax_rate_id,
@@ -48,7 +48,7 @@ purchase_join as (
         purchases.transaction_date,
         purchase_lines.amount,
         (purchase_lines.amount * coalesce(purchases.exchange_rate, 1)) as converted_amount,
-        coalesce(purchase_lines.account_expense_account_id, items.parent_expense_account_id, items.expense_account_id) as payed_to_account_id,
+        coalesce(purchase_lines.account_expense_account_id, items.parent_expense_account_id, items.expense_account_id) as paid_to_account_id,
         purchases.account_id as paid_from_account_id,
         case when coalesce(purchases.credit, false) = true then 'debit' else 'credit' end as paid_from_transaction_type,
         case when coalesce(purchases.credit, false) = true then 'credit' else 'debit' end as paid_to_transaction_type,
@@ -78,7 +78,7 @@ purchase_join as (
         purchases.transaction_date,
         purchase_lines.amount,
         (purchase_lines.amount * coalesce(purchases.exchange_rate, 1)) as converted_amount,
-        coalesce(purchase_lines.account_expense_account_id, items.parent_expense_account_id, items.expense_account_id) as payed_to_account_id,
+        coalesce(purchase_lines.account_expense_account_id, items.parent_expense_account_id, items.expense_account_id) as paid_to_account_id,
         purchases.account_id as paid_from_account_id,
         case when coalesce(purchases.credit, false) = true then 'debit' else 'credit' end as paid_from_transaction_type,
         case when coalesce(purchases.credit, false) = true then 'credit' else 'debit' end as paid_to_transaction_type,
@@ -112,12 +112,12 @@ final as (
         vendor_id,
         amount,
         converted_amount,
-        payed_from_account_id as account_id,
+        paid_from_account_id as account_id,
         class_id,
         department_id,
         created_at,
         updated_at,
-        payed_from_transaction_type as transaction_type,
+        paid_from_transaction_type as transaction_type,
         'purchase' as transaction_source
     from purchase_join
 
@@ -132,12 +132,12 @@ final as (
         vendor_id,
         amount,
         converted_amount,
-        payed_to_account_id as account_id,
+        paid_to_account_id as account_id,
         class_id,
         department_id,
         created_at,
         updated_at,
-        payed_to_transaction_type as transaction_type,
+        paid_to_transaction_type as transaction_type,
         'purchase' as transaction_source
     from purchase_join
 )

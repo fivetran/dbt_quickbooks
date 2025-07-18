@@ -83,7 +83,7 @@ sales_tax_account as (
         account_id,
         source_relation
     from accounts
-    where name = '{{ var('quickbooks__sales_tax_account_reference', 'Sales Tax Payable') }}'
+    where name = '{{ var('quickbooks__sales_tax_account', 'Sales Tax Payable') }}'
         and is_active
 ),
 
@@ -93,8 +93,8 @@ global_tax_account as (
         account_id,
         source_relation
     from accounts
-    where name = '{{ var('quickbooks__global_tax_account_reference', 'Global Tax Payable') }}'
-        and is_active 
+    where name = '{{ var('quickbooks__global_tax_account', 'Sales Tax Payable') }}'
+        and is_active
 ),
 
 {% if var('using_tax_agency', False) %}
@@ -115,7 +115,6 @@ tax_account_join as (
         and tax_agencies.source_relation = liability_accounts.source_relation
     left join sales_tax_account
         on tax_agencies.source_relation = sales_tax_account.source_relation
-
     left join global_tax_account
         on tax_agencies.source_relation = global_tax_account.source_relation
 ),
