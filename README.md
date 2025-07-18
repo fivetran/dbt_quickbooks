@@ -76,7 +76,7 @@ Include the following QuickBooks package version in your `packages.yml` file.
 ```yaml
 packages:
   - package: fivetran/quickbooks
-    version: [">=0.20.0", "<0.21.0"] # we recommend using ranges to capture non-breaking changes automatically
+    version: 0.21.0-a1 # we recommend using ranges to capture non-breaking changes automatically
 ```
 
 Do NOT include the `quickbooks_source` package in this file. The transformation package itself has a dependency on it and will install the source package as well.
@@ -114,6 +114,14 @@ vars:
   using_sales_receipt: false # disable if you don't have sales receipts in QuickBooks
   using_credit_card_payment_txn: true # enable if you want to include credit card payment transactions in your staging models
   using_purchase_order: true #enable if you want to include purchase orders in your staging models
+  using_invoice_tax_line: true #enable if you have invoice tax lines in QuickBooks
+  using_journal_entry_tax_line: true # enable if you have journal entry tax lines in QuickBooks
+  using_purchase_tax_line: true # enable if you have purchase tax lines in QuickBooks
+  using_refund_receipt_tax_line: true # enable if you have refund receipt tax lines in QuickBooks
+  using_sales_receipt_tax_line: true # enable if you have sales receipt tax lines in QuickBooks
+  using_tax_agency: true #enable if you have tax agencies in QuickBooks
+  using_tax_code: true #enable if you have tax codes in QuickBooks
+  using_tax_rate: true #enable if you have tax rates in QuickBooks
 ```
 
 ### (Optional) Step 5: Additional Configurations
@@ -230,7 +238,7 @@ This dbt package is dependent on the following dbt packages. These dependencies 
 ```yml
 packages:
     - package: fivetran/quickbooks_source
-      version: [">=0.13.0", "<0.14.0"]
+      version: 0.14.0-a1
 
     - package: fivetran/fivetran_utils
       version: [">=0.4.0", "<0.5.0"]

@@ -1,3 +1,50 @@
+# dbt_quickbooks v0.21.0-a1
+[PR #166](https://github.com/fivetran/dbt_quickbooks/pull/166) is a pre-release that introduces the following updates. 
+
+## Schema Updates
+**16 new models -- 16 potential breaking changes**
+
+| Data Model                                                                                                                                               | Change Type | Old Name                     | New Name                                             | Notes                                                                                    |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- | ---------------------------- | ---------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| `stg_quickbooks__invoice_tax_line`             |  New Staging Model |   |          | Source: `invoice_tax_line` table.    |
+| `stg_quickbooks__journal_entry_tax_line`             |  New Staging Model |   |          | Source: `journal_entry_tax_line` table.    |
+| `stg_quickbooks__purchase_tax_line`             |  New Staging Model |   |          | Source: `purchase_tax_line` table.    |
+| `stg_quickbooks__refund_receipt_tax_line`             |  New Staging Model |   |          | Source: `refund_receipt_tax_line` table.    |
+| `stg_quickbooks__sales_receipt_tax_line`             |  New Staging Model |   |          | Source: `sales_receipt_tax_line` table.    |
+| `stg_quickbooks__tax_agency`                  | New Staging Model |   |          | Source: `tax_agency`  table.     |
+| `stg_quickbooks__tax_code`                     | New Staging Model |   |          | Source: `tax_code` table.    |
+| `stg_quickbooks__tax_rate`                  | New Staging Model |   |          | Source: `tax_rate`  table.     |
+| `stg_quickbooks__invoice_tax_line_tmp`             |  New Temp Model |   |          | Source: `invoice_tax_line` table.    |
+| `stg_quickbooks__journal_entry_tax_line_tmp`             |  New Temp Model |   |          | Source: `journal_entry_tax_line` table.    |
+| `stg_quickbooks__purchase_tax_line_tmp`             |  New Temp Model |   |          | Source: `purchase_tax_line` table.    |
+| `stg_quickbooks__refund_receipt_tax_line_tmp`             |  New Temp Model |   |          | Source: `refund_receipt_tax_line` table.    |
+| `stg_quickbooks__sales_receipt_tax_line_tmp`             |  New Temp Model |   |          | Source: `sales_receipt_tax_line` table.    |
+| `stg_quickbooks__tax_agency_tmp`                  | New Temp Model |   |          | Source: `tax_agency`  table.     |
+| `stg_quickbooks__tax_code_tmp`                     | New Temp Model |   |          | Source: `tax_code` table.    |
+| `stg_quickbooks__tax_rate_tmp`                  | New Temp Model |   |          | Source: `tax_rate`  table.     |
+
+## Breaking Changes
+- This update incorporates tax lines into the following double entry models: 
+  - `int_quickbooks__invoice_double_entry` 
+  - `int_quickbooks__journal_entry_double_entry`
+  - `int_quickbooks__purchase_double_entry`
+  - `int_quickbooks__refund_receipt_double_entry`
+  - `int_quickbooks__sales_receipt_double_entry`
+- For all but the `int_quickbooks__purchase_double_entry` model, we created logic to the account for each invoice tax line to the tax agency associated with an account.
+  - We provide fallbacks to the 'Sales Tax Payable' and 'Global Tax Payable' accounts if needed. 
+  - Created equivalent double entry line for a tax item that associates with the invoice's existing Accounts Receivable account. 
+- To avoid uniqueness issues with line items, we increased the tax line `index` in each double entry model by 10000.
+- Created enable/disable variables to map to each of the new source tables and their downstream dependencies, which are all disabled by default; [see the README](https://github.com/fivetran/dbt_quickbooks_source/blob/main/README.md#step-4-enablingdisabling-models) for more details about how to configure these variables.
+
+## Under the Hood
+- Updated `quickstart.yml` with the new variables for each new table to enable/disable based on the whether the source tables are being utilized.
+- Created new seed files for the above source tables to test and validate new models work as expected.
+- Updated `run_models.sh` to execute for when the new variables are disabled. 
+- Removed redundant default variable configs from the `dbt_project.yml`.
+
+## Documentation Update
+- Updated maintainer pull request template.
+
 # dbt_quickbooks v0.20.1
 [PR #169](https://github.com/fivetran/dbt_quickbooks/pull/169) includes the following updates:
 
