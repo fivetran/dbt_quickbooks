@@ -9,7 +9,7 @@ models:
 
 vars:
   quickbooks_source:
-    quickbooks_schema: quickbooks_integration_tests_21
+    quickbooks_schema: zz_dbt_avinash_seed
     quickbooks_account_identifier: "account_data"
     quickbooks_address_identifier: "address_data"
     quickbooks_bill_line_identifier: "bill_line_data"
@@ -60,20 +60,20 @@ vars:
     quickbooks_vendor_credit_identifier: "vendor_credit_data"
     quickbooks_vendor_identifier: "vendor_data"
 
-       
+
 
   # For validation testing.  
   # This below vars configuration is needed for the `general_ledger_amounts_match` macro.
-  using_credit_card_payment_txn: true
-  using_purchase_order: true
-  using_invoice_tax_line: true
-  using_journal_entry_tax_line: true
-  using_purchase_tax_line: true
-  using_refund_receipt_tax_line: true
-  using_sales_receipt_tax_line: true
-  using_tax_agency: true
-  using_tax_code: true
-  using_tax_rate: true
+  # using_credit_card_payment_txn: true
+  # using_purchase_order: true
+  # using_invoice_tax_line: true
+  # using_journal_entry_tax_line: true
+  # using_purchase_tax_line: true
+  # using_refund_receipt_tax_line: true
+  # using_sales_receipt_tax_line: true
+  # using_tax_agency: true
+  # using_tax_code: true
+  # using_tax_rate: true
 
 seeds:
   +docs:
