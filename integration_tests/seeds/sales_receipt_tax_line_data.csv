@@ -1,0 +1,6 @@
+sales_receipt_id,index,amount,net_amount_taxable,override_delta_amount,percent_based,tax_inclusive_amount,tax_percent,tax_rate_id,_fivetran_deleted,_fivetran_synced
+203,0,5.00,100.00,,true,105.00,5.00,tax_rate_1,false,2020-12-30 15:17:11
+207,0,10.00,200.00,,true,210.00,5.00,tax_rate_1,false,2020-12-30 15:17:11
+211,0,7.25,145.00,,true,152.25,5.00,tax_rate_2,false,2020-12-30 15:17:11
+215,0,15.00,300.00,,true,315.00,5.00,tax_rate_1,false,2020-12-30 15:17:11
+219,0,0.00,0.00,,false,0.00,0.00,,false,2020-12-30 15:17:11

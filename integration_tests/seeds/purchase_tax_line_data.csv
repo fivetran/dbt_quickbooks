@@ -1,0 +1,5 @@
+purchase_id,index,amount,net_amount_taxable,override_delta_amount,percent_based,tax_inclusive_amount,tax_percent,tax_rate_id,_fivetran_synced
+107,0,6.25,100.00,,true,106.25,6.25,tax_rate_NY,2020-12-30 15:02:20
+101,0,4.00,80.00,,true,84.00,5.00,tax_rate_CA,2020-12-30 15:02:20
+103,0,9.00,150.00,,true,159.00,6.00,tax_rate_TX,2020-12-30 15:02:20
+232,0,7.50,120.00,,true,127.50,6.25,tax_rate_NY,2020-09-01 21:02:33
