@@ -48,7 +48,6 @@ vars:
     quickbooks_sales_receipt_line_identifier: "sales_receipt_line_data"
     quickbooks_sales_receipt_identifier: "sales_receipt_data"
     quickbooks_tax_agency_identifier: "tax_agency_data"
-    quickbooks_tax_code_identifier: "tax_code_data"
     quickbooks_tax_rate_identifier: "tax_rate_data"
     quickbooks_transfer_identifier: "transfer_data"
     quickbooks_vendor_credit_line_identifier: "vendor_credit_line_data"
@@ -56,9 +55,11 @@ vars:
     quickbooks_vendor_identifier: "vendor_data"
 
 
-  # For validation testing.  
+  # For validation testing and docs generation.  
   # This below vars configuration is needed for the `general_ledger_amounts_match` macro.
-  # using_credit_card_payment_txn: true
+  # using_credit_card_payment_txn: true # @docs-include
+  # using_tax_agency: true # @docs-include
+  # using_tax_rate: true # @docs-include
 
 seeds:
   +docs:
