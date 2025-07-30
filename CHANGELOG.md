@@ -44,9 +44,8 @@
 ## Documentation Update
 - Updated maintainer pull request template.
 
-### Under the Hood - July 2025 Updates
 [PR #170](https://github.com/fivetran/dbt_quickbooks/pull/170) is incorporated into this pre-release and includes the following updates:
-
+### Under the Hood - July 2025 Updates
 - Updated conditions in `.github/workflows/auto-release.yml`.
 - Added `.github/workflows/generate-docs.yml`.
 - Added `+docs: show: False` to `integration_tests/dbt_project.yml`.
