@@ -44,6 +44,15 @@
 ## Documentation Update
 - Updated maintainer pull request template.
 
+### Under the Hood - July 2025 Updates
+[PR #170](https://github.com/fivetran/dbt_quickbooks/pull/170) is incorporated into this pre-release and includes the following updates:
+- Updated conditions in `.github/workflows/auto-release.yml`.
+- Added `.github/workflows/generate-docs.yml`.
+- Added `+docs: show: False` to `integration_tests/dbt_project.yml`.
+- Migrated `flags` (e.g., `send_anonymous_usage_stats`, `use_colors`) from `sample.profiles.yml` to `integration_tests/dbt_project.yml`.
+- Updated `maintainer_pull_request_template.md` with improved checklist.
+- Updated `.gitignore` to exclude additional DBT, Python, and system artifacts.
+
 # dbt_quickbooks v0.20.1
 [PR #169](https://github.com/fivetran/dbt_quickbooks/pull/169) includes the following updates:
 

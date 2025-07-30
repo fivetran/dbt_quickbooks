@@ -81,7 +81,6 @@ packages:
 
 Do NOT include the `quickbooks_source` package in this file. The transformation package itself has a dependency on it and will install the source package as well.
 
-
 ### Step 3: Define database and schema variables
 By default, this package runs using your destination and the `quickbooks` schema of your [target database](https://docs.getdbt.com/docs/running-a-dbt-project/using-the-command-line-interface/configure-your-profile). If this is not where your QuickBooks data is (for example, if your QuickBooks schema is named `quickbooks_fivetran`), add the following configuration to your root `dbt_project.yml` file:
 
@@ -180,12 +179,12 @@ These are our recommended best practices to follow with your seed file--you can 
 
 ### Customize the account ordering of your financial models. 
 [The current default numbering for ordinals](https://github.com/fivetran/dbt_quickbooks/blob/main/models/quickbooks__general_ledger_by_period.sql#L44-L50) is based on best practices for balance sheets and profit-and-loss statements in accounting. You can see these ordinals in action in the `quickbooks__general_ledger_by_period`, `quickbooks__balance_sheet` and `quickbooks__profit_and_loss` models. The ordinals are assigned off of the `account_class` values.
- 
+
 If you'd like to modify this, take the following steps:
 
 1) Import a csv with fields into root (not the dbt package) `seeds` folder, then configure the `financial_statement_ordinal` variable in your `dbt_project.yml` to reference the seed file name. 
 - For example, if you created a seed file named `quickbooks_ordinals.csv`, then you would edit the `financial_statement_ordinal` in your root `dbt_project.yml` as such.
- 
+
   ```yml
 vars:
      financial_statement_ordinal: "{{ ref('quickbooks_ordinals') }}"
@@ -218,7 +217,7 @@ models:
 #### Change the source table references
 If an individual source table has a different name than the package expects, add the table name as it appears in your destination to the respective variable:
 > IMPORTANT: See this project's [`dbt_project.yml`](https://github.com/fivetran/dbt_quickbooks_source/blob/main/dbt_project.yml) variable declarations to see the expected names.
-    
+
 ```yml
 vars:
     quickbooks_<default_source_table_name>_identifier: your_table_name 
@@ -227,7 +226,6 @@ vars:
 ### (Optional) Step 6: Orchestrate your models with Fivetran Transformations for dbt Core™
 
 Fivetran offers the ability for you to orchestrate your dbt project through [Fivetran Transformations for dbt Core™](https://fivetran.com/docs/transformations/dbt). Learn how to set up your project for orchestration through Fivetran in our [Transformations for dbt Core setup guides](https://fivetran.com/docs/transformations/dbt#setupguide).
-
 
 ### (Optional) Step 7: Validate your data
 After running the models within this package, you may want to compare the baseline financial statement totals from the data provided against what you expect. You can make use of the [analysis functionality of dbt](https://docs.getdbt.com/docs/building-a-dbt-project/analyses/) and run pre-written SQL to test these values. The SQL files within the [analysis](https://github.com/fivetran/dbt_quickbooks/blob/master/analysis) folder contain SQL queries you may compile to generate balance sheet and income statement values. You can then tie these generated values to your expected ones and confirm the values provided in this package are accurate.
