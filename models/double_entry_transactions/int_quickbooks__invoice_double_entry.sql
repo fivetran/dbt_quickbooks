@@ -159,8 +159,9 @@ global_tax_account as (
         and is_active 
 ),
 
-{% if var('using_tax_agency', False) %}
 tax_account_join as (
+
+    {% if var('using_tax_agency', False) %}
 
     select 
         tax_agencies.tax_agency_id,
@@ -169,19 +170,30 @@ tax_account_join as (
         coalesce(liability_accounts.source_relation, sales_tax_account.source_relation, global_tax_account.source_relation) as source_relation
 
     from tax_agencies
-    
+
     left join liability_accounts
-        on {{ dbt.concat([
-            "tax_agencies.display_name", 
-            "' Payable'"]) }} = liability_accounts.name
+        on {{ dbt.concat(["tax_agencies.display_name", "' Payable'"]) }} = liability_accounts.name
         and tax_agencies.source_relation = liability_accounts.source_relation
+
     left join sales_tax_account
         on tax_agencies.source_relation = sales_tax_account.source_relation
 
     left join global_tax_account
         on tax_agencies.source_relation = global_tax_account.source_relation
+
+    {% else %}
+
+    -- Fallback mapping for when tax_agency is disabled
+    select
+        coalesce(sales_tax_account.account_id, global_tax_account.account_id) as account_id,
+        coalesce(sales_tax_account.source_relation, global_tax_account.source_relation) as source_relation
+    from sales_tax_account
+    full outer join global_tax_account
+        on sales_tax_account.source_relation = global_tax_account.source_relation
+
+    {% endif %}
+
 ),
-{% endif %}
 
 invoice_join as (
 
@@ -241,7 +253,7 @@ invoice_join as (
 
     {% endif %}
 
-    {% if var('using_invoice_tax_line', False) and var('using_tax_rate', False) and var('using_tax_agency', False) %}
+    {% if var('using_invoice_tax_line', True) %}
     union all
 
     select 
@@ -253,7 +265,7 @@ invoice_join as (
         (invoice_tax_lines.amount * coalesce(invoices.exchange_rate, 1)) as converted_amount,
         'TaxLineDetail' as invoice_line_transaction_type,
         tax_account_join.account_id,
-        cast(null as {{ dbt.type_string() }}) as class_id,
+        invoices.class_id,
         invoices.customer_id,
         invoices.department_id,
         invoices.created_at,
@@ -263,14 +275,19 @@ invoice_join as (
         on invoice_tax_lines.invoice_id = invoices.invoice_id
         and invoice_tax_lines.source_relation = invoices.source_relation 
 
+    {% if var('using_tax_rate', False) %}
     left join tax_rates
         on invoice_tax_lines.tax_rate_id = tax_rates.tax_rate_id
         and invoice_tax_lines.source_relation = tax_rates.source_relation
+    {% endif %}
 
-    left join tax_account_join
+    left join tax_account_join  
+        {% if var('using_tax_rate', False) and var('using_tax_agency', False) %}
         on tax_rates.tax_agency_id = tax_account_join.tax_agency_id
         and tax_rates.source_relation = tax_account_join.source_relation
-    
+        {% else %}
+        on invoice_tax_lines.source_relation = tax_account_join.source_relation
+        {% endif %}
     {% endif %}
 ),
 

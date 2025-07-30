@@ -9,7 +9,7 @@ models:
 
 vars:
   quickbooks_source:
-    quickbooks_schema: zz_dbt_avinash_seed
+    quickbooks_schema: quickbooks_integration_tests_21
     quickbooks_account_identifier: "account_data"
     quickbooks_address_identifier: "address_data"
     quickbooks_bill_line_identifier: "bill_line_data"
@@ -37,7 +37,6 @@ vars:
     quickbooks_journal_entry_line_identifier: "journal_entry_line_data"
     quickbooks_journal_entry_identifier: "journal_entry_data"
     quickbooks_journal_entry_tax_line_identifier: "journal_entry_tax_line_data"
-
     quickbooks_payment_identifier: "payment_data"
     quickbooks_payment_line_identifier: "payment_line_data"
     quickbooks_purchase_line_identifier: "purchase_line_data"
@@ -53,27 +52,24 @@ vars:
     quickbooks_sales_receipt_identifier: "sales_receipt_data"
     quickbooks_sales_receipt_tax_line_identifier: "sales_receipt_tax_line_data"
     quickbooks_tax_agency_identifier: "tax_agency_data"
-    quickbooks_tax_code_identifier: "tax_code_data"
     quickbooks_tax_rate_identifier: "tax_rate_data"
     quickbooks_transfer_identifier: "transfer_data"
     quickbooks_vendor_credit_line_identifier: "vendor_credit_line_data"
     quickbooks_vendor_credit_identifier: "vendor_credit_data"
     quickbooks_vendor_identifier: "vendor_data"
 
-
-
-  # For validation testing.  
+  # For validation testing and docs generation. 
   # This below vars configuration is needed for the `general_ledger_amounts_match` macro.
-  # using_credit_card_payment_txn: true
-  # using_purchase_order: true
-  # using_invoice_tax_line: true
-  # using_journal_entry_tax_line: true
-  # using_purchase_tax_line: true
-  # using_refund_receipt_tax_line: true
-  # using_sales_receipt_tax_line: true
-  # using_tax_agency: true
-  # using_tax_code: true
-  # using_tax_rate: true
+  # using_credit_card_payment_txn: true # @docs-include
+  # using_purchase_order: true  # @docs-include
+  # using_invoice_tax_line: true  # @docs-include
+  # using_journal_entry_tax_line: true  # @docs-include
+  # using_purchase_tax_line: true  # @docs-include
+  # using_refund_receipt_tax_line: true  # @docs-include
+  # using_sales_receipt_tax_line: true  # @docs-include
+  # using_tax_agency: true  # @docs-include
+  # using_tax_code: true  # @docs-include
+  # using_tax_rate: true  # @docs-include 
 
 seeds:
   +docs:

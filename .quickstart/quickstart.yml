@@ -52,8 +52,6 @@ table_variables:
     - sales_receipt_tax_line
   using_tax_agency:
     - tax_agency
-  using_tax_code:
-    - tax_code
   using_tax_rate:
     - tax_rate
   using_transfer:

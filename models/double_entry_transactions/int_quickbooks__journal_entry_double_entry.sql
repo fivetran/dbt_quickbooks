@@ -84,8 +84,9 @@ global_tax_account as (
         and is_active 
 ),
 
-{% if var('using_tax_agency', False) %}
 tax_account_join as (
+
+    {% if var('using_tax_agency', False) %}
 
     select 
         tax_agencies.tax_agency_id,
@@ -105,8 +106,19 @@ tax_account_join as (
 
     left join global_tax_account
         on tax_agencies.source_relation = global_tax_account.source_relation
-),
-{% endif %}
+
+    {% else %}
+
+    -- Fallback mapping for when tax_agency is disabled
+    select
+        coalesce(sales_tax_account.account_id, global_tax_account.account_id) as account_id,
+        coalesce(sales_tax_account.source_relation, global_tax_account.source_relation) as source_relation
+    from sales_tax_account
+    full outer join global_tax_account
+        on sales_tax_account.source_relation = global_tax_account.source_relation
+
+    {% endif %}
+), 
 
 final as (
 
@@ -159,13 +171,19 @@ final as (
         on journal_entries.journal_entry_id = journal_entry_tax_lines.journal_entry_id
         and journal_entries.source_relation = journal_entry_tax_lines.source_relation
 
+    {% if var('using_tax_rate', False) %}
     left join tax_rates
         on journal_entry_tax_lines.tax_rate_id = tax_rates.tax_rate_id
         and journal_entry_tax_lines.source_relation = tax_rates.source_relation
+    {% endif %}
 
     left join tax_account_join
+        {% if var('using_tax_rate', False) and var('using_tax_agency', False) %}
         on tax_rates.tax_agency_id = tax_account_join.tax_agency_id
         and tax_rates.source_relation = tax_account_join.source_relation
+        {% else %}
+        on journal_entry_tax_lines.source_relation = tax_account_join.source_relation
+        {% endif %}
     where journal_entry_tax_lines.amount is not null
     {% endif %}
 )

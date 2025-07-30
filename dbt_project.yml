@@ -53,7 +53,6 @@ vars:
     sales_receipt_line: "{{ ref('stg_quickbooks__sales_receipt_line') }}"
     sales_receipt: "{{ ref('stg_quickbooks__sales_receipt') }}"
     tax_agency: "{{ ref('stg_quickbooks__tax_agency') }}"
-    tax_code: "{{ ref('stg_quickbooks__tax_code') }}"
     tax_rate: "{{ ref('stg_quickbooks__tax_rate') }}"
     transfer: "{{ ref('stg_quickbooks__transfer') }}"
     vendor_credit_line: "{{ ref('stg_quickbooks__vendor_credit_line') }}"

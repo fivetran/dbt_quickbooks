@@ -97,9 +97,10 @@ global_tax_account as (
         and is_active
 ),
 
-{% if var('using_tax_agency', False) %}
+
 tax_account_join as (
 
+    {% if var('using_tax_agency', False) %}
     select 
         tax_agencies.tax_agency_id,
         tax_agencies.display_name,
@@ -117,8 +118,17 @@ tax_account_join as (
         on tax_agencies.source_relation = sales_tax_account.source_relation
     left join global_tax_account
         on tax_agencies.source_relation = global_tax_account.source_relation
-),
-{% endif %}
+
+    {% else %}
+    -- Fallback mapping for when tax_agency is disabled
+    select
+        coalesce(sales_tax_account.account_id, global_tax_account.account_id) as account_id,
+        coalesce(sales_tax_account.source_relation, global_tax_account.source_relation) as source_relation
+    from sales_tax_account
+    full outer join global_tax_account
+        on sales_tax_account.source_relation = global_tax_account.source_relation
+    {% endif %}
+), 
 
 sales_receipt_join as (
 
@@ -156,7 +166,7 @@ sales_receipt_join as (
 
     where coalesce(sales_receipt_lines.discount_account_id, sales_receipt_lines.sales_item_account_id, sales_receipt_lines.sales_item_item_id) is not null
 
-    {% if var('using_sales_receipt_tax_line', False) and var('using_tax_rate', False) and var('using_tax_agency', False) %}
+    {% if var('using_sales_receipt_tax_line', False) %}
     union all
 
     select
@@ -178,13 +188,20 @@ sales_receipt_join as (
         on sales_receipt_tax_lines.sales_receipt_id = sales_receipts.sales_receipt_id
         and sales_receipt_tax_lines.source_relation = sales_receipts.source_relation
     
+    {% if var('using_tax_rate', False) %}
     left join tax_rates
         on sales_receipt_tax_lines.tax_rate_id = tax_rates.tax_rate_id
         and sales_receipt_tax_lines.source_relation = tax_rates.source_relation
-    
-    left join tax_account_join
+    {% endif %}
+
+    left join tax_account_join  
+        {% if var('using_tax_rate', False) and var('using_tax_agency', False) %}
         on tax_rates.tax_agency_id = tax_account_join.tax_agency_id
         and tax_rates.source_relation = tax_account_join.source_relation
+
+        {% else %}
+        on sales_receipt_tax_lines.source_relation = tax_account_join.source_relation
+        {% endif %}
     {% endif %}
 ),
 
