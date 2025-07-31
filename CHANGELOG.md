@@ -41,10 +41,8 @@
 - Updated `run_models.sh` to execute for when the new variables are enabled. 
 - Removed redundant default variable configs from the `dbt_project.yml`. 
 
-## Documentation Update
-- Updated maintainer pull request template.
+[PR #170](https://github.com/fivetran/dbt_quickbooks/pull/170) includes the following updates:
 
-[PR #170](https://github.com/fivetran/dbt_quickbooks/pull/170) is incorporated into this pre-release and includes the following updates:
 ### Under the Hood - July 2025 Updates
 - Updated conditions in `.github/workflows/auto-release.yml`.
 - Added `.github/workflows/generate-docs.yml`.

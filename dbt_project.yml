@@ -82,9 +82,6 @@ vars:
     using_sales_receipt_tax_line: false
     using_refund_receipt_tax_line: false
     using_invoice_tax_line: false
-    using_tax_agency: false
-    using_tax_code: false
-    using_tax_rate: false
 
 analysis-paths: ["analysis"]
 clean-targets:
