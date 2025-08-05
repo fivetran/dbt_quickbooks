@@ -29,17 +29,18 @@ items as (
         and item.source_relation = parent.source_relation
 ),
 
-accounts as (
+    accounts as (
 
-    select *
-    from {{ ref('stg_quickbooks__account') }}
-),
+        select *
+        from {{ ref('stg_quickbooks__account') }}
+    ),
 
 {% if var('using_invoice_tax_line', False) %}
 
 invoice_tax_lines as (
 
-    select invoice_id,
+    select 
+        invoice_id,
         source_relation,
         index + 10000 as index,
         tax_rate_id,

@@ -17,17 +17,12 @@ refund_receipt_lines as (
     from {{ ref('stg_quickbooks__refund_receipt_line') }}
 ),
 
-accounts as (
-
-    select *
-    from {{ ref('stg_quickbooks__account') }}
-),
-
 {% if var('using_refund_receipt_tax_line', False) %}
 
 refund_receipt_tax_lines as (
 
-    select refund_receipt_id,
+    select 
+        refund_receipt_id,
         source_relation,
         index + 10000 as index,
         tax_rate_id,
@@ -35,36 +30,12 @@ refund_receipt_tax_lines as (
         tax_percent
     from {{ ref('stg_quickbooks__refund_receipt_tax_line') }}
 ),
-{% endif %}
 
-{% if var('using_tax_agency', False) %}
-tax_agencies as (
+accounts as (
 
     select *
-    from {{ ref('stg_quickbooks__tax_agency') }}
+    from {{ ref('stg_quickbooks__account') }}
 ),
-{% endif %}
-
-{% if var('using_tax_rate', False) %}
-tax_rates as (
-
-    select *
-    from {{ ref('stg_quickbooks__tax_rate') }}
-),
-{% endif %}
-
-items as (
-
-    select
-        item.*,
-        parent.income_account_id as parent_income_account_id
-    from {{ ref('stg_quickbooks__item') }} item
-
-    left join {{ ref('stg_quickbooks__item') }} parent
-        on item.parent_item_id = parent.item_id
-        and item.source_relation = parent.source_relation
-),
-
 
 liability_accounts as (
 
@@ -97,6 +68,39 @@ global_tax_account as (
         and is_active 
 ),
 
+{% endif %}
+
+{% if var('using_tax_agency', False) %}
+tax_agencies as (
+
+    select *
+    from {{ ref('stg_quickbooks__tax_agency') }}
+),
+
+{% endif %}
+
+{% if var('using_tax_rate', False) %}
+tax_rates as (
+
+    select *
+    from {{ ref('stg_quickbooks__tax_rate') }}
+),
+
+{% endif %}
+
+items as (
+
+    select
+        item.*,
+        parent.income_account_id as parent_income_account_id
+    from {{ ref('stg_quickbooks__item') }} item
+
+    left join {{ ref('stg_quickbooks__item') }} parent
+        on item.parent_item_id = parent.item_id
+        and item.source_relation = parent.source_relation
+),
+
+{% if var('using_refund_receipt_tax_line', False) %}
 
 tax_account_join as (
 
@@ -131,6 +135,7 @@ tax_account_join as (
 
     {% endif %}
 ), 
+{% endif %}
 
 refund_receipt_join as (
 
@@ -189,12 +194,12 @@ refund_receipt_join as (
     {% endif %}
 
     left join tax_account_join
-        {% if var('using_tax_rate', False) %}
+    {% if var('using_tax_agency', False) and var('using_tax_rate', False) %}
         on tax_rates.tax_agency_id = tax_account_join.tax_agency_id
         and tax_rates.source_relation = tax_account_join.source_relation
-        {% else %}
+    {% else %}
         on refund_receipt_tax_lines.source_relation = tax_account_join.source_relation
-        {% endif %}
+    {% endif %}
     {% endif %}
 ),
 

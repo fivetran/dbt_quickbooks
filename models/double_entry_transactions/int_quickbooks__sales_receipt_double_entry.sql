@@ -17,17 +17,12 @@ sales_receipt_lines as (
     from {{ ref('stg_quickbooks__sales_receipt_line') }}
 ),
 
-accounts as (
-
-    select *
-    from {{ ref('stg_quickbooks__account') }}
-),
-
 {% if var('using_sales_receipt_tax_line', False) %}
 
 sales_receipt_tax_lines as (
 
-    select sales_receipt_id,
+    select 
+        sales_receipt_id,
         source_relation,
         index + 10000 as index,
         tax_rate_id,
@@ -35,35 +30,11 @@ sales_receipt_tax_lines as (
         tax_percent
     from {{ ref('stg_quickbooks__sales_receipt_tax_line') }}
 ),
-{% endif %}
 
-{% if var('using_tax_agency', False) %}
-tax_agencies as (
+accounts as (
 
     select *
-    from {{ ref('stg_quickbooks__tax_agency') }}
-),
-{% endif %}
-
-{% if var('using_tax_rate', False) %}
-tax_rates as (
-
-    select *
-    from {{ ref('stg_quickbooks__tax_rate') }}
-),
-{% endif %} 
-
-
-items as (
-
-    select
-        item.*,
-        parent.income_account_id as parent_income_account_id
-    from {{ ref('stg_quickbooks__item') }} item
-
-    left join {{ ref('stg_quickbooks__item') }} parent
-        on item.parent_item_id = parent.item_id
-        and item.source_relation = parent.source_relation
+    from {{ ref('stg_quickbooks__account') }}
 ),
 
 liability_accounts as (
@@ -96,7 +67,39 @@ global_tax_account as (
     where name = '{{ var('quickbooks__global_tax_account', 'Sales Tax Payable') }}'
         and is_active
 ),
+{% endif %}
 
+{% if var('using_tax_agency', False) %}
+tax_agencies as (
+
+    select *
+    from {{ ref('stg_quickbooks__tax_agency') }}
+),
+{% endif %}
+
+{% if var('using_tax_rate', False) %}
+tax_rates as (
+
+    select *
+    from {{ ref('stg_quickbooks__tax_rate') }}
+),
+{% endif %} 
+
+
+items as (
+
+    select
+        item.*,
+        parent.income_account_id as parent_income_account_id
+    from {{ ref('stg_quickbooks__item') }} item
+
+    left join {{ ref('stg_quickbooks__item') }} parent
+        on item.parent_item_id = parent.item_id
+        and item.source_relation = parent.source_relation
+),
+
+
+{% if var('using_sales_receipt_tax_line', False) %}
 
 tax_account_join as (
 
@@ -129,6 +132,7 @@ tax_account_join as (
         on sales_tax_account.source_relation = global_tax_account.source_relation
     {% endif %}
 ), 
+{% endif %}
 
 sales_receipt_join as (
 
@@ -194,14 +198,13 @@ sales_receipt_join as (
         and sales_receipt_tax_lines.source_relation = tax_rates.source_relation
     {% endif %}
 
-    left join tax_account_join  
-        {% if var('using_tax_rate', False) and var('using_tax_agency', False) %}
+    left join tax_account_join
+    {% if var('using_tax_agency', False) and var('using_tax_rate', False) %}
         on tax_rates.tax_agency_id = tax_account_join.tax_agency_id
         and tax_rates.source_relation = tax_account_join.source_relation
-
-        {% else %}
+    {% else %}
         on sales_receipt_tax_lines.source_relation = tax_account_join.source_relation
-        {% endif %}
+    {% endif %}
     {% endif %}
 ),
 

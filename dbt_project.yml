@@ -43,14 +43,18 @@ vars:
     invoice_tax_line: "{{ ref('stg_quickbooks__invoice_tax_line') }}"
     item: "{{ ref('stg_quickbooks__item') }}"
     journal_entry_line: "{{ ref('stg_quickbooks__journal_entry_line') }}"
+    journal_entry_tax_line: "{{ ref('stg_quickbooks__journal_entry_tax_line') }}"
     journal_entry: "{{ ref('stg_quickbooks__journal_entry') }}"
     payment_line: "{{ ref('stg_quickbooks__payment_line') }}"
     payment: "{{ ref('stg_quickbooks__payment') }}"
     purchase_line: "{{ ref('stg_quickbooks__purchase_line') }}"
+    purchase_tax_line: "{{ ref('stg_quickbooks__purchase_tax_line') }}"
     purchase: "{{ ref('stg_quickbooks__purchase') }}"
     refund_receipt_line: "{{ ref('stg_quickbooks__refund_receipt_line') }}"
+    refund_receipt_tax_line: "{{ ref('stg_quickbooks__refund_receipt_tax_line') }}"
     refund_receipt: "{{ ref('stg_quickbooks__refund_receipt') }}"
     sales_receipt_line: "{{ ref('stg_quickbooks__sales_receipt_line') }}"
+    sales_receipt_tax_line: "{{ ref('stg_quickbooks__sales_receipt_tax_line') }}"
     sales_receipt: "{{ ref('stg_quickbooks__sales_receipt') }}"
     tax_agency: "{{ ref('stg_quickbooks__tax_agency') }}"
     tax_rate: "{{ ref('stg_quickbooks__tax_rate') }}"
@@ -82,6 +86,8 @@ vars:
     using_sales_receipt_tax_line: false
     using_refund_receipt_tax_line: false
     using_invoice_tax_line: false
+    using_tax_agency: false
+    using_tax_rate: false
 
 analysis-paths: ["analysis"]
 clean-targets:

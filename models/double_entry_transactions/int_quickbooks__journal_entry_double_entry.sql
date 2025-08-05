@@ -17,17 +17,13 @@ journal_entry_lines as (
     from {{ ref('stg_quickbooks__journal_entry_line') }}
 ),
 
-accounts as (
-
-    select *
-    from {{ ref('stg_quickbooks__account') }}
-),
 
 {% if var('using_journal_entry_tax_line', False) %}
 
 journal_entry_tax_lines as (
 
-    select journal_entry_id,
+    select 
+        journal_entry_id,
         source_relation,
         index + 10000 as index,
         tax_rate_id,
@@ -35,23 +31,13 @@ journal_entry_tax_lines as (
         tax_percent
     from {{ ref('stg_quickbooks__journal_entry_tax_line') }}
 ),
-{% endif %}
 
-{% if var('using_tax_agency', False) %}
-tax_agencies as (
+accounts as (
 
     select *
-    from {{ ref('stg_quickbooks__tax_agency') }}
+    from {{ ref('stg_quickbooks__account') }}
 ),
-{% endif %}
 
-{% if var('using_tax_rate', False) %}
-tax_rates as (
-
-    select *
-    from {{ ref('stg_quickbooks__tax_rate') }}
-),
-{% endif %} 
 
 liability_accounts as (
 
@@ -83,6 +69,27 @@ global_tax_account as (
     where name = '{{ var('quickbooks__global_tax_account_reference', 'Global Tax Payable') }}'
         and is_active 
 ),
+{% endif %}
+
+{% if var('using_tax_agency', False) %}
+tax_agencies as (
+
+    select *
+    from {{ ref('stg_quickbooks__tax_agency') }}
+),
+
+{% endif %}
+
+{% if var('using_tax_rate', False) %}
+tax_rates as (
+
+    select *
+    from {{ ref('stg_quickbooks__tax_rate') }}
+),
+
+{% endif %} 
+
+{% if var('using_journal_entry_tax_line', False) %}
 
 tax_account_join as (
 
@@ -118,7 +125,8 @@ tax_account_join as (
         on sales_tax_account.source_relation = global_tax_account.source_relation
 
     {% endif %}
-), 
+),
+{% endif %}
 
 final as (
 
@@ -178,7 +186,7 @@ final as (
     {% endif %}
 
     left join tax_account_join
-        {% if var('using_tax_rate', False) and var('using_tax_agency', False) %}
+        {% if var('using_tax_agency', False) and var('using_tax_rate', False) %}
         on tax_rates.tax_agency_id = tax_account_join.tax_agency_id
         and tax_rates.source_relation = tax_account_join.source_relation
         {% else %}

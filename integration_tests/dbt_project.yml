@@ -68,8 +68,7 @@ vars:
   # using_refund_receipt_tax_line: true  # @docs-include
   # using_sales_receipt_tax_line: true  # @docs-include
   # using_tax_agency: true  # @docs-include
-  # using_tax_code: true  # @docs-include
-  # using_tax_rate: true  # @docs-include 
+  # using_tax_rate: true  # @docs-include
 
 seeds:
   +docs:
