@@ -5,6 +5,10 @@ Table that creates a debit record to accounts receivable and a credit record to 
 --To disable this model, set the using_invoice variable within your dbt_project.yml file to False.
 {{ config(enabled=var('using_invoice', True)) }}
 
+{% set using_tax_rate = var('using_tax_rate', False) %}
+{% set using_tax_agency = var('using_tax_agency', False) if using_tax_rate else False %}
+{% set using_invoice_tax_line = var('using_invoice_tax_line', False) %}
+
 with invoices as (
 
     select *
@@ -29,13 +33,13 @@ items as (
         and item.source_relation = parent.source_relation
 ),
 
-    accounts as (
+accounts as (
 
-        select *
-        from {{ ref('stg_quickbooks__account') }}
-    ),
+    select *
+    from {{ ref('stg_quickbooks__account') }}
+),
 
-{% if var('using_invoice_tax_line', False) %}
+{% if using_invoice_tax_line %}
 
 invoice_tax_lines as (
 
@@ -50,7 +54,7 @@ invoice_tax_lines as (
 ),
 {% endif %}
 
-{% if var('using_tax_agency', False) %}
+{% if using_tax_agency %}
 tax_agencies as (
 
     select *
@@ -58,7 +62,7 @@ tax_agencies as (
 ),
 {% endif %}
 
-{% if var('using_tax_rate', False) %}
+{% if using_tax_rate %}
 tax_rates as (
 
     select *
@@ -160,10 +164,10 @@ global_tax_account as (
         and is_active 
 ),
 
+{% if using_invoice_tax_line %}
 tax_account_join as (
 
-    {% if var('using_tax_agency', False) %}
-
+    {% if using_tax_agency %}
     select 
         tax_agencies.tax_agency_id,
         tax_agencies.display_name,
@@ -195,6 +199,7 @@ tax_account_join as (
     {% endif %}
 
 ),
+{% endif %}
 
 invoice_join as (
 
@@ -254,7 +259,7 @@ invoice_join as (
 
     {% endif %}
 
-    {% if var('using_invoice_tax_line', True) %}
+    {% if using_invoice_tax_line %}
     union all
 
     select 
@@ -276,14 +281,14 @@ invoice_join as (
         on invoice_tax_lines.invoice_id = invoices.invoice_id
         and invoice_tax_lines.source_relation = invoices.source_relation 
 
-    {% if var('using_tax_rate', False) %}
+    {% if using_tax_rate %}
     left join tax_rates
         on invoice_tax_lines.tax_rate_id = tax_rates.tax_rate_id
         and invoice_tax_lines.source_relation = tax_rates.source_relation
     {% endif %}
 
     left join tax_account_join  
-        {% if var('using_tax_rate', False) and var('using_tax_agency', False) %}
+        {% if using_tax_agency %}
         on tax_rates.tax_agency_id = tax_account_join.tax_agency_id
         and tax_rates.source_relation = tax_account_join.source_relation
         {% else %}

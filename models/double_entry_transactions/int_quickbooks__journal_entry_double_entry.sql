@@ -5,6 +5,10 @@ Table that provides the debit and credit records of a journal entry transaction.
 --To disable this model, set the using_journal_entry variable within your dbt_project.yml file to False.
 {{ config(enabled=var('using_journal_entry', True)) }}
 
+{% set using_tax_rate = var('using_tax_rate', False) %}
+{% set using_tax_agency = var('using_tax_agency', False) if using_tax_rate else False %}
+{% set using_journal_entry_tax_line = var('using_journal_entry_tax_line', False) %}
+
 with journal_entries as (
 
     select *
@@ -18,8 +22,7 @@ journal_entry_lines as (
 ),
 
 
-{% if var('using_journal_entry_tax_line', False) %}
-
+{% if using_journal_entry_tax_line %}
 journal_entry_tax_lines as (
 
     select 
@@ -37,7 +40,6 @@ accounts as (
     select *
     from {{ ref('stg_quickbooks__account') }}
 ),
-
 
 liability_accounts as (
 
@@ -71,7 +73,7 @@ global_tax_account as (
 ),
 {% endif %}
 
-{% if var('using_tax_agency', False) %}
+{% if using_tax_agency %}
 tax_agencies as (
 
     select *
@@ -80,7 +82,7 @@ tax_agencies as (
 
 {% endif %}
 
-{% if var('using_tax_rate', False) %}
+{% if using_tax_rate %}
 tax_rates as (
 
     select *
@@ -89,11 +91,11 @@ tax_rates as (
 
 {% endif %} 
 
-{% if var('using_journal_entry_tax_line', False) %}
+{% if using_journal_entry_tax_line %}
 
 tax_account_join as (
 
-    {% if var('using_tax_agency', False) %}
+    {% if using_tax_agency %}
 
     select 
         tax_agencies.tax_agency_id,
@@ -154,7 +156,7 @@ final as (
 
     where journal_entry_lines.amount is not null
 
-    {% if var('using_journal_entry_tax_line', False) %}
+    {% if using_journal_entry_tax_line %}
     union all
 
     select
@@ -179,14 +181,14 @@ final as (
         on journal_entries.journal_entry_id = journal_entry_tax_lines.journal_entry_id
         and journal_entries.source_relation = journal_entry_tax_lines.source_relation
 
-    {% if var('using_tax_rate', False) %}
+    {% if using_tax_rate %}
     left join tax_rates
         on journal_entry_tax_lines.tax_rate_id = tax_rates.tax_rate_id
         and journal_entry_tax_lines.source_relation = tax_rates.source_relation
     {% endif %}
 
     left join tax_account_join
-        {% if var('using_tax_agency', False) and var('using_tax_rate', False) %}
+        {% if using_tax_agency %}
         on tax_rates.tax_agency_id = tax_account_join.tax_agency_id
         and tax_rates.source_relation = tax_account_join.source_relation
         {% else %}
