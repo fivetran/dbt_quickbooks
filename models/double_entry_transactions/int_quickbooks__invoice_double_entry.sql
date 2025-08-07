@@ -5,9 +5,9 @@ Table that creates a debit record to accounts receivable and a credit record to 
 --To disable this model, set the using_invoice variable within your dbt_project.yml file to False.
 {{ config(enabled=var('using_invoice', True)) }}
 
+{% set using_invoice_tax_line = var('using_invoice_tax_line', False) %}
 {% set using_tax_rate = var('using_tax_rate', False) %}
 {% set using_tax_agency = var('using_tax_agency', False) if using_tax_rate else False %}
-{% set using_invoice_tax_line = var('using_invoice_tax_line', False) %}
 
 with invoices as (
 
@@ -52,7 +52,6 @@ invoice_tax_lines as (
         tax_percent
     from {{ ref('stg_quickbooks__invoice_tax_line') }}
 ),
-{% endif %}
 
 {% if using_tax_agency %}
 tax_agencies as (
@@ -69,9 +68,9 @@ tax_rates as (
     from {{ ref('stg_quickbooks__tax_rate') }}
 ),
 {% endif %}
+{% endif %}
 
-{% if var('using_invoice_bundle', False) %}
-
+{% if var('using_invoice_bundle', True) %}
 invoice_bundles as (
 
     select *
@@ -133,6 +132,7 @@ ar_accounts as (
         and not is_sub_account
 ), 
 
+{% if using_invoice_tax_line %}
 liability_accounts as (
 
     select
@@ -164,7 +164,6 @@ global_tax_account as (
         and is_active 
 ),
 
-{% if using_invoice_tax_line %}
 tax_account_join as (
 
     {% if using_tax_agency %}

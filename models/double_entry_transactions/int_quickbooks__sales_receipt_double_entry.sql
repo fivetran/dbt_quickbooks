@@ -5,9 +5,9 @@ Table that creates a debit record to the specified cash account and a credit rec
 --To disable this model, set the using_sales_receipt variable within your dbt_project.yml file to False.
 {{ config(enabled=var('using_sales_receipt', True)) }}
 
+{% set using_sales_receipt_tax_line = var('using_sales_receipt_tax_line', False) %}
 {% set using_tax_rate = var('using_tax_rate', False) %}
 {% set using_tax_agency = var('using_tax_agency', False) if using_tax_rate else False %}
-{% set using_sales_receipt_tax_line = var('using_sales_receipt_tax_line', False) %}
 
 with sales_receipts as (
 
@@ -19,6 +19,18 @@ sales_receipt_lines as (
 
     select *
     from {{ ref('stg_quickbooks__sales_receipt_line') }}
+),
+
+items as (
+
+    select
+        item.*,
+        parent.income_account_id as parent_income_account_id
+    from {{ ref('stg_quickbooks__item') }} item
+
+    left join {{ ref('stg_quickbooks__item') }} parent
+        on item.parent_item_id = parent.item_id
+        and item.source_relation = parent.source_relation
 ),
 
 {% if using_sales_receipt_tax_line %}
@@ -70,14 +82,13 @@ global_tax_account as (
     where name = '{{ var('quickbooks__global_tax_account', 'Sales Tax Payable') }}'
         and is_active
 ),
-{% endif %}
 
 {% if using_tax_agency %}
 tax_agencies as (
 
     select *
     from {{ ref('stg_quickbooks__tax_agency') }}
-),
+), 
 {% endif %}
 
 {% if using_tax_rate %}
@@ -86,23 +97,8 @@ tax_rates as (
     select *
     from {{ ref('stg_quickbooks__tax_rate') }}
 ),
-{% endif %} 
+{% endif %}
 
-
-items as (
-
-    select
-        item.*,
-        parent.income_account_id as parent_income_account_id
-    from {{ ref('stg_quickbooks__item') }} item
-
-    left join {{ ref('stg_quickbooks__item') }} parent
-        on item.parent_item_id = parent.item_id
-        and item.source_relation = parent.source_relation
-),
-
-
-{% if using_sales_receipt_tax_line %}
 tax_account_join as (
 
     {% if using_tax_agency %}

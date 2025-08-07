@@ -5,9 +5,9 @@ Table that provides the debit and credit records of a journal entry transaction.
 --To disable this model, set the using_journal_entry variable within your dbt_project.yml file to False.
 {{ config(enabled=var('using_journal_entry', True)) }}
 
+{% set using_journal_entry_tax_line = var('using_journal_entry_tax_line', False) %}
 {% set using_tax_rate = var('using_tax_rate', False) %}
 {% set using_tax_agency = var('using_tax_agency', False) if using_tax_rate else False %}
-{% set using_journal_entry_tax_line = var('using_journal_entry_tax_line', False) %}
 
 with journal_entries as (
 
@@ -20,7 +20,6 @@ journal_entry_lines as (
     select *
     from {{ ref('stg_quickbooks__journal_entry_line') }}
 ),
-
 
 {% if using_journal_entry_tax_line %}
 journal_entry_tax_lines as (
@@ -71,7 +70,6 @@ global_tax_account as (
     where name = '{{ var('quickbooks__global_tax_account_reference', 'Global Tax Payable') }}'
         and is_active 
 ),
-{% endif %}
 
 {% if using_tax_agency %}
 tax_agencies as (
@@ -79,7 +77,6 @@ tax_agencies as (
     select *
     from {{ ref('stg_quickbooks__tax_agency') }}
 ),
-
 {% endif %}
 
 {% if using_tax_rate %}
@@ -88,10 +85,7 @@ tax_rates as (
     select *
     from {{ ref('stg_quickbooks__tax_rate') }}
 ),
-
-{% endif %} 
-
-{% if using_journal_entry_tax_line %}
+{% endif %}
 
 tax_account_join as (
 
