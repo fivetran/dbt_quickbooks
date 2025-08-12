@@ -83,7 +83,6 @@ global_tax_account as (
         and is_active 
 ),
 
-
 {% if using_tax_agency %}
 tax_agencies as (
 
