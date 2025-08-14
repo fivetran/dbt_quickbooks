@@ -1,6 +1,6 @@
 name: 'quickbooks_integration_tests'
 
-version: '0.20.1'
+version: '0.21.0'
 
 profile: 'integration_tests'
 config-version: 2
@@ -54,7 +54,8 @@ vars:
 
   # For validation testing.  
   # This below vars configuration is needed for the `general_ledger_amounts_match` macro.
-  # using_credit_card_payment_txn: true
+  # using_credit_card_payment_txn: true # @docs-include
+  # using_purchase_order: true # @docs-include
 
 seeds:
   +docs:
