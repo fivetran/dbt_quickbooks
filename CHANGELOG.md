@@ -8,6 +8,10 @@
   - Removed all `accepted_values` tests.
   - Moved `loaded_at_field: _fivetran_synced` under the `config:` block in `src_quickbooks.yml`.
 
+### Under the Hood
+- Updated conditions in `.github/workflows/auto-release.yml`.
+- Added `.github/workflows/generate-docs.yml`.
+
 # dbt_quickbooks v0.20.1
 [PR #169](https://github.com/fivetran/dbt_quickbooks/pull/169) includes the following updates:
 
