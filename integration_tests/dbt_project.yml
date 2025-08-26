@@ -1,6 +1,6 @@
 name: 'quickbooks_integration_tests'
 
-version: '0.21.0'
+version: '0.22.0'
 
 profile: 'integration_tests'
 config-version: 2
@@ -135,6 +135,7 @@ seeds:
       +column_types:
         item_expense_billable_status: "{{ 'varchar(100)' if target.type in ('redshift', 'postgres') else 'string' }}"
         account_expense_account_id: "{{ 'int64' if target.type == 'bigquery' else 'bigint' }}"
+<<<<<<< HEAD
     purchase_tax_line_data:
       +column_types:
         amount: float
@@ -142,6 +143,8 @@ seeds:
         override_delta_amount: float
         tax_inclusive_amount: float
         tax_percent: float
+=======
+>>>>>>> main
     purchase_data:
       +column_types:
         credit: "{{ 'boolean' if target.type in ('snowflake', 'spark', 'databricks') else 'bool' }}"
@@ -195,4 +198,9 @@ dispatch:
 
 flags:
   send_anonymous_usage_stats: False
+<<<<<<< HEAD
   use_colors: True
+=======
+
+  use_colors: True
+>>>>>>> main
