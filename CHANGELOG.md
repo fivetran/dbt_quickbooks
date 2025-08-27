@@ -41,7 +41,7 @@
 ## Under the Hood
 - Updated `quickstart.yml` with the new variables for each new table to enable/disable based on the whether the source tables are being utilized.
 - Created new seed files for the above source tables to test and validate new models work as expected.
-- Updated seed files to ensure 
+- Updated seed files to ensure accurate representation of invoice bundles.
 - Updated `run_models.sh` to execute for when the new variables are enabled. 
 - Removed redundant default variable configs from the `dbt_project.yml`. 
 - Updated `general_ledger_amounts_match` integrity test to properly validate general ledger amounts.
