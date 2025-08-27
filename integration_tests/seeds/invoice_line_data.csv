@@ -11,7 +11,7 @@ index,invoice_id,_fivetran_synced,amount,bundle_id,bundle_quantity,description,d
 7,40092,2021-01-19 2:18:38,0,,,703d01ddc458e55f5b43da8c88aaa581,,,,,,,,,,,,,,,NON,,,,,,,SubTotalLineDetail
 1,40114,2021-01-19 22:16:19,1000.00,,,8g4d99cg068c8edd4736e1d78c01cd8a,,,,,,,,,,,,100,50,,,1.00,,10,,,999,SalesItemLineDetail
 2,40114,2021-01-20 09:00:00,175.00,,,,,,,,,,,,,,,9999,1,,,175,,,,,,SalesItemLineDetail
-0,40113,2025-06-30 12:00:00,2500.00,,,,Product A,,,,,,,,999,,,100,2,,,1250,,,,,999,SalesItemLineDetail
+0,40113,2025-06-30 12:00:00,0,,,,Product A,,,,,,,,999,,,100,2,,,1250,,,,,999,SalesItemLineDetail
 1,28957,2025-06-30 12:00:00,3000.00,,,,Service B,,,,,,,,999,,,101,3,,,1000,,,,,999,SalesItemLineDetail
 3,40114,2025-06-30 12:00:00,55650.00,212,1.0,,,,,,,,,,999,100,,9999,1.0,,NON,55650,,,,,999,SalesItemLineDetail
 0,40114,2025-06-30 12:00:00,56825.00,212,1.0,,,,,,,,,,999,100,,9999,1.0,,NON,56825,,,,,999,SubTotalLineDetail
