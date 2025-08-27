@@ -22,7 +22,7 @@
 | [`stg_quickbooks__tax_rate_tmp`](https://fivetran.github.io/dbt_quickbooks_source/#!/model/model.quickbooks_source.stg_quickbooks__tax_rate_tmp)                  | New Temp Model |   |          | Source: `tax_rate` table. Disabled by default, leverage `using_tax_rate` variable in `dbt_project.yml` to enable. (This will be dynamically handled for Quickstart users.)   |
 
 ## Bug Fixes
-- Corrected the `int_quickbooks__invoice_double_entry` model to accurately map bundled invoice lines to the correct `amount`, `converted_amount`, `account_id` and `class_id`.
+- Corrected the `int_quickbooks__invoice_double_entry` model to accurately map bundled invoice lines to the correct `amount`, `converted_amount`, `account_id`, `index`, and `class_id`.
 
 ## Feature Updates
 - This update incorporates tax lines into the below double entry models.
@@ -41,6 +41,7 @@
 ## Under the Hood
 - Updated `quickstart.yml` with the new variables for each new table to enable/disable based on the whether the source tables are being utilized.
 - Created new seed files for the above source tables to test and validate new models work as expected.
+- Updated seed files to ensure 
 - Updated `run_models.sh` to execute for when the new variables are enabled. 
 - Removed redundant default variable configs from the `dbt_project.yml`. 
 - Updated `general_ledger_amounts_match` integrity test to properly validate general ledger amounts.

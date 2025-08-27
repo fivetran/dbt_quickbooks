@@ -160,7 +160,7 @@ global_tax_account as (
         account_id,
         source_relation
     from accounts
-    where account_sub_type = '{{ var('quickbooks__global_tax_account_reference', 'GlobalTaxPayable') }}'
+    where name = '{{ var('quickbooks__global_tax_account_reference', 'Global Tax Payable') }}'
         and is_active 
 ),
 
