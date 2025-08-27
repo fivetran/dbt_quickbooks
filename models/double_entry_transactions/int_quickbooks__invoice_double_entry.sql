@@ -216,11 +216,11 @@ invoice_join as (
             else (coalesce(invoice_bundles.amount, invoice_lines.amount) * coalesce(invoices.exchange_rate, 1))
         end as converted_amount,
         case when invoice_lines.detail_type is not null then invoice_lines.detail_type
-            when coalesce(invoice_lines.account_id, invoice_lines.sales_item_account_id, items.parent_income_account_id, items.income_account_id, bundle_income_accounts.account_id) is not null then 'SalesItemLineDetail'
+            when coalesce(invoice_bundles.account_id, invoice_lines.account_id, invoice_lines.sales_item_account_id, items.parent_income_account_id, items.income_account_id, bundle_income_accounts.account_id) is not null then 'SalesItemLineDetail'
             when invoice_lines.discount_account_id is not null then 'DiscountLineDetail'
-            when coalesce(invoice_lines.account_id, invoice_lines.sales_item_account_id, items.parent_income_account_id, items.income_account_id, bundle_income_accounts.account_id, invoice_lines.discount_account_id) is null then 'NoAccountMapping'
+            when coalesce(invoice_bundles.account_id, invoice_lines.account_id, invoice_lines.sales_item_account_id, items.parent_income_account_id, items.income_account_id, bundle_income_accounts.account_id, invoice_lines.discount_account_id) is null then 'NoAccountMapping'
         end as invoice_line_transaction_type,
-        coalesce(invoice_lines.account_id, invoice_lines.sales_item_account_id, items.parent_income_account_id, items.income_account_id, invoice_bundles.account_id, bundle_income_accounts.account_id, invoice_lines.discount_account_id) as account_id,
+        coalesce(invoice_bundles.account_id, invoice_lines.account_id, invoice_lines.sales_item_account_id, items.parent_income_account_id, items.income_account_id, bundle_income_accounts.account_id, invoice_lines.discount_account_id) as account_id,
         coalesce(invoice_bundles.class_id, invoice_lines.sales_item_class_id, invoice_lines.discount_class_id, invoices.class_id) as class_id,
 
         {% else %}
