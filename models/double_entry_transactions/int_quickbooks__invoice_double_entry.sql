@@ -160,7 +160,7 @@ global_tax_account as (
         account_id,
         source_relation
     from accounts
-    where name = '{{ var('quickbooks__global_tax_account_reference', 'Global Tax Payable') }}'
+    where account_sub_type = '{{ var('quickbooks__global_tax_account_reference', 'GlobalTaxPayable') }}'
         and is_active 
 ),
 
@@ -205,10 +205,9 @@ invoice_join as (
     select
         invoices.invoice_id as transaction_id,
         invoices.source_relation,
-        invoice_lines.index,
-        invoices.transaction_date as transaction_date,
-
         {% if var('using_invoice_bundle', True) %}
+        coalesce(invoice_bundles.index, invoice_lines.index) as index,
+        invoices.transaction_date as transaction_date,
         case when invoice_lines.bundle_id is not null and invoices.total_amount = 0 then invoices.total_amount
             else coalesce(invoice_bundles.amount, invoice_lines.amount)
         end as amount,
@@ -225,6 +224,8 @@ invoice_join as (
         coalesce(invoice_bundles.class_id, invoice_lines.sales_item_class_id, invoice_lines.discount_class_id, invoices.class_id) as class_id,
 
         {% else %}
+        invoice_lines.index,
+        invoices.transaction_date as transaction_date,
         invoice_lines.amount as amount,
         (invoice_lines.amount * coalesce(invoices.exchange_rate, 1)) as converted_amount,
         case when invoice_lines.detail_type is not null then invoice_lines.detail_type
