@@ -237,11 +237,7 @@ This dbt package is dependent on the following dbt packages. These dependencies 
 ```yml
 packages:
     - package: fivetran/quickbooks_source
-<<<<<<< HEAD
-      version: 0.14.0-a1
-=======
-      version: [">=0.14.0", "<0.15.0"]
->>>>>>> main
+      version: 0.15.0-a1
 
     - package: fivetran/fivetran_utils
       version: [">=0.4.0", "<0.5.0"]
