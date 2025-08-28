@@ -1,5 +1,5 @@
 # dbt_quickbooks v0.22.0-a1
-[PR #166](https://github.com/fivetran/dbt_quickbooks/pull/166) is a pre-release that introduces the following updates. 
+[PR #171](https://github.com/fivetran/dbt_quickbooks/pull/171) is a pre-release that introduces the following updates. 
 
 ## Schema Updates
 **14 new models -- 14 potential breaking changes**
