@@ -5,17 +5,24 @@ Table that creates a debit record to accounts receivable and a credit record to 
 --To disable this model, set the using_invoice variable within your dbt_project.yml file to False.
 {{ config(enabled=var('using_invoice', True)) }}
 
+{% set using_invoice_tax_line = var('using_invoice_tax_line', False) %}
+{% set using_tax_rate = var('using_tax_rate', False) %}
+{% set using_tax_agency = var('using_tax_agency', False) if using_tax_rate else False %}
+
 with invoices as (
+
     select *
     from {{ ref('stg_quickbooks__invoice') }}
 ),
 
 invoice_lines as (
+
     select *
     from {{ ref('stg_quickbooks__invoice_line') }}
 ),
 
 items as (
+
     select
         item.*,
         parent.income_account_id as parent_income_account_id
@@ -27,13 +34,43 @@ items as (
 ),
 
 accounts as (
+
     select *
     from {{ ref('stg_quickbooks__account') }}
 ),
 
+{% if using_invoice_tax_line %}
+
+invoice_tax_lines as (
+
+    select 
+        invoice_id,
+        source_relation,
+        index + 10000 as index,
+        tax_rate_id,
+        amount,
+        tax_percent
+    from {{ ref('stg_quickbooks__invoice_tax_line') }}
+),
+
+{% if using_tax_agency %}
+tax_agencies as (
+
+    select *
+    from {{ ref('stg_quickbooks__tax_agency') }}
+),
+{% endif %}
+
+{% if using_tax_rate %}
+tax_rates as (
+
+    select *
+    from {{ ref('stg_quickbooks__tax_rate') }}
+),
+{% endif %}
+{% endif %}
 
 {% if var('using_invoice_bundle', True) %}
-
 invoice_bundles as (
 
     select *
@@ -93,32 +130,102 @@ ar_accounts as (
     where account_type = '{{ var('quickbooks__accounts_receivable_reference', 'Accounts Receivable') }}'
         and is_active
         and not is_sub_account
+), 
+
+{% if using_invoice_tax_line %}
+liability_accounts as (
+
+    select
+        account_id,
+        name,
+        source_relation
+    from accounts
+    where classification = 'Liability' 
+        and is_active
 ),
+
+sales_tax_account as (
+
+    select
+        account_id,
+        source_relation
+    from accounts
+    where name = '{{ var('quickbooks__sales_tax_account_reference', 'Sales Tax Payable') }}'
+        and is_active
+),
+
+global_tax_account as (
+
+    select
+        account_id,
+        source_relation
+    from accounts
+    where name = '{{ var('quickbooks__global_tax_account_reference', 'Global Tax Payable') }}'
+        and is_active 
+),
+
+tax_account_join as (
+
+    {% if using_tax_agency %}
+    select 
+        tax_agencies.tax_agency_id,
+        tax_agencies.display_name,
+        coalesce(liability_accounts.account_id, sales_tax_account.account_id, global_tax_account.account_id) as account_id,
+        coalesce(liability_accounts.source_relation, sales_tax_account.source_relation, global_tax_account.source_relation) as source_relation
+
+    from tax_agencies
+
+    left join liability_accounts
+        on {{ dbt.concat(["tax_agencies.display_name", "' Payable'"]) }} = liability_accounts.name
+        and tax_agencies.source_relation = liability_accounts.source_relation
+
+    left join sales_tax_account
+        on tax_agencies.source_relation = sales_tax_account.source_relation
+
+    left join global_tax_account
+        on tax_agencies.source_relation = global_tax_account.source_relation
+
+    {% else %}
+
+    -- Fallback mapping for when tax_agency is disabled
+    select
+        coalesce(sales_tax_account.account_id, global_tax_account.account_id) as account_id,
+        coalesce(sales_tax_account.source_relation, global_tax_account.source_relation) as source_relation
+    from sales_tax_account
+    full outer join global_tax_account
+        on sales_tax_account.source_relation = global_tax_account.source_relation
+
+    {% endif %}
+
+),
+{% endif %}
 
 invoice_join as (
 
     select
         invoices.invoice_id as transaction_id,
         invoices.source_relation,
-        invoice_lines.index,
-        invoices.transaction_date as transaction_date,
-
         {% if var('using_invoice_bundle', True) %}
+        coalesce(invoice_bundles.index, invoice_lines.index) as index,
+        invoices.transaction_date as transaction_date,
         case when invoice_lines.bundle_id is not null and invoices.total_amount = 0 then invoices.total_amount
-            else invoice_lines.amount
+            else coalesce(invoice_bundles.amount, invoice_lines.amount)
         end as amount,
         case when invoice_lines.bundle_id is not null and invoices.total_amount = 0 
             then (invoices.total_amount * coalesce(invoices.exchange_rate, 1))
-            else (invoice_lines.amount * coalesce(invoices.exchange_rate, 1))
+            else (coalesce(invoice_bundles.amount, invoice_lines.amount) * coalesce(invoices.exchange_rate, 1))
         end as converted_amount,
         case when invoice_lines.detail_type is not null then invoice_lines.detail_type
-            when coalesce(invoice_lines.account_id, invoice_lines.sales_item_account_id, items.parent_income_account_id, items.income_account_id, bundle_income_accounts.account_id) is not null then 'SalesItemLineDetail'
+            when coalesce(invoice_bundles.account_id, invoice_lines.account_id, invoice_lines.sales_item_account_id, items.parent_income_account_id, items.income_account_id, bundle_income_accounts.account_id) is not null then 'SalesItemLineDetail'
             when invoice_lines.discount_account_id is not null then 'DiscountLineDetail'
-            when coalesce(invoice_lines.account_id, invoice_lines.sales_item_account_id, items.parent_income_account_id, items.income_account_id, bundle_income_accounts.account_id, invoice_lines.discount_account_id) is null then 'NoAccountMapping'
+            when coalesce(invoice_bundles.account_id, invoice_lines.account_id, invoice_lines.sales_item_account_id, items.parent_income_account_id, items.income_account_id, bundle_income_accounts.account_id, invoice_lines.discount_account_id) is null then 'NoAccountMapping'
         end as invoice_line_transaction_type,
-        coalesce(invoice_lines.account_id, invoice_lines.sales_item_account_id, items.parent_income_account_id, items.income_account_id, bundle_income_accounts.account_id, invoice_lines.discount_account_id) as account_id,
+        coalesce(invoice_bundles.account_id, invoice_lines.account_id, invoice_lines.sales_item_account_id, items.parent_income_account_id, items.income_account_id, bundle_income_accounts.account_id, invoice_lines.discount_account_id) as account_id,
+        coalesce(invoice_bundles.class_id, invoice_lines.sales_item_class_id, invoice_lines.discount_class_id, invoices.class_id) as class_id,
 
         {% else %}
+        invoice_lines.index,
+        invoices.transaction_date as transaction_date,
         invoice_lines.amount as amount,
         (invoice_lines.amount * coalesce(invoices.exchange_rate, 1)) as converted_amount,
         case when invoice_lines.detail_type is not null then invoice_lines.detail_type
@@ -127,9 +234,8 @@ invoice_join as (
             when coalesce(invoice_lines.account_id, invoice_lines.sales_item_account_id, items.parent_income_account_id, items.income_account_id, invoice_lines.discount_account_id) is null then 'NoAccountMapping'
         end as invoice_line_transaction_type,
         coalesce(invoice_lines.account_id, invoice_lines.sales_item_account_id, items.income_account_id, invoice_lines.discount_account_id) as account_id,
-        {% endif %}
-
         coalesce(invoice_lines.sales_item_class_id, invoice_lines.discount_class_id, invoices.class_id) as class_id,
+        {% endif %}
 
         invoices.customer_id,
         invoices.department_id,
@@ -150,7 +256,48 @@ invoice_join as (
     left join bundle_income_accounts
         on bundle_income_accounts.bundle_id = invoice_lines.bundle_id
         and bundle_income_accounts.source_relation = invoice_lines.source_relation
+    
+    left join invoice_bundles
+        on invoice_bundles.invoice_id = invoice_lines.invoice_id
+        and invoice_bundles.source_relation = invoice_lines.source_relation
 
+    {% endif %}
+
+    {% if using_invoice_tax_line %}
+    union all
+
+    select 
+        invoice_tax_lines.invoice_id as transaction_id,
+        invoice_tax_lines.source_relation,
+        invoice_tax_lines.index,
+        invoices.transaction_date,
+        invoice_tax_lines.amount,
+        (invoice_tax_lines.amount * coalesce(invoices.exchange_rate, 1)) as converted_amount,
+        'TaxLineDetail' as invoice_line_transaction_type,
+        tax_account_join.account_id,
+        invoices.class_id,
+        invoices.customer_id,
+        invoices.department_id,
+        invoices.created_at,
+        invoices.updated_at
+    from invoice_tax_lines
+    inner join invoices 
+        on invoice_tax_lines.invoice_id = invoices.invoice_id
+        and invoice_tax_lines.source_relation = invoices.source_relation 
+
+    {% if using_tax_rate %}
+    left join tax_rates
+        on invoice_tax_lines.tax_rate_id = tax_rates.tax_rate_id
+        and invoice_tax_lines.source_relation = tax_rates.source_relation
+    {% endif %}
+
+    left join tax_account_join  
+        {% if using_tax_agency %}
+        on tax_rates.tax_agency_id = tax_account_join.tax_agency_id
+        and tax_rates.source_relation = tax_account_join.source_relation
+        {% else %}
+        on invoice_tax_lines.source_relation = tax_account_join.source_relation
+        {% endif %}
     {% endif %}
 ),
 

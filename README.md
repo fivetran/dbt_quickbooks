@@ -76,7 +76,7 @@ Include the following QuickBooks package version in your `packages.yml` file.
 ```yaml
 packages:
   - package: fivetran/quickbooks
-    version: [">=0.21.0", "<0.22.0"] # we recommend using ranges to capture non-breaking changes automatically
+    version: 0.22.0-a1 # we recommend using ranges to capture non-breaking changes automatically
 ```
 
 Do NOT include the `quickbooks_source` package in this file. The transformation package itself has a dependency on it and will install the source package as well.
@@ -113,6 +113,13 @@ vars:
   using_sales_receipt: false # disable if you don't have sales receipts in QuickBooks
   using_credit_card_payment_txn: true # enable if you want to include credit card payment transactions in your staging models
   using_purchase_order: true #enable if you want to include purchase orders in your staging models
+  using_invoice_tax_line: true #enable if you have invoice tax lines in QuickBooks
+  using_journal_entry_tax_line: true # enable if you have journal entry tax lines in QuickBooks
+  using_purchase_tax_line: true # enable if you have purchase tax lines in QuickBooks
+  using_refund_receipt_tax_line: true # enable if you have refund receipt tax lines in QuickBooks
+  using_sales_receipt_tax_line: true # enable if you have sales receipt tax lines in QuickBooks
+  using_tax_agency: true #enable if you have tax agencies in QuickBooks
+  using_tax_rate: true #enable if you have tax rates in QuickBooks
 ```
 
 ### (Optional) Step 5: Additional Configurations
@@ -132,7 +139,7 @@ vars:
 ``` 
 
 #### Configuring Account Type Names
-Within a few of the double entry models in this package a mapping takes place to assign certain transaction type's debits/credits to the appropriate offset account (ie. Accounts Payable, Accounts Receivable, Undeposited Funds, and SalesOfProductIncome) reference. While our current filtered logic within our intermediate models account for the default values, it's possible your use case relies on different account types to reference.
+Within a few of the double entry models in this package a mapping takes place to assign certain transaction type's debits/credits to the appropriate offset account (ie. Accounts Payable, Accounts Receivable, Global Tax Payable, Sales Tax Payable, Undeposited Funds, and SalesOfProductIncome) reference. While our current filtered logic within our intermediate models account for the default values, it's possible your use case relies on different account types to reference.
 
 If you have a different value to reference for each type, you will need to configure the `account_type` and `account_sub_type` variables that account for these variables in your `dbt_project.yml`.
 
@@ -140,8 +147,10 @@ If you have a different value to reference for each type, you will need to confi
 vars: 
   quickbooks__accounts_payable_reference: accounts_payable_value # 'Accounts Payable' is the default filter set for the account_type reference.
   quickbooks__accounts_receivable_reference: account_receivable_value # 'Accounts Receivable' is the default filter set for the account_type reference.
-  quickbooks__undeposited_funds_reference: account_undeposited_funds_value # 'UndepositedFunds' is the default filter set for the account_subtype reference.
-  quickbooks__sales_of_product_income_reference: account_sales_of_product_income_value # 'SalesOfProductIncome' is the default filter set for the account_subtype reference.
+  quickbooks__undeposited_funds_reference: account_undeposited_funds_value # 'UndepositedFunds' is the default filter set for the account_sub_type reference.
+  quickbooks__sales_of_product_income_reference: account_sales_of_product_income_value # 'SalesOfProductIncome' is the default filter set for the account_sub_type reference.
+  quickbooks__global_tax_account_reference: global_tax_account_value # 'Global Tax Payable' is the default filter set for the account name reference.
+  quickbooks__sales_tax_account_reference: sales_tax_account_value # 'Sales Tax Payable' is the default filter set for the account name reference.
 ```
 
 #### Customize the Cash Flow Model
@@ -228,7 +237,7 @@ This dbt package is dependent on the following dbt packages. These dependencies 
 ```yml
 packages:
     - package: fivetran/quickbooks_source
-      version: [">=0.14.0", "<0.15.0"]
+      version: 0.15.0-a1
 
     - package: fivetran/fivetran_utils
       version: [">=0.4.0", "<0.5.0"]

@@ -49,9 +49,10 @@ general_ledger_end as (
         account_id,
         transaction_type,
         transaction_source,
-        adjusted_amount as adjusted_amount_end,
-        adjusted_converted_amount as adjusted_converted_amount_end
-    from {{ ref('quickbooks__general_ledger') }}  
+        sum(adjusted_amount) as adjusted_amount_end,
+        sum(adjusted_converted_amount) as adjusted_converted_amount_end
+    from {{ ref('quickbooks__general_ledger') }} 
+    group by 1,2,3,4,5,6 
 ),
 
 match_check as (

@@ -1,7 +1,7 @@
 config-version: 2
 name: 'quickbooks'
 
-version: '0.21.0'
+version: '0.22.0'
 
 require-dbt-version: [">=1.3.0", "<2.0.0"]
 
@@ -40,17 +40,24 @@ vars:
     invoice_line_bundle: "{{ ref('stg_quickbooks__invoice_line_bundle') }}"
     invoice_linked_txn: "{{ ref('stg_quickbooks__invoice_linked_txn') }}"
     invoice: "{{ ref('stg_quickbooks__invoice') }}"
+    invoice_tax_line: "{{ ref('stg_quickbooks__invoice_tax_line') }}"
     item: "{{ ref('stg_quickbooks__item') }}"
     journal_entry_line: "{{ ref('stg_quickbooks__journal_entry_line') }}"
+    journal_entry_tax_line: "{{ ref('stg_quickbooks__journal_entry_tax_line') }}"
     journal_entry: "{{ ref('stg_quickbooks__journal_entry') }}"
     payment_line: "{{ ref('stg_quickbooks__payment_line') }}"
     payment: "{{ ref('stg_quickbooks__payment') }}"
     purchase_line: "{{ ref('stg_quickbooks__purchase_line') }}"
+    purchase_tax_line: "{{ ref('stg_quickbooks__purchase_tax_line') }}"
     purchase: "{{ ref('stg_quickbooks__purchase') }}"
     refund_receipt_line: "{{ ref('stg_quickbooks__refund_receipt_line') }}"
+    refund_receipt_tax_line: "{{ ref('stg_quickbooks__refund_receipt_tax_line') }}"
     refund_receipt: "{{ ref('stg_quickbooks__refund_receipt') }}"
     sales_receipt_line: "{{ ref('stg_quickbooks__sales_receipt_line') }}"
+    sales_receipt_tax_line: "{{ ref('stg_quickbooks__sales_receipt_tax_line') }}"
     sales_receipt: "{{ ref('stg_quickbooks__sales_receipt') }}"
+    tax_agency: "{{ ref('stg_quickbooks__tax_agency') }}"
+    tax_rate: "{{ ref('stg_quickbooks__tax_rate') }}"
     transfer: "{{ ref('stg_quickbooks__transfer') }}"
     vendor_credit_line: "{{ ref('stg_quickbooks__vendor_credit_line') }}"
     vendor_credit: "{{ ref('stg_quickbooks__vendor_credit') }}"
@@ -73,7 +80,14 @@ vars:
     using_transfer: true
     using_vendor_credit: true
     using_sales_receipt: true
+    using_purchase_order: false
     using_credit_card_payment_txn: false
+    using_purchase_tax_line: false
+    using_sales_receipt_tax_line: false
+    using_refund_receipt_tax_line: false
+    using_invoice_tax_line: false
+    using_tax_agency: false
+    using_tax_rate: false
 
 analysis-paths: ["analysis"]
 clean-targets:
