@@ -60,8 +60,6 @@ Each Quickstart transformation job run materializes 94 models if all components 
 
 > [dbt_quickbooks](https://github.com/fivetran/dbt_quickbooks) and [dbt_quickbooks_source](https://github.com/fivetran/dbt_quickbooks_source) now supports multicurrency by bringing in values by specifying `*_converted_*` values for cash amounts. More details are [available in the DECISIONLOG](https://github.com/fivetran/dbt_quickbooks/blob/main/DECISIONLOG.md#multicurrency-vs-single-currency-configuration).
 
-There are specific limitations if you need converted amounts for credit card payments and transfers, as we do not currently have the ability to validate a best approach to convert the original amounts into their proper home currency. [Please open an issue with us](https://github.com/fivetran/dbt_quickbooks/issues/new/choose) if this is critical and/or you believe you can help contribute to scoping out adding that functionality in.
-
 ## How do I use the dbt package?
 ### Step 1: Prerequisites
 To use this dbt package, you must have the following:
@@ -177,8 +175,9 @@ If you'd like to modify this, take the following steps:
 - For example, if you created a seed file named `quickbooks_ordinals.csv`, then you would edit the `financial_statement_ordinal` in your root `dbt_project.yml` as such.
 
   ```yml
-vars:
-     financial_statement_ordinal: "{{ ref('quickbooks_ordinals') }}"
+  vars:
+       financial_statement_ordinal: "{{ ref('quickbooks_ordinals') }}"
+  ```
 
 2) Examine the [`financial_statement_ordinal_example` file](https://github.com/fivetran/dbt_quickbooks/blob/main/example_ordinal_seeds/financial_statement_ordinal_example.csv) to see what your sample seed file should look like. (NOTE: Make sure that your `seed` file name is different from `financial_statement_ordinal_example` to avoid errors.). You can use this file as an example and follow the steps in (1) to see what the ordering of the data looks like, then modify as needed.
 
