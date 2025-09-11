@@ -1,3 +1,20 @@
+# dbt_quickbooks v0.21.1
+[PR #176](https://github.com/fivetran/dbt_quickbooks/pull/176) includes the following updates:
+
+## Schema & Data Updates
+**4 total changes • 0 possible breaking changes**
+- [This package now provides full multicurrency support](https://github.com/fivetran/dbt_quickbooks?tab=readme-ov-file#multicurrency-support) for our financial reporting with exchange rates for credit card payments and transfers now introduced.
+
+| Data Model                                                                                                                                               | Change Type | Old Behavior                     | New Behavior                                           | Notes                                                                                    |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- | ---------------------------- | ---------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| `int_quickbooks__credit_card_pymt_double_entry`             | New logic | `converted_amount` was same as `amount`  | `exchange_rate` now utilized to calculate `converted_amount`.       |   Adds multicurrency support for credit card payment transactions.  |
+| `int_quickbooks__transfer_double_entry`                          | New logic | `converted_amount` was same as `amount`   |  `exchange_rate` now utilized to calculate `converted_amount`.          |   Adds multicurrency support for transfers.   |
+| `stg_quickbooks__credit_card_payment_txn`             | New columns |   |  `exchange_rate`        |  Adds multicurrency support for credit card payment transactions.   |
+| `stg_quickbooks__transfer`                             | New columns |   |  `currency_id`, `exchange_rate`        |   Adds multicurrency support for transfers.   |
+
+## Documentation Update
+- Removed references to credit card/transfer multicurrency transactions not being supported in DECISIONLOG and README.
+
 # dbt_quickbooks v0.21.0
 [PR #173](https://github.com/fivetran/dbt_quickbooks/pull/173) includes the following updates:
 

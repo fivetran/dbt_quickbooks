@@ -51,9 +51,7 @@ The corresponding entry that would result from the `int_quickbooks__invoice_doub
 ## Multicurrency vs. Single Currency Configuration 
 We introduced multicurrency support in our v0.14.0 release. We introduced new fields to allow you the ability to pick and choose which amount, balance, and cash fields provide the most value to your end models. 
 
-These fields will be in the `*_converted_*` format of the original single currency amount/balance/cash fields. If you are single currency customer, you should still leverage the original version of the fields
-
-There are still some limitations [for multicurrency support](https://github.com/fivetran/dbt_quickbooks/blob/main/README.md#multicurrency-support-and-existing-limitations), particularly with regards to calculating credit card payment and transfer currency converted amounts. [Please open an issue with us if this is critical to resolve](https://github.com/fivetran/dbt_quickbooks/issues/new/choose), especially if you think you can help contribute based on your knowledge of the Quickbooks data models. 
+These fields will be in the `*_converted_*` format of the original single currency amount/balance/cash fields. If you are a single currency customer, you should still leverage the original `amount` version of the fields.
 
 Please leverage the below fields in your end models for your financial statements depending on what your currency configuration looks like.
 

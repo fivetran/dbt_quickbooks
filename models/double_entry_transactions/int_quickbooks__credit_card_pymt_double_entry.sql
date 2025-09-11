@@ -21,7 +21,7 @@ credit_card_payment_prep as (
             order by credit_card_payments.source_relation, credit_card_payments.transaction_date) - 1 as index,
         credit_card_payments.transaction_date,
         credit_card_payments.amount,
-        credit_card_payments.amount as converted_amount,
+        (credit_card_payments.amount * coalesce(credit_card_payments.exchange_rate, 1)) as converted_amount,
         credit_card_payments.bank_account_id,
         credit_card_payments.credit_card_account_id,
         cast(null as {{ dbt.type_string() }}) as customer_id,

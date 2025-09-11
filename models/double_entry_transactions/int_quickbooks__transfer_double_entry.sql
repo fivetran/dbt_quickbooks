@@ -20,7 +20,7 @@ transfer_body as (
             order by source_relation, transaction_date) - 1 as index,
         transaction_date,
         amount,
-        amount as converted_amount,
+        (amount * coalesce(exchange_rate, 1)) as converted_amount,
         from_account_id as credit_to_account_id,
         to_account_id as debit_to_account_id,
         created_at,
