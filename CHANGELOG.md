@@ -13,7 +13,7 @@
 | `stg_quickbooks__transfer`                             | New columns |   |  `currency_id`, `exchange_rate`        |   Adds multicurrency support for transfers.   |
 
 ## Bug Fixes
-- [Now provide full multicurrency support](https://github.com/fivetran/dbt_quickbooks?tab=readme-ov-file#multicurrency-support) for our financial reporting with exchange rates for credit card payments and transfers now introduced.
+- [This package now provides full multicurrency support](https://github.com/fivetran/dbt_quickbooks?tab=readme-ov-file#multicurrency-support) for our financial reporting with exchange rates for credit card payments and transfers now introduced.
 
 ## Documentation Update
 - Removed references to credit card/transfer multicurrency transactions not being supported in DECISIONLOG and README.
