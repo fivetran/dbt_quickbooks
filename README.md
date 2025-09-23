@@ -17,7 +17,7 @@
 
 ## Table of Contents
 - [What does this dbt package do?](https://github.com/fivetran/dbt_quickbooks/#-what-does-this-dbt-package-do)
-- [How do I use the dbt package?](https://github.com/fivetran/dbt_quickbooks_source/#-how-do-i-use-the-dbt-package)
+- [How do I use the dbt package?](https://github.com/fivetran/dbt_quickbooks/#-how-do-i-use-the-dbt-package)
     - [Required steps](https://github.com/fivetran/dbt_quickbooks/#step-1-prerequisites)
     - [Additional options](https://github.com/fivetran/dbt_quickbooks/#optional-step-5-additional-configurations)
   - [Does this package have dependencies?](https://github.com/fivetran/dbt_quickbooks/#-does-this-package-have-dependencies)
@@ -27,7 +27,7 @@
 - [Are there any resources available?](https://github.com/fivetran/dbt_quickbooks/#-are-there-any-resources-available)
 
 ## What does this dbt package do?
-- Produces modeled tables that leverage QuickBooks data from [Fivetran's connector](https://fivetran.com/docs/applications/quickbooks) in the format described by [this ERD](https://fivetran.com/docs/applications/quickbooks#schemainformation) and builds off the output of our [QuickBooks source package](https://github.com/fivetran/dbt_quickbooks_source).
+- Produces modeled tables that leverage QuickBooks data from [Fivetran's connector](https://fivetran.com/docs/applications/quickbooks) in the format described by [this ERD](https://fivetran.com/docs/applications/quickbooks#schemainformation).
 
 - Enables users with insights into their QuickBooks data that can be used for financial statement reporting and deeper analysis. The package achieves this by:
   - Creating a comprehensive general ledger that can be used to create financial statements with additional flexibility.
@@ -58,7 +58,7 @@ Each Quickstart transformation job run materializes 94 models if all components 
 
 ### Multicurrency Support
 
-> [dbt_quickbooks](https://github.com/fivetran/dbt_quickbooks) and [dbt_quickbooks_source](https://github.com/fivetran/dbt_quickbooks_source) now supports multicurrency by bringing in values by specifying `*_converted_*` values for cash amounts. More details are [available in the DECISIONLOG](https://github.com/fivetran/dbt_quickbooks/blob/main/DECISIONLOG.md#multicurrency-vs-single-currency-configuration).
+> [dbt_quickbooks](https://github.com/fivetran/dbt_quickbooks) and [dbt_quickbooks](https://github.com/fivetran/dbt_quickbooks) now supports multicurrency by bringing in values by specifying `*_converted_*` values for cash amounts. More details are [available in the DECISIONLOG](https://github.com/fivetran/dbt_quickbooks/blob/main/DECISIONLOG.md#multicurrency-vs-single-currency-configuration).
 
 ## How do I use the dbt package?
 ### Step 1: Prerequisites
@@ -74,10 +74,10 @@ Include the following QuickBooks package version in your `packages.yml` file.
 ```yaml
 packages:
   - package: fivetran/quickbooks
-    version: [">=0.21.0", "<0.22.0"] # we recommend using ranges to capture non-breaking changes automatically
+    version: [">=1.0.0", "<1.1.0"] # we recommend using ranges to capture non-breaking changes automatically
 ```
 
-Do NOT include the `quickbooks_source` package in this file. The transformation package itself has a dependency on it and will install the source package as well.
+> All required sources and staging models are now bundled into this transformation package. Do not include `fivetran/quickbooks_source` in your `packages.yml` since this package has been deprecated.
 
 ### Step 3: Define database and schema variables
 By default, this package runs using your destination and the `quickbooks` schema of your [target database](https://docs.getdbt.com/docs/running-a-dbt-project/using-the-command-line-interface/configure-your-profile). If this is not where your QuickBooks data is (for example, if your QuickBooks schema is named `quickbooks_fivetran`), add the following configuration to your root `dbt_project.yml` file:
@@ -198,15 +198,14 @@ By default this package will build the QuickBooks staging models within a schema
 ...
 models:
     quickbooks:
-      +schema: my_new_schema_name # leave blank for just the target_schema
-
-    quickbooks_source:
-      +schema: my_new_schema_name # leave blank for just the target_schema
+      +schema: my_new_schema_name # Leave +schema: blank to use the default target_schema.
+      staging:
+        +schema: my_new_schema_name # Leave +schema: blank to use the default target_schema.
 ```
 
 #### Change the source table references
 If an individual source table has a different name than the package expects, add the table name as it appears in your destination to the respective variable:
-> IMPORTANT: See this project's [`dbt_project.yml`](https://github.com/fivetran/dbt_quickbooks_source/blob/main/dbt_project.yml) variable declarations to see the expected names.
+> IMPORTANT: See this project's [`dbt_project.yml`](https://github.com/fivetran/dbt_quickbooks/blob/main/dbt_project.yml) variable declarations to see the expected names.
 
 ```yml
 vars:
@@ -226,9 +225,6 @@ This dbt package is dependent on the following dbt packages. These dependencies 
 
 ```yml
 packages:
-    - package: fivetran/quickbooks_source
-      version: [">=0.14.0", "<0.15.0"]
-
     - package: fivetran/fivetran_utils
       version: [">=0.4.0", "<0.5.0"]
 

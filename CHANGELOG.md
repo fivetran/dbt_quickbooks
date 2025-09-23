@@ -1,3 +1,17 @@
+# dbt_quickbooks v1.0.0
+
+[PR #178](https://github.com/fivetran/dbt_quickbooks/pull/178) includes the following updates:
+
+## Breaking Changes
+
+### Source Package Consolidation
+- Removed the dependency on the `fivetran/quickbooks_source` package.
+  - All functionality from the source package has been merged into this transformation package for improved maintainability and clarity.
+  - If you reference `fivetran/quickbooks_source` in your `packages.yml`, you must remove this dependency to avoid conflicts.
+  - Any source overrides referencing the `fivetran/quickbooks_source` package will also need to be removed or updated to reference this package.
+  - Update any quickbooks_source-scoped variables to be scoped to only under this package. See the [README](https://github.com/fivetran/dbt_quickbooks/blob/main/README.md) for how to configure the build schema of staging models.
+- As part of the consolidation, vars are no longer used to reference staging models, and only sources are represented by vars. Staging models are now referenced directly with `ref()` in downstream models.
+
 # dbt_quickbooks v0.21.1
 [PR #176](https://github.com/fivetran/dbt_quickbooks/pull/176) includes the following updates:
 
