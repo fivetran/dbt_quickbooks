@@ -8,7 +8,7 @@ models:
   +schema: "quickbooks_{{ var('directed_schema','dev') }}"
 
 vars: 
-  quickbooks_source:
+  quickbooks:
     quickbooks_schema: quickbooks_integration_tests_21
     quickbooks_account_identifier: "account_data"
     quickbooks_address_identifier: "address_data"
