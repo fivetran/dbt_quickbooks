@@ -120,6 +120,7 @@ seeds:
     journal_entry_data:
       +column_types:
         transaction_date: date
+        exchange_rate: float
     journal_entry_tax_line_data:
       +column_types:
         amount: float
