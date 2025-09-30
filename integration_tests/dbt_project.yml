@@ -63,8 +63,6 @@ vars:
   # This below vars configuration is needed for the `general_ledger_amounts_match` macro.
   # using_credit_card_payment_txn: true # @docs-include
   # using_purchase_order: true # @docs-include
-
-  # For docs generation (add "# @docs-include" after tax lines)  
   # using_invoice_tax_line: true # @docs-include 
   # using_journal_entry_tax_line: true # @docs-include 
   # using_purchase_tax_line: true # @docs-include 
