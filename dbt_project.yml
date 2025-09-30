@@ -46,20 +46,27 @@ vars:
     invoice_line_bundle: "{{ source('quickbooks', 'invoice_line_bundle') }}"
     invoice_linked_txn: "{{ source('quickbooks', 'invoice_linked_txn') }}"
     invoice: "{{ source('quickbooks', 'invoice') }}"
+    invoice_tax_line: "{{ source('quickbooks','invoice_tax_line') }}"
     item: "{{ source('quickbooks', 'item') }}"
     journal_entry_line: "{{ source('quickbooks', 'journal_entry_line') }}"
     journal_entry: "{{ source('quickbooks', 'journal_entry') }}"
+    journal_entry_tax_line: "{{ source('quickbooks','journal_entry_tax_line') }}"
     payment_line: "{{ source('quickbooks', 'payment_line') }}"
     payment: "{{ source('quickbooks', 'payment') }}"
     purchase_line: "{{ source('quickbooks', 'purchase_line') }}"
     purchase: "{{ source('quickbooks', 'purchase') }}"
+    purchase_tax_line:  "{{ source('quickbooks','purchase_tax_line') }}"
     purchase_order_line: "{{ source('quickbooks','purchase_order_line') }}"
     purchase_order: "{{ source('quickbooks','purchase_order') }}"
     purchase_order_linked_txn: "{{ source('quickbooks','purchase_order_linked_txn') }}"
     refund_receipt_line: "{{ source('quickbooks', 'refund_receipt_line') }}"
     refund_receipt: "{{ source('quickbooks', 'refund_receipt') }}"
+    refund_receipt_tax_line: "{{ source('quickbooks','refund_receipt_tax_line') }}"   
     sales_receipt_line: "{{ source('quickbooks', 'sales_receipt_line') }}"
     sales_receipt: "{{ source('quickbooks', 'sales_receipt') }}"
+    sales_receipt_tax_line: "{{ source('quickbooks','sales_receipt_tax_line') }}"    
+    tax_agency: "{{ source('quickbooks','tax_agency') }}"
+    tax_rate: "{{ source('quickbooks','tax_rate') }}"
     transfer: "{{ source('quickbooks', 'transfer') }}"
     vendor_credit_line: "{{ source('quickbooks', 'vendor_credit_line') }}"
     vendor_credit: "{{ source('quickbooks', 'vendor_credit') }}"
@@ -84,6 +91,12 @@ vars:
     using_sales_receipt: true
     using_credit_card_payment_txn: false
     using_purchase_order: false
+    using_purchase_tax_line: false
+    using_sales_receipt_tax_line: false
+    using_refund_receipt_tax_line: false
+    using_invoice_tax_line: false
+    using_tax_agency: false
+    using_tax_rate: false
 
 analysis-paths: ["analysis"]
 clean-targets:

@@ -110,7 +110,14 @@ vars:
   using_vendor_credit: false # disable if you don't have vendor credits in QuickBooks
   using_sales_receipt: false # disable if you don't have sales receipts in QuickBooks
   using_credit_card_payment_txn: true # enable if you want to include credit card payment transactions in your staging models
-  using_purchase_order: true #enable if you want to include purchase orders in your staging models
+  using_purchase_order: true #enable if you want to include purchase orders in your staging 
+  using_invoice_tax_line: true #enable if you have invoice tax lines in QuickBooks
+  using_journal_entry_tax_line: true # enable if you have journal entry tax lines in QuickBooks
+  using_purchase_tax_line: true # enable if you have purchase tax lines in QuickBooks
+  using_refund_receipt_tax_line: true # enable if you have refund receipt tax lines in QuickBooks
+  using_sales_receipt_tax_line: true # enable if you have sales receipt tax lines in QuickBooks
+  using_tax_agency: true #enable if you have tax agencies in QuickBooks
+  using_tax_rate: true #enable if you have tax rates in QuickBooks
 ```
 
 ### (Optional) Step 5: Additional Configurations
@@ -138,8 +145,10 @@ If you have a different value to reference for each type, you will need to confi
 vars: 
   quickbooks__accounts_payable_reference: accounts_payable_value # 'Accounts Payable' is the default filter set for the account_type reference.
   quickbooks__accounts_receivable_reference: account_receivable_value # 'Accounts Receivable' is the default filter set for the account_type reference.
-  quickbooks__undeposited_funds_reference: account_undeposited_funds_value # 'UndepositedFunds' is the default filter set for the account_subtype reference.
-  quickbooks__sales_of_product_income_reference: account_sales_of_product_income_value # 'SalesOfProductIncome' is the default filter set for the account_subtype reference.
+  quickbooks__undeposited_funds_reference: account_undeposited_funds_value # 'UndepositedFunds' is the default filter set for the account_sub_type reference.
+  quickbooks__sales_of_product_income_reference: account_sales_of_product_income_value # 'SalesOfProductIncome' is the default filter set for the account_sub_type reference.
+  quickbooks__global_tax_account_reference: global_tax_account_value # 'Global Tax Payable' is the default filter set for the account name reference.
+  quickbooks__sales_tax_account_reference: sales_tax_account_value # 'Sales Tax Payable' is the default filter set for the account name reference.
 ```
 
 #### Customize the Cash Flow Model

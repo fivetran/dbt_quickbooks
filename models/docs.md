@@ -114,6 +114,10 @@ Mapping table for invoices records to respective estimate and payment objects.
 Table containing invoice records. An Invoice represents a sales form where the customer pays for a product or service later.
 {% enddocs %}
 
+{% docs invoice_tax_line_table %}
+Table containing line-level tax entries associated with invoices.
+{% enddocs %}
+
 {% docs item_table %}
 Table containing item records. An item is a thing that your company buys, sells, or re-sells, such as products and services.
 {% enddocs %}
@@ -126,6 +130,10 @@ Table containing individual line items of a transaction associated with a journa
 Table containing journal entry transactions.
 {% enddocs %}
 
+{% docs journal_entry_tax_line_table %}
+Table containing line-level tax entries associated with a journal entry.
+{% enddocs %}
+
 {% docs payment_line_table %}
 Table containing individual line items recorded within a payment.
 {% enddocs %}
@@ -136,6 +144,10 @@ Table containing all payment records. The payment can be applied for a particula
 
 {% docs purchase_line_table %}
 Table containing individual line items of a transaction associated with a purchase.
+{% enddocs %}
+
+{% docs purchase_tax_line_table %}
+Table containing line-level tax entries associated with purchases.
 {% enddocs %}
 
 {% docs purchase_order_line_table %}
@@ -162,6 +174,10 @@ Table containing individual line items of a refund transaction.
 Table containing refunds to the customer for a product or service that was provided.
 {% enddocs %}
 
+{% docs refund_receipt_tax_line_table %}
+Table containing line-level tax entries associated with refund receipts.
+{% enddocs %}
+
 {% docs sales_receipt_line_table %} 
 Table containing individual line items of a sales transaction.
 {% enddocs %}
@@ -170,6 +186,21 @@ Table containing individual line items of a sales transaction.
 Table containing sales receipts that are given to a customer. A sales receipt, payment is received as part of the sale of goods and services. The sales receipt specifies a deposit account where the customer's payment is deposited.
 {% enddocs %}
  
+{% docs sales_receipt_tax_line_table %}
+Table containing line-level tax entries associated with sales receipts.
+{% enddocs %}
+
+{% docs tax_agency_table %}
+Table containing tax agency records. A tax agency in QuickBooks represents a government or regulatory entity to which taxes are reported and remitted.
+{% enddocs %}
+
+{% docs tax_code_table %}
+Table containing tax code records. A tax code in QuickBooks is a grouping of one or more tax rates and is used to determine how tax is applied to transactions.
+{% enddocs %}
+
+{% docs tax_rate_table %}
+Table containing tax rate records. A tax rate in QuickBooks defines the percentage rate used to calculate tax for specific transactions.
+{% enddocs %}
 
 {% docs transfer_table %}
 Table containing records of transfers. A Transfer represents a transaction where funds are moved between two accounts from the company's QuickBooks chart of accounts.
@@ -284,4 +315,36 @@ Boolean created by Fivetran to indicate whether the record has been deleted.
 
 {% docs exchange_rate %}
 The number of home currency units it takes to equal one unit of currency specified by `currency_id`.
+{% enddocs %}
+
+{% docs tax_rate_id %}
+The unique ID of the tax rate applied to this line.
+{% enddocs %}
+
+{% docs tax_percent %}
+The percentage rate used to calculate this tax.
+{% enddocs %}
+
+{% docs tax_index %}
+The position/index of the tax line within the
+{% enddocs %}
+
+{% docs tax_amount %}
+The total amount of tax applied.
+{% enddocs %}
+
+{% docs override_delta_amount %}
+The amount that overrides the original tax calculation (if applicable).
+{% enddocs %}
+
+{% docs percent_based %}
+Indicates whether the tax is calculated based on a percentage.
+{% enddocs %}
+
+{% docs tax_inclusive_amount %}
+The amount including taxes, if the tax is inclusive.
+{% enddocs %}
+
+{% docs net_amount_taxable %}
+The taxable portion of the 
 {% enddocs %}
