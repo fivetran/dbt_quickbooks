@@ -5,7 +5,7 @@
 ## Schema Updates 
 **14 new models -- 14 potential breaking changes**
 
-NOTE: These models are disabled by default until we have validated tax lines work as expected for customers on the [v0.22.0-a1 pre-release](https://github.com/fivetran/dbt_quickbooks/releases/tag/v0.22.0-a1). They are available for customers only if you enable the appropriate variables ([see the README for more details](https://github.com/fivetran/dbt_quickbooks?tab=readme-ov-file#step-4-enablingdisabling-models)).
+NOTE: These models are not available to Quickstart users by default until we have validated tax lines work as expected for customers on the [v0.22.0-a1 pre-release](https://github.com/fivetran/dbt_quickbooks/releases/tag/v0.22.0-a1). They are available for dbt Core customers only if you enable the appropriate variables ([see the README for more details](https://github.com/fivetran/dbt_quickbooks?tab=readme-ov-file#step-4-enablingdisabling-models)).
 
 | Data Model                                                                                                                                               | Change Type | Old Name                     | New Name                                             | Notes                                                                                    |
 | -------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- | ---------------------------- | ---------------------------------------------------- | ---------------------------------------------------------------------------------------- |
