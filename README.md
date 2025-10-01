@@ -53,7 +53,7 @@ The following table provides a detailed list of all tables materialized within t
 | [quickbooks__expenses_sales_enhanced](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.quickbooks__expenses_sales_enhanced) | Table providing enhanced customer, vendor, and account details for each expense and sale transaction. |
 
 ### Materialized Models
-Each Quickstart transformation job run materializes 94 models if all components of this data model are enabled. This count includes all staging, intermediate, and final models materialized as `view`, `table`, or `incremental`.
+Each Quickstart transformation job run materializes 108 models if all components of this data model are enabled. This count includes all staging, intermediate, and final models materialized as `view`, `table`, or `incremental`.
 <!--section-end-->
 
 ### Multicurrency Support

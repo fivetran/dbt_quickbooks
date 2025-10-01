@@ -73,6 +73,6 @@ Our initial logic maps the tax agency display name by appending 'Payable' to the
 
 If tax agencies aren't where you want your mapping to take place, we then search for your default `Sales Tax Payable` and `Global Tax Payable` account available in your Quickbooks account. [See this Quickbooks article for more details](https://quickbooks.intuit.com/learn-support/en-ca/taxes/separate-tax-remittance-accounts/00/740623).
 
-If neither of those accounts are available, the `quickbooks__sales_tax_account_reference` and `quickbooks__global_tax_account_reference` are made available to publish the account name you believe matches the tax line. [See the README for more details](https://github.com/fivetran/dbt_quickbooks?tab=readme-ov-file#configuring-account-type-names).
+If neither of those accounts are available, the `quickbooks__sales_tax_account_reference` and `quickbooks__global_tax_account_reference` variables are made available to publish the account name you believe matches the tax line. [See the README for more details](https://github.com/fivetran/dbt_quickbooks?tab=readme-ov-file#configuring-account-type-names).
 
 This behavior pertains to the invoice, journal entry, refund receipt, and sales receipt tax line entries. (Purchase tax lines will be associated with their purchase accounts).

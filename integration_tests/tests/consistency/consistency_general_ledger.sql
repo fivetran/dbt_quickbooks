@@ -5,13 +5,11 @@
 
 -- this test ensures the general ledger end model matches the prior version
 with prod as (
-    select *
     select * except(running_balance, running_converted_balance)
     from {{ target.schema }}_quickbooks_prod.quickbooks__general_ledger
 ),
 
 dev as (
-    select *
     select * except(running_balance, running_converted_balance)
     from {{ target.schema }}_quickbooks_dev.quickbooks__general_ledger
 ),
