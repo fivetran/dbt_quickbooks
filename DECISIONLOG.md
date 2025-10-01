@@ -69,7 +69,7 @@ Please leverage the below fields in your end models for your financial statement
 ## Bringing in The Right Tax Accounts For Tax Lines
 When bringing in tax lines ([see the README](https://github.com/fivetran/dbt_quickbooks?tab=readme-ov-file#step-4-enablingdisabling-models) for more details on how to enable/disable tax lines), we want to make sure we are associating each line with the right account, since they usually differ from the accounts for the regular lines. That way these lines are correctly tracked, generally as liabilities. 
 
-Our initial logic maps the tax agency display name by appending 'Payable' to the end of the name. That should match at least one account name, which is the appropriate account for that tax line. 
+Our initial logic maps the tax agency display name by appending 'Payable' to the end of the name. That should ideally match one account name, which is the appropriate account for that tax line. Multiple tax accounts with the same name would cause fanout.
 
 If tax agencies aren't where you want your mapping to take place, we then search for your default `Sales Tax Payable` and `Global Tax Payable` account available in your Quickbooks account. [See this Quickbooks article for more details](https://quickbooks.intuit.com/learn-support/en-ca/taxes/separate-tax-remittance-accounts/00/740623).
 
