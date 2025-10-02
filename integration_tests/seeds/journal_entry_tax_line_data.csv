@@ -1,0 +1,5 @@
+_fivetran_synced,amount,index,journal_entry_id,net_amount_taxable,override_delta_amount,percent_based,tax_inclusive_amount,tax_percent,tax_rate_id
+2025-07-16 00:29:30.669751,19035.17,0,41,268157.92,0.0,true,291476.0,10.0,5
+2025-07-16 00:29:30.669751,4282.91,1,41,268157.92,0.0,true,291476.0,2.25,6
+2025-07-16 00:29:30.669751,5952.30,2,44,93252.70,0.0,true,99205.0,6.0,10
+2025-07-16 00:29:30.669751,4680.38,0,395,57724.62,0.0,true,62405.0,7.5,99

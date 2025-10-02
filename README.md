@@ -17,7 +17,7 @@
 
 ## Table of Contents
 - [What does this dbt package do?](https://github.com/fivetran/dbt_quickbooks/#-what-does-this-dbt-package-do)
-- [How do I use the dbt package?](https://github.com/fivetran/dbt_quickbooks_source/#-how-do-i-use-the-dbt-package)
+- [How do I use the dbt package?](https://github.com/fivetran/dbt_quickbooks/#-how-do-i-use-the-dbt-package)
     - [Required steps](https://github.com/fivetran/dbt_quickbooks/#step-1-prerequisites)
     - [Additional options](https://github.com/fivetran/dbt_quickbooks/#optional-step-5-additional-configurations)
   - [Does this package have dependencies?](https://github.com/fivetran/dbt_quickbooks/#-does-this-package-have-dependencies)
@@ -27,7 +27,7 @@
 - [Are there any resources available?](https://github.com/fivetran/dbt_quickbooks/#-are-there-any-resources-available)
 
 ## What does this dbt package do?
-- Produces modeled tables that leverage QuickBooks data from [Fivetran's connector](https://fivetran.com/docs/applications/quickbooks) in the format described by [this ERD](https://fivetran.com/docs/applications/quickbooks#schemainformation) and builds off the output of our [QuickBooks source package](https://github.com/fivetran/dbt_quickbooks_source).
+- Produces modeled tables that leverage QuickBooks data from [Fivetran's connector](https://fivetran.com/docs/applications/quickbooks) in the format described by [this ERD](https://fivetran.com/docs/applications/quickbooks#schemainformation).
 
 - Enables users with insights into their QuickBooks data that can be used for financial statement reporting and deeper analysis. The package achieves this by:
   - Creating a comprehensive general ledger that can be used to create financial statements with additional flexibility.
@@ -53,12 +53,12 @@ The following table provides a detailed list of all tables materialized within t
 | [quickbooks__expenses_sales_enhanced](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.quickbooks__expenses_sales_enhanced) | Table providing enhanced customer, vendor, and account details for each expense and sale transaction. |
 
 ### Materialized Models
-Each Quickstart transformation job run materializes 94 models if all components of this data model are enabled. This count includes all staging, intermediate, and final models materialized as `view`, `table`, or `incremental`.
+Each Quickstart transformation job run materializes 108 models if all components of this data model are enabled. This count includes all staging, intermediate, and final models materialized as `view`, `table`, or `incremental`.
 <!--section-end-->
 
 ### Multicurrency Support
 
-> [dbt_quickbooks](https://github.com/fivetran/dbt_quickbooks) and [dbt_quickbooks_source](https://github.com/fivetran/dbt_quickbooks_source) now supports multicurrency by bringing in values by specifying `*_converted_*` values for cash amounts. More details are [available in the DECISIONLOG](https://github.com/fivetran/dbt_quickbooks/blob/main/DECISIONLOG.md#multicurrency-vs-single-currency-configuration).
+> [dbt_quickbooks](https://github.com/fivetran/dbt_quickbooks) and [dbt_quickbooks](https://github.com/fivetran/dbt_quickbooks) now supports multicurrency by bringing in values by specifying `*_converted_*` values for cash amounts. More details are [available in the DECISIONLOG](https://github.com/fivetran/dbt_quickbooks/blob/main/DECISIONLOG.md#multicurrency-vs-single-currency-configuration).
 
 ## How do I use the dbt package?
 ### Step 1: Prerequisites
@@ -74,10 +74,10 @@ Include the following QuickBooks package version in your `packages.yml` file.
 ```yaml
 packages:
   - package: fivetran/quickbooks
-    version: [">=0.21.0", "<0.22.0"] # we recommend using ranges to capture non-breaking changes automatically
+    version: [">=1.0.0", "<1.1.0"] # we recommend using ranges to capture non-breaking changes automatically
 ```
 
-Do NOT include the `quickbooks_source` package in this file. The transformation package itself has a dependency on it and will install the source package as well.
+> All required sources and staging models are now bundled into this transformation package. Do not include `fivetran/quickbooks_source` in your `packages.yml` since this package has been deprecated.
 
 ### Step 3: Define database and schema variables
 By default, this package runs using your destination and the `quickbooks` schema of your [target database](https://docs.getdbt.com/docs/running-a-dbt-project/using-the-command-line-interface/configure-your-profile). If this is not where your QuickBooks data is (for example, if your QuickBooks schema is named `quickbooks_fivetran`), add the following configuration to your root `dbt_project.yml` file:
@@ -110,7 +110,14 @@ vars:
   using_vendor_credit: false # disable if you don't have vendor credits in QuickBooks
   using_sales_receipt: false # disable if you don't have sales receipts in QuickBooks
   using_credit_card_payment_txn: true # enable if you want to include credit card payment transactions in your staging models
-  using_purchase_order: true #enable if you want to include purchase orders in your staging models
+  using_purchase_order: true #enable if you want to include purchase orders in your staging 
+  using_invoice_tax_line: true #enable if you have invoice tax lines in QuickBooks
+  using_journal_entry_tax_line: true # enable if you have journal entry tax lines in QuickBooks
+  using_purchase_tax_line: true # enable if you have purchase tax lines in QuickBooks
+  using_refund_receipt_tax_line: true # enable if you have refund receipt tax lines in QuickBooks
+  using_sales_receipt_tax_line: true # enable if you have sales receipt tax lines in QuickBooks
+  using_tax_agency: true #enable if you have tax agencies in QuickBooks
+  using_tax_rate: true #enable if you have tax rates in QuickBooks
 ```
 
 ### (Optional) Step 5: Additional Configurations
@@ -138,8 +145,16 @@ If you have a different value to reference for each type, you will need to confi
 vars: 
   quickbooks__accounts_payable_reference: accounts_payable_value # 'Accounts Payable' is the default filter set for the account_type reference.
   quickbooks__accounts_receivable_reference: account_receivable_value # 'Accounts Receivable' is the default filter set for the account_type reference.
-  quickbooks__undeposited_funds_reference: account_undeposited_funds_value # 'UndepositedFunds' is the default filter set for the account_subtype reference.
-  quickbooks__sales_of_product_income_reference: account_sales_of_product_income_value # 'SalesOfProductIncome' is the default filter set for the account_subtype reference.
+  quickbooks__undeposited_funds_reference: account_undeposited_funds_value # 'UndepositedFunds' is the default filter set for the account_sub_type reference.
+  quickbooks__sales_of_product_income_reference: account_sales_of_product_income_value # 'SalesOfProductIncome' is the default filter set for the account_sub_type reference.
+```
+
+We conduct similar mappings to Global Tax and Sales Tax Account values, except they are applied to the account `name` field. If you have a different value to reference for each type, you will need to configure the `name` variables in your `dbt_project.yml`. **IMPORTANT**: Please make sure the account name is unique for your reference. [See the DECISIONLOG for more details](https://github.com/fivetran/dbt_quickbooks/blob/main/DECISIONLOG.md#bringing-in-the-right-tax-accounts-for-tax-lines).
+
+```yml
+vars:
+  quickbooks__global_tax_account_reference: global_tax_account_value # 'Global Tax Payable' is the default filter set for the account name reference.
+  quickbooks__sales_tax_account_reference: sales_tax_account_value # 'Sales Tax Payable' is the default filter set for the account name reference.
 ```
 
 #### Customize the Cash Flow Model
@@ -198,15 +213,14 @@ By default this package will build the QuickBooks staging models within a schema
 ...
 models:
     quickbooks:
-      +schema: my_new_schema_name # leave blank for just the target_schema
-
-    quickbooks_source:
-      +schema: my_new_schema_name # leave blank for just the target_schema
+      +schema: my_new_schema_name # Leave +schema: blank to use the default target_schema.
+      staging:
+        +schema: my_new_schema_name # Leave +schema: blank to use the default target_schema.
 ```
 
 #### Change the source table references
 If an individual source table has a different name than the package expects, add the table name as it appears in your destination to the respective variable:
-> IMPORTANT: See this project's [`dbt_project.yml`](https://github.com/fivetran/dbt_quickbooks_source/blob/main/dbt_project.yml) variable declarations to see the expected names.
+> IMPORTANT: See this project's [`dbt_project.yml`](https://github.com/fivetran/dbt_quickbooks/blob/main/dbt_project.yml) variable declarations to see the expected names.
 
 ```yml
 vars:
@@ -226,9 +240,6 @@ This dbt package is dependent on the following dbt packages. These dependencies 
 
 ```yml
 packages:
-    - package: fivetran/quickbooks_source
-      version: [">=0.14.0", "<0.15.0"]
-
     - package: fivetran/fivetran_utils
       version: [">=0.4.0", "<0.5.0"]
 
@@ -238,7 +249,7 @@ packages:
 
 ## How is this package maintained and can I contribute?
 ### Package Maintenance
-The Fivetran team maintaining this package _only_ maintains the latest version of the package. We highly recommend that you stay consistent with the [latest version](https://hub.getdbt.com/fivetran/quickbooks_source/latest/) of the package and refer to the [CHANGELOG](https://github.com/fivetran/dbt_quickbooks/blob/main/CHANGELOG.md) and release notes for more information on changes across versions.
+The Fivetran team maintaining this package _only_ maintains the latest version of the package. We highly recommend that you stay consistent with the [latest version](https://hub.getdbt.com/fivetran/quickbooks/latest/) of the package and refer to the [CHANGELOG](https://github.com/fivetran/dbt_quickbooks/blob/main/CHANGELOG.md) and release notes for more information on changes across versions.
 
 ### Contributions
 A small team of analytics engineers at Fivetran develops these dbt packages. However, the packages are made better by community contributions.
