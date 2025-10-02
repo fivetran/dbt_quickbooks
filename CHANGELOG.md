@@ -1,3 +1,10 @@
+# dbt_quickbooks v1.0.1-a1
+[PR #179](https://github.com/fivetran/dbt_quickbooks/pull/179) is a pre-release that includes the following updates:
+
+## Quickstart Updates
+- Adds in `quickstart.yml` variables for tax line source tables so Quickstart customers can continue to leverage tax lines based off the latest version of the QuickBooks data models.
+- [Please open a Fivetran support ticket](https://support.fivetran.com/hc/en-us) if you'd like to test out this pre-release and see if the new tax line feature ties out your financial reporting. 
+
 # dbt_quickbooks v1.0.0
 
 [PR #178](https://github.com/fivetran/dbt_quickbooks/pull/178) includes the following updates:
