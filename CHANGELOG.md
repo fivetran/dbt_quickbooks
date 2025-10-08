@@ -2,7 +2,7 @@
 [PR #184](https://github.com/fivetran/dbt_quickbooks/pull/184) includes the following updates:
 
 ## Bug Fix
-- Updates the `is_overdue` and `days_overdue` logic in the `quickbooks__ap_ar_enhanced` model to compare `due_date` with the current date instead of `recent_payment_date`, ensuring accurate overdue status and day counts for bills and invoices.
+- Updates the `is_overdue` and `days_overdue` logic in the `quickbooks__ap_ar_enhanced` model to compare `due_date` with the current date instead of `recent_payment_date`, which can be null. This ensures accurate overdue status and day counts for bills and invoices.
 
 # dbt_quickbooks v1.0.1-a1
 [PR #179](https://github.com/fivetran/dbt_quickbooks/pull/179) is a pre-release that includes the following updates:
