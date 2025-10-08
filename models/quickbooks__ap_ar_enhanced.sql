@@ -75,14 +75,21 @@ final as (
         cast(null as {{ dbt.type_numeric() }}) as estimate_total_converted_amount,
         bill_join.current_balance,
         bill_join.due_date,
-        case when bill_join.current_balance != 0 and {{ dbt.datediff("bill_join.recent_payment_date", "bill_join.due_date", 'day') }} < 0
+        -- if there is a balance and today's date 
+        case
+            when bill_join.current_balance != 0
+                and bill_join.due_date < current_date
             then true
             else false
-                end as is_overdue,
-        case when bill_join.current_balance != 0 and {{ dbt.datediff("bill_join.recent_payment_date", "bill_join.due_date", 'day') }} < 0
-            then {{ dbt.datediff("bill_join.recent_payment_date", "bill_join.due_date", 'day') }} * -1
+        end as is_overdue,
+
+        case
+            when bill_join.current_balance != 0
+                and bill_join.due_date < current_date
+            then {{ dbt.datediff("bill_join.due_date", "current_date", 'day') }}
             else 0
-                end as days_overdue,
+        end as days_overdue,
+
         bill_join.initial_payment_date,
         bill_join.recent_payment_date,
         bill_join.total_current_payment,
@@ -138,14 +145,18 @@ final as (
         invoice_join.estimate_total_converted_amount as estimate_total_converted_amount,
         invoice_join.current_balance as current_balance,
         invoice_join.due_date,
-        case when invoice_join.current_balance != 0 and {{ dbt.datediff("invoice_join.recent_payment_date", "invoice_join.due_date", 'day') }} < 0
+        case
+            when invoice_join.current_balance != 0
+                and invoice_join.due_date < current_date
             then true
             else false
-                end as is_overdue,
-        case when invoice_join.current_balance != 0 and {{ dbt.datediff("invoice_join.recent_payment_date", "invoice_join.due_date", 'day') }} < 0
-            then {{ dbt.datediff("invoice_join.recent_payment_date", "invoice_join.due_date", 'day') }} * -1
+        end as is_overdue,
+        case
+            when invoice_join.current_balance != 0
+                and invoice_join.due_date < current_date
+            then {{ dbt.datediff("invoice_join.due_date", "current_date", 'day') }}
             else 0
-                end as days_overdue,
+        end as days_overdue,
         invoice_join.initial_payment_date,
         invoice_join.recent_payment_date,
         invoice_join.total_current_payment as total_current_payment,
