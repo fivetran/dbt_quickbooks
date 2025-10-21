@@ -1,13 +1,12 @@
 # dbt_quickbooks v1.1.0
-[PR #1854](https://github.com/fivetran/dbt_quickbooks/pull/185) includes the following updates based on `v1.0.1-a1` and `v1.0.2-a1`:
+[PR #185](https://github.com/fivetran/dbt_quickbooks/pull/185) includes the following updates based on `v1.0.1-a1` and `v1.0.2-a1`:
 
 ## Bug Fix
 - Updates the `is_overdue` and `days_overdue` logic in the `quickbooks__ap_ar_enhanced` model to compare `due_date` with the current date instead of `recent_payment_date`, which can be null. This ensures accurate overdue status and day counts for bills and invoices.
 
 ## Quickstart Updates
-- Adds in `quickstart.yml` variables for tax line source tables so Quickstart customers can continue to leverage tax lines.
-- This update in essence replicates [the prior tax line pre-release](https://github.com/fivetran/dbt_quickbooks/releases/tag/v0.22.0-a1), but now based off the latest version of the QuickBooks data models.
-- [Please open a Fivetran support ticket](https://support.fivetran.com/hc/en-us) if you'd like to test out this pre-release and see if the new tax line feature ties out your financial reporting. 
+- Adds in `quickstart.yml` variables for tax line source tables so Quickstart customers can leverage tax lines.
+   - If you leverage tax lines, we highly encourage you to review the accuracy of the end models following this update. If you notice any issues [please open a Fivetran support ticket](https://support.fivetran.com/hc/en-us) and let our team know. 
 
 # dbt_quickbooks v1.0.2-a1
 [PR #184](https://github.com/fivetran/dbt_quickbooks/pull/184) includes the following updates:
