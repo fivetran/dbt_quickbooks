@@ -6,7 +6,7 @@
 
 ## Quickstart Updates
 - Adds in `quickstart.yml` variables for tax line source tables so Quickstart customers can leverage tax lines.
-   - If you leverage tax lines, we highly encourage you to review the accuracy of the end models following this update. If you notice any issues [please open a Fivetran support ticket](https://support.fivetran.com/hc/en-us) and let our team know. 
+   - If you leverage tax lines, we encourage you to review the accuracy of the end models following this update. If you notice any issues [please open a Fivetran support ticket](https://support.fivetran.com/hc/en-us) and let our team know. 
 
 # dbt_quickbooks v1.0.2-a1
 [PR #184](https://github.com/fivetran/dbt_quickbooks/pull/184) includes the following updates:
