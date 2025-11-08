@@ -3,7 +3,7 @@
 
 ## Bug Fixes
 - Fixes `int_quickbooks__purchase_double_entry` by bringing in purchase tax line amounts and converted amounts for customers leveraging multicurrency.
-- Updates `int_quickbooks__invoice_double_entry` join on `currency_id` to properly factor in multiple accounts receivable for customers with multiple currencies, preventing fanout.  
+- Updates `int_quickbooks__invoice_double_entry` with join on `currency_id` for Accounts Receivable accounts to prevent fanout for customers with multiple currencies.
 
 # dbt_quickbooks v1.1.0
 [PR #185](https://github.com/fivetran/dbt_quickbooks/pull/185) includes the following updates, based on the updates made in the `v1.0.1-a1` and `v1.0.2-a1` pre-releases:
