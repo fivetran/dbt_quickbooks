@@ -16,11 +16,15 @@ transfer_body as (
     select
         transfer_id as transaction_id,
         source_relation,
-        row_number() over(partition by transfer_id, source_relation 
+        row_number() over(partition by transfer_id, source_relation
             order by source_relation, transaction_date) - 1 as index,
         transaction_date,
         amount,
-        (amount * coalesce(exchange_rate, 1)) as converted_amount,
+        case
+            when currency_id = '{{ var('quickbooks__home_currency', '') }}'
+                then amount
+            else amount * coalesce(exchange_rate, 1)
+        end as converted_amount,
         from_account_id as credit_to_account_id,
         to_account_id as debit_to_account_id,
         created_at,

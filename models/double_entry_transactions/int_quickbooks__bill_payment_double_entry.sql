@@ -41,11 +41,15 @@ bill_payment_join as (
     select
         bill_payments.bill_payment_id as transaction_id,
         bill_payments.source_relation,
-        row_number() over(partition by bill_payments.bill_payment_id, bill_payments.source_relation 
+        row_number() over(partition by bill_payments.bill_payment_id, bill_payments.source_relation
             order by bill_payments.source_relation, bill_payments.transaction_date) - 1 as index,
         bill_payments.transaction_date,
         bill_payments.total_amount as amount,
-        (bill_payments.total_amount * coalesce(bill_payments.exchange_rate, 1)) as converted_amount,
+        case
+            when bill_payments.currency_id = '{{ var('quickbooks__home_currency', '') }}'
+                then bill_payments.total_amount
+            else bill_payments.total_amount * coalesce(bill_payments.exchange_rate, 1)
+        end as converted_amount,
         coalesce(bill_payments.credit_card_account_id,bill_payments.check_bank_account_id) as payment_account_id,
         ap_accounts.account_id,
         bill_payments.vendor_id,

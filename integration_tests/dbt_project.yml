@@ -58,6 +58,7 @@ vars:
     quickbooks_vendor_credit_identifier: "vendor_credit_data"
     quickbooks_vendor_identifier: "vendor_data"
 
+ 
 
   # For validation testing.  
   # This below vars configuration is needed for the `general_ledger_amounts_match` macro.

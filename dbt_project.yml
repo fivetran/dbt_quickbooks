@@ -98,6 +98,8 @@ vars:
     using_tax_agency: false
     using_tax_rate: false
 
+    quickbooks__home_currency: "USD"
+
 analysis-paths: ["analysis"]
 clean-targets:
 - target
