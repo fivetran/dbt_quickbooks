@@ -74,7 +74,7 @@ Include the following QuickBooks package version in your `packages.yml` file.
 ```yaml
 packages:
   - package: fivetran/quickbooks
-    version: 1.1.1-a1 # we recommend using ranges to capture non-breaking changes automatically
+    version: 1.1.1-a2 # we recommend using ranges to capture non-breaking changes automatically
 ```
 
 > All required sources and staging models are now bundled into this transformation package. Do not include `fivetran/quickbooks_source` in your `packages.yml` since this package has been deprecated.
