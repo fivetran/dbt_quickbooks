@@ -21,7 +21,7 @@ transfer_body as (
         transaction_date,
         amount,
         case
-            when currency_id = '{{ var('quickbooks__home_currency', 'Undefined') }}'
+            when currency_id = '{{ var('quickbooks__home_currency', 'None Defined') }}'
                 then amount
             else amount * coalesce(exchange_rate, 1)
         end as converted_amount,

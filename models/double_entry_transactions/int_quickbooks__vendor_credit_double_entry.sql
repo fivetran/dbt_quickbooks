@@ -38,7 +38,7 @@ vendor_credit_join as (
         vendor_credits.transaction_date,
         vendor_credit_lines.amount,
         case
-            when vendor_credits.currency_id = '{{ var('quickbooks__home_currency', 'Undefined') }}'
+            when vendor_credits.currency_id = '{{ var('quickbooks__home_currency', 'None Defined') }}'
                 then vendor_credit_lines.amount
             else vendor_credit_lines.amount * coalesce(vendor_credits.exchange_rate, 1)
         end as converted_amount,

@@ -46,7 +46,7 @@ payment_join as (
         payments.transaction_date,
         payments.total_amount as amount,
         case
-            when payments.currency_id = '{{ var('quickbooks__home_currency', 'Undefined') }}'
+            when payments.currency_id = '{{ var('quickbooks__home_currency', 'None Defined') }}'
                 then payments.total_amount
             else payments.total_amount * coalesce(payments.exchange_rate, 1)
         end as converted_amount,

@@ -217,7 +217,7 @@ invoice_join as (
             else coalesce(invoice_bundles.amount, invoice_lines.amount) 
         end) 
         *
-        (case when invoices.currency_id = '{{ var('quickbooks__home_currency', 'Undefined') }}'
+        (case when invoices.currency_id = '{{ var('quickbooks__home_currency', 'None Defined') }}'
             then 1
             else coalesce(invoices.exchange_rate, 1) 
         end) as converted_amount,
@@ -234,7 +234,7 @@ invoice_join as (
         invoices.transaction_date as transaction_date,
         invoice_lines.amount as amount,
         invoice_lines.amount *
-        (case when invoices.currency_id = '{{ var('quickbooks__home_currency', 'Undefined') }}'
+        (case when invoices.currency_id = '{{ var('quickbooks__home_currency', 'None Defined') }}'
             then 1
             else coalesce(invoices.exchange_rate, 1) 
         end) as converted_amount,
@@ -284,7 +284,7 @@ invoice_join as (
         invoices.transaction_date,
         invoice_tax_lines.amount,
         invoice_tax_lines.amount *
-        (case when invoices.currency_id = '{{ var('quickbooks__home_currency', 'Undefined') }}'
+        (case when invoices.currency_id = '{{ var('quickbooks__home_currency', 'None Defined') }}'
             then 1
             else coalesce(invoices.exchange_rate, 1)
         end) as converted_amount,
