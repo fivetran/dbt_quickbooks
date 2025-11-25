@@ -22,7 +22,7 @@ credit_card_payment_prep as (
         credit_card_payments.transaction_date,
         credit_card_payments.amount,
         case
-            when credit_card_payments.currency_id = '{{ var('quickbooks__home_currency', '') }}'
+            when credit_card_payments.currency_id = '{{ var('quickbooks__home_currency', 'Undefined') }}'
                 then credit_card_payments.amount
             else credit_card_payments.amount * coalesce(credit_card_payments.exchange_rate, 1)
         end as converted_amount,

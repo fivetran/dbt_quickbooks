@@ -51,7 +51,7 @@ credit_memo_join as (
         credit_memos.transaction_date,
         credit_memo_lines.amount,
         case
-            when credit_memos.currency_id = '{{ var('quickbooks__home_currency', '') }}'
+            when credit_memos.currency_id = '{{ var('quickbooks__home_currency', 'Undefined') }}'
                 then credit_memo_lines.amount
             else credit_memo_lines.amount * coalesce(credit_memos.exchange_rate, 1)
         end as converted_amount,

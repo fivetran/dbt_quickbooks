@@ -38,7 +38,7 @@ bill_join as (
         bills.transaction_date,
         bill_lines.amount,
         case
-            when bills.currency_id = '{{ var('quickbooks__home_currency', '') }}'
+            when bills.currency_id = '{{ var('quickbooks__home_currency', 'Undefined') }}'
                 then bill_lines.amount
             else bill_lines.amount * coalesce(bills.exchange_rate, 1)
         end as converted_amount,

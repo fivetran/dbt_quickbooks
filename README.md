@@ -157,16 +157,18 @@ vars:
   quickbooks__sales_tax_account_reference: sales_tax_account_value # 'Sales Tax Payable' is the default filter set for the account name reference.
 ```
 
-#### Optimizing Multicurrency with Home Currency Configuration
+#### Configuring Your Home Currency for Multicurrency Support
 
-If your business operates with multiple currencies but has a primary home currency (e.g., USD, EUR, GBP), you can optimize performance and accuracy by configuring the `quickbooks__home_currency` variable. This prevents unnecessary exchange rate conversions for transactions that are already in your home currency.
+If your business operates with multiple currencies, you should configure the `quickbooks__home_currency` variable to specify your primary reporting currency (e.g., USD, EUR, GBP, CAD). This optimization prevents unnecessary exchange rate conversions for transactions already in your home currency, improving both performance and accuracy. If this variable is not set, the package will apply exchange rate conversions to all transactions, regardless of currency.  
 
-Add the following to your `dbt_project.yml` file, replacing `"USD"` with your home currency code:
+Add the following to your `dbt_project.yml` file, replacing `"USD"` with your actual home currency code:
 
 ```yml
 vars:
-  quickbooks__home_currency: "USD"  # Use your home currency code (e.g., "EUR", "GBP", "CAD")
-``` 
+  quickbooks__home_currency: "USD"  # Replace with your home currency code (e.g., "EUR", "GBP", "CAD")
+```
+
+**Note:** Use the same 3-letter ISO currency code (e.g., "USD", "EUR", "GBP") that appears in your QuickBooks `currency_id` field. 
 
 #### Customize the Cash Flow Model
 **IMPORTANT**: It is very likely you will need to reconfigure your `cash_flow_type` to make sure your cash flow statement matches your specific use case. Please examine the following instructions.

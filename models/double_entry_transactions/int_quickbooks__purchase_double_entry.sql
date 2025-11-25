@@ -48,7 +48,7 @@ purchase_join as (
         purchases.transaction_date,
         purchase_lines.amount,
         case
-            when purchases.currency_id = '{{ var('quickbooks__home_currency', '') }}'
+            when purchases.currency_id = '{{ var('quickbooks__home_currency', 'Undefined') }}'
                 then purchase_lines.amount
             else purchase_lines.amount * coalesce(purchases.exchange_rate, 1)
         end as converted_amount,
@@ -82,7 +82,7 @@ purchase_join as (
         purchases.transaction_date,
         purchase_tax_lines.amount,
         case
-            when purchases.currency_id = '{{ var('quickbooks__home_currency', '') }}'
+            when purchases.currency_id = '{{ var('quickbooks__home_currency', 'Undefined') }}'
                 then purchase_tax_lines.amount
             else purchase_tax_lines.amount * coalesce(purchases.exchange_rate, 1)
         end as converted_amount,

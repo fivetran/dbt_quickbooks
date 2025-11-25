@@ -16,12 +16,12 @@ transfer_body as (
     select
         transfer_id as transaction_id,
         source_relation,
-        row_number() over(partition by transfer_id, source_relation
+        row_number() over (partition by transfer_id, source_relation
             order by source_relation, transaction_date) - 1 as index,
         transaction_date,
         amount,
         case
-            when currency_id = '{{ var('quickbooks__home_currency', '') }}'
+            when currency_id = '{{ var('quickbooks__home_currency', 'Undefined') }}'
                 then amount
             else amount * coalesce(exchange_rate, 1)
         end as converted_amount,

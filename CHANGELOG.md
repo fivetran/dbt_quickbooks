@@ -2,9 +2,7 @@
 [PR #188](https://github.com/fivetran/dbt_quickbooks/pull/188) is a pre-release that includes the following updates:
 
 ## Bug Fixes
-- Introduced the quickbooks__home_currency variable to optimize multicurrency handling. When set,
-  transactions in the home currency will not apply exchange rate conversions, improving accuracy and
-  performance. This variable is implemented across all 13 intermediate double-entry transaction models to ensure consistent multicurrency behavior throughout the package.
+- Introduced the `quickbooks__home_currency` variable to optimize multicurrency handling. When set transactions in the home currency will not apply exchange rate conversions, improving accuracy and performance. This variable is implemented across all 13 intermediate double-entry transaction models to ensure consistent multicurrency behavior throughout the package.
 
 # dbt_quickbooks v1.1.1-a1
 [PR #187](https://github.com/fivetran/dbt_quickbooks/pull/187) is a pre-release that includes the following updates:

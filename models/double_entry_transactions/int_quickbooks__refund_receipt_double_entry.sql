@@ -144,7 +144,7 @@ refund_receipt_join as (
         refund_receipts.transaction_date,
         refund_receipt_lines.amount,
         case
-            when refund_receipts.currency_id = '{{ var('quickbooks__home_currency', '') }}'
+            when refund_receipts.currency_id = '{{ var('quickbooks__home_currency', 'Undefined') }}'
                 then refund_receipt_lines.amount
             else refund_receipt_lines.amount * coalesce(refund_receipts.exchange_rate, 1)
         end as converted_amount,
@@ -177,7 +177,7 @@ refund_receipt_join as (
         refund_receipts.transaction_date,
         refund_receipt_tax_lines.amount,
         case
-            when refund_receipts.currency_id = '{{ var('quickbooks__home_currency', '') }}'
+            when refund_receipts.currency_id = '{{ var('quickbooks__home_currency', 'Undefined') }}'
                 then refund_receipt_tax_lines.amount
             else refund_receipt_tax_lines.amount * coalesce(refund_receipts.exchange_rate, 1)
         end as converted_amount,

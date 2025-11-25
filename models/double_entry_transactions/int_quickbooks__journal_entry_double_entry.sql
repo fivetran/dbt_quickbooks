@@ -135,7 +135,7 @@ final as (
         journal_entry_lines.vendor_id,
         journal_entry_lines.amount,
         case
-            when journal_entries.currency_id = '{{ var('quickbooks__home_currency', '') }}'
+            when journal_entries.currency_id = '{{ var('quickbooks__home_currency', 'Undefined') }}'
                 then journal_entry_lines.amount
             else journal_entry_lines.amount * coalesce(journal_entries.exchange_rate, 1)
         end as converted_amount,
@@ -166,7 +166,7 @@ final as (
         cast(null as {{ dbt.type_string() }}) as vendor_id,
         journal_entry_tax_lines.amount,
         case
-            when journal_entries.currency_id = '{{ var('quickbooks__home_currency', '') }}'
+            when journal_entries.currency_id = '{{ var('quickbooks__home_currency', 'Undefined') }}'
                 then journal_entry_tax_lines.amount
             else journal_entry_tax_lines.amount * coalesce(journal_entries.exchange_rate, 1)
         end as converted_amount,
