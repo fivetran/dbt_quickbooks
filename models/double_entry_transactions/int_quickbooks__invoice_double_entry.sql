@@ -124,6 +124,7 @@ ar_accounts as (
 
     select 
         account_id,
+        currency_id,
         source_relation
     from accounts
 
@@ -211,10 +212,15 @@ invoice_join as (
         case when invoice_lines.bundle_id is not null and invoices.total_amount = 0 then invoices.total_amount
             else coalesce(invoice_bundles.amount, invoice_lines.amount)
         end as amount,
-        case when invoice_lines.bundle_id is not null and invoices.total_amount = 0 
-            then (invoices.total_amount * coalesce(invoices.exchange_rate, 1))
-            else (coalesce(invoice_bundles.amount, invoice_lines.amount) * coalesce(invoices.exchange_rate, 1))
-        end as converted_amount,
+        (case when invoice_lines.bundle_id is not null and invoices.total_amount = 0
+            then invoices.total_amount
+            else coalesce(invoice_bundles.amount, invoice_lines.amount) 
+        end) 
+        *
+        (case when invoices.currency_id = '{{ var('quickbooks__home_currency', 'None Defined') }}'
+            then 1
+            else coalesce(invoices.exchange_rate, 1) 
+        end) as converted_amount,
         case when invoice_lines.detail_type is not null then invoice_lines.detail_type
             when coalesce(invoice_bundles.account_id, invoice_lines.account_id, invoice_lines.sales_item_account_id, items.parent_income_account_id, items.income_account_id, bundle_income_accounts.account_id) is not null then 'SalesItemLineDetail'
             when invoice_lines.discount_account_id is not null then 'DiscountLineDetail'
@@ -227,7 +233,11 @@ invoice_join as (
         invoice_lines.index,
         invoices.transaction_date as transaction_date,
         invoice_lines.amount as amount,
-        (invoice_lines.amount * coalesce(invoices.exchange_rate, 1)) as converted_amount,
+        invoice_lines.amount *
+        (case when invoices.currency_id = '{{ var('quickbooks__home_currency', 'None Defined') }}'
+            then 1
+            else coalesce(invoices.exchange_rate, 1) 
+        end) as converted_amount,
         case when invoice_lines.detail_type is not null then invoice_lines.detail_type
             when coalesce(invoice_lines.account_id, invoice_lines.sales_item_account_id, items.parent_income_account_id, items.income_account_id) is not null then 'SalesItemLineDetail'
             when invoice_lines.discount_account_id is not null then 'DiscountLineDetail'
@@ -240,7 +250,8 @@ invoice_join as (
         invoices.customer_id,
         invoices.department_id,
         invoices.created_at,
-        invoices.updated_at
+        invoices.updated_at,
+        invoices.currency_id
 
     from invoices
 
@@ -266,20 +277,25 @@ invoice_join as (
     {% if using_invoice_tax_line %}
     union all
 
-    select 
+    select
         invoice_tax_lines.invoice_id as transaction_id,
         invoice_tax_lines.source_relation,
         invoice_tax_lines.index,
         invoices.transaction_date,
         invoice_tax_lines.amount,
-        (invoice_tax_lines.amount * coalesce(invoices.exchange_rate, 1)) as converted_amount,
+        invoice_tax_lines.amount *
+        (case when invoices.currency_id = '{{ var('quickbooks__home_currency', 'None Defined') }}'
+            then 1
+            else coalesce(invoices.exchange_rate, 1)
+        end) as converted_amount,
         'TaxLineDetail' as invoice_line_transaction_type,
         tax_account_join.account_id,
         invoices.class_id,
         invoices.customer_id,
         invoices.department_id,
         invoices.created_at,
-        invoices.updated_at
+        invoices.updated_at,
+        invoices.currency_id
     from invoice_tax_lines
     inner join invoices 
         on invoice_tax_lines.invoice_id = invoices.invoice_id
@@ -357,7 +373,8 @@ final as (
     from invoice_filter
 
     left join ar_accounts
-        on ar_accounts.source_relation = invoice_filter.source_relation
+        on ar_accounts.currency_id = invoice_filter.currency_id
+        and ar_accounts.source_relation = invoice_filter.source_relation
 )
 
 select *

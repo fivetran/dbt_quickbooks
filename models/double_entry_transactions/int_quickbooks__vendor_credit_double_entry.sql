@@ -37,7 +37,11 @@ vendor_credit_join as (
         vendor_credit_lines.index,
         vendor_credits.transaction_date,
         vendor_credit_lines.amount,
-        (vendor_credit_lines.amount * coalesce(vendor_credits.exchange_rate, 1)) as converted_amount,
+        case
+            when vendor_credits.currency_id = '{{ var('quickbooks__home_currency', 'None Defined') }}'
+                then vendor_credit_lines.amount
+            else vendor_credit_lines.amount * coalesce(vendor_credits.exchange_rate, 1)
+        end as converted_amount,
         vendor_credits.payable_account_id as debit_to_account_id,
         coalesce(vendor_credit_lines.account_expense_account_id, items.parent_income_account_id, items.income_account_id, items.expense_account_id) as credit_account_id,
         coalesce(account_expense_customer_id, item_expense_customer_id) as customer_id,

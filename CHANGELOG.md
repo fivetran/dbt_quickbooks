@@ -1,3 +1,16 @@
+# dbt_quickbooks v1.1.1-a2
+[PR #188](https://github.com/fivetran/dbt_quickbooks/pull/188) is a pre-release that includes the following updates:
+
+## Bug Fixes
+- Introduced the `quickbooks__home_currency` variable to optimize multicurrency handling. When set transactions in the home currency will not apply exchange rate conversions, improving accuracy and performance. This variable is implemented across all 13 intermediate double-entry transaction models to ensure consistent multicurrency behavior throughout the package.
+
+# dbt_quickbooks v1.1.1-a1
+[PR #187](https://github.com/fivetran/dbt_quickbooks/pull/187) is a pre-release that includes the following updates:
+
+## Bug Fixes
+- Fixes `int_quickbooks__purchase_double_entry` by bringing in purchase tax line amounts and converted amounts for customers leveraging multicurrency.
+- Updates `int_quickbooks__invoice_double_entry` with join on `currency_id` for Accounts Receivable accounts to prevent fanout for customers with multiple currencies.
+
 # dbt_quickbooks v1.1.0
 [PR #185](https://github.com/fivetran/dbt_quickbooks/pull/185) includes the following updates, based on the updates made in the `v1.0.1-a1` and `v1.0.2-a1` pre-releases:
 
