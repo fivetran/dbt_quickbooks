@@ -1,3 +1,10 @@
+# dbt_quickbooks v1.2.0
+
+[PR #189](https://github.com/fivetran/dbt_quickbooks/pull/189) includes the following updates:
+
+## Features
+  - Increases the required dbt version upper limit to v3.0.0
+
 # dbt_quickbooks v1.1.0
 [PR #185](https://github.com/fivetran/dbt_quickbooks/pull/185) includes the following updates, based on the updates made in the `v1.0.1-a1` and `v1.0.2-a1` pre-releases:
 
