@@ -1,3 +1,17 @@
+# dbt_quickbooks v1.2.1
+[PR #187](https://github.com/fivetran/dbt_quickbooks/pull/187) includes the following updates:
+
+## Bug Fixes
+- Fixes `int_quickbooks__purchase_double_entry` by bringing in purchase tax line amounts and converted amounts for customers leveraging multicurrency.
+- Updates `int_quickbooks__invoice_double_entry` with join on `currency_id` for Accounts Receivable accounts to prevent fanout for customers with multiple currencies.
+
+# dbt_quickbooks v1.2.0
+
+[PR #189](https://github.com/fivetran/dbt_quickbooks/pull/189) includes the following updates:
+
+## Features
+  - Increases the required dbt version upper limit to v3.0.0
+
 # dbt_quickbooks v1.1.1-a1
 [PR #187](https://github.com/fivetran/dbt_quickbooks/pull/187) is a pre-release that includes the following updates:
 
