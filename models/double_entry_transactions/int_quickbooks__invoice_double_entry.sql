@@ -124,6 +124,7 @@ ar_accounts as (
 
     select 
         account_id,
+        currency_id,
         source_relation
     from accounts
 
@@ -240,7 +241,8 @@ invoice_join as (
         invoices.customer_id,
         invoices.department_id,
         invoices.created_at,
-        invoices.updated_at
+        invoices.updated_at,
+        invoices.currency_id
 
     from invoices
 
@@ -279,7 +281,8 @@ invoice_join as (
         invoices.customer_id,
         invoices.department_id,
         invoices.created_at,
-        invoices.updated_at
+        invoices.updated_at,
+        invoices.currency_id
     from invoice_tax_lines
     inner join invoices 
         on invoice_tax_lines.invoice_id = invoices.invoice_id
@@ -357,7 +360,8 @@ final as (
     from invoice_filter
 
     left join ar_accounts
-        on ar_accounts.source_relation = invoice_filter.source_relation
+        on ar_accounts.currency_id = invoice_filter.currency_id
+        and ar_accounts.source_relation = invoice_filter.source_relation
 )
 
 select *

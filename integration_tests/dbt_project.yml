@@ -1,13 +1,13 @@
 name: 'quickbooks_integration_tests'
 
-version: '1.2.0'
+version: '1.2.1'
 
 profile: 'integration_tests'
 config-version: 2
 models:
   +schema: "quickbooks_{{ var('directed_schema','dev') }}"
 
-vars: 
+vars:
   quickbooks:
     quickbooks_schema: quickbooks_integration_tests
     quickbooks_account_identifier: "account_data"
