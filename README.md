@@ -139,6 +139,8 @@ vars:
 #### Configuring Account Type Names
 Within a few of the double entry models in this package a mapping takes place to assign certain transaction type's debits/credits to the appropriate offset account (ie. Accounts Payable, Accounts Receivable, Undeposited Funds, and SalesOfProductIncome) reference. While our current filtered logic within our intermediate models account for the default values, it's possible your use case relies on different account types to reference.
 
+See [DECISIONLOG](https://github.com/fivetran/dbt_quickbooks/blob/main/DECISIONLOG.md?plain=1#L80) for additional details on configuring account type names to avoid potential data fanout issues in the case of multiple accounts payable/receivable.
+
 If you have a different value to reference for each type, you will need to configure the `account_type` and `account_sub_type` variables that account for these variables in your `dbt_project.yml`.
 
 ```yml
