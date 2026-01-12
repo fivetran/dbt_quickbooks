@@ -31,29 +31,15 @@ table_variables:
     - bundle_item
     - bundle
     - invoice_line_bundle
-  using_invoice_tax_line:
-    - invoice_tax_line
   using_journal_entry:
     - journal_entry_line
     - journal_entry
-  using_journal_entry_tax_line:
-    - journal_entry_tax_line
   using_payment:
     - payment_line
     - payment
-  using_purchase_tax_line:
-    - purchase_tax_line
   using_refund_receipt:
     - refund_receipt_line
     - refund_receipt
-  using_refund_receipt_tax_line:
-    - refund_receipt_tax_line
-  using_sales_receipt_tax_line:
-    - sales_receipt_tax_line
-  using_tax_agency:
-    - tax_agency
-  using_tax_rate:
-    - tax_rate
   using_transfer:
     - transfer
   using_vendor_credit:

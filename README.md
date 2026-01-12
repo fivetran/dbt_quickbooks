@@ -74,7 +74,7 @@ Include the following QuickBooks package version in your `packages.yml` file.
 ```yaml
 packages:
   - package: fivetran/quickbooks
-    version: [">=1.2.0", "<1.3.0"] # we recommend using ranges to capture non-breaking changes automatically
+    version: [">=1.3.0", "<1.4.0"] # we recommend using ranges to capture non-breaking changes automatically
 ```
 
 > All required sources and staging models are now bundled into this transformation package. Do not include `fivetran/quickbooks_source` in your `packages.yml` since this package has been deprecated.
@@ -111,6 +111,8 @@ vars:
   using_sales_receipt: false # disable if you don't have sales receipts in QuickBooks
   using_credit_card_payment_txn: true # enable if you want to include credit card payment transactions in your staging models
   using_purchase_order: true #enable if you want to include purchase orders in your staging 
+
+  ## Below variables are used to enable/disable sales tax components. All sales tax components are false by default.
   using_invoice_tax_line: true #enable if you have invoice tax lines in QuickBooks
   using_journal_entry_tax_line: true # enable if you have journal entry tax lines in QuickBooks
   using_purchase_tax_line: true # enable if you have purchase tax lines in QuickBooks

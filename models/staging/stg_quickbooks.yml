@@ -1303,7 +1303,7 @@ models:
     columns:
       - name: vendor_credit_id
         description: "{{ doc('id') }} vendor credit record."
-        test:
+        tests:
           - not_null
       - name: index
         description: Index count of records associated with the vendor credit record.
