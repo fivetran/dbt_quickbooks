@@ -1,3 +1,6 @@
+## Documentation
+- Updates decisionlog to explicitly call out join logic that requires a single designated `Accounts Payable` and a single designated `Accounts Receivable` account per currency with a possible workaround using variable configuration.
+
 # dbt_quickbooks v1.2.1
 [PR #187](https://github.com/fivetran/dbt_quickbooks/pull/187) includes the following updates:
 
