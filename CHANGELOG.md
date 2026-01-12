@@ -1,5 +1,16 @@
+# dbt_quickbooks v1.3.0
+
+[PR #192](https://github.com/fivetran/dbt_quickbooks/pull/192) includes the following updates:
+
+## Bug Fixes
+- Fixed typo in `stg_quickbooks.yml` changing `test:` to `tests:` for proper dbt syntax compliance.
+
 ## Documentation
-- Updates decisionlog to explicitly call out join logic that requires a single designated `Accounts Payable` and a single designated `Accounts Receivable` account per currency with a possible workaround using variable configuration.
+- Updates DECISIONLOG to explicitly call out join logic that requires a single designated Accounts Payable and a single designated Accounts Receivable account per currency with a possible workaround using variable configuration.
+- Updates README to reference the DECISIONLOG for additional details on configuring account type names to avoid potential data fanout issues.
+
+## Under the Hood
+- Removed tax line table variables from `quickstart.yml` for Quickstart customers to prevent potential configuration issues until tax lines are fully validated for Quickstart use.
 
 # dbt_quickbooks v1.2.1
 [PR #187](https://github.com/fivetran/dbt_quickbooks/pull/187) includes the following updates:
