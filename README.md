@@ -74,7 +74,7 @@ Include the following QuickBooks package version in your `packages.yml` file.
 ```yaml
 packages:
   - package: fivetran/quickbooks
-    version: [">=1.2.0", "<1.3.0"] # we recommend using ranges to capture non-breaking changes automatically
+    version: [">=1.3.0", "<1.4.0"] # we recommend using ranges to capture non-breaking changes automatically
 ```
 
 > All required sources and staging models are now bundled into this transformation package. Do not include `fivetran/quickbooks_source` in your `packages.yml` since this package has been deprecated.
@@ -111,6 +111,8 @@ vars:
   using_sales_receipt: false # disable if you don't have sales receipts in QuickBooks
   using_credit_card_payment_txn: true # enable if you want to include credit card payment transactions in your staging models
   using_purchase_order: true #enable if you want to include purchase orders in your staging 
+
+  ## Below variables are used to enable/disable sales tax components. All sales tax components are false by default.
   using_invoice_tax_line: true #enable if you have invoice tax lines in QuickBooks
   using_journal_entry_tax_line: true # enable if you have journal entry tax lines in QuickBooks
   using_purchase_tax_line: true # enable if you have purchase tax lines in QuickBooks
@@ -138,6 +140,8 @@ vars:
 
 #### Configuring Account Type Names
 Within a few of the double entry models in this package a mapping takes place to assign certain transaction type's debits/credits to the appropriate offset account (ie. Accounts Payable, Accounts Receivable, Undeposited Funds, and SalesOfProductIncome) reference. While our current filtered logic within our intermediate models account for the default values, it's possible your use case relies on different account types to reference.
+
+See [DECISIONLOG](https://github.com/fivetran/dbt_quickbooks/blob/main/DECISIONLOG.md#designating-a-single-accounts-payableaccounts-receivable-account) for additional details on configuring account type names to avoid potential data fanout issues in the case of multiple accounts payable/receivable.
 
 If you have a different value to reference for each type, you will need to configure the `account_type` and `account_sub_type` variables that account for these variables in your `dbt_project.yml`.
 
