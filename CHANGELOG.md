@@ -1,3 +1,15 @@
+# dbt_quickbooks v1.4.0
+
+[PR #193](https://github.com/fivetran/dbt_quickbooks/pull/193) includes the following updates:
+
+## Documentation
+- Updates README with standardized Fivetran formatting
+
+## Under the Hood
+- In the `.quickstart.yml` file:
+  - Adds `table_variables` for relevant sources to prevent missing sources from blocking downstream Quickstart models.
+  - Adds `supported_vars` for Quickstart UI customization,
+
 # dbt_quickbooks v1.3.0
 
 [PR #192](https://github.com/fivetran/dbt_quickbooks/pull/192) includes the following updates:

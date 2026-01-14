@@ -1,4 +1,5 @@
-# QuickBooks dbt Package ([Docs](https://fivetran.github.io/dbt_quickbooks/))
+<!--section="quickbooks_transformation_model"-->
+# Quickbooks dbt Package
 
 <p align="left">
     <a alt="License"
@@ -15,6 +16,20 @@
         <img src="https://img.shields.io/badge/Fivetran_Quickstart_Compatible%3F-yes-green.svg" /></a>
 </p>
 
+This dbt package transforms data from Fivetran's Quickbooks connector into analytics-ready tables.
+
+## Resources
+
+- Number of materialized models¹: 108
+- Connector documentation
+  - [Quickbooks connector documentation](https://fivetran.com/docs/connectors/applications/quickbooks)
+  - [Quickbooks ERD](https://fivetran.com/docs/connectors/applications/quickbooks#schemainformation)
+- dbt package documentation
+  - [GitHub repository](https://github.com/fivetran/dbt_quickbooks)
+  - [dbt Docs](https://fivetran.github.io/dbt_quickbooks/#!/overview)
+  - [DAG](https://fivetran.github.io/dbt_quickbooks/#!/overview?g_v=1)
+  - [Changelog](https://github.com/fivetran/dbt_quickbooks/blob/main/CHANGELOG.md)
+
 ## Table of Contents
 - [What does this dbt package do?](https://github.com/fivetran/dbt_quickbooks/#-what-does-this-dbt-package-do)
 - [How do I use the dbt package?](https://github.com/fivetran/dbt_quickbooks/#-how-do-i-use-the-dbt-package)
@@ -27,59 +42,64 @@
 - [Are there any resources available?](https://github.com/fivetran/dbt_quickbooks/#-are-there-any-resources-available)
 
 ## What does this dbt package do?
-- Produces modeled tables that leverage QuickBooks data from [Fivetran's connector](https://fivetran.com/docs/applications/quickbooks) in the format described by [this ERD](https://fivetran.com/docs/applications/quickbooks#schemainformation).
+This package enables you to create comprehensive financial statements, analyze accounts payable and receivable aging, and track detailed transaction histories. It creates enriched models with metrics focused on general ledger analysis, financial reporting, and cash flow management.
 
-- Enables users with insights into their QuickBooks data that can be used for financial statement reporting and deeper analysis. The package achieves this by:
-  - Creating a comprehensive general ledger that can be used to create financial statements with additional flexibility.
-  - Providing historical general ledger month beginning balances, ending balances, and net change for each account.
-  - Enhancing Accounts Payable and Accounts Receivables data by providing past and present aging of bills and invoices.
-  - Pairing all expense and sales transactions in one table with accompanying data to provide enhanced analysis.
-  - Producing end financial statement models like balance sheet, profit and loss, and cash flow for optimized financial reporting.
-- Generates a comprehensive data dictionary of your source and modeled QuickBooks data through the [dbt docs site](https://fivetran.github.io/dbt_quickbooks/).
+### Output schema
+Final output tables are generated in the following target schema:
 
-<!--section="quickbooks_transformation_model"-->
-The following table provides a detailed list of all tables materialized within this package by default. The primary outputs of this package are described below. Intermediate tables are used to create these outputs.
+```
+<your_database>.<connector/schema_name>_quickbooks
+```
 
-> TIP: See more details about these tables in the package's [dbt docs site](https://fivetran.github.io/dbt_quickbooks/#!/overview?g_v=1&g_e=seeds).
+### Final output tables
 
-| **Table**                | **Description**                                                                                                                                |
-| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| [quickbooks__general_ledger](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.quickbooks__general_ledger) | Complete transaction-level view showing every debit and credit entry with running account balances, perfect for detailed financial analysis and audit trails. <br><br>**Example Analytics Questions:**<br>• Which accounts show consistent growth patterns that indicate successful business strategies?<br>• What transaction patterns and account behaviors provide the clearest operational insights? |
-| [quickbooks__general_ledger_by_period](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.quickbooks__general_ledger_by_period) | Monthly account balance summary showing beginning balances, ending balances, and net changes for each account, ideal for generating financial statements and tracking account performance over time. <br><br>**Example Analytics Questions:**<br>• Which accounts demonstrate the strongest month-over-month improvement and growth momentum?<br>• What seasonal patterns and cyclical trends can inform better financial planning and budgeting? |
-| [quickbooks__profit_and_loss](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.quickbooks__profit_and_loss) | Income statement view showing revenue and expense accounts by month and year, with configurable ordering for professional financial reporting. <br><br>**Example Analytics Questions:**<br>• Which revenue streams and cost optimizations are driving the strongest profit growth?<br>• What expense-to-revenue ratios and margin trends provide the clearest profitability insights? |
-| [quickbooks__balance_sheet](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.quickbooks__balance_sheet) | Balance sheet view displaying assets, liabilities, and equity accounts by month and year, organized for standard financial statement presentation. <br><br>**Example Analytics Questions:**<br>• Which asset investments are generating the strongest returns and should be expanded?<br>• What debt-to-equity ratios and financial leverage trends indicate optimal capital structure? |
-| [quickbooks__cash_flow_statement](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.quickbooks__cash_flow_statement) | Cash flow statement showing operating, investing, and financing activities with beginning/ending cash positions and net changes by period. **IMPORTANT**: You will likely need to configure cash flow types for your specific use case. <br><br>**Example Analytics Questions:**<br>• Which operational improvements are generating the strongest positive cash flow trends?<br>• What seasonal cash flow patterns and financing needs can inform strategic planning? |
-| [quickbooks__ap_ar_enhanced](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.quickbooks__ap_ar_enhanced) | Accounts payable and receivable aging report showing outstanding bills and invoices with payment history, due dates, and overdue analysis for cash flow management. <br><br>**Example Analytics Questions:**<br>• Which customers have the best payment patterns and deserve credit limit increases or early payment discounts?<br>• What payment timing patterns and customer behavior trends can optimize cash flow forecasting? |
-| [quickbooks__expenses_sales_enhanced](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.quickbooks__expenses_sales_enhanced) | Unified view of all expense and sales transactions with enriched customer, vendor, department, and product details for comprehensive revenue and cost analysis. <br><br>**Example Analytics Questions:**<br>• Which customer segments and product lines deliver the highest margins and growth potential?<br>• What departmental spending patterns and vendor relationships provide the best cost optimization opportunities? |
+By default, this package materializes the following final tables:
 
-### Materialized Models
-Each Quickstart transformation job run materializes 108 models if all components of this data model are enabled. This count includes all staging, intermediate, and final models materialized as `view`, `table`, or `incremental`.
-<!--section-end-->
+| Table | Description |
+| :---- | :---- |
+| [quickbooks__general_ledger](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.quickbooks__general_ledger) | Complete transaction-level view showing every debit and credit entry with running account balances, perfect for detailed financial analysis and audit trails. <br><br>**Example Analytics Questions:**<br><ul><li>Which accounts show consistent growth patterns that indicate successful business strategies?</li><li>What transaction patterns and account behaviors provide the clearest operational insights?</li></ul> |
+| [quickbooks__general_ledger_by_period](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.quickbooks__general_ledger_by_period) | Monthly account balance summary showing beginning balances, ending balances, and net changes for each account, ideal for generating financial statements and tracking account performance over time. <br><br>**Example Analytics Questions:**<br><ul><li>Which accounts demonstrate the strongest month-over-month improvement and growth momentum?</li><li>What seasonal patterns and cyclical trends can inform better financial planning and budgeting?</li></ul> |
+| [quickbooks__profit_and_loss](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.quickbooks__profit_and_loss) | Income statement view showing revenue and expense accounts by month and year, with configurable ordering for professional financial reporting. <br><br>**Example Analytics Questions:**<br><ul><li>Which revenue streams and cost optimizations are driving the strongest profit growth?</li><li>What expense-to-revenue ratios and margin trends provide the clearest profitability insights?</li></ul> |
+| [quickbooks__balance_sheet](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.quickbooks__balance_sheet) | Balance sheet view displaying assets, liabilities, and equity accounts by month and year, organized for standard financial statement presentation. <br><br>**Example Analytics Questions:**<br><ul><li>Which asset investments are generating the strongest returns and should be expanded?</li><li>What debt-to-equity ratios and financial leverage trends indicate optimal capital structure?</li></ul> |
+| [quickbooks__cash_flow_statement](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.quickbooks__cash_flow_statement) | Cash flow statement showing operating, investing, and financing activities with beginning/ending cash positions and net changes by period. **IMPORTANT**: You will likely need to configure cash flow types for your specific use case. <br><br>**Example Analytics Questions:**<br><ul><li>Which operational improvements are generating the strongest positive cash flow trends?</li><li>What seasonal cash flow patterns and financing needs can inform strategic planning?</li></ul> |
+| [quickbooks__ap_ar_enhanced](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.quickbooks__ap_ar_enhanced) | Accounts payable and receivable aging report showing outstanding bills and invoices with payment history, due dates, and overdue analysis for cash flow management. <br><br>**Example Analytics Questions:**<br><ul><li>Which customers have the best payment patterns and deserve credit limit increases or early payment discounts?</li><li>What payment timing patterns and customer behavior trends can optimize cash flow forecasting?</li></ul> |
+| [quickbooks__expenses_sales_enhanced](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.quickbooks__expenses_sales_enhanced) | Unified view of all expense and sales transactions with enriched customer, vendor, department, and product details for comprehensive revenue and cost analysis. <br><br>**Example Analytics Questions:**<br><ul><li>Which customer segments and product lines deliver the highest margins and growth potential?</li><li>What departmental spending patterns and vendor relationships provide the best cost optimization opportunities?</li></ul> |
+
+¹ Each Quickstart transformation job run materializes these models if all components of this data model are enabled. This count includes all staging, intermediate, and final models materialized as `view`, `table`, or `incremental`.
+
+---
 
 ### Multicurrency Support
 
 > [dbt_quickbooks](https://github.com/fivetran/dbt_quickbooks) and [dbt_quickbooks](https://github.com/fivetran/dbt_quickbooks) now supports multicurrency by bringing in values by specifying `*_converted_*` values for cash amounts. More details are [available in the DECISIONLOG](https://github.com/fivetran/dbt_quickbooks/blob/main/DECISIONLOG.md#multicurrency-vs-single-currency-configuration).
 
-## How do I use the dbt package?
-### Step 1: Prerequisites
+## Prerequisites
 To use this dbt package, you must have the following:
 
-- At least one Fivetran QuickBooks connection syncing data into your destination.
+- At least one Fivetran Quickbooks connection syncing data into your destination.
 - A **BigQuery**, **Snowflake**, **Redshift**, **PostgreSQL**, or **Databricks** destination.
 
-### Step 2: Install the package
+## How do I use the dbt package?
+You can either add this dbt package in the Fivetran dashboard or import it into your dbt project:
+
+- To add the package in the Fivetran dashboard, follow our [Quickstart guide](https://fivetran.com/docs/transformations/dbt).
+- To add the package to your dbt project, follow the setup instructions in the dbt package's [README file](https://github.com/fivetran/dbt_quickbooks/blob/main/README.md#how-do-i-use-the-dbt-package) to use this package.
+
+<!--section-end-->
+
+### Install the package
 Include the following QuickBooks package version in your `packages.yml` file.
 > TIP: Check [dbt Hub](https://hub.getdbt.com/) for the latest installation instructions or [read the dbt docs](https://docs.getdbt.com/docs/package-management) for more information on installing packages.
 
 ```yaml
 packages:
   - package: fivetran/quickbooks
-    version: [">=1.3.0", "<1.4.0"] # we recommend using ranges to capture non-breaking changes automatically
+    version: [">=1.4.0", "<1.5.0"] # we recommend using ranges to capture non-breaking changes automatically
 ```
 
 > All required sources and staging models are now bundled into this transformation package. Do not include `fivetran/quickbooks_source` in your `packages.yml` since this package has been deprecated.
 
-### Step 3: Define database and schema variables
+### Define database and schema variables
 By default, this package runs using your destination and the `quickbooks` schema of your [target database](https://docs.getdbt.com/docs/running-a-dbt-project/using-the-command-line-interface/configure-your-profile). If this is not where your QuickBooks data is (for example, if your QuickBooks schema is named `quickbooks_fivetran`), add the following configuration to your root `dbt_project.yml` file:
 
 ```yml
@@ -88,7 +108,7 @@ vars:
     quickbooks_schema: your_schema_name 
 ```
 
-### Step 4: Enabling/Disabling Models
+### Enabling/Disabling Models
 Your QuickBooks connection might not sync every table that this package expects. This package takes into consideration that not every QuickBooks account utilizes the same transactional tables.
 
 By default, most variables' values are assumed to be `true` (with exception of `using_credit_card_payment_txn` and `using_purchase_order`). In other to enable or disable the relevant functionality in the package, you will need to add the relevant variables:
@@ -122,7 +142,7 @@ vars:
   using_tax_rate: true #enable if you have tax rates in QuickBooks
 ```
 
-### (Optional) Step 5: Additional Configurations
+### (Optional) Additional Configurations
 
 #### Unioning Multiple Quickbooks Connections
 If you have multiple Quickbooks connections in Fivetran and would like to use this package on all of them simultaneously, we have provided functionality to do so. The package will union all of the data together and pass the unioned table into the transformations. You will be able to see which source it came from in the `source_relation` column of each model. To use this functionality, you will need to set either the `quickbooks_union_schemas` or `quickbooks_union_databases` variables:
@@ -231,11 +251,11 @@ vars:
     quickbooks_<default_source_table_name>_identifier: your_table_name 
 ``` 
 
-### (Optional) Step 6: Orchestrate your models with Fivetran Transformations for dbt Core™
+### (Optional) Orchestrate your models with Fivetran Transformations for dbt Core™
 
 Fivetran offers the ability for you to orchestrate your dbt project through [Fivetran Transformations for dbt Core™](https://fivetran.com/docs/transformations/dbt). Learn how to set up your project for orchestration through Fivetran in our [Transformations for dbt Core setup guides](https://fivetran.com/docs/transformations/dbt#setupguide).
 
-### (Optional) Step 7: Validate your data
+### (Optional) Validate your data
 After running the models within this package, you may want to compare the baseline financial statement totals from the data provided against what you expect. You can make use of the [analysis functionality of dbt](https://docs.getdbt.com/docs/building-a-dbt-project/analyses/) and run pre-written SQL to test these values. The SQL files within the [analysis](https://github.com/fivetran/dbt_quickbooks/blob/master/analysis) folder contain SQL queries you may compile to generate balance sheet and income statement values. You can then tie these generated values to your expected ones and confirm the values provided in this package are accurate.
 
 ## Does this package have dependencies?
@@ -251,17 +271,21 @@ packages:
       version: [">=1.0.0", "<2.0.0"]
 ```
 
+<!--section="quickbooks_maintenance"-->
 ## How is this package maintained and can I contribute?
+
 ### Package Maintenance
-The Fivetran team maintaining this package _only_ maintains the latest version of the package. We highly recommend that you stay consistent with the [latest version](https://hub.getdbt.com/fivetran/quickbooks/latest/) of the package and refer to the [CHANGELOG](https://github.com/fivetran/dbt_quickbooks/blob/main/CHANGELOG.md) and release notes for more information on changes across versions.
+The Fivetran team maintaining this package only maintains the [latest version](https://hub.getdbt.com/fivetran/quickbooks/latest/) of the package. We highly recommend you stay consistent with the latest version of the package and refer to the [CHANGELOG](https://github.com/fivetran/dbt_quickbooks/blob/main/CHANGELOG.md) and release notes for more information on changes across versions.
 
 ### Contributions
 A small team of analytics engineers at Fivetran develops these dbt packages. However, the packages are made better by community contributions.
 
-We highly encourage and welcome contributions to this package. Check out [this dbt Discourse article](https://discourse.getdbt.com/t/contributing-to-a-dbt-package/657) to learn how to contribute to a dbt package.
+We highly encourage and welcome contributions to this package. Learn how to contribute to a package in dbt's [Contributing to an external dbt package article](https://discourse.getdbt.com/t/contributing-to-a-dbt-package/657).
 
 ### Opinionated Modelling Decisions
 This dbt package takes an opinionated stance on how to define the ordering and cash flow types in our model based on best financial practices. Customers do have the option to customize these orderings and cash flow types with a seed file. [Instructions are available in the Additional Configuration section](https://github.com/fivetran/dbt_quickbooks/#optional-step-5-additional-configurations). If you would like a deeper explanation of the logic used by default or for more insight into certain modeling practices within this dbt package, [you may reference the DECISIONLOG](https://github.com/fivetran/dbt_quickbooks/blob/main/DECISIONLOG.md).
+
+<!--section-end-->
 
 ## Are there any resources available?
 - If you have questions or want to reach out for help, see the [GitHub Issue](https://github.com/fivetran/dbt_quickbooks/issues/new/choose) section to find the right avenue of support for you.
