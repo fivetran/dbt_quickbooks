@@ -30,17 +30,6 @@ This dbt package transforms data from Fivetran's Quickbooks connector into analy
   - [DAG](https://fivetran.github.io/dbt_quickbooks/#!/overview?g_v=1)
   - [Changelog](https://github.com/fivetran/dbt_quickbooks/blob/main/CHANGELOG.md)
 
-## Table of Contents
-- [What does this dbt package do?](https://github.com/fivetran/dbt_quickbooks/#-what-does-this-dbt-package-do)
-- [How do I use the dbt package?](https://github.com/fivetran/dbt_quickbooks/#-how-do-i-use-the-dbt-package)
-    - [Required steps](https://github.com/fivetran/dbt_quickbooks/#step-1-prerequisites)
-    - [Additional options](https://github.com/fivetran/dbt_quickbooks/#optional-step-5-additional-configurations)
-  - [Does this package have dependencies?](https://github.com/fivetran/dbt_quickbooks/#-does-this-package-have-dependencies)
-  - [How is this package maintained and can I contribute?](https://github.com/fivetran/dbt_quickbooks/#-how-is-this-package-maintained-and-can-i-contribute)
-- [Package Maintenance](https://github.com/fivetran/dbt_quickbooks/#package-maintenance)
-- [Contributions](https://github.com/fivetran/dbt_quickbooks/#contributions)
-- [Are there any resources available?](https://github.com/fivetran/dbt_quickbooks/#-are-there-any-resources-available)
-
 ## What does this dbt package do?
 This package enables you to create comprehensive financial statements, analyze accounts payable and receivable aging, and track detailed transaction histories. It creates enriched models with metrics focused on general ledger analysis, financial reporting, and cash flow management.
 
@@ -71,7 +60,7 @@ By default, this package materializes the following final tables:
 
 ### Multicurrency Support
 
-> [dbt_quickbooks](https://github.com/fivetran/dbt_quickbooks) and [dbt_quickbooks](https://github.com/fivetran/dbt_quickbooks) now supports multicurrency by bringing in values by specifying `*_converted_*` values for cash amounts. More details are [available in the DECISIONLOG](https://github.com/fivetran/dbt_quickbooks/blob/main/DECISIONLOG.md#multicurrency-vs-single-currency-configuration).
+> This package now supports multicurrency by bringing in values by specifying `*_converted_*` values for cash amounts. More details are [available in the DECISIONLOG](https://github.com/fivetran/dbt_quickbooks/blob/main/DECISIONLOG.md#multicurrency-vs-single-currency-configuration).
 
 ## Prerequisites
 To use this dbt package, you must have the following:
@@ -82,7 +71,7 @@ To use this dbt package, you must have the following:
 ## How do I use the dbt package?
 You can either add this dbt package in the Fivetran dashboard or import it into your dbt project:
 
-- To add the package in the Fivetran dashboard, follow our [Quickstart guide](https://fivetran.com/docs/transformations/dbt#transformationsfordbtcore).
+- To add the package in the Fivetran dashboard, follow our [Quickstart guide](https://fivetran.com/docs/transformations/data-models/quickstart-management).
 - To add the package to your dbt project, follow the setup instructions in the dbt package's [README file](https://github.com/fivetran/dbt_quickbooks/blob/main/README.md#how-do-i-use-the-dbt-package) to use this package.
 
 <!--section-end-->
@@ -94,7 +83,7 @@ Include the following QuickBooks package version in your `packages.yml` file.
 ```yaml
 packages:
   - package: fivetran/quickbooks
-    version: [">=1.4.0", "<1.5.0"] # we recommend using ranges to capture non-breaking changes automatically
+    version: [">=1.3.0", "<1.4.0"] # we recommend using ranges to capture non-breaking changes automatically
 ```
 
 > All required sources and staging models are now bundled into this transformation package. Do not include `fivetran/quickbooks_source` in your `packages.yml` since this package has been deprecated.
@@ -283,7 +272,7 @@ A small team of analytics engineers at Fivetran develops these dbt packages. How
 We highly encourage and welcome contributions to this package. Learn how to contribute to a package in dbt's [Contributing to an external dbt package article](https://discourse.getdbt.com/t/contributing-to-a-dbt-package/657).
 
 ### Opinionated Modelling Decisions
-This dbt package takes an opinionated stance on how to define the ordering and cash flow types in our model based on best financial practices. Customers do have the option to customize these orderings and cash flow types with a seed file. [Instructions are available in the Additional Configuration section](https://github.com/fivetran/dbt_quickbooks/#optional-step-5-additional-configurations). If you would like a deeper explanation of the logic used by default or for more insight into certain modeling practices within this dbt package, [you may reference the DECISIONLOG](https://github.com/fivetran/dbt_quickbooks/blob/main/DECISIONLOG.md).
+This dbt package takes an opinionated stance on how to define the ordering and cash flow types in our model based on best financial practices. Customers do have the option to customize these orderings and cash flow types with a seed file. [Instructions are available in the Additional Configuration section](https://github.com/fivetran/dbt_quickbooks/#optional-additional-configurations). If you would like a deeper explanation of the logic used by default or for more insight into certain modeling practices within this dbt package, [you may reference the DECISIONLOG](https://github.com/fivetran/dbt_quickbooks/blob/main/DECISIONLOG.md).
 
 <!--section-end-->
 
