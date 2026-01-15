@@ -55,6 +55,15 @@ table_variables:
     - purchase_order_linked_txn
     - purchase_order
 
+  _fivetran_quickstart_department:
+    - department
+  _fivetran_quickstart_address:
+    - address
+  _fivetran_quickstart_estimate:
+    - estimate
+  _fivetran_quickstart_estimate_line:
+    - estimate_line
+
 destination_configurations:
   databricks:
     dispatch:
@@ -70,3 +79,47 @@ public_models: [
   "quickbooks__ap_ar_enhanced",
   "quickbooks__cash_flow_statement"
 ]
+
+supported_vars:
+  quickbooks__accounts_payable_reference:
+    type: string
+    value: "Accounts Payable"
+    description: "The `ACCOUNT.account_type` for Accounts Payable records"
+    display_name: "Accounts Payable Account Name"
+
+  quickbooks__accounts_receivable_reference:
+    type: string
+    value: "Accounts Receivable"
+    description: "The `ACCOUNT.account_type` for Accounts Receivable records"
+    display_name: "Accounts Receivable Account Name"
+
+  quickbooks__undeposited_funds_reference:
+    type: string
+    value: "UndepositedFunds"
+    description: "The `ACCOUNT.account_sub_type` for Undeposited Funds records"
+    display_name: "Undeposited Funds Account Name"
+
+  quickbooks__sales_of_product_income_reference:
+    type: string
+    value: "SalesOfProductIncome"
+    description: "The `ACCOUNT.account_sub_type` for Sales of Product Income records"
+    display_name: "Sales of Product Income Account Name"
+
+  quickbooks__global_tax_account_reference:
+    type: string
+    value: "Global Tax Payable"
+    description: "The `ACCOUNT.name` for Global Tax Payable records"
+    display_name: "Global Tax Account Name"
+
+  quickbooks__sales_tax_account_reference:
+    type: string
+    value: "Sales Tax Payable"
+    description: "The `ACCOUNT.name` for Sales Tax Payable records"
+    display_name: "Sales Tax Account Name"
+
+  quickbooks__home_currency:
+    type: string
+    value: "USD"
+    description: "The primary reporting currency (e.g., USD, EUR, GBP, CAD) of your business. Relevant to organizations operating with multiple currencies."
+    display_name: "Home Currency"
+
