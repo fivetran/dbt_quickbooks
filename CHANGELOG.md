@@ -3,7 +3,7 @@
 [PR #194](https://github.com/fivetran/dbt_quickbooks/pull/194) include the following updates:
 
 ## Under the Hood (Quickstart Update)
-- Removes duplicative varibales defined within the quickstart.yml
+- Removes duplicative variables defined within the quickstart.yml.
 
 # dbt_quickbooks v1.3.0
 
