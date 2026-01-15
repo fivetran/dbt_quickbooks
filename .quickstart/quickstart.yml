@@ -55,15 +55,6 @@ table_variables:
     - purchase_order_linked_txn
     - purchase_order
 
-  _fivetran_quickstart_department:
-    - department
-  _fivetran_quickstart_address:
-    - address
-  _fivetran_quickstart_estimate:
-    - estimate
-  _fivetran_quickstart_estimate_line:
-    - estimate_line
-
 destination_configurations:
   databricks:
     dispatch:
