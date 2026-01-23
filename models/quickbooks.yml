@@ -384,7 +384,7 @@ models:
       - name: class_id
         description: "{{ doc('class_id') }} with the period balance transactions."
       - name: financial_statement_helper
-        description: Helper field identifying whether the account impacts the balances sheet or income statement.
+        description: Helper field identifying whether the account impacts the balance sheet or income statement.
       - name: date_year
         description: Timestamp of the year.
       - name: period_first_day

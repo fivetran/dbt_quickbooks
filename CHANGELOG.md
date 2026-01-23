@@ -10,6 +10,9 @@
 | Analysis: `quickbooks__income_statement_analysis` | | `source_relation` | Adds multi-source support |
 
 ## Under the Hood
+- Corrects misspelling of `payed_to_account_id` to `paid_to_account_id` within `int_quickbooks__bill_double_entry` model. Does not result in a schema change.
+
+## Under the Hood
 - Renames `analysis/` directory to `analyses/` for consistency with dbt naming conventions.
 
 # dbt_quickbooks v1.3.1
@@ -468,7 +471,7 @@ This PR includes the following updates:
 
 ## 🐛 Bug Fixes 🩹
 - Updated intermediate double entry models that have `account_type` and `account_sub_type` filters with configurable variables, since the type names used in the filter can be adjusted internally by QuickBooks customers. ([PR #98](https://github.com/fivetran/dbt_quickbooks/pull/98))
-- Includes `items.asset_account_id` as the second field of the coalesce for the `payed_to_account_id` field within the `int_quickbooks__bill_payment_double_entry` model to ensure all account_id types are taken into consideration when mapping the transaction to the proper account. ([PR #100](https://github.com/fivetran/dbt_quickbooks/pull/100))
+- Includes `items.asset_account_id` as the second field of the coalesce for the `paid_to_account_id` field within the `int_quickbooks__bill_payment_double_entry` model to ensure all account_id types are taken into consideration when mapping the transaction to the proper account. ([PR #100](https://github.com/fivetran/dbt_quickbooks/pull/100))
 
 ## 🎉 Feature Updates 🎉
 - The intermediate models where these variables were introduced in the models below:
