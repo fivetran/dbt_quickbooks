@@ -9,6 +9,9 @@
 | ---------- | ----------- | -------- | -------- | ----- |
 | Analysis: `quickbooks__income_statement_analysis` | | `source_relation` | Adds multi-source support |
 
+## Under the Hood
+- Renames `analysis/` directory to `analyses/` for consistency with dbt naming conventions.
+
 # dbt_quickbooks v1.3.1
 
 [PR #194](https://github.com/fivetran/dbt_quickbooks/pull/194) include the following updates:

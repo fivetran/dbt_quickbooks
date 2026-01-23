@@ -5,8 +5,8 @@ with general_ledger_by_period as (
 
 revenue as (
     select
-        account_id,
         source_relation,
+        account_id,
         sum(period_net_change) as ending_balance,
         sum(period_net_converted_change) as ending_converted_balance
     from general_ledger_by_period
@@ -19,8 +19,8 @@ revenue as (
 
 expense as (
     select
-        account_id,
         source_relation,
+        account_id,
         sum(period_net_change) as ending_balance,
         sum(period_net_converted_change) as ending_converted_balance
     from general_ledger_by_period
