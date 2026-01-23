@@ -3,11 +3,12 @@
 [PR #XXX](https://github.com/fivetran/dbt_quickbooks/pull/XXX) includes the following updates:
 
 ## Schema/Data Change
-**1 total change • 0 possible breaking changes**
+**2 total changes • 1 possible breaking change**
 
 | Data Model(s) | Change type | Old | New | Notes |
 | ---------- | ----------- | -------- | -------- | ----- |
-| Analysis: `quickbooks__income_statement_analysis` | | `source_relation` | Adds multi-source support |
+| `stg_quickbooks__bill` | Column rename | `due_date_at` | `due_date` | Corrects naming since the datatype is `date` |
+| (analysis) `quickbooks__income_statement_analysis` | New column | | `source_relation` | Adds multi-source support |
 
 ## Under the Hood
 - Corrects misspelling of `payed_to_account_id` to `paid_to_account_id` within `int_quickbooks__bill_double_entry` model. Does not result in a schema change.

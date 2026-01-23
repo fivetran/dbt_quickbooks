@@ -194,7 +194,7 @@ models:
         description: Reference number for the transaction.
       - name: vendor_id
         description: Reference to the vendor the bill is linked with.
-      - name: due_date_at
+      - name: due_date
         description: Date which the bill is due.
       - name: transaction_date
         description: Date when the bill transaction occurred.

@@ -43,7 +43,7 @@ final as (
         cast(doc_number as {{ dbt.type_string() }}) as doc_number,
         currency_id,
         cast(department_id as {{ dbt.type_string() }}) as department_id,
-        cast( {{ dbt.date_trunc('day', 'due_date') }} as date) as due_date_at, 
+        cast( {{ dbt.date_trunc('day', 'due_date') }} as date) as due_date, 
         cast( {{ dbt.date_trunc('day', 'transaction_date') }} as date) as transaction_date,
         created_at,
         updated_at,
