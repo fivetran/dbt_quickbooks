@@ -1,3 +1,14 @@
+# dbt_quickbooks v1.4.0
+
+[PR #XXX](https://github.com/fivetran/dbt_quickbooks/pull/XXX) includes the following updates:
+
+## Schema/Data Change
+**1 total change • 0 possible breaking changes**
+
+| Data Model(s) | Change type | Old | New | Notes |
+| ---------- | ----------- | -------- | -------- | ----- |
+| Analysis: `quickbooks__income_statement_analysis` | | `source_relation` | Adds multi-source support |
+
 # dbt_quickbooks v1.3.1
 
 [PR #194](https://github.com/fivetran/dbt_quickbooks/pull/194) include the following updates:
