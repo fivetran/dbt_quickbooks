@@ -11,10 +11,9 @@
 | (analysis) `quickbooks__income_statement_analysis` | New column | | `source_relation` | Adds multi-source support |
 
 ## Under the Hood
-- Corrects misspelling of `payed_to_account_id` to `paid_to_account_id` within `int_quickbooks__bill_double_entry` model. Does not result in a schema change.
-
-## Under the Hood
+- Updates `int_quickbooks__general_ledger_date_spine` date generation logic to prevent errors during compilation.
 - Renames `analysis/` directory to `analyses/` for consistency with dbt naming conventions.
+- Corrects misspelling of `payed_to_account_id` to `paid_to_account_id` within `int_quickbooks__bill_double_entry` model. Note this does not result in a schema change.
 
 # dbt_quickbooks v1.3.1
 
