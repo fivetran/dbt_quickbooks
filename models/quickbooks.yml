@@ -260,6 +260,10 @@ models:
         description: "{{ doc('account_name') }} with either the expense or sale."
       - name: account_sub_type
         description: "{{ doc('account_sub_type') }} with either the expense or sale."
+      - name: account_number
+        description: "{{ doc('account_number') }} for the account associated with either the expense or sale."
+      - name: parent_account_number
+        description: "{{ doc('parent_account_number') }} for the account associated with either the expense or sale."
       - name: class_id
         description: "{{ doc('class_id') }} with either the expense or sale."
       - name: department_id
