@@ -5,12 +5,12 @@
 
 -- this test ensures the general ledger end model matches the prior version
 with prod as (
-    select * except(running_balance, running_converted_balance)
+    select {{ dbt_utils.star(from=ref('quickbooks__general_ledger'), except=['running_balance', 'running_converted_balance'] + var('qb_consistency_exclude_columns', [])) }}
     from {{ target.schema }}_quickbooks_prod.quickbooks__general_ledger
 ),
 
 dev as (
-    select * except(running_balance, running_converted_balance)
+    select {{ dbt_utils.star(from=ref('quickbooks__general_ledger'), except=['running_balance', 'running_converted_balance'] + var('qb_consistency_exclude_columns', [])) }}
     from {{ target.schema }}_quickbooks_dev.quickbooks__general_ledger
 ),
 
