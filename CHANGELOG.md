@@ -8,9 +8,9 @@
 | Data Model(s) | Change type | Old | New | Notes |
 | ---------- | ----------- | -------- | -------- | ----- |
 | `stg_quickbooks__bill` | Column rename | `due_date_at` | `due_date` | Corrects naming since the datatype is `date` |
-| (analysis) `quickbooks__income_statement_analysis` | New columns | | `source_relation` | Adds multi-source support |
 | `quickbooks__expenses_sales_enhanced` | New columns | | `account_number`, `parent_account_number` | Adds account number fields for easier account identification and grouping |
 | `quickbooks__general_ledger` | New columns | | `period_first_day`, `period_last_day` | Adds monthly period fields for easier period-based reporting without requiring joins to GL by period model |
+| (analysis) `quickbooks__income_statement_analysis` | New columns | | `source_relation` | Adds multi-source support |
 
 ## Feature Update
 - Adds `period_first_day` and `period_last_day` columns to `quickbooks__general_ledger` model to enable efficient monthly reporting directly from the detail-level GL table without requiring joins to the aggregated GL by period model.
