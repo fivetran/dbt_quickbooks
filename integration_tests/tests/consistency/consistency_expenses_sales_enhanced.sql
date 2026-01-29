@@ -5,13 +5,13 @@
 
 -- this test ensures the expenses sales enhanced end model matches the prior version
 with prod as (
-    select *
+    select {{ dbt_utils.star(from=ref('quickbooks__expenses_sales_enhanced'), except=var('qb_consistency_exclude_columns', [])) }}
     from {{ target.schema }}_quickbooks_prod.quickbooks__expenses_sales_enhanced
     where date(transaction_date) < date({{ dbt.current_timestamp() }})
 ),
 
 dev as (
-    select *
+    select {{ dbt_utils.star(from=ref('quickbooks__expenses_sales_enhanced'), except=var('qb_consistency_exclude_columns', [])) }}
     from {{ target.schema }}_quickbooks_dev.quickbooks__expenses_sales_enhanced
     where date(transaction_date) < date({{ dbt.current_timestamp() }})
 ),

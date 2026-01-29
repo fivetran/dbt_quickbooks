@@ -1,3 +1,22 @@
+# dbt_quickbooks v1.4.0
+
+[PR #195](https://github.com/fivetran/dbt_quickbooks/pull/195) includes the following updates:
+
+## Schema/Data Change
+**4 total changes • 1 possible breaking change**
+
+| Data Model(s) | Change type | Old | New | Notes |
+| ---------- | ----------- | -------- | -------- | ----- |
+| `stg_quickbooks__bill` | Column rename | `due_date_at` | `due_date` | Corrects naming since the datatype is `date` |
+| `quickbooks__expenses_sales_enhanced` | New columns | | `account_number`, `parent_account_number` | Adds account number fields for easier account identification and grouping |
+| `quickbooks__general_ledger` | New columns | | `period_first_day`, `period_last_day` | Adds monthly period fields for easier period-based reporting without requiring joins to GL by period model |
+| (analysis) `quickbooks__income_statement_analysis` | New columns | | `source_relation` | Adds multi-source support |
+
+## Under the Hood
+- Updates `int_quickbooks__general_ledger_date_spine` date generation logic to prevent errors during compilation.
+- Renames `analysis/` directory to `analyses/` for consistency with dbt naming conventions.
+- Corrects misspelling of `payed_to_account_id` to `paid_to_account_id` within `int_quickbooks__bill_double_entry` model. Note this does not result in a schema change.
+
 # dbt_quickbooks v1.3.1
 
 [PR #194](https://github.com/fivetran/dbt_quickbooks/pull/194) include the following updates:

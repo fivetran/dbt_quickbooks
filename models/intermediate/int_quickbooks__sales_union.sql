@@ -80,6 +80,8 @@ final as (
         sales_union.account_id,
         income_accounts.name as account_name,
         income_accounts.account_sub_type as account_sub_type,
+        income_accounts.account_number,
+        income_accounts.parent_account_number,
         sales_union.class_id,
         sales_union.department_id,
         {% if var('using_department', True) %}

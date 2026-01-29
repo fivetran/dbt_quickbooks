@@ -2,52 +2,45 @@
 
 with spine as (
 
-    {% if execute %}
-    {% set first_date_query %}
-        select  coalesce(min(cast(transaction_date as date)),cast({{ dbt.dateadd("month", -1, "current_date") }} as date)) as min_date from {{ ref('quickbooks__general_ledger') }}
-    {% endset %}
-    {% set first_date = run_query(first_date_query).columns[0][0]|string %}
-    
-        {% if target.type == 'postgres' %}
-            {% set first_date_adjust = "cast('" ~ first_date[0:10] ~ "' as date)" %}
+    {% if execute and flags.WHICH in ('run', 'build') %}
 
-        {% else %}
-            {% set first_date_adjust = "'" ~ first_date[0:10] ~ "'" %}
+        {%- set first_date_query %}
+        select
+            coalesce(
+                min(cast(transaction_date as date)),
+                cast({{ dbt.dateadd("month", -1, "current_date") }} as date)
+                ) as min_date
+        from {{ ref('quickbooks__general_ledger') }}
+        {% endset -%}
 
-        {% endif %}
+        {%- set last_date_query %}
+        select
+            coalesce(
+                max(cast(transaction_date as date)),
+                cast(current_date as date)
+                ) as max_date
+        from {{ ref('quickbooks__general_ledger') }}
+    {% endset -%}
 
-    {% else %} {% set first_date_adjust = "'2000-01-01'" %}
-    {% endif %}
-
-    {% if execute %}
-    {% set last_date_query %}
-        select  coalesce(max(cast(transaction_date as date)), cast(current_date as date)) as max_date from {{ ref('quickbooks__general_ledger') }}
-    {% endset %}
-
-    {% set current_date_query %}
-        select current_date
-    {% endset %}
-
-    {% if run_query(current_date_query).columns[0][0]|string < run_query(last_date_query).columns[0][0]|string %}
-
-    {% set last_date = run_query(last_date_query).columns[0][0]|string %}
-
-    {% else %} {% set last_date = run_query(current_date_query).columns[0][0]|string %}
-    {% endif %}
-        
-    {% if target.type == 'postgres' %}
-        {% set last_date_adjust = "cast('" ~ last_date[0:10] ~ "' as date)" %}
-
+    {# If only compiling, creates range going back 1 year #}
     {% else %}
-        {% set last_date_adjust = "'" ~ last_date[0:10] ~ "'" %}
+        {%- set first_date_query %}
+            select cast({{ dbt.dateadd("year", -1, "current_date" ) }} as date) as min_date
+        {% endset -%}
+
+        {%- set last_date_query %}
+            select current_date as max_date
+        {% endset -%}
 
     {% endif %}
-    {% endif %}
+
+    {%- set first_date = dbt_utils.get_single_value(first_date_query) %}
+    {%- set last_date = dbt_utils.get_single_value(last_date_query) %}
 
     {{ dbt_utils.date_spine(
         datepart="month",
-        start_date=first_date_adjust,
-        end_date=dbt.dateadd("month", 1, last_date_adjust)
+        start_date="cast('" ~ first_date ~ "' as date)",
+        end_date=dbt.dateadd("month", 1, "cast('" ~ last_date ~ "' as date)")
         )
     }}
 ),

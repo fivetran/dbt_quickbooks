@@ -260,6 +260,10 @@ models:
         description: "{{ doc('account_name') }} with either the expense or sale."
       - name: account_sub_type
         description: "{{ doc('account_sub_type') }} with either the expense or sale."
+      - name: account_number
+        description: "{{ doc('account_number') }} for the account associated with either the expense or sale."
+      - name: parent_account_number
+        description: "{{ doc('parent_account_number') }} for the account associated with either the expense or sale."
       - name: class_id
         description: "{{ doc('class_id') }} with either the expense or sale."
       - name: department_id
@@ -307,6 +311,10 @@ models:
         description: Unique identifier of the individual debit and credit records of the transaction.
       - name: transaction_date
         description: "{{ doc('transaction_date') }}"
+      - name: period_first_day
+        description: First day of the month for the transaction date, useful for monthly reporting and grouping.
+      - name: period_last_day
+        description: Last day of the month for the transaction date, useful for month-end reporting and date range filtering.
       - name: amount
         description: Monetary amount of the transaction line.
       - name: account_id
@@ -384,7 +392,7 @@ models:
       - name: class_id
         description: "{{ doc('class_id') }} with the period balance transactions."
       - name: financial_statement_helper
-        description: Helper field identifying whether the account impacts the balances sheet or income statement.
+        description: Helper field identifying whether the account impacts the balance sheet or income statement.
       - name: date_year
         description: Timestamp of the year.
       - name: period_first_day

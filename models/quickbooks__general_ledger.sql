@@ -29,7 +29,6 @@ accounts as (
     from {{ ref('int_quickbooks__account_classifications') }}
 ),
 
-
 adjusted_gl as (
     
     select
@@ -40,6 +39,8 @@ adjusted_gl as (
         gl_union.source_relation,
         gl_union.index as transaction_index,
         gl_union.transaction_date,
+        cast({{ dbt.date_trunc("month", "gl_union.transaction_date") }} as date) as period_first_day,
+        {{ dbt.last_day("gl_union.transaction_date", "month") }} as period_last_day,
         gl_union.customer_id,
         gl_union.vendor_id,
         gl_union.amount,

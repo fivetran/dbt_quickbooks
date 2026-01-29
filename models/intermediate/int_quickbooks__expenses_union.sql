@@ -75,6 +75,8 @@ final as (
         expense_union.account_id,
         expense_accounts.name as account_name,
         expense_accounts.account_sub_type as account_sub_type,
+        expense_accounts.account_number,
+        expense_accounts.parent_account_number,
         expense_union.class_id,
         expense_union.department_id,
         {% if var('using_department', True) %}
