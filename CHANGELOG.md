@@ -12,9 +12,6 @@
 | `quickbooks__general_ledger` | New columns | | `period_first_day`, `period_last_day` | Adds monthly period fields for easier period-based reporting without requiring joins to GL by period model |
 | (analysis) `quickbooks__income_statement_analysis` | New columns | | `source_relation` | Adds multi-source support |
 
-## Feature Update
-- Adds `period_first_day` and `period_last_day` columns to `quickbooks__general_ledger` model to enable efficient monthly reporting directly from the detail-level GL table without requiring joins to the aggregated GL by period model.
-
 ## Under the Hood
 - Updates `int_quickbooks__general_ledger_date_spine` date generation logic to prevent errors during compilation.
 - Renames `analysis/` directory to `analyses/` for consistency with dbt naming conventions.
