@@ -1,6 +1,6 @@
 # dbt_quickbooks v1.4.0
 
-[PR #XXX](https://github.com/fivetran/dbt_quickbooks/pull/XXX) includes the following updates:
+[PR #195](https://github.com/fivetran/dbt_quickbooks/pull/195) includes the following updates:
 
 ## Schema/Data Change
 **4 total changes • 1 possible breaking change**
@@ -476,7 +476,7 @@ This PR includes the following updates:
 
 ## 🐛 Bug Fixes 🩹
 - Updated intermediate double entry models that have `account_type` and `account_sub_type` filters with configurable variables, since the type names used in the filter can be adjusted internally by QuickBooks customers. ([PR #98](https://github.com/fivetran/dbt_quickbooks/pull/98))
-- Includes `items.asset_account_id` as the second field of the coalesce for the `paid_to_account_id` field within the `int_quickbooks__bill_payment_double_entry` model to ensure all account_id types are taken into consideration when mapping the transaction to the proper account. ([PR #100](https://github.com/fivetran/dbt_quickbooks/pull/100))
+- Includes `items.asset_account_id` as the second field of the coalesce for the `payed_to_account_id` field within the `int_quickbooks__bill_payment_double_entry` model to ensure all account_id types are taken into consideration when mapping the transaction to the proper account. ([PR #100](https://github.com/fivetran/dbt_quickbooks/pull/100))
 
 ## 🎉 Feature Updates 🎉
 - The intermediate models where these variables were introduced in the models below:
