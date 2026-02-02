@@ -82,9 +82,9 @@ final as (
     select
         *,
         sum(adjusted_amount) over (partition by account_id, class_id, source_relation
-            order by source_relation, transaction_date, account_id, class_id rows unbounded preceding) as running_balance,
+            order by source_relation, transaction_date, account_id, class_id, transaction_id, transaction_index rows unbounded preceding) as running_balance,
         sum(adjusted_converted_amount) over (partition by account_id, class_id, source_relation
-            order by source_relation, transaction_date, account_id, class_id rows unbounded preceding) as running_converted_balance
+            order by source_relation, transaction_date, account_id, class_id, transaction_id, transaction_index rows unbounded preceding) as running_converted_balance
     from adjusted_gl
 )
 

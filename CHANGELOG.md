@@ -1,3 +1,12 @@
+# dbt_quickbooks v1.4.1-a1
+
+## Schema/Data Change
+**1 total change • 0 possible breaking changes**
+
+| Data Model(s) | Change type | Old | New | Notes |
+| ---------- | ----------- | -------- | -------- | ----- |
+| `quickbooks__general_ledger` | Logic update | Window function ordered by `transaction_date`, `account_id`, `class_id` only | Window function now orders by `transaction_date`, `account_id`, `class_id`, `transaction_id`, `transaction_index` | Ensures deterministic ordering of `running_balance` and `running_converted_balance` when multiple transactions occur on the same date for the same account and class combination |
+
 # dbt_quickbooks v1.4.0
 
 [PR #195](https://github.com/fivetran/dbt_quickbooks/pull/195) includes the following updates:
