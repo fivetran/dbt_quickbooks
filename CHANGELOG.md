@@ -7,7 +7,7 @@
 
 | Data Model(s) | Change type | Old | New | Notes |
 | ---------- | ----------- | -------- | -------- | ----- |
-| `quickbooks__general_ledger` | Logic update | Window function ordered by `transaction_date`, `account_id`, `class_id` only | Window function now orders by `transaction_date`, `account_id`, `class_id`, `transaction_id`, `transaction_index` | Ensures deterministic ordering of `running_balance` and `running_converted_balance` when multiple transactions occur on the same date for the same account and class combination |
+| `quickbooks__general_ledger` | `running_balance` and `running_converted_balance` logic update | Window function ordered by `source_relation`, `transaction_date`, `account_id`, `class_id`, `transaction_id`, `transaction_index` | Window function now orders by `transaction_date`, `transaction_id`, `transaction_index` | Removes redundant fields (`source_relation`, `account_id`, `class_id`) from ORDER BY clause as they are already in the PARTITION BY clause and do not affect ordering within each partition. These changes eliminate undeterministic behavior in the running balance calculations |
 
 # dbt_quickbooks v1.4.0
 
