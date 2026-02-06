@@ -1,3 +1,14 @@
+# dbt_quickbooks v1.4.1
+
+[PR #197](https://github.com/fivetran/dbt_quickbooks/pull/197) includes the following updates:
+
+## Schema/Data Change
+**1 total change • 0 possible breaking changes**
+
+| Data Model(s) | Change type | Old | New | Notes |
+| ---------- | ----------- | -------- | -------- | ----- |
+| `quickbooks__general_ledger` | `running_balance` and `running_converted_balance` logic update | Window function ordered by `source_relation`, `transaction_date`, `account_id`, `class_id`, `transaction_id`, `transaction_index` | Window function now orders by `transaction_date`, `transaction_id`, `transaction_index` | Removes redundant fields (`source_relation`, `account_id`, `class_id`) from ORDER BY clause as they are already in the PARTITION BY clause and do not affect ordering within each partition. These changes eliminate undeterministic behavior in the running balance calculations |
+
 # dbt_quickbooks v1.4.1-a1
 
 [PR #196](https://github.com/fivetran/dbt_quickbooks/pull/196) includes the following updates:
