@@ -17,7 +17,7 @@ transfer_body as (
         transfer_id as transaction_id,
         source_relation,
         row_number() over(partition by transfer_id, source_relation 
-            order by source_relation, transaction_date) - 1 as index,
+            order by transaction_date) - 1 as index,
         transaction_date,
         amount,
         (amount * coalesce(exchange_rate, 1)) as converted_amount,
