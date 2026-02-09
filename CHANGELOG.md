@@ -10,7 +10,15 @@
 | `quickbooks__general_ledger` | `running_balance` and `running_converted_balance` logic update | Window function ordered by `source_relation`, `transaction_date`, `account_id`, `class_id`, `transaction_id`, `transaction_index` | Window function now orders by `transaction_date`, `transaction_id`, `transaction_index` | Removes redundant fields (`source_relation`, `account_id`, `class_id`) from ORDER BY clause as they are already in the PARTITION BY clause and do not affect ordering within each partition. These changes eliminate undeterministic behavior in the running balance calculations |
 
 ## Under the Hood
-- Removed redundant `source_relation` field from ORDER BY clauses in window functions across 6 models where this field was already included in the PARTITION BY clause and did not affect ordering within each partition: `int_quickbooks__bill_payment_double_entry`, `int_quickbooks__credit_card_pymt_double_entry`, `int_quickbooks__payment_double_entry`, `int_quickbooks__transfer_double_entry`, `int_quickbooks__general_ledger_balances`, and `quickbooks__cash_flow_statement`.
+Removes redundant `source_relation` field from ORDER BY clauses in window functions where this field was already included in the PARTITION BY clause for the following models: 
+
+- `int_quickbooks__bill_payment_double_entry`
+- `int_quickbooks__credit_card_pymt_double_entry`
+- `int_quickbooks__payment_double_entry`
+- `int_quickbooks__transfer_double_entry`
+- `int_quickbooks__general_ledger_balances`
+- `quickbooks__cash_flow_statement`
+
 
 # dbt_quickbooks v1.4.1-a1
 
