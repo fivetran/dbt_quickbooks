@@ -42,7 +42,7 @@ payment_join as (
         payments.payment_id as transaction_id,
         payments.source_relation,
         row_number() over(partition by payments.payment_id, payments.source_relation 
-            order by payments.source_relation, payments.transaction_date) - 1 as index,
+            order by payments.transaction_date) - 1 as index,
         payments.transaction_date,
         payments.total_amount as amount,
         (payments.total_amount * coalesce(payments.exchange_rate, 1)) as converted_amount,

@@ -1,3 +1,36 @@
+# dbt_quickbooks v1.4.1
+
+[PR #196](https://github.com/fivetran/dbt_quickbooks/pull/196) includes the following updates:
+
+## Schema/Data Change
+**1 total change • 0 possible breaking changes**
+
+| Data Model(s) | Change type | Old | New | Notes |
+| ---------- | ----------- | -------- | -------- | ----- |
+| `quickbooks__general_ledger` | `running_balance` and `running_converted_balance` logic update | Window function ordered by `source_relation`, `transaction_date`, `account_id`, `class_id`, `transaction_id`, `transaction_index` | Window function now orders by `transaction_date`, `transaction_id`, `transaction_index` | Removes redundant fields (`source_relation`, `account_id`, `class_id`) from ORDER BY clause as they are already in the PARTITION BY clause and do not affect ordering within each partition. These changes eliminate undeterministic behavior in the running balance calculations |
+
+## Under the Hood
+Removes redundant `source_relation` field from ORDER BY clauses in window functions where this field was already included in the PARTITION BY clause for the following models: 
+
+- `int_quickbooks__bill_payment_double_entry`
+- `int_quickbooks__credit_card_pymt_double_entry`
+- `int_quickbooks__payment_double_entry`
+- `int_quickbooks__transfer_double_entry`
+- `int_quickbooks__general_ledger_balances`
+- `quickbooks__cash_flow_statement`
+
+
+# dbt_quickbooks v1.4.1-a1
+
+[PR #196](https://github.com/fivetran/dbt_quickbooks/pull/196) includes the following updates:
+
+## Schema/Data Change
+**1 total change • 0 possible breaking changes**
+
+| Data Model(s) | Change type | Old | New | Notes |
+| ---------- | ----------- | -------- | -------- | ----- |
+| `quickbooks__general_ledger` | `running_balance` and `running_converted_balance` logic update | Window function ordered by `source_relation`, `transaction_date`, `account_id`, `class_id`, `transaction_id`, `transaction_index` | Window function now orders by `transaction_date`, `transaction_id`, `transaction_index` | Removes redundant fields (`source_relation`, `account_id`, `class_id`) from ORDER BY clause as they are already in the PARTITION BY clause and do not affect ordering within each partition. These changes eliminate undeterministic behavior in the running balance calculations |
+
 # dbt_quickbooks v1.4.0
 
 [PR #195](https://github.com/fivetran/dbt_quickbooks/pull/195) includes the following updates:
