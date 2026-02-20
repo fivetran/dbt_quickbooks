@@ -2,7 +2,7 @@
 [PR #197](https://github.com/fivetran/dbt_quickbooks/pull/197) is a pre-release that includes the following updates:
 
 ## Bug Fixes
-- Re-introduces the `quickbooks__home_currency` variable from the [v1.1.1-a2 pre-release](https://github.com/fivetran/dbt_quickbooks/releases/tag/v1.1.1-a2) across all 13 intermediate double-entry transaction models to optimize multicurrency handling. When set, transactions in the home currency will not apply exchange rate conversions, improving accuracy and performance. 
+- With variable configuration now available on Quickstart, we can now introduce the `quickbooks__home_currency` variable for full release from the [v1.1.1-a2 pre-release](https://github.com/fivetran/dbt_quickbooks/releases/tag/v1.1.1-a2) across all 13 intermediate double-entry transaction models to optimize multicurrency handling. When set, transactions already set in their home currency will not apply exchange rate conversions on `converted_amount`, improving accuracy and performance. 
   - Updated the [README](https://github.com/fivetran/dbt_quickbooks/blob/main/README.md#configuring-your-home-currency-for-multicurrency-support) with instructions for configuring the `quickbooks__home_currency` variable.
 - Fixes applied in `int_quickbooks__sales_receipt_double_entry` model to correctly reference `quickbooks__global_tax_account_reference` and `quickbooks__global_tax_account_reference` variables.
  
