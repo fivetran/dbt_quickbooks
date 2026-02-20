@@ -69,7 +69,7 @@ sales_tax_account as (
         account_id,
         source_relation
     from accounts
-    where name = '{{ var('quickbooks__sales_tax_account', 'Sales Tax Payable') }}'
+    where name = '{{ var('quickbooks__sales_tax_account_reference', 'Sales Tax Payable') }}'
         and is_active
 ),
 
@@ -79,7 +79,7 @@ global_tax_account as (
         account_id,
         source_relation
     from accounts
-    where name = '{{ var('quickbooks__global_tax_account', 'Sales Tax Payable') }}'
+    where name = '{{ var('quickbooks__global_tax_account_reference', 'Global Tax Payable') }}'
         and is_active
 ),
 
@@ -144,11 +144,15 @@ sales_receipt_join as (
             then sales_receipt_lines.amount * (-1)
             else sales_receipt_lines.amount
         end as amount,
-        case 
-            when sales_receipt_lines.discount_account_id is not null 
-            then (sales_receipt_lines.amount * coalesce(-sales_receipts.exchange_rate, -1))
-            else (sales_receipt_lines.amount * coalesce(sales_receipts.exchange_rate, 1))
-        end as converted_amount,
+       (case when sales_receipt_lines.discount_account_id is not null
+            then sales_receipt_lines.amount * (-1)
+            else sales_receipt_lines.amount 
+        end)
+        *
+        (case when sales_receipts.currency_id = '{{ var('quickbooks__home_currency', 'None Defined') }}'
+            then 1
+            else coalesce(sales_receipts.exchange_rate, 1) 
+        end) as converted_amount,
         sales_receipts.deposit_to_account_id as debit_to_account_id,
         coalesce(sales_receipt_lines.discount_account_id, sales_receipt_lines.sales_item_account_id, items.parent_income_account_id, items.income_account_id) as credit_to_account_id,
         sales_receipts.customer_id,
@@ -177,7 +181,11 @@ sales_receipt_join as (
         sales_receipt_tax_lines.index,
         sales_receipts.transaction_date,
         sales_receipt_tax_lines.amount,
-        sales_receipt_tax_lines.amount * coalesce(sales_receipts.exchange_rate, 1) as converted_amount,
+        case
+            when sales_receipts.currency_id = '{{ var('quickbooks__home_currency', 'None Defined') }}'
+                then sales_receipt_tax_lines.amount
+            else sales_receipt_tax_lines.amount * coalesce(sales_receipts.exchange_rate, 1)
+        end as converted_amount,
         sales_receipts.deposit_to_account_id as debit_to_account_id,
         tax_account_join.account_id as credit_to_account_id,
         sales_receipts.customer_id,

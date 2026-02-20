@@ -47,7 +47,11 @@ purchase_join as (
         purchase_lines.index,
         purchases.transaction_date,
         purchase_lines.amount,
-        (purchase_lines.amount * coalesce(purchases.exchange_rate, 1)) as converted_amount,
+        case
+            when purchases.currency_id = '{{ var('quickbooks__home_currency', 'None Defined') }}'
+                then purchase_lines.amount
+            else purchase_lines.amount * coalesce(purchases.exchange_rate, 1)
+        end as converted_amount,
         coalesce(purchase_lines.account_expense_account_id, items.parent_expense_account_id, items.expense_account_id) as paid_to_account_id,
         purchases.account_id as paid_from_account_id,
         case when coalesce(purchases.credit, false) = true then 'debit' else 'credit' end as paid_from_transaction_type,
@@ -77,7 +81,11 @@ purchase_join as (
         purchase_tax_lines.index,
         purchases.transaction_date,
         purchase_tax_lines.amount,
-        (purchase_tax_lines.amount * coalesce(purchases.exchange_rate, 1)) as converted_amount,
+        case
+            when purchases.currency_id = '{{ var('quickbooks__home_currency', 'None Defined') }}'
+                then purchase_tax_lines.amount
+            else purchase_tax_lines.amount * coalesce(purchases.exchange_rate, 1)
+        end as converted_amount,
         coalesce(purchase_lines.account_expense_account_id, items.parent_expense_account_id, items.expense_account_id) as paid_to_account_id,
         purchases.account_id as paid_from_account_id,
         case when coalesce(purchases.credit, false) = true then 'debit' else 'credit' end as paid_from_transaction_type,
