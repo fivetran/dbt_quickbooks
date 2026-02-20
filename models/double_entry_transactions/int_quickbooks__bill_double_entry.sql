@@ -37,7 +37,11 @@ bill_join as (
         bill_lines.index,
         bills.transaction_date,
         bill_lines.amount,
-        (bill_lines.amount * coalesce(bills.exchange_rate, 1)) as converted_amount,
+        case
+            when bills.currency_id = '{{ var('quickbooks__home_currency', 'None Defined') }}'
+                then bill_lines.amount
+            else bill_lines.amount * coalesce(bills.exchange_rate, 1)
+        end as converted_amount,
         coalesce(bill_lines.account_expense_account_id,items.asset_account_id, items.expense_account_id, items.parent_expense_account_id, items.expense_account_id, items.parent_income_account_id, items.income_account_id) as paid_to_account_id,
         bills.payable_account_id,
         coalesce(bill_lines.account_expense_customer_id, bill_lines.item_expense_customer_id) as customer_id,

@@ -1,3 +1,11 @@
+# dbt_quickbooks v1.4.2-a1
+[PR #197](https://github.com/fivetran/dbt_quickbooks/pull/197) is a pre-release that includes the following updates:
+
+## Bug Fixes
+- With variable configuration now available on Quickstart, we can now introduce the `quickbooks__home_currency` variable for full release from the [v1.1.1-a2 pre-release](https://github.com/fivetran/dbt_quickbooks/releases/tag/v1.1.1-a2) across all 13 intermediate double-entry transaction models to optimize multicurrency handling. When set, transactions already set in their home currency will not apply exchange rate conversions on `converted_amount`, improving accuracy and performance. 
+  - Updated the [README](https://github.com/fivetran/dbt_quickbooks/blob/main/README.md#configuring-your-home-currency-for-multicurrency-support) with instructions for configuring the `quickbooks__home_currency` variable.
+- Fixes applied in `int_quickbooks__sales_receipt_double_entry` model to correctly reference `quickbooks__global_tax_account_reference` and `quickbooks__sales_tax_account_reference` variables.
+ 
 # dbt_quickbooks v1.4.1
 
 [PR #196](https://github.com/fivetran/dbt_quickbooks/pull/196) includes the following updates:
@@ -88,6 +96,13 @@ Removes redundant `source_relation` field from ORDER BY clauses in window functi
 
 ## Features
   - Increases the required dbt version upper limit to v3.0.0
+
+
+# dbt_quickbooks v1.1.1-a2
+[PR #188](https://github.com/fivetran/dbt_quickbooks/pull/188) is a pre-release that includes the following updates:
+
+## Bug Fixes
+- Introduced the `quickbooks__home_currency` variable to optimize multicurrency handling. When set transactions in the home currency will not apply exchange rate conversions, improving accuracy and performance. This variable is implemented across all 13 intermediate double-entry transaction models to ensure consistent multicurrency behavior throughout the package.
 
 # dbt_quickbooks v1.1.1-a1
 [PR #187](https://github.com/fivetran/dbt_quickbooks/pull/187) is a pre-release that includes the following updates:
