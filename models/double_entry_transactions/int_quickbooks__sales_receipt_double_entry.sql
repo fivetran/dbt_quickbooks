@@ -149,7 +149,7 @@ sales_receipt_join as (
             else sales_receipt_lines.amount 
         end)
         *
-        (case when sales_receipts.currency_id = '{{ var('quickbooks__home_currency', 'None Defined') }}'
+        (case when sales_receipts.currency_id = '{{ var('quickbooks__home_currency', '') }}'
             then 1
             else coalesce(sales_receipts.exchange_rate, 1) 
         end) as converted_amount,
@@ -182,7 +182,7 @@ sales_receipt_join as (
         sales_receipts.transaction_date,
         sales_receipt_tax_lines.amount,
         case
-            when sales_receipts.currency_id = '{{ var('quickbooks__home_currency', 'None Defined') }}'
+            when sales_receipts.currency_id = '{{ var('quickbooks__home_currency', '') }}'
                 then sales_receipt_tax_lines.amount
             else sales_receipt_tax_lines.amount * coalesce(sales_receipts.exchange_rate, 1)
         end as converted_amount,

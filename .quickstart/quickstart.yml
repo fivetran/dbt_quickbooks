@@ -110,7 +110,7 @@ supported_vars:
 
   quickbooks__home_currency:
     type: string
-    value: "USD"
-    description: "The primary reporting currency (e.g., USD, EUR, GBP, CAD) of your business. Relevant to organizations operating with multiple currencies."
+    value: ""
+    description: "The primary reporting currency (e.g., USD, EUR, GBP, CAD) of your business. Relevant to organizations with multiple currencies, this is an empty string by default."
     display_name: "Home Currency"
 

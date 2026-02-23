@@ -172,7 +172,7 @@ vars:
 
 #### Configuring Your Home Currency for Multicurrency Support
 
-If your business operates with multiple currencies, you should configure the `quickbooks__home_currency` variable to specify your primary reporting currency (e.g., USD, EUR, GBP, CAD). This optimization prevents unnecessary exchange rate conversions for transactions already in your home currency, improving both performance and accuracy. If this variable is not set, the package will apply exchange rate conversions to all transactions, regardless of currency.  
+If your business operates with multiple currencies, this package offers the `quickbooks__home_currency` variable to specify your primary reporting currency (e.g., USD, EUR, GBP, CAD). This variable helps to prevent unnecessary exchange rate conversions being applied to transactions already in your home currency. If this variable is not set, the package will apply exchange rate conversions to all transactions, regardless of currency.   
 
 Add the following to your `dbt_project.yml` file, replacing `"USD"` with your actual home currency code:
 

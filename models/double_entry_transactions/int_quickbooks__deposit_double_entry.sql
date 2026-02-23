@@ -45,7 +45,7 @@ deposit_join as (
         deposits.transaction_date,
         deposit_lines.amount,
         case
-            when deposits.currency_id = '{{ var('quickbooks__home_currency', 'None Defined') }}'
+            when deposits.currency_id = '{{ var('quickbooks__home_currency', '') }}'
                 then deposit_lines.amount
             else deposit_lines.amount * (coalesce(deposits.home_total_amount/nullif(deposits.total_amount, 0), 1))
         end as converted_amount,

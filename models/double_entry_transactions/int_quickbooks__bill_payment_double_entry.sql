@@ -46,7 +46,7 @@ bill_payment_join as (
         bill_payments.transaction_date,
         bill_payments.total_amount as amount,
         case
-            when bill_payments.currency_id = '{{ var('quickbooks__home_currency', 'None Defined') }}'
+            when bill_payments.currency_id = '{{ var('quickbooks__home_currency', '') }}'
                 then bill_payments.total_amount
             else bill_payments.total_amount * coalesce(bill_payments.exchange_rate, 1)
         end as converted_amount,        coalesce(bill_payments.credit_card_account_id,bill_payments.check_bank_account_id) as payment_account_id,
