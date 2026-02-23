@@ -7,7 +7,7 @@
 - Applies fixes in `int_quickbooks__sales_receipt_double_entry` model to correctly reference `quickbooks__global_tax_account_reference` and `quickbooks__sales_tax_account_reference` variables.
 
 ## Under the Hood
-- Changes default `quickbooks__home_currency` default value to empty string to better align with Quickstart UI. 
+- Changes default `quickbooks__home_currency` value to empty string for easier understanding within Quickstart UI. 
  
 # dbt_quickbooks v1.4.1
 
