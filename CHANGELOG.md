@@ -1,3 +1,11 @@
+# dbt_quickbooks v1.4.2
+
+[PR #198](https://github.com/fivetran/dbt_quickbooks/pull/198) includes the following updates:
+
+## Under the Hood
+- Introduces the `partition_by_source_relation` macro to conditionally include `source_relation` in window function PARTITION BY clauses only when multiple sources are configured via the `quickbooks_sources` variable. Replaces hardcoded `source_relation` partitioning in the following models: `int_quickbooks__bill_payment_double_entry`, `int_quickbooks__credit_card_pymt_double_entry`, `int_quickbooks__payment_double_entry`, `int_quickbooks__transfer_double_entry`, `int_quickbooks__general_ledger_balances`, `quickbooks__cash_flow_statement`, `quickbooks__general_ledger`, and `stg_quickbooks__credit_card_payment_txn`.
+
+
 # dbt_quickbooks v1.4.1
 
 [PR #196](https://github.com/fivetran/dbt_quickbooks/pull/196) includes the following updates:
