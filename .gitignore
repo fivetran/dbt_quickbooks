@@ -16,7 +16,7 @@ target/
 *.swp
 *.swo
 
-# Claude instructions
+# Claude
 .claude/
 CLAUDE.md
 
@@ -75,3 +75,4 @@ env/
 env.bak/
 venv/
 venv.bak/
+.claude/
