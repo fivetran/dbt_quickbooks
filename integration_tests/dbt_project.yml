@@ -61,15 +61,15 @@ vars:
 
   # For validation testing.  
   # This below vars configuration is needed for the `general_ledger_amounts_match` macro.
-  # using_credit_card_payment_txn: true # @docs-include
-  # using_purchase_order: true # @docs-include
-  # using_invoice_tax_line: true # @docs-include 
-  # using_journal_entry_tax_line: true # @docs-include 
-  # using_purchase_tax_line: true # @docs-include 
-  # using_refund_receipt_tax_line: true # @docs-include 
-  # using_sales_receipt_tax_line: true # @docs-include 
-  # using_tax_agency: true # @docs-include 
-  # using_tax_rate: true # @docs-include 
+  using_credit_card_payment_txn: true # @docs-include
+  using_purchase_order: true # @docs-include
+  using_invoice_tax_line: true # @docs-include 
+  using_journal_entry_tax_line: true # @docs-include 
+  using_purchase_tax_line: true # @docs-include 
+  using_refund_receipt_tax_line: true # @docs-include 
+  using_sales_receipt_tax_line: true # @docs-include 
+  using_tax_agency: true # @docs-include 
+  using_tax_rate: true # @docs-include 
 
 seeds:
   +docs:
@@ -108,6 +108,7 @@ seeds:
       +column_types:
         due_date: date
         transaction_date: date
+        exchange_rate: float
     invoice_tax_line_data:
       +column_types:
         amount: float
