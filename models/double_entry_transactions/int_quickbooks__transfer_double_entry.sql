@@ -16,7 +16,7 @@ transfer_body as (
     select
         transfer_id as transaction_id,
         source_relation,
-        row_number() over(partition by transfer_id {{ quickbooks.partition_by_source_relation()  }}
+        row_number() over(partition by transfer_id {{ quickbooks.partition_by_source_relation() }}
             order by transaction_date) - 1 as index,
         transaction_date,
         amount,

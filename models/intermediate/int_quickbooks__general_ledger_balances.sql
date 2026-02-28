@@ -39,12 +39,12 @@ gl_cumulative_balance as (
     select
         *,
         case when financial_statement_helper = 'balance_sheet'
-            then sum(period_balance) over (partition by account_id, class_id {{ quickbooks.partition_by_source_relation()  }}
+            then sum(period_balance) over (partition by account_id, class_id {{ quickbooks.partition_by_source_relation() }}
             order by date_month, account_id, class_id rows unbounded preceding) 
             else 0
                 end as cumulative_balance,
         case when financial_statement_helper = 'balance_sheet'
-            then sum(period_converted_balance) over (partition by account_id, class_id {{ quickbooks.partition_by_source_relation()  }}
+            then sum(period_converted_balance) over (partition by account_id, class_id {{ quickbooks.partition_by_source_relation() }}
             order by date_month, account_id, class_id rows unbounded preceding) 
             else 0
                 end as cumulative_converted_balance
@@ -169,17 +169,17 @@ final as (
         period_last_day,
         coalesce(period_net_change, 0) as period_net_change,
         coalesce(period_beginning_balance_starter,
-            first_value(period_ending_balance_starter) over (partition by gl_partition {{ quickbooks.partition_by_source_relation()  }}
+            first_value(period_ending_balance_starter) over (partition by gl_partition {{ quickbooks.partition_by_source_relation() }}
             order by period_last_day rows unbounded preceding)) as period_beginning_balance,
         coalesce(period_ending_balance_starter,
-            first_value(period_ending_balance_starter) over (partition by gl_partition {{ quickbooks.partition_by_source_relation()  }} 
+            first_value(period_ending_balance_starter) over (partition by gl_partition {{ quickbooks.partition_by_source_relation() }} 
             order by period_last_day rows unbounded preceding)) as period_ending_balance,
         coalesce(period_net_converted_change, 0) as period_net_converted_change,
         coalesce(period_beginning_converted_balance_starter,
-            first_value(period_ending_converted_balance_starter) over (partition by gl_converted_partition {{ quickbooks.partition_by_source_relation()  }}
+            first_value(period_ending_converted_balance_starter) over (partition by gl_converted_partition {{ quickbooks.partition_by_source_relation() }}
             order by period_last_day rows unbounded preceding)) as period_beginning_converted_balance,
         coalesce(period_ending_converted_balance_starter,
-            first_value(period_ending_converted_balance_starter) over (partition by gl_partition {{ quickbooks.partition_by_source_relation()  }} 
+            first_value(period_ending_converted_balance_starter) over (partition by gl_partition {{ quickbooks.partition_by_source_relation() }} 
             order by period_last_day rows unbounded preceding)) as period_ending_converted_balance
 
     from gl_value_partition
