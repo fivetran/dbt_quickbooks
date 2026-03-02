@@ -5,6 +5,9 @@ version: '1.4.2'
 profile: 'integration_tests'
 config-version: 2
 models:
+  +persist_docs:
+    relation: true
+    columns: "{{ false if target.type in ('databricks') else true }}"
   +schema: "quickbooks_{{ var('directed_schema','dev') }}"
 
 vars:
