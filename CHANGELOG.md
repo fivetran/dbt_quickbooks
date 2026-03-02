@@ -1,10 +1,16 @@
 # dbt_quickbooks v1.4.2
+[PR #199](https://github.com/fivetran/dbt_quickbooks/pull/199) includes the following updates:
 
-[PR #198](https://github.com/fivetran/dbt_quickbooks/pull/198) includes the following update:
-
+## Bug Fixes
+- With variable configuration now available in Quickstart, the `quickbooks__home_currency` variable from the [v1.1.1-a2 pre-release](https://github.com/fivetran/dbt_quickbooks/releases/tag/v1.1.1-a2) is now available across all 13 intermediate double-entry transaction models to optimize multi-currency handling. When the variable is set, transactions in the designated home currency will not apply exchange rate conversions on `converted_amount`, improving accuracy. When left empty, all transactions will see exchange rate conversions applied [PR #197](https://github.com/fivetran/dbt_quickbooks/pull/197).
+  - Updates the [README](https://github.com/fivetran/dbt_quickbooks/blob/main/README.md#configuring-your-home-currency-for-multicurrency-support) with instructions for configuring the `quickbooks__home_currency` variable.
+- Applies fixes in `int_quickbooks__sales_receipt_double_entry` model to correctly reference `quickbooks__global_tax_account_reference` and `quickbooks__sales_tax_account_reference` variables [PR #197](https://github.com/fivetran/dbt_quickbooks/pull/197).
+ 
 ## Under the Hood
-- Introduces the `partition_by_source_relation` macro to conditionally include `source_relation` in window function PARTITION BY clauses only when multiple sources are configured via the `quickbooks_union_schemas` and `quickbooks_union_databases` variables. [See the README on how to leverage these variables](https://github.com/fivetran/dbt_quickbooks?tab=readme-ov-file#unioning-multiple-quickbooks-connections). 
-- Replaces hardcoded `source_relation` partitioning in the following models: 
+- Introduces the `partition_by_source_relation` macro to conditionally include `source_relation` in window function PARTITION BY clauses only when multiple sources are configured via the `quickbooks_union_schemas` and `quickbooks_union_databases` variables. [See the README on how to leverage these variables](https://github.com/fivetran/dbt_quickbooks?tab=readme-ov-file#unioning-multiple-quickbooks-connections) 
+[PR #198](https://github.com/fivetran/dbt_quickbooks/pull/198). 
+- Replaces hardcoded `source_relation` partitioning in the following models 
+[PR #198](https://github.com/fivetran/dbt_quickbooks/pull/198): 
    - `quickbooks__general_ledger`
    - `quickbooks__cash_flow_statement`
    - `int_quickbooks__bill_payment_double_entry`
@@ -13,6 +19,20 @@
    - `int_quickbooks__transfer_double_entry`
    - `int_quickbooks__general_ledger_balances`
    - `stg_quickbooks__credit_card_payment_txn`
+- Changes default `quickbooks__home_currency` value to empty string for easier understanding within Quickstart UI . 
+
+# dbt_quickbooks v1.4.2-a1
+[PR #197](https://github.com/fivetran/dbt_quickbooks/pull/197) is a pre-release that includes the following updates:
+
+## Bug Fixes
+- With variable configuration now available on Quickstart, we can now introduce the `quickbooks__home_currency` variable for full release from the [v1.1.1-a2 pre-release](https://github.com/fivetran/dbt_quickbooks/releases/tag/v1.1.1-a2) across all 13 intermediate double-entry transaction models to optimize multicurrency handling. When set, transactions already set in their home currency will not apply exchange rate conversions on `converted_amount`, improving accuracy. When left empty, all transactions will see exchange rate conversions applied.
+  - Updates the [README](https://github.com/fivetran/dbt_quickbooks/blob/main/README.md#configuring-your-home-currency-for-multicurrency-support) with instructions for configuring the `quickbooks__home_currency` variable.
+- Applies fixes in `int_quickbooks__sales_receipt_double_entry` model to correctly reference `quickbooks__global_tax_account_reference` and `quickbooks__sales_tax_account_reference` variables.
+
+## Under the Hood
+- Changes default `quickbooks__home_currency` value to empty string for easier understanding within Quickstart UI. 
+ 
+
 
 # dbt_quickbooks v1.4.1
 
@@ -104,6 +124,13 @@ Removes redundant `source_relation` field from ORDER BY clauses in window functi
 
 ## Features
   - Increases the required dbt version upper limit to v3.0.0
+
+
+# dbt_quickbooks v1.1.1-a2
+[PR #188](https://github.com/fivetran/dbt_quickbooks/pull/188) is a pre-release that includes the following updates:
+
+## Bug Fixes
+- Introduced the `quickbooks__home_currency` variable to optimize multicurrency handling. When set transactions in the home currency will not apply exchange rate conversions, improving accuracy and performance. This variable is implemented across all 13 intermediate double-entry transaction models to ensure consistent multicurrency behavior throughout the package.
 
 # dbt_quickbooks v1.1.1-a1
 [PR #187](https://github.com/fivetran/dbt_quickbooks/pull/187) is a pre-release that includes the following updates:

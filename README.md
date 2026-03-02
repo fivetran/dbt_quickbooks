@@ -1,21 +1,6 @@
 <!--section="quickbooks_transformation_model"-->
 # Quickbooks dbt Package
 
-<p align="left">
-    <a alt="License"
-        href="https://github.com/fivetran/dbt_quickbooks/blob/main/LICENSE">
-        <img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" /></a>
-    <a alt="dbt-core">
-        <img src="https://img.shields.io/badge/dbt_Core™_version->=1.3.0,_<3.0.0-orange.svg" /></a>
-    <a alt="Maintained?">
-        <img src="https://img.shields.io/badge/Maintained%3F-yes-green.svg" /></a>
-    <a alt="PRs">
-        <img src="https://img.shields.io/badge/Contributions-welcome-blueviolet" /></a>
-    <a alt="Fivetran Quickstart Compatible"
-        href="https://fivetran.com/docs/transformations/data-models/quickstart-management#quickstartmanagement">
-        <img src="https://img.shields.io/badge/Fivetran_Quickstart_Compatible%3F-yes-green.svg" /></a>
-</p>
-
 This dbt package transforms data from Fivetran's Quickbooks connector into analytics-ready tables.
 
 ## Resources
@@ -29,6 +14,8 @@ This dbt package transforms data from Fivetran's Quickbooks connector into analy
   - [dbt Docs](https://fivetran.github.io/dbt_quickbooks/#!/overview)
   - [DAG](https://fivetran.github.io/dbt_quickbooks/#!/overview?g_v=1)
   - [Changelog](https://github.com/fivetran/dbt_quickbooks/blob/main/CHANGELOG.md)
+- dbt Core™ supported versions
+  - `>=1.3.0, <3.0.0`
 
 ## What does this dbt package do?
 This package enables you to create comprehensive financial statements, analyze accounts payable and receivable aging, and track detailed transaction histories. It creates enriched models with metrics focused on general ledger analysis, financial reporting, and cash flow management.
@@ -169,6 +156,19 @@ vars:
   quickbooks__global_tax_account_reference: global_tax_account_value # 'Global Tax Payable' is the default filter set for the account name reference.
   quickbooks__sales_tax_account_reference: sales_tax_account_value # 'Sales Tax Payable' is the default filter set for the account name reference.
 ```
+
+#### Configuring Your Home Currency for Multicurrency Support
+
+If your business operates with multiple currencies, this package offers the `quickbooks__home_currency` variable to specify your primary reporting currency (e.g., USD, EUR, GBP, CAD). This variable helps to prevent unnecessary exchange rate conversions being applied to transactions already in your home currency. When this variable is not set (the default setting), the package applies exchange rate conversions to all transactions, regardless of currency.   
+
+Add your home currency code to your `dbt_project.yml` file to use this feature:
+
+```yml
+vars:
+  quickbooks__home_currency: ""  # Replace with your home currency code (e.g., "EUR", "GBP", "CAD")
+```
+
+**Note:** Use the same 3-letter ISO currency code (e.g., "USD", "EUR", "GBP") that appears in your QuickBooks `currency_id` field. 
 
 #### Customize the Cash Flow Model
 **IMPORTANT**: It is very likely you will need to reconfigure your `cash_flow_type` to make sure your cash flow statement matches your specific use case. Please examine the following instructions.
