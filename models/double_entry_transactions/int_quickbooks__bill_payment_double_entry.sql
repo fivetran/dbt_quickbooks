@@ -41,7 +41,7 @@ bill_payment_join as (
     select
         bill_payments.bill_payment_id as transaction_id,
         bill_payments.source_relation,
-        row_number() over(partition by bill_payments.bill_payment_id, bill_payments.source_relation 
+        row_number() over(partition by bill_payments.bill_payment_id {{ quickbooks.partition_by_source_relation(alias='bill_payments') }}
             order by bill_payments.transaction_date) - 1 as index,
         bill_payments.transaction_date,
         bill_payments.total_amount as amount,

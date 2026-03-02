@@ -41,7 +41,7 @@ payment_join as (
     select
         payments.payment_id as transaction_id,
         payments.source_relation,
-        row_number() over(partition by payments.payment_id, payments.source_relation 
+        row_number() over(partition by payments.payment_id {{ quickbooks.partition_by_source_relation(alias='payments') }}  
             order by payments.transaction_date) - 1 as index,
         payments.transaction_date,
         payments.total_amount as amount,
