@@ -19,7 +19,7 @@
    - `int_quickbooks__transfer_double_entry`
    - `int_quickbooks__general_ledger_balances`
    - `stg_quickbooks__credit_card_payment_txn`
-- Changes default `quickbooks__home_currency` value to empty string for easier understanding within Quickstart UI . 
+- Changes default `quickbooks__home_currency` value to empty string for easier understanding within Quickstart UI [PR #197](https://github.com/fivetran/dbt_quickbooks/pull/197). 
 
 # dbt_quickbooks v1.4.2-a1
 [PR #197](https://github.com/fivetran/dbt_quickbooks/pull/197) is a pre-release that includes the following updates:
@@ -31,8 +31,6 @@
 
 ## Under the Hood
 - Changes default `quickbooks__home_currency` value to empty string for easier understanding within Quickstart UI. 
- 
-
 
 # dbt_quickbooks v1.4.1
 
