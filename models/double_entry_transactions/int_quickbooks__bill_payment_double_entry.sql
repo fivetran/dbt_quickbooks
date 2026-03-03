@@ -50,7 +50,7 @@ bill_payment_join as (
                 then bill_payments.total_amount
             else bill_payments.total_amount * coalesce(bill_payments.exchange_rate, 1)
         end as converted_amount,
-        coalesce(bill_payments.credit_card_account_id,bill_payments.check_bank_account_id) as payment_account_id,
+        coalesce(bill_payments.credit_card_account_id, bill_payments.check_bank_account_id) as payment_account_id,
         ap_accounts.account_id,
         bill_payments.vendor_id,
         bill_payments.department_id,

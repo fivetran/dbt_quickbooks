@@ -5,20 +5,10 @@
 - With variable configuration now available in Quickstart, the `quickbooks__home_currency` variable from the [v1.1.1-a2 pre-release](https://github.com/fivetran/dbt_quickbooks/releases/tag/v1.1.1-a2) is now available across all 13 intermediate double-entry transaction models to optimize multi-currency handling. When the variable is set, transactions in the designated home currency will not apply exchange rate conversions on `converted_amount`, improving accuracy. When left empty, all transactions will see exchange rate conversions applied [PR #197](https://github.com/fivetran/dbt_quickbooks/pull/197).
   - Updates the [README](https://github.com/fivetran/dbt_quickbooks/blob/main/README.md#configuring-your-home-currency-for-multicurrency-support) with instructions for configuring the `quickbooks__home_currency` variable.
 - Applies fixes in `int_quickbooks__sales_receipt_double_entry` model to correctly reference `quickbooks__global_tax_account_reference` and `quickbooks__sales_tax_account_reference` variables [PR #197](https://github.com/fivetran/dbt_quickbooks/pull/197).
+- Introduces the `partition_by_source_relation` macro to conditionally include `source_relation` in window function PARTITION BY clauses only when multiple sources are configured via the `quickbooks_union_schemas` and `quickbooks_union_databases` variables. This resolves partition by constant expression errors on Redshift. [See the README on how to leverage these variables](https://github.com/fivetran/dbt_quickbooks?tab=readme-ov-file#unioning-multiple-quickbooks-connections) 
+[PR #198](https://github.com/fivetran/dbt_quickbooks/pull/198).
  
 ## Under the Hood
-- Introduces the `partition_by_source_relation` macro to conditionally include `source_relation` in window function PARTITION BY clauses only when multiple sources are configured via the `quickbooks_union_schemas` and `quickbooks_union_databases` variables. [See the README on how to leverage these variables](https://github.com/fivetran/dbt_quickbooks?tab=readme-ov-file#unioning-multiple-quickbooks-connections) 
-[PR #198](https://github.com/fivetran/dbt_quickbooks/pull/198). 
-- Replaces hardcoded `source_relation` partitioning in the following models 
-[PR #198](https://github.com/fivetran/dbt_quickbooks/pull/198): 
-   - `quickbooks__general_ledger`
-   - `quickbooks__cash_flow_statement`
-   - `int_quickbooks__bill_payment_double_entry`
-   - `int_quickbooks__credit_card_pymt_double_entry`
-   - `int_quickbooks__payment_double_entry`
-   - `int_quickbooks__transfer_double_entry`
-   - `int_quickbooks__general_ledger_balances`
-   - `stg_quickbooks__credit_card_payment_txn`
 - Changes default `quickbooks__home_currency` value to empty string for easier understanding within Quickstart UI [PR #197](https://github.com/fivetran/dbt_quickbooks/pull/197). 
 
 # dbt_quickbooks v1.4.2-a1
