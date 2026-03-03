@@ -134,7 +134,11 @@ final as (
         journal_entry_lines.customer_id,
         journal_entry_lines.vendor_id,
         journal_entry_lines.amount,
-        (journal_entry_lines.amount * coalesce(journal_entries.exchange_rate, 1)) as converted_amount,
+        case
+            when journal_entries.currency_id = '{{ var('quickbooks__home_currency', '') }}'
+                then journal_entry_lines.amount
+            else journal_entry_lines.amount * coalesce(journal_entries.exchange_rate, 1)
+        end as converted_amount,
         journal_entry_lines.account_id,
         class_id,
         journal_entry_lines.department_id,
@@ -161,7 +165,11 @@ final as (
         cast(null as {{ dbt.type_string() }}) as customer_id,
         cast(null as {{ dbt.type_string() }}) as vendor_id,
         journal_entry_tax_lines.amount,
-        (journal_entry_tax_lines.amount * coalesce(journal_entries.exchange_rate, 1)) as converted_amount,
+        case
+            when journal_entries.currency_id = '{{ var('quickbooks__home_currency', '') }}'
+                then journal_entry_tax_lines.amount
+            else journal_entry_tax_lines.amount * coalesce(journal_entries.exchange_rate, 1)
+        end as converted_amount,
         tax_account_join.account_id,
         cast(null as {{ dbt.type_string() }}) as class_id,
         cast(null as {{ dbt.type_string() }}) as department_id,

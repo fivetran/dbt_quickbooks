@@ -81,9 +81,9 @@ final as (
 
     select
         *,
-        sum(adjusted_amount) over (partition by account_id, class_id, source_relation
+        sum(adjusted_amount) over (partition by account_id, class_id {{ quickbooks.partition_by_source_relation() }}
             order by transaction_date, transaction_id, transaction_index rows unbounded preceding) as running_balance,
-        sum(adjusted_converted_amount) over (partition by account_id, class_id, source_relation
+        sum(adjusted_converted_amount) over (partition by account_id, class_id {{ quickbooks.partition_by_source_relation() }}
             order by transaction_date, transaction_id, transaction_index rows unbounded preceding) as running_converted_balance
     from adjusted_gl
 )

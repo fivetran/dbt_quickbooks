@@ -1,10 +1,13 @@
 name: 'quickbooks_integration_tests'
 
-version: '1.4.1'
+version: '1.4.2'
 
 profile: 'integration_tests'
 config-version: 2
 models:
+  +persist_docs:
+    relation: true
+    columns: "{{ false if target.type in ('databricks') else true }}"
   +schema: "quickbooks_{{ var('directed_schema','dev') }}"
 
 vars:
@@ -58,7 +61,6 @@ vars:
     quickbooks_vendor_credit_identifier: "vendor_credit_data"
     quickbooks_vendor_identifier: "vendor_data"
 
-
   # For validation testing.  
   # This below vars configuration is needed for the `general_ledger_amounts_match` macro.
   # using_credit_card_payment_txn: true # @docs-include
@@ -108,6 +110,7 @@ seeds:
       +column_types:
         due_date: date
         transaction_date: date
+        exchange_rate: float
     invoice_tax_line_data:
       +column_types:
         amount: float
