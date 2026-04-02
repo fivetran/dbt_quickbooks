@@ -436,12 +436,14 @@ models:
         description: Indicates the total amount of the transaction. This includes the total of all the charges, allowances, and taxes.
       - name: home_total_amount
         description: Indicates the total amount of the transaction in the home currency. This includes the total of all the charges, allowances, and taxes.
+      - name: exchange_rate
+        description: "{{ doc('exchange_rate') }}"
       - name: transaction_date
         description: Date which the deposit transaction occurred.
       - name: transaction_status
         description: Status of the deposit transaction.
       - name: updated_at
-        description: Timestamp of the date which the deposit was last updated.          
+        description: Timestamp of the date which the deposit was last updated.
       - name: _fivetran_deleted
         description: Boolean created by Fivetran to indicate whether the record has been deleted.
 

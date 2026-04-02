@@ -1,3 +1,15 @@
+# dbt_quickbooks v1.5.0
+[PR #200](https://github.com/fivetran/dbt_quickbooks/pull/200) includes the following updates:
+
+## Schema/Data Change
+**3 total changes • 2 possible breaking changes**
+
+| Data Model(s) | Change type | Old | New | Notes |
+| ------------- | ----------- | --- | --- | ----- |
+| `stg_quickbooks__deposit` | New field | — | `exchange_rate` | Exposes the `exchange_rate` field from the QuickBooks `deposit` source table. |
+| `int_quickbooks__deposit_double_entry` ⚠️ | Changed field | `deposit_lines.amount * coalesce(home_total_amount / nullif(total_amount, 0), 1)` | `deposit_lines.amount * coalesce(exchange_rate, home_total_amount / nullif(total_amount, 0), 1)` | `converted_amount` now prefers the direct `exchange_rate` value when available, falling back to the `home_total_amount / total_amount` ratio. Records with a non-null `exchange_rate` will produce different values. |
+| `int_quickbooks__deposit_transactions` ⚠️ | Changed field | `coalesce(home_total_amount / nullif(total_amount, 0), 1)` ratio | `coalesce(exchange_rate, home_total_amount / nullif(total_amount, 0), 1)` | Same conversion logic update applied to both `converted_amount` and `total_converted_amount`. |
+
 # dbt_quickbooks v1.4.2
 [PR #199](https://github.com/fivetran/dbt_quickbooks/pull/199) includes the following updates:
 
