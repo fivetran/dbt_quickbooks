@@ -10,6 +10,7 @@
     {"name": "created_at", "datatype": dbt.type_timestamp()},
     {"name": "currency_id", "datatype": dbt.type_string()},
     {"name": "department_id", "datatype": dbt.type_string()},
+    {"name": "exchange_rate", "datatype": dbt.type_float()},
     {"name": "global_tax_calculation", "datatype": dbt.type_string()},
     {"name": "home_total_amount", "datatype": dbt.type_float()},
     {"name": "id", "datatype": dbt.type_string()},
