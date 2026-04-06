@@ -154,7 +154,7 @@ sources:
           - name: credit_card_account_id
             description: "{{ doc('account_id') }} with the credited bill payment. Only applicable if bill payment `pay_type` is of type CreditCard."
           - name: exchange_rate
-            description: The number of home currency units it takes to equal one unit of currency specified by CurrencyRef. Applicable if multicurrency is enabled for the company.
+            description: "{{ doc('exchange_rate') }}"
           - name: currency_id
             description: "{{ doc('currency_id') }} in which all amounts on the associated transaction are expressed."
           - name: department_id

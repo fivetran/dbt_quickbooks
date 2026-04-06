@@ -153,7 +153,7 @@ models:
       - name: credit_card_account_id
         description: Account id of the account which the bill is credited. Only applicable if bill payment `pay_type` is of type CreditCard.
       - name: exchange_rate
-        description: The number of home currency units it takes to equal one unit of currency specified by CurrencyRef. Applicable if multicurrency is enabled for the company.
+        description: "{{ doc('exchange_rate') }}" 
       - name: currency_id
         description: Reference to the currency in which all amounts on the associated transaction are expressed.
       - name: department_id
@@ -199,7 +199,7 @@ models:
       - name: transaction_date
         description: Date when the bill transaction occurred.
       - name: exchange_rate
-        description: The number of home currency units it takes to equal one unit of currency specified by CurrencyRef. Applicable if multicurrency is enabled for the company.
+        description: "{{ doc('exchange_rate') }}" 
       - name: payable_account_id
         description: Account id of the account which the bill is credited.
       - name: private_note

@@ -7,8 +7,7 @@
 | Data Model(s) | Change type | Old | New | Notes |
 | ------------- | ----------- | --- | --- | ----- |
 | `stg_quickbooks__deposit` | New column | — | `exchange_rate` | Exchange rate in home currency units. |
-| `int_quickbooks__deposit_double_entry` ⚠️ | Changed field logic | `deposit_lines.amount * coalesce(home_total_amount / nullif(total_amount, 0), 1)` | `deposit_lines.amount * coalesce(exchange_rate, home_total_amount / nullif(total_amount, 0), 1)` | `converted_amount` now prefers the direct `exchange_rate` value when available, falling back to the `home_total_amount / total_amount` ratio. Records with a non-null `exchange_rate` will produce different values. |
-| `int_quickbooks__deposit_transactions` ⚠️ | Changed field logic | `coalesce(home_total_amount / nullif(total_amount, 0), 1)` ratio | `coalesce(exchange_rate, home_total_amount / nullif(total_amount, 0), 1)` | Same conversion logic update as above applied to both `converted_amount` and `total_converted_amount`. |
+| `int_quickbooks__deposit_double_entry`<br>`int_quickbooks__deposit_transactions`  | Field logic |  |  | BREAKING CHANGE: `converted_amount` may change for records with a non-null `exchange_rate`, as model logic now prioritizes `exchange_rate` value instead of `home_total_amount / total_amount`. |
 
 # dbt_quickbooks v1.4.2
 [PR #199](https://github.com/fivetran/dbt_quickbooks/pull/199) includes the following updates:
