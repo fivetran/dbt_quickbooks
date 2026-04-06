@@ -45,6 +45,7 @@ final as (
         cast(department_id as {{ dbt.type_string() }}) as department_id,
         total_amount,
         home_total_amount,
+        exchange_rate,
         cast( {{ dbt.date_trunc('day', 'transaction_date') }} as date) as transaction_date,
         updated_at,
         transaction_status,

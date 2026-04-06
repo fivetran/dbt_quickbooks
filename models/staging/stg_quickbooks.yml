@@ -153,7 +153,7 @@ models:
       - name: credit_card_account_id
         description: Account id of the account which the bill is credited. Only applicable if bill payment `pay_type` is of type CreditCard.
       - name: exchange_rate
-        description: The number of home currency units it takes to equal one unit of currency specified by CurrencyRef. Applicable if multicurrency is enabled for the company.
+        description: "{{ doc('exchange_rate') }}" 
       - name: currency_id
         description: Reference to the currency in which all amounts on the associated transaction are expressed.
       - name: department_id
@@ -436,12 +436,14 @@ models:
         description: Indicates the total amount of the transaction. This includes the total of all the charges, allowances, and taxes.
       - name: home_total_amount
         description: Indicates the total amount of the transaction in the home currency. This includes the total of all the charges, allowances, and taxes.
+      - name: exchange_rate
+        description: "{{ doc('exchange_rate') }}"
       - name: transaction_date
         description: Date which the deposit transaction occurred.
       - name: transaction_status
         description: Status of the deposit transaction.
       - name: updated_at
-        description: Timestamp of the date which the deposit was last updated.          
+        description: Timestamp of the date which the deposit was last updated.
       - name: _fivetran_deleted
         description: Boolean created by Fivetran to indicate whether the record has been deleted.
 

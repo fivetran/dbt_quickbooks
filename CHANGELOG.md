@@ -1,3 +1,14 @@
+# dbt_quickbooks v1.5.0
+[PR #201](https://github.com/fivetran/dbt_quickbooks/pull/201) includes the following updates:
+
+## Schema/Data Change
+**3 total changes • 2 possible breaking changes**
+
+| Data Model(s) | Change type | Old | New | Notes |
+| ------------- | ----------- | --- | --- | ----- |
+| `stg_quickbooks__deposit` | New column | — | `exchange_rate` | Exchange rate in home currency units. |
+| `int_quickbooks__deposit_double_entry`<br>`int_quickbooks__deposit_transactions`  | Field logic |  |  | BREAKING CHANGE: `converted_amount` may change for records with a non-null `exchange_rate`, as model logic now prioritizes `exchange_rate` value instead of `home_total_amount / total_amount`. |
+
 # dbt_quickbooks v1.4.2
 [PR #199](https://github.com/fivetran/dbt_quickbooks/pull/199) includes the following updates:
 
