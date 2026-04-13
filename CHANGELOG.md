@@ -1,8 +1,8 @@
 # dbt_quickbooks v1.6.0-a1
-[PR #](https://github.com/fivetran/dbt_quickbooks/pull/) includes the following updates:
+[PR #202](https://github.com/fivetran/dbt_quickbooks/pull/202) includes the following updates:
 
 ## Under the Hood (Quickstart Update)
-- Re-adds the following tax line table variables to `quickstart.yml`, enabling Quickstart customers to configure them in the UI:
+- Re-adds the following tax line table variables to `quickstart.yml`, enabling Quickstart jobs to use the associated source tables:
   - `using_invoice_tax_line`
   - `using_journal_entry_tax_line`
   - `using_purchase_tax_line`
