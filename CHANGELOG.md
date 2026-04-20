@@ -2,7 +2,7 @@
 [PR #203](https://github.com/fivetran/dbt_quickbooks/pull/203) includes the following updates:
 
 ## Documentation
-- Corrected field documentation in `src_quickbooks.yml` and `stg_quickbooks.yml` for the `tax_rate` and `purchase_order` tables to call only fields brought into macros and staging layer. 
+- Corrects field documentation that is used in our models from `tax_rate` and `purchase_order` tables.
 
 # dbt_quickbooks v1.5.0
 [PR #201](https://github.com/fivetran/dbt_quickbooks/pull/201) includes the following updates:
