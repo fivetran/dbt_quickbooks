@@ -1,3 +1,9 @@
+# dbt_quickbooks v1.5.1
+[PR #203](https://github.com/fivetran/dbt_quickbooks/pull/203) includes the following updates:
+
+## Documentation
+- Corrects source and staging field documentation for the `tax_rate` and `purchase_order` tables.
+
 # dbt_quickbooks v1.5.0
 [PR #201](https://github.com/fivetran/dbt_quickbooks/pull/201) includes the following updates:
 
