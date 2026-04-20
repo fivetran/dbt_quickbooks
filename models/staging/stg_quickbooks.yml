@@ -1252,11 +1252,11 @@ models:
           - not_null
       - name: source_relation
         description: "{{ doc('source_relation') }}"
-      - name: name
+      - name: tax_rate_name
         description: Name or label of the tax rate.
       - name: rate_value
         description: Percentage value of the tax rate.
-      - name: agency_id
+      - name: tax_agency_id
         description: ID of the tax agency responsible for this rate.
       - name: active
         description: Boolean indicating whether the tax rate is active.
@@ -1268,9 +1268,10 @@ models:
         description: The actual effective tax rate at the time of the transaction.
       - name: created_at
         description: Timestamp for when the tax rate was created.
-      - name: updated_at
-        description: Timestamp for when the tax rate was last updated.
-
+      - name: description
+        description: A user-defined description of the tax rate.
+      - name: sync_token
+        description: The versioning number used to lock a tax rate record to one app at a time.
 
   - name: stg_quickbooks__transfer
     description: "{{ doc('transfer_table') }}"
