@@ -2,7 +2,7 @@
 [PR #203](https://github.com/fivetran/dbt_quickbooks/pull/203) includes the following updates:
 
 ## Documentation
-- Corrects field documentation that is used in our models from `tax_rate` and `purchase_order` tables.
+- Corrects field documentation to match what's used in our models from `tax_rate` and `purchase_order` tables.
 
 # dbt_quickbooks v1.5.0
 [PR #201](https://github.com/fivetran/dbt_quickbooks/pull/201) includes the following updates:
