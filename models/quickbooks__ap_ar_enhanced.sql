@@ -42,6 +42,7 @@ customer_types as (
 
     select *
     from {{ ref('stg_quickbooks__customer_type') }}
+
 ),
 {% endif %}
 

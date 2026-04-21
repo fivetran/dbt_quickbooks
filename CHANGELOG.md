@@ -6,10 +6,10 @@
 
 | Data Model(s) | Change type | Old | New | Notes |
 | ------------- | ----------- | --- | --- | ----- |
-| `stg_quickbooks__customer_type` | New model | — | — | BREAKING CHANGE: New staging model for the QuickBooks `customer_type` source table. Enabled by default (`using_customer_type: true`). Set `using_customer_type: false` in your `dbt_project.yml` if your connector does not sync this table. |
-| `stg_quickbooks__customer` | New field | — | `customer_type_id` | Adds the customer type foreign key to the customer staging model. |
-| `quickbooks__ap_ar_enhanced` | New field | — | `customer_type_name` | Adds the customer type name to AR (invoice) records. `null` for AP (bill) records. Only populated when `using_customer_type: true`. |
-| `quickbooks__expenses_sales_enhanced` | New field | — | `customer_type_name` | Adds the customer type name to all expense and sales records. Only populated when `using_customer_type: true`. |
+| `stg_quickbooks__customer_type` | New model |  |  | BREAKING CHANGE: New staging model for the QuickBooks `customer_type` source table. Enabled by default (`using_customer_type: true`). Set `using_customer_type: false` in your `dbt_project.yml` if your connector does not sync this table. |
+| `stg_quickbooks__customer` | New field |  | `customer_type_id` |  |
+| `quickbooks__ap_ar_enhanced` | New field |  | `customer_type_name` | Adds `customer_type_name`to AR (invoice) records. `null` for AP (bill) records. Only populated when `using_customer_type: true`. |
+| `quickbooks__expenses_sales_enhanced` | New field | — | `customer_type_name` | Adds `customer_type_name` to expense and sales records. Only populated when `using_customer_type: true`. |
 
 ## Feature Update
 - Introduces the `using_customer_type` variable (default: `true`) to enable or disable the `customer_type` source table and all associated downstream enrichment. Set to `false` if your QuickBooks connector does not sync the `customer_type` table.

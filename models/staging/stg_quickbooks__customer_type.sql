@@ -33,6 +33,7 @@ fields as (
         }}
 
     from base
+
 ),
 
 final as (
@@ -47,6 +48,7 @@ final as (
         _fivetran_deleted
 
     from fields
+
 )
 
 select *
