@@ -37,6 +37,14 @@ customers as (
     from {{ ref('stg_quickbooks__customer') }}
 ),
 
+{% if var('using_customer_type', True) %}
+customer_types as (
+
+    select *
+    from {{ ref('stg_quickbooks__customer_type') }}
+),
+{% endif %}
+
 vendors as (
 
     select *
@@ -67,6 +75,9 @@ final as (
         {% endif %}
         
         vendors.web_url as customer_vendor_website,
+        {% if var('using_customer_type', True) %}
+        cast(null as {{ dbt.type_string() }}) as customer_type_name,
+        {% endif %}
         cast(null as {{ dbt.type_string() }}) as delivery_type,
         cast(null as {{ dbt.type_string() }}) as estimate_status,
         bill_join.total_amount,
@@ -137,6 +148,9 @@ final as (
         {% endif %}
 
         customers.website as customer_vendor_website,
+        {% if var('using_customer_type', True) %}
+        customer_types.customer_type_name,
+        {% endif %}
         invoice_join.delivery_type,
         invoice_join.estimate_status,
         invoice_join.total_amount as total_amount,
@@ -179,6 +193,12 @@ final as (
     left join customers
         on invoice_join.customer_id = customers.customer_id
         and invoice_join.source_relation = customers.source_relation
+
+    {% if var('using_customer_type', True) %}
+    left join customer_types
+        on customers.customer_type_id = customer_types.customer_type_id
+        and customers.source_relation = customer_types.source_relation
+    {% endif %}
 
     {% endif %}
 )

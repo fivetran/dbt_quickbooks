@@ -38,6 +38,14 @@ customers as (
     from {{ ref('stg_quickbooks__customer') }}
 ),
 
+{% if var('using_customer_type', True) %}
+customer_types as (
+
+    select *
+    from {{ ref('stg_quickbooks__customer_type') }}
+),
+{% endif %}
+
 {% if var('using_department', True) %}
 departments as ( 
 
@@ -85,6 +93,9 @@ final as (
         expense_union.customer_id,
         customers.fully_qualified_name as customer_name,
         customers.website as customer_website,
+        {% if var('using_customer_type', True) %}
+        customer_types.customer_type_name,
+        {% endif %}
         expense_union.vendor_id,
         vendors.display_name as vendor_name,
         expense_union.billable_status,
@@ -103,6 +114,12 @@ final as (
     left join customers
         on customers.customer_id = expense_union.customer_id
         and customers.source_relation = expense_union.source_relation
+
+    {% if var('using_customer_type', True) %}
+    left join customer_types
+        on customers.customer_type_id = customer_types.customer_type_id
+        and customers.source_relation = customer_types.source_relation
+    {% endif %}
 
     left join vendors
         on vendors.vendor_id = expense_union.vendor_id
