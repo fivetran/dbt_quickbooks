@@ -991,14 +991,10 @@ sources:
         columns:
           - name: id
             description: "{{ doc('id') }} purchase order."
-          - name: class_id
-            description: "{{ doc('class_id') }} with the purchase order."
           - name: created_at
             description: Timestamp of the date when the purchase order was created.
           - name: custom_po_number
             description: Custom field for PO number.
-          - name: custom_customer_type
-            description: Custom field for customer type.
           - name: doc_number
             description: Reference number for the transaction.
           - name: due_date
@@ -1007,14 +1003,10 @@ sources:
             description: "{{ doc('currency_id') }} in which all amounts on the associated transaction are expressed."
           - name: exchange_rate
             description: "{{ doc('exchange_rate') }}" 
-          - name: memo
-            description: A message for the vendor. This text appears on the purchase order object sent to the vendor.
           - name: transaction_date
             description: Date of the day when the purchase order occurred.
           - name: total_amount
             description: Indicates the total amount of the transaction.
-          - name: private_note
-            description: User entered, organization-private note about the transaction. This note does not appear on the purchase order to the vendor.
           - name: payable_account_id
             description: "{{ doc('account_id') }} with the credited purchase order."
           - name: status
@@ -1247,7 +1239,7 @@ sources:
             description: The percentage value of the tax rate.
           - name: active
             description: Indicates whether the tax rate is currently active.
-          - name: agency_id
+          - name: tax_agency_id
             description: The ID of the tax agency responsible for this tax rate.
           - name: special_tax_type
             description: Type of special tax, if applicable (e.g., zero-rated, exempt).
@@ -1259,6 +1251,10 @@ sources:
             description: The timestamp when the tax rate record was created.
           - name: updated_at
             description: The timestamp when the tax rate record was last updated.
+          - name: description
+            description: A user-defined description of the tax rate.
+          - name: sync_token
+            description: The versioning number used to lock a tax rate record to one app at a time.
 
       - name: transfer
         identifier: "{{ var('quickbooks_transfer_identifier', 'transfer') }}"
