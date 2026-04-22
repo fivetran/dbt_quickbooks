@@ -78,6 +78,10 @@ Table containing credit memo records. A credit memo is a refund or credit of pay
 Table containing customers of which are consumers of the service or product that your business offers.
 {% enddocs %}
 
+{% docs customer_type_table %}
+Table containing customer type records used to categorize customers in QuickBooks.
+{% enddocs %}
+
 {% docs department_table %}
 Table containing records representing physical locations such as stores, and sales regions.
 {% enddocs %}

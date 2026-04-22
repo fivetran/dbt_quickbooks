@@ -1,0 +1,4 @@
+id,_fivetran_synced,active,created_at,name,updated_at,_fivetran_deleted
+1,2021-01-01 00:00:00,TRUE,2021-01-01 00:00:00,Commercial,2021-01-01 00:00:00,FALSE
+2,2021-01-01 00:00:00,TRUE,2021-01-01 00:00:00,Residential,2021-01-01 00:00:00,FALSE
+3,2021-01-01 00:00:00,FALSE,2021-01-01 00:00:00,Government,2021-06-15 00:00:00,FALSE

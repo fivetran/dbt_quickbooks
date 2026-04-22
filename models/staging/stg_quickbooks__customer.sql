@@ -36,6 +36,7 @@ final as (
     
     select 
         cast(id as {{ dbt.type_string() }}) as customer_id,
+        cast(customer_type_id as {{ dbt.type_string() }}) as customer_type_id,
         active as is_active,
         balance,
         balance_with_jobs,

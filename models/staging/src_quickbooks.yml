@@ -361,6 +361,25 @@ sources:
           - name: _fivetran_deleted
             description: "{{ doc('_fivetran_deleted') }}"
 
+      - name: customer_type
+        identifier: "{{ var('quickbooks_customer_type_identifier', 'customer_type') }}"
+        description: "{{ doc('customer_type_table') }}"
+        config:
+          enabled: "{{ var('using_customer_type', true) }}"
+        columns:
+          - name: id
+            description: "{{ doc('id') }} customer type."
+          - name: active
+            description: Boolean indicating whether the customer type is currently enabled for use by QuickBooks.
+          - name: created_at
+            description: Timestamp of the date when the customer type was created.
+          - name: name
+            description: Name of the customer type.
+          - name: updated_at
+            description: Timestamp of the date when the customer type was last updated.
+          - name: _fivetran_deleted
+            description: "{{ doc('_fivetran_deleted') }}"
+
       - name: department
         identifier: "{{ var('quickbooks_department_identifier', 'department') }}"
         description: "{{ doc('department_table') }}"

@@ -1,7 +1,7 @@
 config-version: 2
 name: 'quickbooks'
 
-version: '1.5.1'
+version: '1.6.0'
 
 require-dbt-version: [">=1.3.0", "<3.0.0"]
 
@@ -37,6 +37,7 @@ vars:
     credit_memo: "{{ source('quickbooks', 'credit_memo') }}"
     credit_card_payment_txn: "{{ source('quickbooks', 'credit_card_payment_txn') }}"
     customer: "{{ source('quickbooks', 'customer') }}"
+    customer_type: "{{ source('quickbooks', 'customer_type') }}"
     department: "{{ source('quickbooks', 'department') }}"
     deposit_line: "{{ source('quickbooks', 'deposit_line') }}"
     deposit: "{{ source('quickbooks', 'deposit') }}"
@@ -77,6 +78,7 @@ vars:
 
     using_address: true
     using_bill: true
+    using_customer_type: true
     using_credit_memo: true
     using_department: true
     using_deposit: true
