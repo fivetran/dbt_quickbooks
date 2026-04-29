@@ -358,6 +358,8 @@ sources:
             description: The website url associated with the customer.
           - name: taxable
             description: Boolean indicating whether the customer is taxable.
+          - name: customer_type_id
+            description: The id associated with the customer type.
           - name: _fivetran_deleted
             description: "{{ doc('_fivetran_deleted') }}"
 

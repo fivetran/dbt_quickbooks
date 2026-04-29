@@ -366,6 +366,8 @@ models:
         description: Website url associated with the vendor.
       - name: taxable
         description: Boolean indicating whether the customer is taxable.
+      - name: customer_type_id
+        description: The id associated with the customer type.
       - name: _fivetran_deleted
         description: "{{ doc('_fivetran_deleted') }}"
 
