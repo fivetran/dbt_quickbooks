@@ -1,18 +1,18 @@
 # dbt_quickbooks v1.6.0
 [PR #204](https://github.com/fivetran/dbt_quickbooks/pull/204) includes the following updates:
 
-## Schema/Data Change
+## Schema/Data Changes
 **4 total changes • 1 possible breaking change**
 
 | Data Model(s) | Change type | Old | New | Notes |
 | ------------- | ----------- | --- | --- | ----- |
-| `stg_quickbooks__customer_type` | New model |  |  | BREAKING CHANGE: New staging model for the QuickBooks `customer_type` source table. Enabled by default.|
+| `stg_quickbooks__customer_type` | New model |  |  | BREAKING CHANGE: New staging model when the `customer_type` table is synced.|
 | `stg_quickbooks__customer` | New field |  | `customer_type_id` |  |
-| `quickbooks__ap_ar_enhanced` | New field |  | `customer_type_name` | Adds `customer_type_name`to AR (invoice) records. `null` for AP (bill) records. Only populated if the `customer_type` table is synced in your connector. |
-| `quickbooks__expenses_sales_enhanced` | New field |  | `customer_type_name` | Adds `customer_type_name` to expense and sales records. Only populated if the `customer_type` table is synced in your connector. |
+| `quickbooks__ap_ar_enhanced` | New field |  | `customer_type_name` | Only populated if the `customer_type` table is synced. |
+| `quickbooks__expenses_sales_enhanced` | New field |  | `customer_type_name` | Only populated if the `customer_type` table is synced in your connector. |
 
 ## Feature Update
-- Introduces the `using_customer_type` variable (default: `true`) to enable or disable the `customer_type` source table and all associated downstream enrichment. Set to `false` if your QuickBooks connector does not sync the `customer_type` table.
+- **For dbt Core users**: Introduces `using_customer_type` variable to sync data from the `customer_type` source table. [See the README on how to configure this variable](https://github.com/fivetran/dbt_quickbooks#enablingdisabling-models).
 
 # dbt_quickbooks v1.5.1
 [PR #203](https://github.com/fivetran/dbt_quickbooks/pull/203) includes the following updates:
