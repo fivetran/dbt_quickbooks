@@ -25,7 +25,7 @@ vars:
     quickbooks_credit_card_payment_txn_identifier: "credit_card_payment_txn_data"
     quickbooks_credit_memo_identifier: "credit_memo_data"
     quickbooks_credit_memo_line_identifier: "credit_memo_line_data"
-    quickbooks_customer_identifier: "customer_data"
+    quickbooks_customer_type_identifier: "customer_type_data"
     quickbooks_department_identifier: "department_data"
     quickbooks_deposit_line_identifier: "deposit_line_data"
     quickbooks_deposit_identifier: "deposit_data"
