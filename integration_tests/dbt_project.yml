@@ -1,6 +1,6 @@
 name: 'quickbooks_integration_tests'
 
-version: '1.5.1'
+version: '1.6.0'
 
 profile: 'integration_tests'
 config-version: 2
@@ -26,6 +26,7 @@ vars:
     quickbooks_credit_memo_identifier: "credit_memo_data"
     quickbooks_credit_memo_line_identifier: "credit_memo_line_data"
     quickbooks_customer_identifier: "customer_data"
+    quickbooks_customer_type_identifier: "customer_type_data"
     quickbooks_department_identifier: "department_data"
     quickbooks_deposit_line_identifier: "deposit_line_data"
     quickbooks_deposit_identifier: "deposit_data"

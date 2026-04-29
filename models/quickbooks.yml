@@ -181,6 +181,8 @@ models:
         description: The first date a payment was provided for the bill or invoice
       - name: recent_payment_date
         description: The last date a payment was provided for the bill or invoice.
+      - name: customer_type_name
+        description: The name of the customer type associated with the customer on the invoice.
 
   - name: quickbooks__cash_flow_statement
     description: "{{ doc('cash_flow_statement_table') }}" 
@@ -292,6 +294,8 @@ models:
         description: Total monetary amount of either the expense or sale.
       - name: total_converted_amount
         description: Total monetary amount, converted with exchange rates applied if available, of either the expense or sale.
+      - name: customer_type_name
+        description: The name of the customer type associated with the customer on the invoice.
 
   - name: quickbooks__general_ledger
     description: "{{ doc('general_ledger_table') }}"

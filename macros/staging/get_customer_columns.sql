@@ -12,6 +12,7 @@
     {"name": "company_name", "datatype": dbt.type_string()},
     {"name": "created_at", "datatype": dbt.type_timestamp()},
     {"name": "currency_id", "datatype": dbt.type_string()},
+    {"name": "customer_type_id", "datatype": dbt.type_string()},
     {"name": "default_tax_code_id", "datatype": dbt.type_string()},
     {"name": "display_name", "datatype": dbt.type_string()},
     {"name": "email", "datatype": dbt.type_string()},
