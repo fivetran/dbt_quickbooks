@@ -1,7 +1,7 @@
 # dbt_quickbooks v1.6.1
 
 ## Quickstart Update
-- Adds `table_variables` for relevant sources to prevent missing sources from blocking downstream Quickstart models.
+- Adds `table_variables` for tax relevant sources to prevent missing sources from blocking downstream Quickstart models.
 
 # dbt_quickbooks v1.6.0
 [PR #204](https://github.com/fivetran/dbt_quickbooks/pull/204) includes the following updates:
