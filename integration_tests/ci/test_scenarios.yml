@@ -1,0 +1,45 @@
+# Only set if not using default adapter ranges
+# dbt_adapter_versions:
+#   snowflake: ">=1.3.0,<2.0.0"
+#   bigquery: ">=1.3.0,<2.0.0"
+#   postgres: ">=1.3.0,<2.0.0"
+#   redshift: ">=1.3.0,<2.0.0"
+#   databricks: ">=1.6.0,<2.0.0"
+
+schema_variable_name: "quickbooks_schema"
+
+include_databricks_sql: false
+include_sqlserver: false
+include_dbt_compile: true
+
+test_scenarios:
+  - name: "Default"
+    vars: {}
+    include_incremental: false
+
+  - name: "credit card payment enabled"
+    vars:
+      using_credit_card_payment_txn: true
+      using_address: false
+      using_bill: false
+      using_credit_memo: false
+      using_department: false
+      using_deposit: false
+      using_estimate: false
+      using_invoice: false
+      using_invoice_bundle: false
+      using_invoice_tax_line: true
+      using_journal_entry: false
+      using_journal_entry_tax_line: true
+      using_payment: false
+      using_purchase_tax_line: true
+      using_refund_receipt: false
+      using_refund_receipt_tax_line: true
+      using_sales_receipt: false
+      using_sales_receipt_tax_line: true
+      using_tax_agency: true
+      using_tax_rate: true
+      using_transfer: false
+      using_vendor_credit: false
+      using_customer_type: false
+    include_incremental: false
