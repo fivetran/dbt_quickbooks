@@ -16,6 +16,9 @@
 ## Feature Update
 - Introduces `quickbooks__inventory_item_activity`, a new end model providing a line-level view of all item transactions across purchase, bill, vendor credit, invoice, sales receipt, credit memo, refund receipt, and (optionally) purchase order transaction types. Each row includes item enrichment (`name`, `type`, `description`, `stock_keeping_unit`), quantity, unit price, amount, and `transaction_direction` to support downstream inventory analysis.
 
+## Under the Hood
+- Updates `int_quickbooks__expenses_union` to use an explicit column list instead of `select *` in its UNION ALL branches to maintain schema consistency after new item fields were added to the purchase, bill, and vendor credit transaction models.
+
 # dbt_quickbooks v1.6.1
 
 ## Quickstart Update
