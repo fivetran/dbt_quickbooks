@@ -3,55 +3,55 @@
 
 with activity as (
 
-    select *, 'inbound' as transaction_direction
+    select *, cast('inbound' as {{ dbt.type_string() }}) as transaction_direction
     from {{ ref('int_quickbooks__purchase_transactions') }}
 
     {% if var('using_bill', True) %}
     union all
 
-    select *, 'inbound' as transaction_direction
+    select *, cast('inbound' as {{ dbt.type_string() }}) as transaction_direction
     from {{ ref('int_quickbooks__bill_transactions') }}
     {% endif %}
 
     {% if var('using_vendor_credit', True) %}
     union all
 
-    select *, 'outbound' as transaction_direction
+    select *, cast('outbound' as {{ dbt.type_string() }}) as transaction_direction
     from {{ ref('int_quickbooks__vendor_credit_transactions') }}
     {% endif %}
 
     {% if var('using_invoice', True) %}
     union all
 
-    select *, 'outbound' as transaction_direction
+    select *, cast('outbound' as {{ dbt.type_string() }}) as transaction_direction
     from {{ ref('int_quickbooks__invoice_transactions') }}
     {% endif %}
 
     {% if var('using_sales_receipt', True) %}
     union all
 
-    select *, 'outbound' as transaction_direction
+    select *, cast('outbound' as {{ dbt.type_string() }}) as transaction_direction
     from {{ ref('int_quickbooks__sales_receipt_transactions') }}
     {% endif %}
 
     {% if var('using_credit_memo', True) %}
     union all
 
-    select *, 'inbound' as transaction_direction
+    select *, cast('inbound' as {{ dbt.type_string() }}) as transaction_direction
     from {{ ref('int_quickbooks__credit_memo_transactions') }}
     {% endif %}
 
     {% if var('using_refund_receipt', True) %}
     union all
 
-    select *, 'inbound' as transaction_direction
+    select *, cast('inbound' as {{ dbt.type_string() }}) as transaction_direction
     from {{ ref('int_quickbooks__refund_receipt_transactions') }}
     {% endif %}
 
     {% if var('using_purchase_order', False) %}
     union all
 
-    select *, 'pending' as transaction_direction
+    select *, cast('pending' as {{ dbt.type_string() }}) as transaction_direction
     from {{ ref('int_quickbooks__purchase_order_transactions') }}
     {% endif %}
 ),

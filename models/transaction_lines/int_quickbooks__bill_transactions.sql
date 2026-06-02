@@ -26,7 +26,7 @@ final as (
         bills.source_relation,
         bill_lines.index as transaction_line_id,
         bills.doc_number,
-        'bill' as transaction_type,
+        cast('bill' as {{ dbt.type_string() }}) as transaction_type,
         bills.transaction_date,
         bill_lines.item_expense_item_id as item_id,
         bill_lines.item_expense_quantity as item_quantity,

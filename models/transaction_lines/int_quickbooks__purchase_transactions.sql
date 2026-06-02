@@ -22,7 +22,7 @@ final as (
         purchases.source_relation,
         purchase_lines.index as transaction_line_id,
         purchases.doc_number,
-        'purchase' as transaction_type,
+        cast('purchase' as {{ dbt.type_string() }}) as transaction_type,
         purchases.transaction_date,
         purchase_lines.item_expense_item_id as item_id,
         purchase_lines.item_expense_quantity as item_quantity,

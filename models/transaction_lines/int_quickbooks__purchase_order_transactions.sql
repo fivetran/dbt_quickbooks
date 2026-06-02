@@ -26,7 +26,7 @@ final as (
         purchase_orders.source_relation,
         purchase_order_lines.index as transaction_line_id,
         purchase_orders.doc_number,
-        'purchase_order' as transaction_type,
+        cast('purchase_order' as {{ dbt.type_string() }}) as transaction_type,
         purchase_orders.transaction_date,
         purchase_order_lines.item_expense_item_id as item_id,
         purchase_order_lines.item_expense_quantity as item_quantity,

@@ -26,7 +26,7 @@ final as (
         sales_receipts.source_relation,
         sales_receipt_lines.index as transaction_line_id,
         sales_receipts.doc_number,
-        'sales_receipt' as transaction_type,
+        cast('sales_receipt' as {{ dbt.type_string() }}) as transaction_type,
         sales_receipts.transaction_date,
         sales_receipt_lines.sales_item_item_id as item_id,
         sales_receipt_lines.sales_item_quantity as item_quantity,
