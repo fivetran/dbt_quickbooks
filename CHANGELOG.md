@@ -1,5 +1,5 @@
 # dbt_quickbooks v1.7.0
-[PR #XXX](https://github.com/fivetran/dbt_quickbooks/pull/XXX) includes the following updates:
+[PR #208](https://github.com/fivetran/dbt_quickbooks/pull/208) includes the following updates:
 
 ## Schema/Data Change
 **6 total changes • 0 possible breaking changes**
