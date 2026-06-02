@@ -31,6 +31,10 @@ final as (
         coalesce(invoice_lines.sales_item_item_id, invoice_lines.item_id) as item_id,
         coalesce(invoice_lines.quantity, invoice_lines.sales_item_quantity) as item_quantity,
         invoice_lines.sales_item_unit_price as item_unit_price,
+        items.name as item_name,
+        items.type as item_type,
+        items.description as item_description,
+        items.stock_keeping_unit,
         case when invoice_lines.account_id is null
             then coalesce(items.income_account_id, items.expense_account_id, items.asset_account_id)
             else invoice_lines.account_id

@@ -49,6 +49,8 @@ final as (
         cast(item_expense_item_id as {{ dbt.type_string() }}) as item_expense_item_id,
         item_expense_billable_status,
         cast(item_expense_customer_id as {{ dbt.type_string() }}) as item_expense_customer_id,
+        item_expense_quantity,
+        item_expense_unit_price,
         amount,
         description,
         source_relation

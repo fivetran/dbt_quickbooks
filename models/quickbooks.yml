@@ -494,3 +494,54 @@ models:
         description: The total ending period balance, converted with exchange rates applied if available,
       - name: account_ordinal
         description: "{{ doc('account_ordinal') }}"
+
+  - name: quickbooks__inventory_item_activity
+    description: >
+      Table containing all inventory-related transaction line activity across purchases, bills, invoices,
+      sales receipts, credit memos, refund receipts, vendor credits, and purchase orders (when enabled).
+      Each row represents a single transaction line and carries item-level attributes alongside the
+      transaction context. Use transaction_direction (inbound, outbound, pending) to identify the
+      direction of inventory movement without relying on signed amounts.
+    columns:
+      - name: inventory_item_activity_id
+        description: Surrogate primary key hashed on transaction_type, transaction_id, transaction_line_id, and source_relation.
+        tests:
+          - unique
+          - not_null
+      - name: transaction_type
+        description: The source transaction type (invoice, bill, purchase, sales_receipt, credit_memo, refund_receipt, vendor_credit, purchase_order).
+      - name: transaction_id
+        description: Unique identifier of the parent transaction.
+      - name: transaction_line_id
+        description: Index of the line within the parent transaction. Combined with transaction_id and source_relation, uniquely identifies the row.
+      - name: doc_number
+        description: Reference number for the transaction, as shown in QuickBooks reports.
+      - name: transaction_date
+        description: Date the transaction occurred.
+      - name: item_id
+        description: Foreign key to the item record. Null for non-item lines.
+      - name: name
+        description: Item name from the item table.
+      - name: type
+        description: Item type (Inventory, NonInventory, Service, etc.). Use to filter to physical inventory items.
+      - name: description
+        description: Item sale or purchase description from the item record.
+      - name: stock_keeping_unit
+        description: Stock keeping unit (SKU) for the item.
+      - name: quantity
+        description: Raw line-level quantity from the source. Always a positive value; use transaction_direction to determine movement direction.
+      - name: transaction_direction
+        description: >
+          Indicates the direction of inventory movement: inbound (items received — bills, purchases,
+          credit memos, refund receipts), outbound (items leaving — invoices, sales receipts,
+          vendor credits), or pending (items ordered but not yet received — purchase orders).
+      - name: unit_price
+        description: Unit price from the transaction line, reflecting the actual price recorded on the transaction.
+      - name: amount
+        description: Total line amount. For credit memos, refund receipts, and vendor credits, this value is negative as recorded in the source transaction.
+      - name: customer_id
+        description: Customer associated with the transaction. Populated for sales-side transactions; null for purchase-side transactions.
+      - name: vendor_id
+        description: Vendor associated with the transaction. Populated for purchase-side transactions; null for sales-side transactions.
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
