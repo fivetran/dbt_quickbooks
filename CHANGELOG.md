@@ -1,3 +1,17 @@
+# dbt_quickbooks v1.6.2
+[PR #207](https://github.com/fivetran/dbt_quickbooks/pull/207) includes the following updates:
+
+## Bug Fix
+- Corrects vendor credit account selection in `int_quickbooks__vendor_credit_double_entry` so `credit_account_id` uses `expense_account_id` before falling back to `parent_income_account_id` or `income_account_id`.
+  - IMPORTANT: `credit_account_id` may change for vendor credits with multiple available account options.
+
+# dbt_quickbooks v1.7.0-a1
+[PR #207](https://github.com/fivetran/dbt_quickbooks/pull/207) includes the following updates:
+
+## Bug Fix
+- Corrects vendor credit account selection in `int_quickbooks__vendor_credit_double_entry` to prioritize expense accounts over income accounts in the `credit_account_id` field, improving accounting accuracy for vendor credit transactions.
+  - BREAKING CHANGE: `credit_account_id` may change for vendor credits where multiple account options exist, as logic now prioritizes `expense_account_id` before `parent_income_account_id` and `income_account_id`.
+
 # dbt_quickbooks v1.6.1
 
 ## Quickstart Update
