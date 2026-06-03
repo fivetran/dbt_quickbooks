@@ -1,4 +1,4 @@
-# dbt_quickbooks v1.7.0
+# dbt_quickbooks v1.6.2
 [PR #207](https://github.com/fivetran/dbt_quickbooks/pull/207) includes the following updates:
 
 ## Bug Fix
