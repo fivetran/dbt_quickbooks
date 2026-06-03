@@ -497,11 +497,9 @@ models:
 
   - name: quickbooks__inventory_item_activity
     description: >
-      Table containing all inventory-related transaction line activity across purchases, bills, invoices,
-      sales receipts, credit memos, refund receipts, vendor credits, and purchase orders (when enabled).
-      Each row represents a single transaction line and carries item-level attributes alongside the
-      transaction context. Use transaction_direction (inbound, outbound, pending) to identify the
-      direction of inventory movement without relying on signed amounts.
+      Line-level view of all item-bearing transactions across purchases, bills, vendor credits, invoices, sales receipts,
+      credit memos, refund receipts, and purchase orders. Each row includes item enrichment details, inventory quantity, 
+      unit price, and status indicators for inventory movement analysis.
     columns:
       - name: inventory_item_activity_id
         description: Surrogate primary key hashed on transaction_type, transaction_id, transaction_line_id, and source_relation.

@@ -2,22 +2,13 @@
 [PR #208](https://github.com/fivetran/dbt_quickbooks/pull/208) includes the following updates:
 
 ## Schema/Data Change
-**6 total changes • 0 possible breaking changes**
+**3 total changes • 0 possible breaking changes**
 
 | Data Model(s) | Change type | Old | New | Notes |
 | ------------- | ----------- | --- | --- | ----- |
 | `quickbooks__inventory_item_activity` | New model | — | — | New line-level end model combining all item-bearing transaction types with a `transaction_direction` field (inbound/outbound/pending) for inventory movement analysis. |
-| `int_quickbooks__purchase_order_transactions` | New model | — | — | New intermediate model joining purchase orders, purchase order lines, and items. Enable via `using_purchase_order: true`. |
 | `stg_quickbooks__item` | New fields | — | `description`, `stock_keeping_unit`, `quantity_on_hand`, `track_quantity_on_hand`, `fully_qualified_name` | Fields were present in the source but not previously exposed in staging. |
 | `stg_quickbooks__purchase_order_line`<br>`stg_quickbooks__bill_line`<br>`stg_quickbooks__purchase_line` | New fields | — | `item_expense_quantity`, `item_expense_unit_price` | Fields were present in the source but not previously exposed in staging. |
-| `int_quickbooks__invoice_transactions`<br>`int_quickbooks__sales_receipt_transactions`<br>`int_quickbooks__credit_memo_transactions`<br>`int_quickbooks__refund_receipt_transactions` | New fields | — | `item_name`, `item_type`, `item_description`, `stock_keeping_unit` | Item enrichment fields joined from `stg_quickbooks__item`. |
-| `int_quickbooks__bill_transactions`<br>`int_quickbooks__purchase_transactions`<br>`int_quickbooks__vendor_credit_transactions` | New fields | — | `item_id`, `item_quantity`, `item_unit_price`, `item_name`, `item_type`, `item_description`, `stock_keeping_unit` | Item fields and enrichment joined from line and item staging models. |
-
-## Feature Update
-- Introduces `quickbooks__inventory_item_activity`, a new end model providing a line-level view of all item transactions across purchase, bill, vendor credit, invoice, sales receipt, credit memo, refund receipt, and (optionally) purchase order transaction types. Each row includes item enrichment (`name`, `type`, `description`, `stock_keeping_unit`), quantity, unit price, amount, and `transaction_direction` to support downstream inventory analysis.
-
-## Under the Hood
-- Updates `int_quickbooks__expenses_union` to use an explicit column list instead of `select *` in its UNION ALL branches to maintain schema consistency after new item fields were added to the purchase, bill, and vendor credit transaction models.
 
 # dbt_quickbooks v1.6.1
 
