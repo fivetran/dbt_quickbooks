@@ -48,7 +48,8 @@ final as (
         invoice_lines.amount,
         invoice_lines.amount * coalesce(invoices.exchange_rate, 1) as converted_amount,
         invoices.total_amount,
-        invoices.total_amount * coalesce(invoices.exchange_rate, 1) as total_converted_amount
+        invoices.total_amount * coalesce(invoices.exchange_rate, 1) as total_converted_amount,
+        cast('outbound' as {{ dbt.type_string() }}) as inventory_direction
     from invoices
 
     inner join invoice_lines

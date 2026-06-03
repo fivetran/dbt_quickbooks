@@ -48,7 +48,8 @@ final as (
         credit_memo_lines.amount * -1 as amount,
         credit_memo_lines.amount * coalesce(-credit_memos.exchange_rate, -1) as converted_amount,
         credit_memos.total_amount * -1 as total_amount,
-        credit_memos.total_amount * coalesce(-credit_memos.exchange_rate, -1) as total_converted_amount
+        credit_memos.total_amount * coalesce(-credit_memos.exchange_rate, -1) as total_converted_amount,
+        cast('inbound' as {{ dbt.type_string() }}) as inventory_direction
     from credit_memos
 
     inner join credit_memo_lines

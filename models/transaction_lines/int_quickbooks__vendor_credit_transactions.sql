@@ -48,7 +48,8 @@ final as (
         vendor_credit_lines.amount * -1 as amount,
         vendor_credit_lines.amount * coalesce(-vendor_credits.exchange_rate, -1) as converted_amount,
         vendor_credits.total_amount * -1 as total_amount,
-        vendor_credits.total_amount * coalesce(-vendor_credits.exchange_rate, -1) as total_converted_amount
+        vendor_credits.total_amount * coalesce(-vendor_credits.exchange_rate, -1) as total_converted_amount,
+        cast('outbound' as {{ dbt.type_string() }}) as inventory_direction
     from vendor_credits
 
     inner join vendor_credit_lines

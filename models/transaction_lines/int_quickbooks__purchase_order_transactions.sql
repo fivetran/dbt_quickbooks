@@ -45,7 +45,8 @@ final as (
         purchase_order_lines.amount,
         purchase_order_lines.amount * coalesce(purchase_orders.exchange_rate, 1) as converted_amount,
         purchase_orders.total_amount,
-        purchase_orders.total_amount * coalesce(purchase_orders.exchange_rate, 1) as total_converted_amount
+        purchase_orders.total_amount * coalesce(purchase_orders.exchange_rate, 1) as total_converted_amount,
+        cast('pending' as {{ dbt.type_string() }}) as inventory_direction
     from purchase_orders
 
     inner join purchase_order_lines

@@ -45,7 +45,8 @@ final as (
         bill_lines.amount,
         bill_lines.amount * (coalesce(bills.exchange_rate, 1)) as converted_amount,
         bills.total_amount,
-        bills.total_amount * (coalesce(bills.exchange_rate, 1)) as total_converted_amount
+        bills.total_amount * (coalesce(bills.exchange_rate, 1)) as total_converted_amount,
+        cast('inbound' as {{ dbt.type_string() }}) as inventory_direction
     from bills
 
     inner join bill_lines 

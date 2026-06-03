@@ -527,8 +527,8 @@ models:
       - name: stock_keeping_unit
         description: Stock keeping unit (SKU) for the item.
       - name: quantity
-        description: Raw line-level quantity from the source. Always a positive value; use transaction_direction to determine movement direction.
-      - name: transaction_direction
+        description: Raw line-level quantity from the source. Always a positive value; use inventory_direction to determine movement direction.
+      - name: inventory_direction
         description: >
           Indicates the direction of inventory movement: inbound (items received — bills, purchases,
           credit memos, refund receipts), outbound (items leaving — invoices, sales receipts,

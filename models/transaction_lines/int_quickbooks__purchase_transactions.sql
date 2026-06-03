@@ -50,10 +50,11 @@ final as (
             then -1 * purchases.total_amount
             else purchases.total_amount
         end as total_amount,
-        case when coalesce(purchases.credit, false) 
+        case when coalesce(purchases.credit, false)
             then purchases.total_amount * coalesce(-purchases.exchange_rate, -1)
             else purchases.total_amount * coalesce(purchases.exchange_rate, 1)
-        end as total_converted_amount
+        end as total_converted_amount,
+        cast('inbound' as {{ dbt.type_string() }}) as inventory_direction
     from purchases
 
     inner join purchase_lines 
