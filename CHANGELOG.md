@@ -3,7 +3,7 @@
 
 ## Bug Fix
 - Corrects vendor credit account selection in `int_quickbooks__vendor_credit_double_entry` to prioritize expense accounts over income accounts in the `credit_account_id` field, improving accounting accuracy for vendor credit transactions.
-  - IMPORTANT: `credit_account_id` may change for vendor credits where multiple account options exist, as logic now prioritizes `expense_account_id` before `parent_income_account_id` and `income_account_id`. This change improves accuracy by prioritizing `expense_account_id` before `parent_income_account_id` and `income_account_id`, which may update `credit_account_id` for vendor credits with multiple account options.
+  - * IMPORTANT: `credit_account_id` may change for vendor credits with multiple account options because the logic now prioritizes `expense_account_id` over `parent_income_account_id` and `income_account_id` for improved accounting accuracy.
 
 
 # dbt_quickbooks v1.7.0-a1
