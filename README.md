@@ -5,7 +5,7 @@ This dbt package transforms data from Fivetran's Quickbooks connector into analy
 
 ## Resources
 
-- Number of materialized models¹: 117
+- Number of materialized models¹: 109
 - Connector documentation
   - [Quickbooks connector documentation](https://fivetran.com/docs/connectors/applications/quickbooks)
   - [Quickbooks ERD](https://fivetran.com/docs/connectors/applications/quickbooks#schemainformation)
@@ -71,7 +71,7 @@ Include the following QuickBooks package version in your `packages.yml` file.
 ```yaml
 packages:
   - package: fivetran/quickbooks
-    version: [">=1.6.0", "<1.7.0"] # we recommend using ranges to capture non-breaking changes automatically
+    version: [">=1.7.0", "<1.8.0"] # we recommend using ranges to capture non-breaking changes automatically
 ```
 
 > All required sources and staging models are now bundled into this transformation package. Do not include `fivetran/quickbooks_source` in your `packages.yml` since this package has been deprecated.
