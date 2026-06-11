@@ -1,19 +1,42 @@
-with general_ledger_balances as (
+{%- set gl_relations = {
+    'int_quickbooks__general_ledger_balances': 'enabled',
+    'int_quickbooks__retained_earnings': 'enabled'
+} -%}
 
-    select *
-    from {{ ref('int_quickbooks__general_ledger_balances') }}
-),
+{%- set gl_period_columns = {
+    'account_id': dbt.type_string(),
+    'source_relation': dbt.type_string(),
+    'account_number': dbt.type_string(),
+    'account_name': dbt.type_string(),
+    'is_sub_account': dbt.type_boolean(),
+    'parent_account_number': dbt.type_string(),
+    'parent_account_name': dbt.type_string(),
+    'account_type': dbt.type_string(),
+    'account_sub_type': dbt.type_string(),
+    'account_class': dbt.type_string(),
+    'class_id': dbt.type_string(),
+    'financial_statement_helper': dbt.type_string(),
+    'date_year': 'date',
+    'period_first_day': 'date',
+    'period_last_day': 'date',
+    'period_net_change': dbt.type_float(),
+    'period_beginning_balance': dbt.type_float(),
+    'period_ending_balance': dbt.type_float(),
+    'period_net_converted_change': dbt.type_float(),
+    'period_beginning_converted_balance': dbt.type_float(),
+    'period_ending_converted_balance': dbt.type_float()
+} -%}
 
-retained_earnings as (
+with
 
-    select *
-    from {{ ref('int_quickbooks__retained_earnings') }}
+balances_earnings_unioned as (
+    {{ explicit_union(gl_relations, gl_period_columns) }}
 ),
 
 {% if var('financial_statement_ordinal') %}
-ordinals as ( 
+ordinals as (
 
-    select 
+    select
         cast(account_class as {{ dbt.type_string() }}) as account_class,
         cast(account_type as {{ dbt.type_string() }}) as account_type,
         cast(account_sub_type as {{ dbt.type_string() }}) as account_sub_type,
@@ -23,31 +46,20 @@ ordinals as (
 ),
 {% endif %}
 
-balances_earnings_unioned as (
-
-    select *
-    from general_ledger_balances
-
-    union all 
-
-    select *
-    from retained_earnings
-), 
-
 final as (
 
-    select 
+    select
         balances_earnings_unioned.*,
     {% if var('financial_statement_ordinal') %}
         coalesce(account_number_ordinal.ordinal, account_sub_type_ordinal.ordinal, account_type_ordinal.ordinal, account_class_ordinal.ordinal) as account_ordinal
     {% else %}
-        case 
+        case
             when account_class = 'Asset' then 1
             when account_class = 'Liability' then 2
             when account_class = 'Equity' then 3
             when account_class = 'Revenue' then 1
             when account_class = 'Expense' then 2
-        end as account_ordinal 
+        end as account_ordinal
     {% endif %}
     from balances_earnings_unioned
     {% if var('financial_statement_ordinal') %}

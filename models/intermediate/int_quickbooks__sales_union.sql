@@ -1,40 +1,37 @@
 {{ config(enabled=fivetran_utils.enabled_vars_one_true(['using_sales_receipt','using_invoice'])) }}
 
+{%- set sales_relations = {
+    'int_quickbooks__sales_receipt_transactions': 'enabled' if var('using_sales_receipt', True) else 'disabled',
+    'int_quickbooks__invoice_transactions': 'enabled' if var('using_invoice', True) else 'disabled',
+    'int_quickbooks__refund_receipt_transactions': 'enabled' if var('using_refund_receipt', True) else 'disabled',
+    'int_quickbooks__credit_memo_transactions': 'enabled' if var('using_credit_memo', True) else 'disabled'
+} -%}
+
+{%- set sales_transaction_columns = {
+    'transaction_id': dbt.type_string(),
+    'source_relation': dbt.type_string(),
+    'transaction_line_id': dbt.type_int(),
+    'doc_number': dbt.type_string(),
+    'transaction_type': dbt.type_string(),
+    'transaction_date': 'date',
+    'item_id': dbt.type_string(),
+    'item_quantity': dbt.type_float(),
+    'item_unit_price': dbt.type_float(),
+    'account_id': dbt.type_string(),
+    'class_id': dbt.type_string(),
+    'department_id': dbt.type_string(),
+    'customer_id': dbt.type_string(),
+    'vendor_id': dbt.type_string(),
+    'billable_status': dbt.type_string(),
+    'description': dbt.type_string(),
+    'amount': dbt.type_float(),
+    'converted_amount': dbt.type_float(),
+    'total_amount': dbt.type_float(),
+    'total_converted_amount': dbt.type_float()
+} -%}
+
 with sales_union as (
-
-    {% if var('using_sales_receipt', True) %}
-    select *
-    from {{ ref('int_quickbooks__sales_receipt_transactions') }}
-    {% endif %}
-
-    {% if fivetran_utils.enabled_vars(['using_sales_receipt','using_invoice']) %}
-    union all
-
-    select *
-    from {{ ref('int_quickbooks__invoice_transactions') }}
-
-    {% else %}
-
-        {% if var('using_invoice', True) %}
-        select *
-        from {{ ref('int_quickbooks__invoice_transactions') }}
-        {% endif %}   
-        
-    {% endif %}
-
-    {% if var('using_refund_receipt', True) %}
-    union all
-
-    select *
-    from {{ ref('int_quickbooks__refund_receipt_transactions') }}
-    {% endif %}
-
-    {% if var('using_credit_memo', True) %}
-    union all
-
-    select *
-    from {{ ref('int_quickbooks__credit_memo_transactions') }}
-    {% endif %}
+    {{ explicit_union(sales_relations, sales_transaction_columns) }}
 ),
 
 customers as (
@@ -53,7 +50,7 @@ customer_types as (
 {% endif %}
 
 {% if var('using_department', True) %}
-departments as ( 
+departments as (
 
     select *
     from {{ ref('stg_quickbooks__department') }}
@@ -75,8 +72,8 @@ income_accounts as (
 
 final as (
 
-    select 
-        'sales' as transaction_source,
+    select
+        cast('sales' as {{ dbt.type_string() }}) as transaction_source,
         sales_union.transaction_id,
         sales_union.source_relation,
         sales_union.transaction_line_id,

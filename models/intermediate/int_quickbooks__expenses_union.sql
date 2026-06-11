@@ -1,35 +1,33 @@
+{%- set expense_relations = {
+    'int_quickbooks__purchase_transactions': 'enabled',
+    'int_quickbooks__bill_transactions': 'enabled' if var('using_bill', True) else 'disabled',
+    'int_quickbooks__journal_entry_transactions': 'enabled' if var('using_journal_entry', True) else 'disabled',
+    'int_quickbooks__deposit_transactions': 'enabled' if var('using_deposit', True) else 'disabled',
+    'int_quickbooks__vendor_credit_transactions': 'enabled' if var('using_vendor_credit', True) else 'disabled'
+} -%}
+
+{%- set expense_transaction_columns = {
+    'transaction_id': dbt.type_string(),
+    'source_relation': dbt.type_string(),
+    'transaction_line_id': dbt.type_int(),
+    'doc_number': dbt.type_string(),
+    'transaction_type': dbt.type_string(),
+    'transaction_date': 'date',
+    'account_id': dbt.type_string(),
+    'class_id': dbt.type_string(),
+    'department_id': dbt.type_string(),
+    'customer_id': dbt.type_string(),
+    'vendor_id': dbt.type_string(),
+    'billable_status': dbt.type_string(),
+    'description': dbt.type_string(),
+    'amount': dbt.type_float(),
+    'converted_amount': dbt.type_float(),
+    'total_amount': dbt.type_float(),
+    'total_converted_amount': dbt.type_float()
+} -%}
+
 with expense_union as (
-
-    select *
-    from {{ ref('int_quickbooks__purchase_transactions') }}
-
-    {% if var('using_bill', True) %}
-    union all
-
-    select *
-    from {{ ref('int_quickbooks__bill_transactions') }}
-    {% endif %} 
-
-    {% if var('using_journal_entry', True) %}
-    union all
-
-    select *
-    from {{ ref('int_quickbooks__journal_entry_transactions')}}
-    {% endif %} 
-
-    {% if var('using_deposit', True) %}
-    union all
-
-    select *
-    from {{ ref('int_quickbooks__deposit_transactions')}}
-    {% endif %} 
-
-    {% if var('using_vendor_credit', True) %}
-    union all
-
-    select *
-    from {{ ref('int_quickbooks__vendor_credit_transactions') }}
-    {% endif %}
+    {{ explicit_union(expense_relations, expense_transaction_columns) }}
 ),
 
 customers as (
@@ -48,7 +46,7 @@ customer_types as (
 {% endif %}
 
 {% if var('using_department', True) %}
-departments as ( 
+departments as (
 
     select *
     from {{ ref('stg_quickbooks__department') }}
@@ -70,8 +68,8 @@ expense_accounts as (
 
 final as (
 
-    select 
-        'expense' as transaction_source,
+    select
+        cast('expense' as {{ dbt.type_string() }}) as transaction_source,
         expense_union.transaction_id,
         expense_union.source_relation,
         expense_union.transaction_line_id,

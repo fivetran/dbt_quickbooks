@@ -20,7 +20,7 @@ final as (
         journal_entries.source_relation,
         journal_entry_lines.index as transaction_line_id,
         journal_entries.doc_number,
-        'journal_entry' as transaction_type,
+        cast('journal_entry' as {{ dbt.type_string() }}) as transaction_type,
         journal_entries.transaction_date,
         journal_entry_lines.account_id,
         journal_entry_lines.class_id,

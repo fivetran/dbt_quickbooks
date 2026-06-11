@@ -11,3 +11,14 @@ macros:
       - name: enabled_unioned_models
         type: list
         description: List of relations of models that are enabled to eventually be unioned into a general ledger model.
+
+  - name: explicit_union
+    description: >
+      Generates a UNION ALL across a set of models with explicit column casts. Designed for use with ephemeral models where `dbt_utils.union_relations` cannot introspect column types at compile time. Only relations with value `'enabled'` are included in the union.
+    arguments:
+      - name: relations
+        type: dict
+        description: Dict mapping model name (passed to ref()) to either `'enabled'` or `'disabled'`.
+      - name: columns
+        type: dict
+        description: Dict mapping column name to its cast target type (e.g. `dbt.type_string()`, `dbt.type_float()`, `'date'`).
