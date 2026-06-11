@@ -1,0 +1,4 @@
+_fivetran_deleted,_fivetran_synced,amount,bill_id,index,net_amount_taxable,override_delta_amount,percent_based,tax_inclusive_amount,tax_percent,tax_rate_id
+FALSE,2020-06-23 03:58:57,58.80,19,1,588.00,,TRUE,,10.0,5
+FALSE,2020-06-23 03:58:57,97.40,17,1,974.00,,TRUE,,10.0,6
+FALSE,2020-06-23 03:58:57,38.60,15,1,386.00,,TRUE,,10.0,5

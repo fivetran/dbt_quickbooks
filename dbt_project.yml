@@ -97,6 +97,9 @@ vars:
     using_sales_receipt_tax_line: false
     using_refund_receipt_tax_line: false
     using_invoice_tax_line: false
+    using_bill_tax_line: false
+    using_credit_memo_tax_line: false
+    using_deposit_tax_line: false
     using_tax_agency: false
     using_tax_rate: false
 
