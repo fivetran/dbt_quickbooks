@@ -3,42 +3,38 @@
     'int_quickbooks__sales_union': 'enabled' if fivetran_utils.enabled_vars_one_true(['using_sales_receipt', 'using_invoice']) else 'disabled'
 } -%}
 
-{%- set enhanced_columns = {
-    'transaction_source': dbt.type_string(),
-    'transaction_id': dbt.type_string(),
-    'source_relation': dbt.type_string(),
-    'transaction_line_id': dbt.type_int(),
-    'doc_number': dbt.type_string(),
-    'transaction_type': dbt.type_string(),
-    'transaction_date': 'date',
-    'item_id': dbt.type_string(),
-    'item_quantity': dbt.type_float(),
-    'item_unit_price': dbt.type_float(),
-    'account_id': dbt.type_string(),
-    'account_name': dbt.type_string(),
-    'account_sub_type': dbt.type_string(),
-    'account_number': dbt.type_string(),
-    'parent_account_number': dbt.type_string(),
-    'class_id': dbt.type_string(),
-    'department_id': dbt.type_string()
-} -%}
-{%- do enhanced_columns.update({'department_name': dbt.type_string()}) if var('using_department', True) -%}
-{%- do enhanced_columns.update({
-    'customer_id': dbt.type_string(),
-    'customer_name': dbt.type_string(),
-    'customer_website': dbt.type_string()
-}) -%}
-{%- do enhanced_columns.update({'customer_type_name': dbt.type_string()}) if var('using_customer_type', True) -%}
-{%- do enhanced_columns.update({
-    'vendor_id': dbt.type_string(),
-    'vendor_name': dbt.type_string(),
-    'billable_status': dbt.type_string(),
-    'description': dbt.type_string(),
-    'amount': dbt.type_float(),
-    'converted_amount': dbt.type_float(),
-    'total_amount': dbt.type_float(),
-    'total_converted_amount': dbt.type_float()
-}) -%}
+{%- set enhanced_columns = [
+    'transaction_source',
+    'transaction_id',
+    'source_relation',
+    'transaction_line_id',
+    'doc_number',
+    'transaction_type',
+    'transaction_date',
+    'item_id',
+    'item_quantity',
+    'item_unit_price',
+    'account_id',
+    'account_name',
+    'account_sub_type',
+    'account_number',
+    'parent_account_number',
+    'class_id',
+    'department_id'
+] -%}
+{%- do enhanced_columns.extend(['department_name']) if var('using_department', True) -%}
+{%- do enhanced_columns.extend(['customer_id', 'customer_name', 'customer_website']) -%}
+{%- do enhanced_columns.extend(['customer_type_name']) if var('using_customer_type', True) -%}
+{%- do enhanced_columns.extend([
+    'vendor_id',
+    'vendor_name',
+    'billable_status',
+    'description',
+    'amount',
+    'converted_amount',
+    'total_amount',
+    'total_converted_amount'
+]) -%}
 
 with final as (
     {{ explicit_union(enhanced_relations, enhanced_columns) }}

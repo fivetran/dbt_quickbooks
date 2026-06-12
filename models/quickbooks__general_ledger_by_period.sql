@@ -3,35 +3,31 @@
     'int_quickbooks__retained_earnings': 'enabled'
 } -%}
 
-{%- set gl_period_columns = {
-    'account_id': dbt.type_string(),
-    'source_relation': dbt.type_string(),
-    'account_number': dbt.type_string(),
-    'account_name': dbt.type_string(),
-    'is_sub_account': dbt.type_boolean(),
-    'parent_account_number': dbt.type_string(),
-    'parent_account_name': dbt.type_string(),
-    'account_type': dbt.type_string(),
-    'account_sub_type': dbt.type_string(),
-    'account_class': dbt.type_string(),
-    'class_id': dbt.type_string(),
-    'financial_statement_helper': dbt.type_string(),
-    'date_year': 'date',
-    'period_first_day': 'date',
-    'period_last_day': 'date',
-    'period_net_change': dbt.type_float(),
-    'period_beginning_balance': dbt.type_float(),
-    'period_ending_balance': dbt.type_float(),
-    'period_net_converted_change': dbt.type_float(),
-    'period_beginning_converted_balance': dbt.type_float(),
-    'period_ending_converted_balance': dbt.type_float()
-} -%}
+{%- set gl_period_columns = [
+    'account_id',
+    'source_relation',
+    'account_number',
+    'account_name',
+    'is_sub_account',
+    'parent_account_number',
+    'parent_account_name',
+    'account_type',
+    'account_sub_type',
+    'account_class',
+    'class_id',
+    'financial_statement_helper',
+    'date_year',
+    'period_first_day',
+    'period_last_day',
+    'period_net_change',
+    'period_beginning_balance',
+    'period_ending_balance',
+    'period_net_converted_change',
+    'period_beginning_converted_balance',
+    'period_ending_converted_balance'
+] -%}
 
 with
-
-balances_earnings_unioned as (
-    {{ explicit_union(gl_relations, gl_period_columns) }}
-),
 
 {% if var('financial_statement_ordinal') %}
 ordinals as (
@@ -45,6 +41,10 @@ ordinals as (
     from {{ var('financial_statement_ordinal') }}
 ),
 {% endif %}
+
+balances_earnings_unioned as (
+    {{ explicit_union(gl_relations, gl_period_columns) }}
+),
 
 final as (
 

@@ -20,5 +20,5 @@ macros:
         type: dict
         description: Dict mapping model name (passed to ref()) to either `'enabled'` or `'disabled'`.
       - name: columns
-        type: dict
-        description: Dict mapping column name to its cast target type (e.g. `dbt.type_string()`, `dbt.type_float()`, `'date'`).
+        type: list
+        description: Ordered list of column names to select in the union.

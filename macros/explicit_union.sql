@@ -9,8 +9,8 @@
     {{ 'union all' if not loop.first }}
 
     select
-    {%- for col_name, col_type in columns.items() %}
-        cast({{ col_name }} as {{ col_type }}) as {{ col_name }}{{ "," if not loop.last }}
+    {%- for col_name in columns %}
+        {{ col_name }}{{ ',' if not loop.last }}
     {%- endfor %}
     from {{ ref(rel_name) }}
 {%- endfor %}

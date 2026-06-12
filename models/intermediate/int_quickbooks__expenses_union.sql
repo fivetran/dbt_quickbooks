@@ -6,25 +6,25 @@
     'int_quickbooks__vendor_credit_transactions': 'enabled' if var('using_vendor_credit', True) else 'disabled'
 } -%}
 
-{%- set expense_transaction_columns = {
-    'transaction_id': dbt.type_string(),
-    'source_relation': dbt.type_string(),
-    'transaction_line_id': dbt.type_int(),
-    'doc_number': dbt.type_string(),
-    'transaction_type': dbt.type_string(),
-    'transaction_date': 'date',
-    'account_id': dbt.type_string(),
-    'class_id': dbt.type_string(),
-    'department_id': dbt.type_string(),
-    'customer_id': dbt.type_string(),
-    'vendor_id': dbt.type_string(),
-    'billable_status': dbt.type_string(),
-    'description': dbt.type_string(),
-    'amount': dbt.type_float(),
-    'converted_amount': dbt.type_float(),
-    'total_amount': dbt.type_float(),
-    'total_converted_amount': dbt.type_float()
-} -%}
+{%- set expense_transaction_columns = [
+    'transaction_id',
+    'source_relation',
+    'transaction_line_id',
+    'doc_number',
+    'transaction_type',
+    'transaction_date',
+    'account_id',
+    'class_id',
+    'department_id',
+    'customer_id',
+    'vendor_id',
+    'billable_status',
+    'description',
+    'amount',
+    'converted_amount',
+    'total_amount',
+    'total_converted_amount'
+] -%}
 
 with expense_union as (
     {{ explicit_union(expense_relations, expense_transaction_columns) }}

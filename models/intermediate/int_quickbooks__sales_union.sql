@@ -7,28 +7,28 @@
     'int_quickbooks__credit_memo_transactions': 'enabled' if var('using_credit_memo', True) else 'disabled'
 } -%}
 
-{%- set sales_transaction_columns = {
-    'transaction_id': dbt.type_string(),
-    'source_relation': dbt.type_string(),
-    'transaction_line_id': dbt.type_int(),
-    'doc_number': dbt.type_string(),
-    'transaction_type': dbt.type_string(),
-    'transaction_date': 'date',
-    'item_id': dbt.type_string(),
-    'item_quantity': dbt.type_float(),
-    'item_unit_price': dbt.type_float(),
-    'account_id': dbt.type_string(),
-    'class_id': dbt.type_string(),
-    'department_id': dbt.type_string(),
-    'customer_id': dbt.type_string(),
-    'vendor_id': dbt.type_string(),
-    'billable_status': dbt.type_string(),
-    'description': dbt.type_string(),
-    'amount': dbt.type_float(),
-    'converted_amount': dbt.type_float(),
-    'total_amount': dbt.type_float(),
-    'total_converted_amount': dbt.type_float()
-} -%}
+{%- set sales_transaction_columns = [
+    'transaction_id',
+    'source_relation',
+    'transaction_line_id',
+    'doc_number',
+    'transaction_type',
+    'transaction_date',
+    'item_id',
+    'item_quantity',
+    'item_unit_price',
+    'account_id',
+    'class_id',
+    'department_id',
+    'customer_id',
+    'vendor_id',
+    'billable_status',
+    'description',
+    'amount',
+    'converted_amount',
+    'total_amount',
+    'total_converted_amount'
+] -%}
 
 with sales_union as (
     {{ explicit_union(sales_relations, sales_transaction_columns) }}
