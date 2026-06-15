@@ -1,3 +1,9 @@
+# dbt_quickbooks v1.6.3
+[PR #208](https://github.com/fivetran/dbt_quickbooks/pull/208) includes the following updates:
+
+## Bug Fix
+- Explicitly casts string literals for `transaction_type` and `transaction_source` fields using `dbt.type_string()` to ensure consistent data types across all warehouse targets. ([PR #208](https://github.com/fivetran/dbt_quickbooks/pull/208))
+
 # dbt_quickbooks v1.6.2
 [PR #207](https://github.com/fivetran/dbt_quickbooks/pull/207) includes the following updates:
 
