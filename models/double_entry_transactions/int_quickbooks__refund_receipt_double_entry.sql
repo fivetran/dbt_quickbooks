@@ -225,8 +225,8 @@ final as (
         department_id,
         created_at,
         updated_at,
-        'credit' as transaction_type,
-        'refund_receipt' as transaction_source
+        cast('credit' as {{ dbt.type_string() }}) as transaction_type,
+        cast('refund_receipt' as {{ dbt.type_string() }}) as transaction_source
     from refund_receipt_join
 
     union all
@@ -245,8 +245,8 @@ final as (
         department_id,
         created_at,
         updated_at,
-        'debit' as transaction_type,
-        'refund_receipt' as transaction_source
+        cast('debit' as {{ dbt.type_string() }}) as transaction_type,
+        cast('refund_receipt' as {{ dbt.type_string() }}) as transaction_source
     from refund_receipt_join
 )
 
