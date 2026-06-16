@@ -2,7 +2,7 @@
 [PR #211](https://github.com/fivetran/dbt_quickbooks/pull/211) includes the following updates:
 
 ## Bug Fix
-- Fixes Postgres/Redshift unknown datatype errors by explicitly casting string literals in our intermediate ephemeral models as strings.
+- Fixes Postgres/Redshift unknown datatype errors by explicitly casting string literals in our models as strings.
 
 # dbt_quickbooks v1.6.2
 [PR #207](https://github.com/fivetran/dbt_quickbooks/pull/207) includes the following updates:
