@@ -53,8 +53,8 @@ final as (
         department_id,
         created_at,
         updated_at,
-        'credit' as transaction_type,
-        'credit card payment' as transaction_source
+        cast('credit' as {{ dbt.type_string() }}) as transaction_type,
+        cast('credit card payment' as {{ dbt.type_string() }}) as transaction_source
     from credit_card_payment_prep
 
     union all
@@ -73,8 +73,8 @@ final as (
         department_id,
         created_at,
         updated_at,
-        'debit' as transaction_type,
-        'credit card payment' as transaction_source
+        cast('debit' as {{ dbt.type_string() }}) as transaction_type,
+        cast('credit card payment' as {{ dbt.type_string() }}) as transaction_source
     from credit_card_payment_prep
 )
 

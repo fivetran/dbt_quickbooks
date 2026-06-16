@@ -145,7 +145,7 @@ final as (
         journal_entries.created_at,
         journal_entries.updated_at,
         lower(journal_entry_lines.posting_type) as transaction_type,
-        'journal_entry' as transaction_source
+        cast('journal_entry' as {{ dbt.type_string() }}) as transaction_source
     from journal_entries
 
     inner join journal_entry_lines
@@ -176,7 +176,7 @@ final as (
         journal_entries.created_at,
         journal_entries.updated_at,
         cast(null as {{ dbt.type_string() }}) as transaction_type,
-        'journal_entry' as transaction_source
+        cast('journal_entry' as {{ dbt.type_string() }}) as transaction_source
     from journal_entries
 
     inner join journal_entry_tax_lines
