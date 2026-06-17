@@ -43,7 +43,7 @@ vendor_credit_join as (
             else vendor_credit_lines.amount * coalesce(vendor_credits.exchange_rate, 1)
         end as converted_amount,
         vendor_credits.payable_account_id as debit_to_account_id,
-        coalesce(vendor_credit_lines.account_expense_account_id, items.parent_income_account_id, items.income_account_id, items.expense_account_id) as credit_account_id,
+        coalesce(vendor_credit_lines.account_expense_account_id, items.expense_account_id, items.parent_income_account_id, items.income_account_id) as credit_account_id,
         coalesce(account_expense_customer_id, item_expense_customer_id) as customer_id,
         coalesce(item_expense_class_id, account_expense_class_id) as class_id,
         vendor_credits.vendor_id,
@@ -76,8 +76,8 @@ final as (
         department_id,
         created_at,
         updated_at,
-        'credit' as transaction_type,
-        'vendor_credit' as transaction_source
+        cast('credit' as {{ dbt.type_string() }}) as transaction_type,
+        cast('vendor_credit' as {{ dbt.type_string() }}) as transaction_source
     from vendor_credit_join
 
     union all
@@ -96,8 +96,8 @@ final as (
         department_id,
         created_at,
         updated_at,
-        'debit' as transaction_type,
-        'vendor_credit' as transaction_source
+        cast('debit' as {{ dbt.type_string() }}) as transaction_type,
+        cast('vendor_credit' as {{ dbt.type_string() }}) as transaction_source
     from vendor_credit_join
 )
 

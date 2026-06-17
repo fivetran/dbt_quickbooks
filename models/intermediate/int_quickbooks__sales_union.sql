@@ -76,7 +76,7 @@ income_accounts as (
 final as (
 
     select 
-        'sales' as transaction_source,
+        cast('sales' as {{ dbt.type_string() }}) as transaction_source,
         sales_union.transaction_id,
         sales_union.source_relation,
         sales_union.transaction_line_id,

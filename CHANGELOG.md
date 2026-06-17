@@ -1,4 +1,4 @@
-# dbt_quickbooks v1.7.0
+# dbt_quickbooks v1.8.0
 [PR #208](https://github.com/fivetran/dbt_quickbooks/pull/208) includes the following updates:
 
 ## Schema/Data Change
@@ -9,6 +9,26 @@
 | `quickbooks__inventory_item_activity` | New model | — | — | New line-level view of all item-bearing transactions, including item enrichment details, inventory quantity, unit price, and status indicators for inventory movement analysis. |
 | `stg_quickbooks__item` | New fields | — | `description`, `stock_keeping_unit`, `quantity_on_hand`, `track_quantity_on_hand`, `fully_qualified_name` | Fields were present in the source but not previously exposed in the model. |
 | `stg_quickbooks__purchase_order_line`<br>`stg_quickbooks__bill_line`<br>`stg_quickbooks__purchase_line` | New fields | — | `item_expense_quantity`, `item_expense_unit_price` | Fields were present in the source but not previously exposed in the model. |
+
+# dbt_quickbooks v1.6.3
+[PR #211](https://github.com/fivetran/dbt_quickbooks/pull/211) includes the following updates:
+
+## Bug Fix
+- Fixes Postgres/Redshift unknown datatype errors by explicitly casting string literals in our models as strings.
+
+# dbt_quickbooks v1.6.2
+[PR #207](https://github.com/fivetran/dbt_quickbooks/pull/207) includes the following updates:
+
+## Bug Fix
+- Corrects vendor credit account selection in `int_quickbooks__vendor_credit_double_entry` so `credit_account_id` uses `expense_account_id` before falling back to `parent_income_account_id` or `income_account_id`.
+  - IMPORTANT: `credit_account_id` may change for vendor credits with multiple available account options.
+
+# dbt_quickbooks v1.7.0-a1
+[PR #207](https://github.com/fivetran/dbt_quickbooks/pull/207) includes the following updates:
+
+## Bug Fix
+- Corrects vendor credit account selection in `int_quickbooks__vendor_credit_double_entry` to prioritize expense accounts over income accounts in the `credit_account_id` field, improving accounting accuracy for vendor credit transactions.
+  - BREAKING CHANGE: `credit_account_id` may change for vendor credits where multiple account options exist, as logic now prioritizes `expense_account_id` before `parent_income_account_id` and `income_account_id`.
 
 # dbt_quickbooks v1.6.1
 
