@@ -1,4 +1,2 @@
 _fivetran_deleted,_fivetran_synced,amount,deposit_id,index,net_amount_taxable,override_delta_amount,percent_based,tax_inclusive_amount,tax_percent,tax_rate_id
-FALSE,2020-11-03 17:02:05,26.87,3,1,268.67,,TRUE,,10.0,5
-FALSE,2020-06-23 03:58:58,2.44,66,1,24.40,,TRUE,,10.0,6
-FALSE,2020-06-23 03:58:58,2.44,65,1,24.40,,TRUE,,10.0,5
+FALSE,2025-01-06T09:00:00,0,1201,1,0,,FALSE,0,0

@@ -1,3 +1,18 @@
+# dbt_quickbooks v1.7.0
+[PR #208](https://github.com/fivetran/dbt_quickbooks/pull/208) includes the following updates:
+
+## Schema/Data Change
+**3 total changes • 0 possible breaking changes**
+
+| Data Model(s) | Change type | Old | New | Notes |
+| ------------- | ----------- | --- | --- | ----- |
+| `stg_quickbooks__bill_tax_line` | New model | | | Enabled via `using_bill_tax_line`. Surfaces tax line detail for bills. |
+| `stg_quickbooks__credit_memo_tax_line` | New model | | | Enabled via `using_credit_memo_tax_line`. Surfaces tax line detail for credit memos. |
+| `stg_quickbooks__deposit_tax_line` | New model | | | Enabled via `using_deposit_tax_line`. Surfaces tax line detail for deposits. |
+
+## Feature Update
+- Introduces support for three new optional tax line source tables — `bill_tax_line_detail`, `credit_memo_tax_line_detail`, and `deposit_tax_line_detail` — via the `using_bill_tax_line`, `using_credit_memo_tax_line`, and `using_deposit_tax_line` variables. When enabled, the corresponding staging models and double-entry transaction models incorporate the tax lines into `int_quickbooks__bill_double_entry`, `int_quickbooks__credit_memo_double_entry`, and `int_quickbooks__deposit_double_entry` respectively.
+
 # dbt_quickbooks v1.6.2
 [PR #207](https://github.com/fivetran/dbt_quickbooks/pull/207) includes the following updates:
 
