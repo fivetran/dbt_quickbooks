@@ -26,7 +26,7 @@ final as (
         refund_receipts.source_relation,
         refund_receipt_lines.index as transaction_line_id,
         refund_receipts.doc_number,
-        'refund_receipt' as transaction_type,
+        cast('refund_receipt' as {{ dbt.type_string() }}) as transaction_type,
         refund_receipts.transaction_date,
         refund_receipt_lines.sales_item_item_id as item_id,
         refund_receipt_lines.sales_item_quantity as item_quantity,

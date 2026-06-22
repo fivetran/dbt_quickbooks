@@ -26,7 +26,7 @@ final as (
         credit_memos.source_relation,
         credit_memo_lines.index as transaction_line_id,
         credit_memos.doc_number,
-        'credit_memo' as transaction_type,
+        cast('credit_memo' as {{ dbt.type_string() }}) as transaction_type,
         credit_memos.transaction_date,
         credit_memo_lines.sales_item_item_id as item_id,
         credit_memo_lines.sales_item_quantity as item_quantity,

@@ -54,8 +54,8 @@ purchase_join as (
         end as converted_amount,
         coalesce(purchase_lines.account_expense_account_id, items.parent_expense_account_id, items.expense_account_id) as paid_to_account_id,
         purchases.account_id as paid_from_account_id,
-        case when coalesce(purchases.credit, false) = true then 'debit' else 'credit' end as paid_from_transaction_type,
-        case when coalesce(purchases.credit, false) = true then 'credit' else 'debit' end as paid_to_transaction_type,
+        cast(case when coalesce(purchases.credit, false) = true then 'debit' else 'credit' end as {{ dbt.type_string() }}) as paid_from_transaction_type,
+        cast(case when coalesce(purchases.credit, false) = true then 'credit' else 'debit' end as {{ dbt.type_string() }}) as paid_to_transaction_type,
         purchases.customer_id,
         coalesce(purchase_lines.item_expense_class_id, purchase_lines.account_expense_class_id) as class_id,
         purchases.vendor_id,
@@ -88,8 +88,8 @@ purchase_join as (
         end as converted_amount,
         coalesce(purchase_lines.account_expense_account_id, items.parent_expense_account_id, items.expense_account_id) as paid_to_account_id,
         purchases.account_id as paid_from_account_id,
-        case when coalesce(purchases.credit, false) = true then 'debit' else 'credit' end as paid_from_transaction_type,
-        case when coalesce(purchases.credit, false) = true then 'credit' else 'debit' end as paid_to_transaction_type,
+        cast(case when coalesce(purchases.credit, false) = true then 'debit' else 'credit' end as {{ dbt.type_string() }}) as paid_from_transaction_type,
+        cast(case when coalesce(purchases.credit, false) = true then 'credit' else 'debit' end as {{ dbt.type_string() }}) as paid_to_transaction_type,
         purchases.customer_id,
         coalesce(purchase_lines.item_expense_class_id, purchase_lines.account_expense_class_id) as class_id,
         purchases.vendor_id,
@@ -126,7 +126,7 @@ final as (
         created_at,
         updated_at,
         paid_from_transaction_type as transaction_type,
-        'purchase' as transaction_source
+        cast('purchase' as {{ dbt.type_string() }}) as transaction_source
     from purchase_join
 
     union all
@@ -146,7 +146,7 @@ final as (
         created_at,
         updated_at,
         paid_to_transaction_type as transaction_type,
-        'purchase' as transaction_source
+        cast('purchase' as {{ dbt.type_string() }}) as transaction_source
     from purchase_join
 )
 

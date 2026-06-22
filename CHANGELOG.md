@@ -13,6 +13,12 @@
 ## Feature Update
 - Introduces support for three new optional tax line source tables — `bill_tax_line_detail`, `credit_memo_tax_line_detail`, and `deposit_tax_line_detail` — via the `using_bill_tax_line`, `using_credit_memo_tax_line`, and `using_deposit_tax_line` variables. When enabled, the corresponding staging models and double-entry transaction models incorporate the tax lines into `int_quickbooks__bill_double_entry`, `int_quickbooks__credit_memo_double_entry`, and `int_quickbooks__deposit_double_entry` respectively.
 
+# dbt_quickbooks v1.6.3
+[PR #211](https://github.com/fivetran/dbt_quickbooks/pull/211) includes the following updates:
+
+## Bug Fix
+- Fixes Postgres/Redshift unknown datatype errors by explicitly casting string literals in our models as strings.
+
 # dbt_quickbooks v1.6.2
 [PR #207](https://github.com/fivetran/dbt_quickbooks/pull/207) includes the following updates:
 

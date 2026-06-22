@@ -221,11 +221,11 @@ invoice_join as (
             then 1
             else coalesce(invoices.exchange_rate, 1) 
         end) as converted_amount,
-        case when invoice_lines.detail_type is not null then invoice_lines.detail_type
+        cast(case when invoice_lines.detail_type is not null then invoice_lines.detail_type
             when coalesce(invoice_bundles.account_id, invoice_lines.account_id, invoice_lines.sales_item_account_id, items.parent_income_account_id, items.income_account_id, bundle_income_accounts.account_id) is not null then 'SalesItemLineDetail'
             when invoice_lines.discount_account_id is not null then 'DiscountLineDetail'
             when coalesce(invoice_bundles.account_id, invoice_lines.account_id, invoice_lines.sales_item_account_id, items.parent_income_account_id, items.income_account_id, bundle_income_accounts.account_id, invoice_lines.discount_account_id) is null then 'NoAccountMapping'
-        end as invoice_line_transaction_type,
+        end as {{ dbt.type_string() }}) as invoice_line_transaction_type,
         coalesce(invoice_bundles.account_id, invoice_lines.account_id, invoice_lines.sales_item_account_id, items.parent_income_account_id, items.income_account_id, bundle_income_accounts.account_id, invoice_lines.discount_account_id) as account_id,
         coalesce(invoice_bundles.class_id, invoice_lines.sales_item_class_id, invoice_lines.discount_class_id, invoices.class_id) as class_id,
 
@@ -238,11 +238,11 @@ invoice_join as (
             then 1
             else coalesce(invoices.exchange_rate, 1) 
         end) as converted_amount, 
-        case when invoice_lines.detail_type is not null then invoice_lines.detail_type
+        cast(case when invoice_lines.detail_type is not null then invoice_lines.detail_type
             when coalesce(invoice_lines.account_id, invoice_lines.sales_item_account_id, items.parent_income_account_id, items.income_account_id) is not null then 'SalesItemLineDetail'
             when invoice_lines.discount_account_id is not null then 'DiscountLineDetail'
             when coalesce(invoice_lines.account_id, invoice_lines.sales_item_account_id, items.parent_income_account_id, items.income_account_id, invoice_lines.discount_account_id) is null then 'NoAccountMapping'
-        end as invoice_line_transaction_type,
+        end as {{ dbt.type_string() }}) as invoice_line_transaction_type,
         coalesce(invoice_lines.account_id, invoice_lines.sales_item_account_id, items.income_account_id, invoice_lines.discount_account_id) as account_id,
         coalesce(invoice_lines.sales_item_class_id, invoice_lines.discount_class_id, invoices.class_id) as class_id,
         {% endif %}
@@ -288,7 +288,7 @@ invoice_join as (
             then 1
             else coalesce(invoices.exchange_rate, 1)
         end) as converted_amount,
-        'TaxLineDetail' as invoice_line_transaction_type,
+        cast('TaxLineDetail' as {{ dbt.type_string() }}) as invoice_line_transaction_type,
         tax_account_join.account_id,
         invoices.class_id,
         invoices.customer_id,
@@ -340,12 +340,12 @@ final as (
         department_id,
         created_at,
         updated_at,
-        case when invoice_line_transaction_type = 'DiscountLineDetail' then 'debit'
-            else 'credit' 
-        end as transaction_type,
-        case when invoice_line_transaction_type = 'DiscountLineDetail' then 'invoice discount'
+        cast(case when invoice_line_transaction_type = 'DiscountLineDetail' then 'debit'
+            else 'credit'
+        end as {{ dbt.type_string() }}) as transaction_type,
+        cast(case when invoice_line_transaction_type = 'DiscountLineDetail' then 'invoice discount'
             else 'invoice'
-        end as transaction_source
+        end as {{ dbt.type_string() }}) as transaction_source
     from invoice_filter
 
     union all
@@ -364,12 +364,12 @@ final as (
         department_id,
         created_at,
         updated_at,
-        case when invoice_line_transaction_type = 'DiscountLineDetail' then 'credit'
-            else 'debit' 
-        end as transaction_type,
-        case when invoice_line_transaction_type = 'DiscountLineDetail' then 'invoice discount'
+        cast(case when invoice_line_transaction_type = 'DiscountLineDetail' then 'credit'
+            else 'debit'
+        end as {{ dbt.type_string() }}) as transaction_type,
+        cast(case when invoice_line_transaction_type = 'DiscountLineDetail' then 'invoice discount'
             else 'invoice'
-        end as transaction_source
+        end as {{ dbt.type_string() }}) as transaction_source
     from invoice_filter
 
     left join ar_accounts

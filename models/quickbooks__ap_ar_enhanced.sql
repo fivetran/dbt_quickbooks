@@ -65,7 +65,7 @@ final as (
         departments.fully_qualified_name as department_name,
         {% endif %}
 
-        'vendor' as transaction_with,
+        cast('vendor' as {{ dbt.type_string() }}) as transaction_with,
         vendors.display_name as customer_vendor_name,
         vendors.balance as customer_vendor_balance,
 
@@ -138,7 +138,7 @@ final as (
         departments.fully_qualified_name as department_name,
         {% endif %}
 
-        'customer' as transaction_with,
+        cast('customer' as {{ dbt.type_string() }}) as transaction_with,
         customers.fully_qualified_name as customer_vendor_name,
         customers.balance as customer_vendor_current_balance,
 

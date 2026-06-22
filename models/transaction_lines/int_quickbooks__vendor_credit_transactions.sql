@@ -26,7 +26,7 @@ final as (
         vendor_credits.source_relation,
         vendor_credit_lines.index as transaction_line_id,
         vendor_credits.doc_number,
-        'vendor_credit' as transaction_type,
+        cast('vendor_credit' as {{ dbt.type_string() }}) as transaction_type,
         vendor_credits.transaction_date,
         case when vendor_credit_lines.account_expense_account_id is null
             then items.expense_account_id
