@@ -12,7 +12,7 @@ models:
 
 vars:
   quickbooks:
-    quickbooks_schema: quickbooks_integration_tests
+    quickbooks_schema: zz_dbt_avinash_seed
     quickbooks_account_identifier: "account_data"
     quickbooks_address_identifier: "address_data"
     quickbooks_bill_line_identifier: "bill_line_data"
@@ -102,6 +102,9 @@ seeds:
     credit_memo_data:
       +column_types:
         transaction_date: date
+    customer_data:
+      +column_types:
+        _fivetran_deleted: "{{ 'boolean' if target.type in ('snowflake', 'spark', 'databricks') else 'bool' }}"
     deposit_data:
       +column_types:
         transaction_date: date
@@ -183,6 +186,7 @@ seeds:
     refund_receipt_data:
       +column_types:
         transaction_date: date
+        exchange_rate: float
     refund_receipt_tax_line_data:
       +column_types:
         amount: float

@@ -1,2 +1,2 @@
 id,_fivetran_deleted,_fivetran_synced,class_id,created_at,currency_id,custom_customer_type,custom_p_o_number,doc_number,due_date,exchange_rate,global_tax_calculation,memo,payable_account_id,private_note,sales_term_id,shipping_address_id,status,sync_token,tax_code_id,total_amount,total_tax,transaction_date,updated_at,vendor_address_id,vendor_id
-1,FALSE,2025-01-06T09:00:00,,,,USD,,,,PO-001,2025-02-01,1,,,,500,0,2025-01-15,2025-01-15,,1
+1,FALSE,2025-01-06T09:00:00,,,USD,,,PO-001,2025-02-01,1,,,,,,,,,,500,0,2025-01-15,2025-01-15,,1
