@@ -43,3 +43,9 @@ test_scenarios:
       using_vendor_credit: false
       using_customer_type: false
     include_incremental: false
+
+  - name: "MDLS"
+    vars:
+      fivetran_using_source_casing: true
+    include_incremental: false
+    include_dbt_seed: true

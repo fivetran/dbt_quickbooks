@@ -509,13 +509,13 @@ models:
       - name: transaction_type
         description: The source transaction type (invoice, bill, purchase, sales_receipt, credit_memo, refund_receipt, vendor_credit, purchase_order).
       - name: transaction_id
-        description: Unique identifier of the parent transaction.
+        description: "{{ doc('transaction_id') }}"
       - name: transaction_line_id
         description: Index of the line within the parent transaction. Combined with transaction_id and source_relation, uniquely identifies the row.
       - name: doc_number
         description: Reference number for the transaction, as shown in QuickBooks reports.
       - name: transaction_date
-        description: Date the transaction occurred.
+        description: "{{ doc('transaction_date') }}"
       - name: item_id
         description: Foreign key to the item record. Null for non-item lines.
       - name: name

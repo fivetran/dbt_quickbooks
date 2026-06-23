@@ -10,6 +10,24 @@
 | `stg_quickbooks__item` | New fields | — | `description`, `stock_keeping_unit`, `quantity_on_hand`, `track_quantity_on_hand`, `fully_qualified_name` | Fields were present in the source but not previously exposed in the model. |
 | `stg_quickbooks__purchase_order_line`<br>`stg_quickbooks__bill_line`<br>`stg_quickbooks__purchase_line` | New fields | — | `item_expense_quantity`, `item_expense_unit_price` | Fields were present in the source but not previously exposed in the model. |
 
+# dbt_quickbooks v1.7.0
+
+[PR #208](https://github.com/fivetran/dbt_quickbooks/pull/208) includes the following updates:
+
+## Schema/Data Changes
+**1 total change**
+
+| Data Model(s) | Change type | Old | New | Notes |
+| ------------- | ----------- | --- | --- | ----- |
+| All models | `source_relation` column (when using a single Quickbooks schema) | Empty string (`''`) | `<database>.<schema>` | Full refresh required after upgrading. |
+
+## Feature Updates
+- Introduces the new (recommended) `quickbooks_sources` variable for more robust union data configuration. The old `quickbooks_union_schemas` and `quickbooks_union_databases` variables will still be supported. See the [README](https://github.com/fivetran/dbt_quickbooks/tree/main#define-database-and-schema-variables) for specific details.
+
+## Under the Hood
+- Adds the `fivetran_using_source_casing` variable for case-sensitive destination support. When enabled, downstream transformations respect source casing to ensure consistent results. See the [Additional Configurations](https://github.com/fivetran/dbt_quickbooks/#source-casing-for-case-sensitive-destinations) section of the README for details.
+- Updates `partition_by_source_relation` macro to conditionally include `source_relation` in partition clauses only when multiple sources are configured.
+
 # dbt_quickbooks v1.6.3
 [PR #211](https://github.com/fivetran/dbt_quickbooks/pull/211) includes the following updates:
 
