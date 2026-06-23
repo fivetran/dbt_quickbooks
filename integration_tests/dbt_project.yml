@@ -73,8 +73,6 @@ vars:
   # using_tax_agency: true # @docs-include 
   # using_tax_rate: true # @docs-include 
 
-  using_purchase: false
-
 seeds:
   +docs:
     show: False
