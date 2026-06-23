@@ -70,19 +70,46 @@ Include the following QuickBooks package version in your `packages.yml` file.
 ```yaml
 packages:
   - package: fivetran/quickbooks
-    version: [">=1.6.0", "<1.7.0"] # we recommend using ranges to capture non-breaking changes automatically
+    version: [">=1.7.0", "<1.8.0"] # we recommend using ranges to capture non-breaking changes automatically
 ```
 
 > All required sources and staging models are now bundled into this transformation package. Do not include `fivetran/quickbooks_source` in your `packages.yml` since this package has been deprecated.
 
 ### Define database and schema variables
-By default, this package runs using your destination and the `quickbooks` schema of your [target database](https://docs.getdbt.com/docs/running-a-dbt-project/using-the-command-line-interface/configure-your-profile). If this is not where your QuickBooks data is (for example, if your QuickBooks schema is named `quickbooks_fivetran`), add the following configuration to your root `dbt_project.yml` file:
+#### Option A: Single connection
+By default, this package runs using your destination and the `quickbooks` schema. If this is not where your QuickBooks data is (for example, if your QuickBooks schema is named `quickbooks_fivetran`), add the following configuration to your root `dbt_project.yml` file:
 
 ```yml
 vars:
     quickbooks_database: your_destination_name
-    quickbooks_schema: your_schema_name 
+    quickbooks_schema: your_schema_name
 ```
+
+#### Option B: Union multiple connections
+If you have multiple QuickBooks connections in Fivetran and would like to use this package on all of them simultaneously, we have provided functionality to do so. For each source table, the package will union all of the data together and pass the unioned table into the transformations. The `source_relation` column in each model indicates the origin of each record.
+
+To use this functionality, you will need to set the `quickbooks_sources` variable in your root `dbt_project.yml` file:
+
+```yml
+# dbt_project.yml
+
+vars:
+  quickbooks:
+    quickbooks_sources:
+      - database: connection_1_destination_name # Required
+        schema: connection_1_schema_name # Required
+        name: connection_1_source_name # Required only if following the step in the following subsection
+
+      - database: connection_2_destination_name
+        schema: connection_2_schema_name
+        name: connection_2_source_name
+```
+
+> Previous versions of this package employed two separate, mutually exclusive variables for unioning: `quickbooks_union_schemas` and `quickbooks_union_databases`. While these variables are still supported, `quickbooks_sources` is the recommended variable to configure.
+
+#### Optional: Incorporate unioned sources into DAG
+
+If you use [Fivetran Transformations for dbt Core™](https://fivetran.com/docs/transformations/dbt#transformationsfordbtcore) and are unioning multiple QuickBooks connections, you can define your sources in a property `.yml` file, [using this as a template](https://github.com/fivetran/dbt_quickbooks/blob/main/models/staging/src_quickbooks.yml). Set the variable `has_defined_sources: true` under the QuickBooks namespace in your `dbt_project.yml`. Otherwise, your QuickBooks connections won't appear in your DAG. See the `union_connections` macro [documentation](https://github.com/fivetran/dbt_fivetran_utils/tree/releases/v0.4.latest#optional-union-connections-defined-sources-configuration) for full configuration details.
 
 ### Enabling/Disabling Models
 Your QuickBooks connection might not sync every table that this package expects. This package takes into consideration that not every QuickBooks account utilizes the same transactional tables.
@@ -120,20 +147,6 @@ vars:
 ```
 
 ### (Optional) Additional Configurations
-
-#### Unioning Multiple Quickbooks Connections
-If you have multiple Quickbooks connections in Fivetran and would like to use this package on all of them simultaneously, we have provided functionality to do so. The package will union all of the data together and pass the unioned table into the transformations. You will be able to see which source it came from in the `source_relation` column of each model. To use this functionality, you will need to set either the `quickbooks_union_schemas` or `quickbooks_union_databases` variables:
-
-```yml
-# dbt_project.yml
-
-...
-config-version: 2
-
-vars:
-    quickbooks_union_schemas: ['quickbooks_usa','quickbooks_canada'] # use this if the data is in different schemas/datasets of the same database/project
-    quickbooks_union_databases: ['quickbooks_usa','quickbooks_canada'] # use this if the data is in different databases/projects but uses the same schema name
-``` 
 
 #### Configuring Account Type Names
 Within a few of the double entry models in this package a mapping takes place to assign certain transaction type's debits/credits to the appropriate offset account (ie. Accounts Payable, Accounts Receivable, Undeposited Funds, and SalesOfProductIncome) reference. While our current filtered logic within our intermediate models account for the default values, it's possible your use case relies on different account types to reference.
@@ -239,7 +252,15 @@ If an individual source table has a different name than the package expects, add
 ```yml
 vars:
     quickbooks_<default_source_table_name>_identifier: your_table_name 
-``` 
+```
+
+#### Source casing for case-sensitive destinations
+By default, the package applies case-insensitive comparisons when resolving `source_relation` values. If your destination is case-sensitive and you want downstream transformations to respect the exact casing of your source database and schema names, set the following variable:
+
+```yml
+vars:
+    fivetran_using_source_casing: true
+```
 
 ### (Optional) Orchestrate your models with Fivetran Transformations for dbt Core™
 

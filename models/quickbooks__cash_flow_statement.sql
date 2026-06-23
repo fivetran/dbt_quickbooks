@@ -7,17 +7,16 @@ with cash_flow_classifications as (
 final as (
     
     select cash_flow_classifications.*,
-        coalesce(lag(cash_ending_period) over (partition by account_id, class_id {{ quickbooks.partition_by_source_relation() }}
+        coalesce(lag(cash_ending_period) over (partition by account_id, class_id {{ fivetran_utils.partition_by_source_relation(package_name='quickbooks') }}
             order by cash_flow_period), 0) as cash_beginning_period,
-        cash_ending_period - coalesce(lag(cash_ending_period) over (partition by account_id, class_id {{ quickbooks.partition_by_source_relation() }}
+        cash_ending_period - coalesce(lag(cash_ending_period) over (partition by account_id, class_id {{ fivetran_utils.partition_by_source_relation(package_name='quickbooks') }}
             order by cash_flow_period), 0) as cash_net_period,
-        coalesce(lag(cash_converted_ending_period) over (partition by account_id, class_id {{ quickbooks.partition_by_source_relation() }}
+        coalesce(lag(cash_converted_ending_period) over (partition by account_id, class_id {{ fivetran_utils.partition_by_source_relation(package_name='quickbooks') }}
             order by cash_flow_period), 0) as cash_converted_beginning_period, 
-        cash_converted_ending_period - coalesce(lag(cash_converted_ending_period) over (partition by account_id, class_id {{ quickbooks.partition_by_source_relation() }}
+        cash_converted_ending_period - coalesce(lag(cash_converted_ending_period) over (partition by account_id, class_id {{ fivetran_utils.partition_by_source_relation(package_name='quickbooks') }}
             order by cash_flow_period), 0) as cash_converted_net_period
     from cash_flow_classifications
 )
 
 select *
 from final
-
