@@ -48,8 +48,8 @@ final as (
         cast(null as {{ dbt.type_string() }}) as department_id,
         created_at,
         updated_at,
-        'credit' as transaction_type,
-        'transfer' as transaction_source
+        cast('credit' as {{ dbt.type_string() }}) as transaction_type,
+        cast('transfer' as {{ dbt.type_string() }}) as transaction_source
     from transfer_body
 
     union all
@@ -68,8 +68,8 @@ final as (
         cast(null as {{ dbt.type_string() }}) as department_id,
         created_at,
         updated_at,
-        'debit' as transaction_type,
-        'transfer' as transaction_source
+        cast('debit' as {{ dbt.type_string() }}) as transaction_type,
+        cast('transfer' as {{ dbt.type_string() }}) as transaction_source
     from transfer_body
 )
 

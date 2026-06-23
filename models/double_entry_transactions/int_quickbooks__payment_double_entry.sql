@@ -75,8 +75,8 @@ final as (
         cast(null as {{ dbt.type_string() }}) as department_id,
         created_at,
         updated_at,
-        'debit' as transaction_type,
-        'payment' as transaction_source
+        cast('debit' as {{ dbt.type_string() }}) as transaction_type,
+        cast('payment' as {{ dbt.type_string() }}) as transaction_source
     from payment_join
 
     union all
@@ -95,8 +95,8 @@ final as (
         cast(null as {{ dbt.type_string() }}) as department_id,
         created_at,
         updated_at,
-        'credit' as transaction_type,
-        'payment' as transaction_source
+        cast('credit' as {{ dbt.type_string() }}) as transaction_type,
+        cast('payment' as {{ dbt.type_string() }}) as transaction_source
     from payment_join
 
     left join ar_accounts

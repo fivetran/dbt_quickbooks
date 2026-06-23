@@ -20,7 +20,7 @@ final as (
         deposits.source_relation,
         deposit_lines.index as transaction_line_id,
         cast(null as {{ dbt.type_string() }}) as doc_number,
-        'deposit' as transaction_type,
+        cast('deposit' as {{ dbt.type_string() }}) as transaction_type,
         deposits.transaction_date,
         deposit_lines.deposit_account_id as account_id,
         deposit_lines.deposit_class_id as class_id,

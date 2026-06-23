@@ -22,7 +22,7 @@ final as (
         purchases.source_relation,
         purchase_lines.index as transaction_line_id,
         purchases.doc_number,
-        'purchase' as transaction_type,
+        cast('purchase' as {{ dbt.type_string() }}) as transaction_type,
         purchases.transaction_date,
         coalesce(purchase_lines.account_expense_account_id, items.expense_account_id) as account_id,
         purchase_lines.account_expense_class_id as class_id,

@@ -39,7 +39,7 @@ cash_flow_types_and_ordinals as (
         coalesce(account_number_ordinal.cash_flow_type, account_sub_type_ordinal.cash_flow_type, account_type_ordinal.cash_flow_type, account_class_ordinal.cash_flow_type) as cash_flow_type,
         coalesce(account_number_ordinal.ordinal, account_sub_type_ordinal.ordinal, account_type_ordinal.ordinal, account_class_ordinal.ordinal) as cash_flow_ordinal 
     {% else %}
-        case when account_type = 'Bank' then 'Cash or Cash Equivalents'
+        cast(case when account_type = 'Bank' then 'Cash or Cash Equivalents'
             when account_type = 'Accounts Receivable' then 'Operating'
             when account_type = 'Credit Card' then 'Operating'
             when account_type = 'Other Current Asset' then 'Operating'
@@ -50,7 +50,7 @@ cash_flow_types_and_ordinals as (
             when account_type = 'Other Asset' then 'Investing'
             when account_type = 'Long Term Liability' then 'Financing'
             when account_class = 'Equity' then 'Financing'
-        end as cash_flow_type,
+        end as {{ dbt.type_string() }}) as cash_flow_type,
         case when account_type = 'Bank' then 1
             when account_type = 'Accounts Receivable' then 2
             when account_type = 'Credit Card' then 2

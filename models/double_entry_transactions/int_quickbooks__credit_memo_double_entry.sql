@@ -92,8 +92,8 @@ final as (
         department_id,
         created_at,
         updated_at,
-        'credit' as transaction_type,
-        'credit_memo' as transaction_source
+        cast('credit' as {{ dbt.type_string() }}) as transaction_type,
+        cast('credit_memo' as {{ dbt.type_string() }}) as transaction_source
     from credit_memo_join
 
     union all
@@ -112,8 +112,8 @@ final as (
         department_id,
         created_at,
         updated_at,
-        'debit' as transaction_type,
-        'credit_memo' as transaction_source
+        cast('debit' as {{ dbt.type_string() }}) as transaction_type,
+        cast('credit_memo' as {{ dbt.type_string() }}) as transaction_source
     from credit_memo_join
 
     left join df_accounts

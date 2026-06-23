@@ -23,7 +23,7 @@ classification_fix as (
         description,
         fully_qualified_name,
         updated_at,
-        case when classification is not null
+        cast(case when classification is not null
             then classification
             when classification is null and account_type in ('Bank', 'Other Current Asset', 'Fixed Asset', 'Other Asset', 'Accounts Receivable')
                 then 'Asset'
@@ -35,7 +35,7 @@ classification_fix as (
                 then 'Liability'
             when classification is null and account_type in ('Income', 'Other Income')
                 then 'Revenue'
-                    end as classification
+                    end as {{ dbt.type_string() }}) as classification
     from accounts
 ),
 
@@ -49,14 +49,14 @@ classification_add as (
             then 1
             else null
                 end as multiplier,
-        case when classification in ('Asset', 'Liability', 'Equity')
+        cast(case when classification in ('Asset', 'Liability', 'Equity')
             then 'balance_sheet'
             else 'income_statement'
-                end as financial_statement_helper,
-        case when classification in ('Asset', 'Expense')
+                end as {{ dbt.type_string() }}) as financial_statement_helper,
+        cast(case when classification in ('Asset', 'Expense')
             then 'debit'
             else 'credit'
-                end as transaction_type
+                end as {{ dbt.type_string() }}) as transaction_type
     from classification_fix
 ),
 

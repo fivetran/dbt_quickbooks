@@ -16,6 +16,12 @@
 - Adds the `fivetran_using_source_casing` variable for case-sensitive destination support. When enabled, downstream transformations respect source casing to ensure consistent results. See the [Additional Configurations](https://github.com/fivetran/dbt_quickbooks/#source-casing-for-case-sensitive-destinations) section of the README for details.
 - Updates `partition_by_source_relation` macro to conditionally include `source_relation` in partition clauses only when multiple sources are configured.
 
+# dbt_quickbooks v1.6.3
+[PR #211](https://github.com/fivetran/dbt_quickbooks/pull/211) includes the following updates:
+
+## Bug Fix
+- Fixes Postgres/Redshift unknown datatype errors by explicitly casting string literals in our models as strings.
+
 # dbt_quickbooks v1.6.2
 [PR #207](https://github.com/fivetran/dbt_quickbooks/pull/207) includes the following updates:
 

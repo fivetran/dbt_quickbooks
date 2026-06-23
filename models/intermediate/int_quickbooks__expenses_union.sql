@@ -71,7 +71,7 @@ expense_accounts as (
 final as (
 
     select 
-        'expense' as transaction_source,
+        cast('expense' as {{ dbt.type_string() }}) as transaction_source,
         expense_union.transaction_id,
         expense_union.source_relation,
         expense_union.transaction_line_id,
