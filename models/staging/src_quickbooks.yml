@@ -217,7 +217,7 @@ sources:
 
       - name: bill_tax_line_detail
         identifier: "{{ var('quickbooks_bill_tax_line_identifier', 'bill_tax_line_detail') }}"
-        description: Table containing all tax line detail records associated with each bill.
+        description: "{{ doc('bill_tax_line_table') }}"
         config:
           enabled: "{{ var('using_bill_tax_line', false) }}"
         columns:
@@ -365,7 +365,7 @@ sources:
 
       - name: credit_memo_tax_line_detail
         identifier: "{{ var('quickbooks_credit_memo_tax_line_identifier', 'credit_memo_tax_line_detail') }}"
-        description: Table containing all tax line detail records associated with each credit memo.
+        description: "{{ doc('credit_memo_tax_line_table') }}"
         config:
           enabled: "{{ var('using_credit_memo_tax_line', false) }}"
         columns:
@@ -519,7 +519,7 @@ sources:
 
       - name: deposit_tax_line_detail
         identifier: "{{ var('quickbooks_deposit_tax_line_identifier', 'deposit_tax_line_detail') }}"
-        description: Table containing all tax line detail records associated with each deposit.
+        description: "{{ doc('deposit_tax_line_table') }}"
         config:
           enabled: "{{ var('using_deposit_tax_line', false) }}"
         columns:
