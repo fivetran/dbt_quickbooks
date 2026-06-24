@@ -604,6 +604,33 @@ sources:
           - name: amount
             description: "{{ doc('amount') }} the estimate line."
 
+      - name: estimate_tax_line
+        identifier: "{{ var('quickbooks_estimate_tax_line_identifier', 'estimate_tax_line') }}"
+        description: "{{ doc('estimate_tax_line_table') }}"
+        config:
+          enabled: "{{ var('using_tax_lines', false) }}"
+        columns:
+          - name: estimate_id
+            description: "{{ doc('id') }} estimate associated with this tax line."
+          - name: tax_rate_id
+            description: "{{ doc('tax_rate_id') }}"
+          - name: amount
+            description: "{{ doc('tax_amount') }}"
+          - name: tax_percent
+            description: "{{ doc('tax_percent') }}"
+          - name: net_amount_taxable
+            description: "{{ doc('net_amount_taxable') }} estimate line amount."
+          - name: override_delta_amount
+            description: "{{ doc('override_delta_amount') }}"
+          - name: percent_based
+            description: "{{ doc('percent_based') }}"
+          - name: tax_inclusive_amount
+            description: "{{ doc('tax_inclusive_amount') }}"
+          - name: index
+            description: "{{ doc('tax_index') }} estimate."
+          - name: _fivetran_deleted
+            description: "{{ doc('_fivetran_deleted') }}"
+
       - name: invoice_linked_txn
         identifier: "{{ var('quickbooks_invoice_linked_txn_identifier', 'invoice_linked_txn') }}"
         description: "{{ doc('invoice_linked_txn_table') }}"

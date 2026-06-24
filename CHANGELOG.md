@@ -1,5 +1,5 @@
-# dbt_quickbooks v1.7.0
-[PR #208](https://github.com/fivetran/dbt_quickbooks/pull/208) includes the following updates:
+# dbt_quickbooks v1.9.0
+[PR #XXX](https://github.com/fivetran/dbt_quickbooks/pull/XXX) includes the following updates:
 
 ## Schema/Data Change
 **3 total changes • 0 possible breaking changes**
@@ -12,6 +12,36 @@
 
 ## Feature Update
 - Introduces support for three new optional tax line source tables — `bill_tax_line_detail`, `credit_memo_tax_line_detail`, and `deposit_tax_line_detail` — via the `using_bill_tax_line`, `using_credit_memo_tax_line`, and `using_deposit_tax_line` variables. When enabled, the corresponding staging models and double-entry transaction models incorporate the tax lines into `int_quickbooks__bill_double_entry`, `int_quickbooks__credit_memo_double_entry`, and `int_quickbooks__deposit_double_entry` respectively.
+
+# dbt_quickbooks v1.8.0
+[PR #208](https://github.com/fivetran/dbt_quickbooks/pull/208) includes the following updates:
+
+## Schema/Data Change
+**3 total changes • 0 possible breaking changes**
+
+| Data Model(s) | Change type | Old | New | Notes |
+| ------------- | ----------- | --- | --- | ----- |
+| `quickbooks__inventory_item_activity` | New model | — | — | New line-level view of all item-bearing transactions, including item enrichment details, inventory quantity, unit price, and status indicators for inventory movement analysis. |
+| `stg_quickbooks__item` | New fields | — | `description`, `stock_keeping_unit`, `quantity_on_hand`, `track_quantity_on_hand`, `fully_qualified_name` | Fields were present in the source but not previously exposed in the model. |
+| `stg_quickbooks__purchase_order_line`<br>`stg_quickbooks__bill_line`<br>`stg_quickbooks__purchase_line` | New fields | — | `item_expense_quantity`, `item_expense_unit_price` | Fields were present in the source but not previously exposed in the model. |
+
+# dbt_quickbooks v1.7.0
+
+[PR #208](https://github.com/fivetran/dbt_quickbooks/pull/208) includes the following updates:
+
+## Schema/Data Changes
+**1 total change**
+
+| Data Model(s) | Change type | Old | New | Notes |
+| ------------- | ----------- | --- | --- | ----- |
+| All models | `source_relation` column (when using a single Quickbooks schema) | Empty string (`''`) | `<database>.<schema>` | Full refresh required after upgrading. |
+
+## Feature Updates
+- Introduces the new (recommended) `quickbooks_sources` variable for more robust union data configuration. The old `quickbooks_union_schemas` and `quickbooks_union_databases` variables will still be supported. See the [README](https://github.com/fivetran/dbt_quickbooks/tree/main#define-database-and-schema-variables) for specific details.
+
+## Under the Hood
+- Adds the `fivetran_using_source_casing` variable for case-sensitive destination support. When enabled, downstream transformations respect source casing to ensure consistent results. See the [Additional Configurations](https://github.com/fivetran/dbt_quickbooks/#source-casing-for-case-sensitive-destinations) section of the README for details.
+- Updates `partition_by_source_relation` macro to conditionally include `source_relation` in partition clauses only when multiple sources are configured.
 
 # dbt_quickbooks v1.6.3
 [PR #211](https://github.com/fivetran/dbt_quickbooks/pull/211) includes the following updates:

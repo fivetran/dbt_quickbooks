@@ -1,5 +1,7 @@
---To enable this model, set the using_invoice_tax_line variable within your dbt_project.yml file to True.
-{{ config(enabled=var('using_invoice_tax_line', False)) }}
+--To enable this model, set the using_tax_lines variable within your dbt_project.yml file to True.
+{{ config(enabled=var('using_tax_lines', False)) }}
+
+{% if var('quickbooks_union_schemas', []) | length > 0 or var('quickbooks_union_databases', []) | length > 0 %}
 
 {{
     fivetran_utils.union_data(
@@ -13,3 +15,15 @@
         union_database_variable='quickbooks_union_databases'
     )
 }}
+
+{% else %}
+
+{{
+    fivetran_utils.union_connections(
+        connection_dictionary='quickbooks_sources',
+        single_source_name='quickbooks',
+        single_table_name='invoice_tax_line'
+    )
+}}
+
+{% endif %}
