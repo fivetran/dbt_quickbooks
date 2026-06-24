@@ -51,6 +51,10 @@ vars:
     quickbooks_refund_receipt_line_identifier: "refund_receipt_line_data"
     quickbooks_refund_receipt_identifier: "refund_receipt_data"
     quickbooks_refund_receipt_tax_line_identifier: "refund_receipt_tax_line_data"
+    quickbooks_bill_tax_line_identifier: "bill_tax_line_data"
+    quickbooks_credit_memo_tax_line_identifier: "credit_memo_tax_line_data"
+    quickbooks_deposit_tax_line_identifier: "deposit_tax_line_data"
+    quickbooks_estimate_tax_line_identifier: "estimate_tax_line_data"
     quickbooks_sales_receipt_line_identifier: "sales_receipt_line_data"
     quickbooks_sales_receipt_identifier: "sales_receipt_data"
     quickbooks_sales_receipt_tax_line_identifier: "sales_receipt_tax_line_data"
@@ -69,9 +73,12 @@ vars:
   # using_journal_entry_tax_line: true # @docs-include 
   # using_purchase_tax_line: true # @docs-include 
   # using_refund_receipt_tax_line: true # @docs-include 
-  # using_sales_receipt_tax_line: true # @docs-include 
-  # using_tax_agency: true # @docs-include 
-  # using_tax_rate: true # @docs-include 
+  # using_sales_receipt_tax_line: true # @docs-include
+  # using_bill_tax_line: true # @docs-include
+  # using_credit_memo_tax_line: true # @docs-include
+  # using_deposit_tax_line: true # @docs-include
+  # using_tax_agency: true # @docs-include
+  # using_tax_rate: true # @docs-include
 
 seeds:
   +docs:
@@ -95,6 +102,9 @@ seeds:
     credit_memo_data:
       +column_types:
         transaction_date: date
+    customer_data:
+      +column_types:
+        _fivetran_deleted: "{{ 'boolean' if target.type in ('snowflake', 'spark', 'databricks') else 'bool' }}"
     deposit_data:
       +column_types:
         transaction_date: date
@@ -148,6 +158,34 @@ seeds:
         override_delta_amount: float
         tax_inclusive_amount: float
         tax_percent: float
+    bill_tax_line_data:
+      +column_types:
+        amount: float
+        net_amount_taxable: float
+        override_delta_amount: float
+        tax_inclusive_amount: float
+        tax_percent: float
+    credit_memo_tax_line_data:
+      +column_types:
+        amount: float
+        net_amount_taxable: float
+        override_delta_amount: float
+        tax_inclusive_amount: float
+        tax_percent: float
+    deposit_tax_line_data:
+      +column_types:
+        amount: float
+        net_amount_taxable: float
+        override_delta_amount: float
+        tax_inclusive_amount: float
+        tax_percent: float
+    estimate_tax_line_data:
+      +column_types:
+        amount: float
+        net_amount_taxable: float
+        override_delta_amount: float
+        tax_inclusive_amount: float
+        tax_percent: float
     purchase_order_data:
       +column_types:
         due_date: date
@@ -155,6 +193,7 @@ seeds:
     refund_receipt_data:
       +column_types:
         transaction_date: date
+        exchange_rate: float
     refund_receipt_tax_line_data:
       +column_types:
         amount: float

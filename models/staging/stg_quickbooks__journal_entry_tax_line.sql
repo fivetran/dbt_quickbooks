@@ -1,4 +1,4 @@
---To disable this model, set the using_journal_entry_tax_line variable within your dbt_project.yml file to False.
+--To enable this model, set the using_journal_entry_tax_line variable within your dbt_project.yml file to True.
 {{ config(enabled=var('using_journal_entry_tax_line', False)) }}
 
 with base as (

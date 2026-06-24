@@ -1,4 +1,4 @@
---To disable this model, set the using_journal_entry variable within your dbt_project.yml file to False.
+--To enable this model, set the using_journal_entry_tax_line variable within your dbt_project.yml file to True.
 {{ config(enabled=var('using_journal_entry_tax_line', False)) }}
 
 {% if var('quickbooks_union_schemas', []) | length > 0 or var('quickbooks_union_databases', []) | length > 0 %}

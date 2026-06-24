@@ -1,0 +1,2 @@
+_fivetran_deleted,_fivetran_synced,amount,credit_memo_id,index,net_amount_taxable,override_delta_amount,percent_based,tax_inclusive_amount,tax_percent,tax_rate_id
+FALSE,2025-01-06T09:00:00,0,801,1,0,,FALSE,0,0,
