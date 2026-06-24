@@ -55,6 +55,7 @@ vars:
     quickbooks_bill_tax_line_identifier: "bill_tax_line_data"
     quickbooks_credit_memo_tax_line_identifier: "credit_memo_tax_line_data"
     quickbooks_deposit_tax_line_identifier: "deposit_tax_line_data"
+    quickbooks_estimate_tax_line_identifier: "estimate_tax_line_data"
     quickbooks_sales_receipt_line_identifier: "sales_receipt_line_data"
     quickbooks_sales_receipt_identifier: "sales_receipt_data"
     quickbooks_sales_receipt_tax_line_identifier: "sales_receipt_tax_line_data"
@@ -173,6 +174,13 @@ seeds:
         tax_inclusive_amount: float
         tax_percent: float
     deposit_tax_line_data:
+      +column_types:
+        amount: float
+        net_amount_taxable: float
+        override_delta_amount: float
+        tax_inclusive_amount: float
+        tax_percent: float
+    estimate_tax_line_data:
       +column_types:
         amount: float
         net_amount_taxable: float

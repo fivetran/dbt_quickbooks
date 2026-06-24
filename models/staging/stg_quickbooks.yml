@@ -619,6 +619,34 @@ models:
       - name: amount
         description: Monetary amount of the estimate line.
 
+  - name: stg_quickbooks__estimate_tax_line
+    description: Table containing all tax line detail records associated with each estimate.
+    columns:
+      - name: estimate_id
+        description: "{{ doc('id') }} estimate associated with this tax line."
+        tests:
+          - not_null
+      - name: index
+        description: "{{ doc('tax_index') }} estimate."
+        tests:
+          - not_null
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
+      - name: tax_rate_id
+        description: "{{ doc('tax_rate_id') }}"
+      - name: amount
+        description: "{{ doc('tax_amount') }}"
+      - name: tax_percent
+        description: "{{ doc('tax_percent') }}"
+      - name: net_amount_taxable
+        description: "{{ doc('net_amount_taxable') }} estimate line amount."
+      - name: override_delta_amount
+        description: "{{ doc('override_delta_amount') }}"
+      - name: percent_based
+        description: "{{ doc('percent_based') }}"
+      - name: tax_inclusive_amount
+        description: "{{ doc('tax_inclusive_amount') }}"
+
   - name: stg_quickbooks__invoice_linked_txn
     description: "{{ doc('invoice_linked_txn_table') }}"
     columns:

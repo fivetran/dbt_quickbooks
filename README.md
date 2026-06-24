@@ -145,6 +145,7 @@ vars:
   using_bill_tax_line: true # enable if you have bill tax lines in QuickBooks
   using_credit_memo_tax_line: true # enable if you have credit memo tax lines in QuickBooks
   using_deposit_tax_line: true # enable if you have deposit tax lines in QuickBooks
+  using_estimate_tax_line: true # enable if you have estimate tax lines in QuickBooks
   using_tax_agency: true #enable if you have tax agencies in QuickBooks
   using_tax_rate: true #enable if you have tax rates in QuickBooks
 ```

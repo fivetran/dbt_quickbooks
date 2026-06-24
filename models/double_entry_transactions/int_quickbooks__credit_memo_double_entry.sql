@@ -241,8 +241,8 @@ final as (
         credit_memos.department_id,
         credit_memos.created_at,
         credit_memos.updated_at,
-        'credit' as transaction_type,
-        'credit_memo' as transaction_source
+        cast('credit' as {{ dbt.type_string() }}) as transaction_type,
+        cast('credit_memo' as {{ dbt.type_string() }}) as transaction_source
     from credit_memo_tax_lines
 
     inner join credit_memos
@@ -283,8 +283,8 @@ final as (
         credit_memos.department_id,
         credit_memos.created_at,
         credit_memos.updated_at,
-        'debit' as transaction_type,
-        'credit_memo' as transaction_source
+        cast('debit' as {{ dbt.type_string() }}) as transaction_type,
+        cast('credit_memo' as {{ dbt.type_string() }}) as transaction_source
     from credit_memo_tax_lines
 
     inner join credit_memos

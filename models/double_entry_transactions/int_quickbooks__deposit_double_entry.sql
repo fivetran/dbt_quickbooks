@@ -229,8 +229,8 @@ final as (
         deposits.department_id,
         deposits.created_at,
         deposits.updated_at,
-        'debit' as transaction_type,
-        'deposit' as transaction_source
+        cast('debit' as {{ dbt.type_string() }}) as transaction_type,
+        cast('deposit' as {{ dbt.type_string() }}) as transaction_source
     from deposit_tax_lines
 
     inner join deposits
@@ -257,8 +257,8 @@ final as (
         deposits.department_id,
         deposits.created_at,
         deposits.updated_at,
-        'credit' as transaction_type,
-        'deposit' as transaction_source
+        cast('credit' as {{ dbt.type_string() }}) as transaction_type,
+        cast('deposit' as {{ dbt.type_string() }}) as transaction_source
     from deposit_tax_lines
 
     inner join deposits

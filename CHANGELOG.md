@@ -1,17 +1,28 @@
 # dbt_quickbooks v1.9.0
-[PR #XXX](https://github.com/fivetran/dbt_quickbooks/pull/XXX) includes the following updates:
+[PR #212](https://github.com/fivetran/dbt_quickbooks/pull/212) includes the following updates:
 
 ## Schema/Data Change
-**3 total changes • 0 possible breaking changes**
+**5 total changes • 1 possible breaking change**
 
 | Data Model(s) | Change type | Old | New | Notes |
 | ------------- | ----------- | --- | --- | ----- |
-| `stg_quickbooks__bill_tax_line` | New model | | | Enabled via `using_bill_tax_line`. Surfaces tax line detail for bills. |
-| `stg_quickbooks__credit_memo_tax_line` | New model | | | Enabled via `using_credit_memo_tax_line`. Surfaces tax line detail for credit memos. |
-| `stg_quickbooks__deposit_tax_line` | New model | | | Enabled via `using_deposit_tax_line`. Surfaces tax line detail for deposits. |
+| `stg_quickbooks__bill_tax_line` | New model | — | — | Enabled via `using_bill_tax_line`. Surfaces tax line detail records for bills. |
+| `stg_quickbooks__credit_memo_tax_line` | New model | — | — | Enabled via `using_credit_memo_tax_line`. Surfaces tax line detail records for credit memos. |
+| `stg_quickbooks__deposit_tax_line` | New model | — | — | Enabled via `using_deposit_tax_line`. Surfaces tax line detail records for deposits. |
+| `stg_quickbooks__estimate_tax_line` | New model | — | — | Enabled via `using_estimate_tax_line`. Surfaces tax line detail records for estimates. |
+| `quickbooks__general_ledger` | Updated rows | Expense account | Tax liability account | When `using_purchase_tax_line` is enabled, purchase tax line rows now post to the tax liability account instead of the expense account. This aligns with how all other transaction types handle tax lines. ⚠️ Downstream reports filtering on `account_id` for purchase tax rows will see different values after upgrading. |
 
 ## Feature Update
-- Introduces support for three new optional tax line source tables — `bill_tax_line_detail`, `credit_memo_tax_line_detail`, and `deposit_tax_line_detail` — via the `using_bill_tax_line`, `using_credit_memo_tax_line`, and `using_deposit_tax_line` variables. When enabled, the corresponding staging models and double-entry transaction models incorporate the tax lines into `int_quickbooks__bill_double_entry`, `int_quickbooks__credit_memo_double_entry`, and `int_quickbooks__deposit_double_entry` respectively.
+- Adds support for four new optional tax line source tables — `bill_tax_line_detail`, `credit_memo_tax_line_detail`, `deposit_tax_line_detail`, and `estimate_tax_line` — via the `using_bill_tax_line`, `using_credit_memo_tax_line`, `using_deposit_tax_line`, and `using_estimate_tax_line` variables. When enabled, tax line rows flow through `int_quickbooks__bill_double_entry`, `int_quickbooks__credit_memo_double_entry`, and `int_quickbooks__deposit_double_entry` into the general ledger with the correct liability account postings.
+
+## Bug Fix
+- Fixes `int_quickbooks__purchase_double_entry` to route purchase tax line rows to the tax liability account (DR Tax Liability / CR Bank). Previously, tax amounts were absorbed into the same expense account as the line items, which was incorrect for VAT/GST environments.
+- Fixes `int_quickbooks__journal_entry_double_entry` to assign `'credit'` as the `transaction_type` for journal entry tax line rows. Previously, these rows had a `null` transaction type, causing them to be dropped or misclassified in downstream models.
+- Fixes `int_quickbooks__credit_memo_double_entry` and `int_quickbooks__deposit_double_entry` to cast string literals with `{{ dbt.type_string() }}`, resolving a type mismatch error on Redshift.
+
+## Under the Hood
+- Replaces the consolidated `using_tax_lines` variable with individual per-table variables (`using_invoice_tax_line`, `using_journal_entry_tax_line`, `using_purchase_tax_line`, `using_sales_receipt_tax_line`, `using_refund_receipt_tax_line`, `using_bill_tax_line`, `using_credit_memo_tax_line`, `using_deposit_tax_line`, `using_estimate_tax_line`) for consistency with source configuration and double-entry model logic.
+- Adds a dedicated CI test scenario for bill, credit memo, deposit, and estimate tax lines.
 
 # dbt_quickbooks v1.8.0
 [PR #208](https://github.com/fivetran/dbt_quickbooks/pull/208) includes the following updates:
