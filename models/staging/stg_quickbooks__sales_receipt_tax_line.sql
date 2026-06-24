@@ -1,5 +1,5 @@
---To enable this model, set the using_tax_lines variable within your dbt_project.yml file to True.
-{{ config(enabled=var('using_tax_lines', False)) }}
+--To enable this model, set the using_sales_receipt_tax_line variable within your dbt_project.yml file to True.
+{{ config(enabled=var('using_sales_receipt_tax_line', False)) }}
 
 with base as (
 

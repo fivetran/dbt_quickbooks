@@ -94,7 +94,14 @@ vars:
     using_sales_receipt: true
     using_credit_card_payment_txn: false
     using_purchase_order: false
-    using_tax_lines: false
+    using_invoice_tax_line: false
+    using_purchase_tax_line: false
+    using_sales_receipt_tax_line: false
+    using_refund_receipt_tax_line: false
+    using_bill_tax_line: false
+    using_credit_memo_tax_line: false
+    using_deposit_tax_line: false
+    using_estimate_tax_line: false
     using_tax_agency: false
     using_tax_rate: false
 

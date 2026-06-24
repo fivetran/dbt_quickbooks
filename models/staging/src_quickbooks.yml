@@ -608,7 +608,7 @@ sources:
         identifier: "{{ var('quickbooks_estimate_tax_line_identifier', 'estimate_tax_line') }}"
         description: "{{ doc('estimate_tax_line_table') }}"
         config:
-          enabled: "{{ var('using_tax_lines', false) }}"
+          enabled: "{{ var('using_estimate_tax_line', false) }}"
         columns:
           - name: estimate_id
             description: "{{ doc('id') }} estimate associated with this tax line."
