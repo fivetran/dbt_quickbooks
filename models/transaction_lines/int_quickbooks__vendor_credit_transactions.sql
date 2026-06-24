@@ -28,6 +28,13 @@ final as (
         vendor_credits.doc_number,
         cast('vendor_credit' as {{ dbt.type_string() }}) as transaction_type,
         vendor_credits.transaction_date,
+        vendor_credit_lines.item_expense_item_id as item_id,
+        vendor_credit_lines.item_expense_quantity as item_quantity,
+        vendor_credit_lines.item_expense_unit_price as item_unit_price,
+        items.name as item_name,
+        items.type as item_type,
+        items.description as item_description,
+        items.stock_keeping_unit,
         case when vendor_credit_lines.account_expense_account_id is null
             then items.expense_account_id
             else vendor_credit_lines.account_expense_account_id
@@ -41,7 +48,8 @@ final as (
         vendor_credit_lines.amount * -1 as amount,
         vendor_credit_lines.amount * coalesce(-vendor_credits.exchange_rate, -1) as converted_amount,
         vendor_credits.total_amount * -1 as total_amount,
-        vendor_credits.total_amount * coalesce(-vendor_credits.exchange_rate, -1) as total_converted_amount
+        vendor_credits.total_amount * coalesce(-vendor_credits.exchange_rate, -1) as total_converted_amount,
+        cast('outbound' as {{ dbt.type_string() }}) as inventory_direction
     from vendor_credits
 
     inner join vendor_credit_lines

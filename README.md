@@ -5,7 +5,7 @@ This dbt package transforms data from Fivetran's Quickbooks connector into analy
 
 ## Resources
 
-- Number of materialized models¹: 108
+- Number of materialized models¹: 109
 - Connector documentation
   - [Quickbooks connector documentation](https://fivetran.com/docs/connectors/applications/quickbooks)
   - [Quickbooks ERD](https://fivetran.com/docs/connectors/applications/quickbooks#schemainformation)
@@ -40,6 +40,7 @@ By default, this package materializes the following final tables:
 | [quickbooks__cash_flow_statement](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.quickbooks__cash_flow_statement) | Cash flow statement showing operating, investing, and financing activities with beginning/ending cash positions and net changes by period. **IMPORTANT**: You will likely need to configure cash flow types for your specific use case. <br><br>**Example Analytics Questions:**<br><ul><li>Which operational improvements are generating the strongest positive cash flow trends?</li><li>What seasonal cash flow patterns and financing needs can inform strategic planning?</li></ul> |
 | [quickbooks__ap_ar_enhanced](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.quickbooks__ap_ar_enhanced) | Accounts payable and receivable aging report showing outstanding bills and invoices with payment history, due dates, and overdue analysis for cash flow management. <br><br>**Example Analytics Questions:**<br><ul><li>Which customers have the best payment patterns and deserve credit limit increases or early payment discounts?</li><li>What payment timing patterns and customer behavior trends can optimize cash flow forecasting?</li></ul> |
 | [quickbooks__expenses_sales_enhanced](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.quickbooks__expenses_sales_enhanced) | Unified view of all expense and sales transactions with enriched customer, vendor, department, and product details for comprehensive revenue and cost analysis. <br><br>**Example Analytics Questions:**<br><ul><li>Which customer segments and product lines deliver the highest margins and growth potential?</li><li>What departmental spending patterns and vendor relationships provide the best cost optimization opportunities?</li></ul> |
+| [quickbooks__inventory_item_activity](https://fivetran.github.io/dbt_quickbooks/#!/model/model.quickbooks.quickbooks__inventory_item_activity) | Line-level view of all item-bearing transactions across purchases, bills, vendor credits, invoices, sales receipts, credit memos, refund receipts, and purchase orders. Each row includes item enrichment details, inventory quantity, unit price, and status indicators for inventory movement analysis. <br><br>**Example Analytics Questions:**<br><ul><li>Which items move the most volume across transaction types, and how does that vary by period?</li><li>What is the net item movement by SKU across inbound and outbound transactions?</li></ul> |
 
 ¹ Each Quickstart transformation job run materializes these models if all components of this data model are enabled. This count includes all staging, intermediate, and final models materialized as `view`, `table`, or `incremental`.
 
@@ -70,7 +71,7 @@ Include the following QuickBooks package version in your `packages.yml` file.
 ```yaml
 packages:
   - package: fivetran/quickbooks
-    version: [">=1.7.0", "<1.8.0"] # we recommend using ranges to capture non-breaking changes automatically
+    version: [">=1.8.0", "<1.9.0"] # we recommend using ranges to capture non-breaking changes automatically
 ```
 
 > All required sources and staging models are now bundled into this transformation package. Do not include `fivetran/quickbooks_source` in your `packages.yml` since this package has been deprecated.

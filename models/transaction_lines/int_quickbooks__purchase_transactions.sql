@@ -24,6 +24,13 @@ final as (
         purchases.doc_number,
         cast('purchase' as {{ dbt.type_string() }}) as transaction_type,
         purchases.transaction_date,
+        purchase_lines.item_expense_item_id as item_id,
+        purchase_lines.item_expense_quantity as item_quantity,
+        purchase_lines.item_expense_unit_price as item_unit_price,
+        items.name as item_name,
+        items.type as item_type,
+        items.description as item_description,
+        items.stock_keeping_unit,
         coalesce(purchase_lines.account_expense_account_id, items.expense_account_id) as account_id,
         purchase_lines.account_expense_class_id as class_id,
         purchases.department_id,
@@ -43,10 +50,11 @@ final as (
             then -1 * purchases.total_amount
             else purchases.total_amount
         end as total_amount,
-        case when coalesce(purchases.credit, false) 
+        case when coalesce(purchases.credit, false)
             then purchases.total_amount * coalesce(-purchases.exchange_rate, -1)
             else purchases.total_amount * coalesce(purchases.exchange_rate, 1)
-        end as total_converted_amount
+        end as total_converted_amount,
+        cast('inbound' as {{ dbt.type_string() }}) as inventory_direction
     from purchases
 
     inner join purchase_lines 

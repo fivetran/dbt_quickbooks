@@ -1,3 +1,15 @@
+# dbt_quickbooks v1.8.0
+[PR #208](https://github.com/fivetran/dbt_quickbooks/pull/208) includes the following updates:
+
+## Schema/Data Change
+**3 total changes • 0 possible breaking changes**
+
+| Data Model(s) | Change type | Old | New | Notes |
+| ------------- | ----------- | --- | --- | ----- |
+| `quickbooks__inventory_item_activity` | New model | — | — | New line-level view of all item-bearing transactions, including item enrichment details, inventory quantity, unit price, and status indicators for inventory movement analysis. |
+| `stg_quickbooks__item` | New fields | — | `description`, `stock_keeping_unit`, `quantity_on_hand`, `track_quantity_on_hand`, `fully_qualified_name` | Fields were present in the source but not previously exposed in the model. |
+| `stg_quickbooks__purchase_order_line`<br>`stg_quickbooks__bill_line`<br>`stg_quickbooks__purchase_line` | New fields | — | `item_expense_quantity`, `item_expense_unit_price` | Fields were present in the source but not previously exposed in the model. |
+
 # dbt_quickbooks v1.7.0
 
 [PR #208](https://github.com/fivetran/dbt_quickbooks/pull/208) includes the following updates:

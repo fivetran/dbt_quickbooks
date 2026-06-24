@@ -96,6 +96,10 @@ models:
         description: Monetary amount of the bill line item.
       - name: description
         description: Description of the bill line item.
+      - name: item_expense_quantity
+        description: The quantity of the item on the bill line.
+      - name: item_expense_unit_price
+        description: The unit price of the item on the bill line.
 
   - name: stg_quickbooks__bill_linked_txn
     description: "{{ doc('bill_linked_txn_table') }}"
@@ -728,8 +732,18 @@ models:
         description: Classification that specifies the use of this item.
       - name: unit_price
         description: The monetary value of the service or product, as expressed in the home currency.
+      - name: description
+        description: Description of the item used on sales forms.
+      - name: stock_keeping_unit
+        description: The stock keeping unit (SKU) for the item.
+      - name: quantity_on_hand
+        description: Current quantity of the item available in inventory.
+      - name: fully_qualified_name
+        description: Fully qualified name of the item, including parent item name hierarchy.
+      - name: track_quantity_on_hand
+        description: Boolean indicating whether the item tracks quantity on hand.
       - name: _fivetran_deleted
-        description: "{{ doc('_fivetran_deleted') }}" 
+        description: "{{ doc('_fivetran_deleted') }}"
 
   - name: stg_quickbooks__journal_entry_line
     description: "{{ doc('journal_entry_line_table') }}"
@@ -899,13 +913,17 @@ models:
       - name: item_expense_billable_status
         description: The billable status of the item based expense purchase line.
       - name: item_expense_class_id
-        description: The class id associated with the item based expense purchase line. 
+        description: The class id associated with the item based expense purchase line.
       - name: item_expense_customer_id
         description: The customer id associated with the item based expense purchase line.
       - name: amount
         description: Monetary amount of the purchase.
       - name: description
         description: User defined description of the purchase line.
+      - name: item_expense_quantity
+        description: The quantity of the item on the purchase line.
+      - name: item_expense_unit_price
+        description: The unit price of the item on the purchase line.
 
   - name: stg_quickbooks__purchase
     description: "{{ doc('purchase_table') }}"
@@ -1002,6 +1020,10 @@ models:
         description: Monetary amount of the purchase.
       - name: description
         description: User defined description of the purchase line.
+      - name: item_expense_quantity
+        description: The quantity of the item on the purchase order line.
+      - name: item_expense_unit_price
+        description: The unit price of the item on the purchase order line.
 
   - name: stg_quickbooks__purchase_order_linked_txn
     description: "{{ doc('purchase_order_linked_txn_table') }}"

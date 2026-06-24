@@ -31,6 +31,10 @@ final as (
         sales_receipt_lines.sales_item_item_id as item_id,
         sales_receipt_lines.sales_item_quantity as item_quantity,
         sales_receipt_lines.sales_item_unit_price as item_unit_price,
+        items.name as item_name,
+        items.type as item_type,
+        items.description as item_description,
+        items.stock_keeping_unit,
         coalesce(items.income_account_id, items.asset_account_id, items.expense_account_id) as account_id,
         sales_receipts.class_id,
         sales_receipts.department_id,
@@ -41,7 +45,8 @@ final as (
         sales_receipt_lines.amount,
         sales_receipt_lines.amount * (coalesce(sales_receipts.exchange_rate, 1)) as converted_amount,
         sales_receipts.total_amount,
-        sales_receipts.total_amount * (coalesce(sales_receipts.exchange_rate, 1)) as total_converted_amount
+        sales_receipts.total_amount * (coalesce(sales_receipts.exchange_rate, 1)) as total_converted_amount,
+        cast('outbound' as {{ dbt.type_string() }}) as inventory_direction
     from sales_receipts
 
     inner join sales_receipt_lines
