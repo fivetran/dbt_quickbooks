@@ -102,6 +102,10 @@ Table containing line item records of an estimate.
 Table containing estimates. An estimate represents a proposal for a financial transaction from a business to a customer for goods or services proposed to be sold, including proposed pricing.
 {% enddocs %}
 
+{% docs estimate_tax_line_table %}
+Table containing line-level tax entries associated with estimates.
+{% enddocs %}
+
 {% docs invoice_line_bundle_table %}
 Table containing lines of an invoice which were bundled.
 {% enddocs %}
