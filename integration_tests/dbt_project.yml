@@ -1,5 +1,4 @@
 name: 'quickbooks_integration_tests'
-
 version: '1.9.0'
 
 profile: 'integration_tests'
