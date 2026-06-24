@@ -1,33 +1,118 @@
 with expense_union as (
 
-    select *
+    select
+        transaction_id,
+        source_relation,
+        transaction_line_id,
+        doc_number,
+        transaction_type,
+        transaction_date,
+        account_id,
+        class_id,
+        department_id,
+        customer_id,
+        vendor_id,
+        billable_status,
+        description,
+        amount,
+        converted_amount,
+        total_amount,
+        total_converted_amount
     from {{ ref('int_quickbooks__purchase_transactions') }}
 
     {% if var('using_bill', True) %}
     union all
 
-    select *
+    select
+        transaction_id,
+        source_relation,
+        transaction_line_id,
+        doc_number,
+        transaction_type,
+        transaction_date,
+        account_id,
+        class_id,
+        department_id,
+        customer_id,
+        vendor_id,
+        billable_status,
+        description,
+        amount,
+        converted_amount,
+        total_amount,
+        total_converted_amount
     from {{ ref('int_quickbooks__bill_transactions') }}
-    {% endif %} 
+    {% endif %}
 
     {% if var('using_journal_entry', True) %}
     union all
 
-    select *
+    select
+        transaction_id,
+        source_relation,
+        transaction_line_id,
+        doc_number,
+        transaction_type,
+        transaction_date,
+        account_id,
+        class_id,
+        department_id,
+        customer_id,
+        vendor_id,
+        billable_status,
+        description,
+        amount,
+        converted_amount,
+        total_amount,
+        total_converted_amount
     from {{ ref('int_quickbooks__journal_entry_transactions')}}
-    {% endif %} 
+    {% endif %}
 
     {% if var('using_deposit', True) %}
     union all
 
-    select *
+    select
+        transaction_id,
+        source_relation,
+        transaction_line_id,
+        doc_number,
+        transaction_type,
+        transaction_date,
+        account_id,
+        class_id,
+        department_id,
+        customer_id,
+        vendor_id,
+        billable_status,
+        description,
+        amount,
+        converted_amount,
+        total_amount,
+        total_converted_amount
     from {{ ref('int_quickbooks__deposit_transactions')}}
-    {% endif %} 
+    {% endif %}
 
     {% if var('using_vendor_credit', True) %}
     union all
 
-    select *
+    select
+        transaction_id,
+        source_relation,
+        transaction_line_id,
+        doc_number,
+        transaction_type,
+        transaction_date,
+        account_id,
+        class_id,
+        department_id,
+        customer_id,
+        vendor_id,
+        billable_status,
+        description,
+        amount,
+        converted_amount,
+        total_amount,
+        total_converted_amount
     from {{ ref('int_quickbooks__vendor_credit_transactions') }}
     {% endif %}
 ),

@@ -31,6 +31,10 @@ final as (
         credit_memo_lines.sales_item_item_id as item_id,
         credit_memo_lines.sales_item_quantity as item_quantity,
         credit_memo_lines.sales_item_unit_price as item_unit_price,
+        items.name as item_name,
+        items.type as item_type,
+        items.description as item_description,
+        items.stock_keeping_unit,
         case when credit_memo_lines.sales_item_account_id is null
             then coalesce(items.income_account_id, items.asset_account_id, items.expense_account_id) 
             else credit_memo_lines.sales_item_account_id
@@ -44,7 +48,8 @@ final as (
         credit_memo_lines.amount * -1 as amount,
         credit_memo_lines.amount * coalesce(-credit_memos.exchange_rate, -1) as converted_amount,
         credit_memos.total_amount * -1 as total_amount,
-        credit_memos.total_amount * coalesce(-credit_memos.exchange_rate, -1) as total_converted_amount
+        credit_memos.total_amount * coalesce(-credit_memos.exchange_rate, -1) as total_converted_amount,
+        cast('inbound' as {{ dbt.type_string() }}) as inventory_direction
     from credit_memos
 
     inner join credit_memo_lines

@@ -28,6 +28,13 @@ final as (
         bills.doc_number,
         cast('bill' as {{ dbt.type_string() }}) as transaction_type,
         bills.transaction_date,
+        bill_lines.item_expense_item_id as item_id,
+        bill_lines.item_expense_quantity as item_quantity,
+        bill_lines.item_expense_unit_price as item_unit_price,
+        items.name as item_name,
+        items.type as item_type,
+        items.description as item_description,
+        items.stock_keeping_unit,
         coalesce(bill_lines.account_expense_account_id, items.expense_account_id) as account_id,
         bill_lines.account_expense_class_id as class_id,
         bills.department_id,
@@ -38,7 +45,8 @@ final as (
         bill_lines.amount,
         bill_lines.amount * (coalesce(bills.exchange_rate, 1)) as converted_amount,
         bills.total_amount,
-        bills.total_amount * (coalesce(bills.exchange_rate, 1)) as total_converted_amount
+        bills.total_amount * (coalesce(bills.exchange_rate, 1)) as total_converted_amount,
+        cast('inbound' as {{ dbt.type_string() }}) as inventory_direction
     from bills
 
     inner join bill_lines 
