@@ -71,7 +71,7 @@ Include the following QuickBooks package version in your `packages.yml` file.
 ```yaml
 packages:
   - package: fivetran/quickbooks
-    version: [">=1.8.0", "<1.9.0"] # we recommend using ranges to capture non-breaking changes automatically
+    version: 1.9.0-a1 # we recommend using ranges to capture non-breaking changes automatically
 ```
 
 > All required sources and staging models are now bundled into this transformation package. Do not include `fivetran/quickbooks_source` in your `packages.yml` since this package has been deprecated.
@@ -184,6 +184,17 @@ vars:
 ```
 
 **Note:** Use the same 3-letter ISO currency code (e.g., "USD", "EUR", "GBP") that appears in your QuickBooks `currency_id` field. 
+
+#### Disabling Exchange Gain/Loss Entries
+
+By default, the package generates exchange gain/loss entries for foreign currency bill payments and customer payments where the exchange rate differs between the original transaction and the settlement. This requires an `ExchangeGainOrLoss` account to be configured in QuickBooks.
+
+If your QuickBooks data does not include multi-currency transactions, or if you do not have an Exchange Gain or Loss account configured, disable this feature by setting the following variable in your `dbt_project.yml`:
+
+```yml
+vars:
+  quickbooks__generate_exchange_gain_loss: false
+```
 
 #### Customize the Cash Flow Model
 **IMPORTANT**: It is very likely you will need to reconfigure your `cash_flow_type` to make sure your cash flow statement matches your specific use case. Please examine the following instructions.
