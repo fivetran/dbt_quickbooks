@@ -132,7 +132,7 @@ supported_vars:
     description: "The primary reporting currency, use the same 3-letter ISO currency code (e.g., USD, EUR, GBP, CAD) that appears in your QuickBooks `currency_id` field. Relevant for organizations with multiple currencies, this field defaults to an empty string; when not set, the package applies exchange rate conversions to all transactions, regardless of currency."
     display_name: "Home Currency"
 
-  quickbooks__generate_exchange_gain_loss:
+  using_exchange_gain_loss:
     type: boolean
     value: true
     description: "When enabled, the package generates exchange gain/loss entries for foreign currency bill payments and customer payments where the exchange rate differs between the original transaction and the payment. Disable if your QuickBooks data does not include multi-currency transactions or if you do not have an Exchange Gain or Loss account configured."

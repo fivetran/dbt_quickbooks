@@ -36,7 +36,7 @@ ar_accounts as (
         and not is_sub_account
 ),
 
-{% if var('quickbooks__generate_exchange_gain_loss', True) %}
+{% if var('using_exchange_gain_loss', True) %}
 exchange_gain_loss_accounts as (
 
     select
@@ -71,7 +71,13 @@ payment_join as (
     from payments
 ),
 
-{% if var('quickbooks__generate_exchange_gain_loss', True) %}
+{% if var('using_exchange_gain_loss', True) %}
+invoices as (
+
+    select *
+    from {{ ref('stg_quickbooks__invoice') }}
+),
+
 gain_loss_join as (
 
     select
@@ -152,7 +158,7 @@ final as (
         on ar_accounts.currency_id = payment_join.currency_id
         and ar_accounts.source_relation = payment_join.source_relation
 
-{% if var('quickbooks__generate_exchange_gain_loss', True) %}
+{% if var('using_exchange_gain_loss', True) %}
 
     union all
 

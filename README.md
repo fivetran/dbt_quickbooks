@@ -193,7 +193,7 @@ If your QuickBooks data does not include multi-currency transactions, or if you 
 
 ```yml
 vars:
-  quickbooks__generate_exchange_gain_loss: false
+  using_exchange_gain_loss: false
 ```
 
 #### Customize the Cash Flow Model

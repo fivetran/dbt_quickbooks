@@ -44,6 +44,11 @@ test_scenarios:
       using_customer_type: false
     include_incremental: false
 
+  - name: "Exchange Gain/Loss disabled"
+    vars:
+      using_exchange_gain_loss: false
+    include_incremental: false
+
   - name: "MDLS"
     vars:
       fivetran_using_source_casing: true

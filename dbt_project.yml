@@ -99,7 +99,7 @@ vars:
     using_invoice_tax_line: false
     using_tax_agency: false
     using_tax_rate: false
-    quickbooks__generate_exchange_gain_loss: true
+    using_exchange_gain_loss: true
 
 analysis-paths: ["analysis"]
 clean-targets:

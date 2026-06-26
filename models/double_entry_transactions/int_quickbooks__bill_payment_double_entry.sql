@@ -36,7 +36,7 @@ ap_accounts as (
         and not is_sub_account
 ),
 
-{% if var('quickbooks__generate_exchange_gain_loss', True) %}
+{% if var('using_exchange_gain_loss', True) %}
 exchange_gain_loss_accounts as (
 
     select
@@ -75,7 +75,13 @@ bill_payment_join as (
         and ap_accounts.source_relation = bill_payments.source_relation
 ),
 
-{% if var('quickbooks__generate_exchange_gain_loss', True) %}
+{% if var('using_exchange_gain_loss', True) %}
+bills as (
+
+    select *
+    from {{ ref('stg_quickbooks__bill') }}
+),
+
 gain_loss_join as (
 
     select
@@ -153,7 +159,7 @@ final as (
         cast('bill payment' as {{ dbt.type_string() }}) as transaction_source
     from bill_payment_join
 
-{% if var('quickbooks__generate_exchange_gain_loss', True) %}
+{% if var('using_exchange_gain_loss', True) %}
 
     union all
 
