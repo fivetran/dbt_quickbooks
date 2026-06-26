@@ -1,3 +1,9 @@
+# dbt_quickbooks v1.8.1
+[PR #214](https://github.com/fivetran/dbt_quickbooks/pull/214) includes the following updates:
+
+## Under the Hood
+- Removes the `using_purchase` variable from `int_quickbooks__purchase_transactions`. The variable was never documented or available to Quickstart users, and it defaulted to `true`, so this model remains enabled with no change to default behavior.
+
 # dbt_quickbooks v1.8.0
 [PR #208](https://github.com/fivetran/dbt_quickbooks/pull/208) includes the following updates:
 
