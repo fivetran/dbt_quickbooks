@@ -82,6 +82,28 @@ bills as (
     from {{ ref('stg_quickbooks__bill') }}
 ),
 
+bill_original_amounts as (
+
+    -- computes the AP amount to clear using each bill's original exchange rate
+    select
+        bill_payments.bill_payment_id,
+        bill_payments.source_relation,
+        sum(bill_payment_lines.amount * coalesce(bills.exchange_rate, 1)) as ap_converted_amount
+    from bill_payments
+
+    inner join bill_payment_lines
+        on bill_payments.bill_payment_id = bill_payment_lines.bill_payment_id
+        and bill_payments.source_relation = bill_payment_lines.source_relation
+
+    inner join bills
+        on bill_payment_lines.bill_id = bills.bill_id
+        and bill_payment_lines.source_relation = bills.source_relation
+
+    where bill_payments.currency_id != '{{ var('quickbooks__home_currency', '') }}'
+
+    group by 1,2
+),
+
 gain_loss_join as (
 
     select
@@ -121,6 +143,7 @@ gain_loss_join as (
 
 final as (
 
+    -- credit to cash/bank account
     select
         transaction_id,
         source_relation,
@@ -141,15 +164,20 @@ final as (
 
     union all
 
+    -- debit to accounts payable at the original bill exchange rate
     select
         transaction_id,
-        source_relation,
+        bill_payment_join.source_relation,
         index,
         transaction_date,
         cast(null as {{ dbt.type_string() }}) as customer_id,
         vendor_id,
         amount,
+        {% if var('using_exchange_gain_loss', True) %}
+        coalesce(bill_original_amounts.ap_converted_amount, bill_payment_join.converted_amount) as converted_amount,
+        {% else %}
         converted_amount,
+        {% endif %}
         account_id,
         cast(null as {{ dbt.type_string() }}) as class_id,
         department_id,
@@ -160,9 +188,13 @@ final as (
     from bill_payment_join
 
 {% if var('using_exchange_gain_loss', True) %}
+    left join bill_original_amounts
+        on bill_original_amounts.bill_payment_id = bill_payment_join.transaction_id
+        and bill_original_amounts.source_relation = bill_payment_join.source_relation
 
     union all
 
+    -- debit/credit to exchange gain or loss account for foreign currency rate difference
     select
         transaction_id,
         source_relation,

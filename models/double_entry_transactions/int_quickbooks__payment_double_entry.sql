@@ -53,7 +53,7 @@ payment_join as (
     select
         payments.payment_id as transaction_id,
         payments.source_relation,
-        row_number() over (partition by payments.payment_id {{ fivetran_utils.partition_by_source_relation(package_name='quickbooks', alias='payments') }}  
+        row_number() over (partition by payments.payment_id {{ fivetran_utils.partition_by_source_relation(package_name='quickbooks', alias='payments') }}
             order by payments.transaction_date) - 1 as index,
         payments.transaction_date,
         payments.total_amount as amount,
@@ -76,6 +76,28 @@ invoices as (
 
     select *
     from {{ ref('stg_quickbooks__invoice') }}
+),
+
+payment_invoice_amounts as (
+
+    -- computes the AR amount to clear using each invoice's original exchange rate
+    select
+        payments.payment_id,
+        payments.source_relation,
+        sum(payment_lines.amount * coalesce(invoices.exchange_rate, 1)) as ar_converted_amount
+    from payments
+
+    inner join payment_lines
+        on payments.payment_id = payment_lines.payment_id
+        and payments.source_relation = payment_lines.source_relation
+
+    inner join invoices
+        on payment_lines.invoice_id = invoices.invoice_id
+        and payment_lines.source_relation = invoices.source_relation
+
+    where payments.currency_id != '{{ var('quickbooks__home_currency', '') }}'
+
+    group by 1,2
 ),
 
 gain_loss_join as (
@@ -116,6 +138,7 @@ gain_loss_join as (
 
 final as (
 
+    -- debit to cash/undeposited funds account
     select
         transaction_id,
         payment_join.source_relation,
@@ -136,6 +159,7 @@ final as (
 
     union all
 
+    -- credit to accounts receivable at the original invoice exchange rate
     select
         transaction_id,
         payment_join.source_relation,
@@ -144,7 +168,11 @@ final as (
         customer_id,
         cast(null as {{ dbt.type_string() }}) as vendor_id,
         amount,
+        {% if var('using_exchange_gain_loss', True) %}
+        coalesce(payment_invoice_amounts.ar_converted_amount, payment_join.converted_amount) as converted_amount,
+        {% else %}
         converted_amount,
+        {% endif %}
         coalesce(receivable_account_id, ar_accounts.account_id) as account_id,
         cast(null as {{ dbt.type_string() }}) as class_id,
         cast(null as {{ dbt.type_string() }}) as department_id,
@@ -159,9 +187,13 @@ final as (
         and ar_accounts.source_relation = payment_join.source_relation
 
 {% if var('using_exchange_gain_loss', True) %}
+    left join payment_invoice_amounts
+        on payment_invoice_amounts.payment_id = payment_join.transaction_id
+        and payment_invoice_amounts.source_relation = payment_join.source_relation
 
     union all
 
+    -- debit/credit to exchange gain or loss account for foreign currency rate difference
     select
         transaction_id,
         source_relation,

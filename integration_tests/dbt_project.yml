@@ -11,7 +11,7 @@ models:
 
 vars:
   quickbooks:
-    quickbooks_schema: quickbooks_integration_tests
+    quickbooks_schema: zz_dbt_catherine #quickbooks_integration_tests
     quickbooks_account_identifier: "account_data"
     quickbooks_address_identifier: "address_data"
     quickbooks_bill_line_identifier: "bill_line_data"
@@ -82,6 +82,7 @@ seeds:
       +column_types:
         due_date: date
         transaction_date: date
+        exchange_rate: float
     bill_line_data:
       +column_types:
         item_expense_billable_status: "{{ 'varchar(100)' if target.type in ('redshift', 'postgres') else 'string' }}"
@@ -133,6 +134,7 @@ seeds:
     payment_data:
       +column_types:
         transaction_date: date
+        exchange_rate: float
     purchase_data:
       +column_types:
         credit: "{{ 'boolean' if target.type in ('snowflake', 'spark', 'databricks') else 'bool' }}"

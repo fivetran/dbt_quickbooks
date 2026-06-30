@@ -77,6 +77,17 @@ If neither of those accounts are available, the `quickbooks__sales_tax_account_r
 
 This behavior pertains to the invoice, journal entry, refund receipt, and sales receipt tax line entries. (Purchase tax lines will be associated with their purchase accounts).
 
+## Exchange Gain/Loss: Clearing AR/AP at the Original Transaction Rate
+When a foreign currency payment or bill payment is settled at a different exchange rate than the original invoice or bill, we generate exchange gain/loss entries in `int_quickbooks__payment_double_entry` and `int_quickbooks__bill_payment_double_entry`.
+
+The AR credit (payment model) and AP debit (bill payment model) use the **original invoice/bill exchange rate** to compute `converted_amount`, not the payment exchange rate. The difference between the payment rate and the original rate is posted separately to the Exchange Gain or Loss account. This mirrors QuickBooks's own behavior.
+
+An alternative considered was to credit/debit AR/AP at the payment rate and add a secondary offsetting AR/AP entry to walk back the difference. This was rejected because:
+- It produced a positive `adjusted_converted_amount` for the AR/AP offset entry, making the general ledger appear unbalanced to end users (both the gain/loss entry and its offset showed the same sign).
+- It introduced an additional entry per transaction with no user-facing benefit.
+
+Using the original rate clears AR/AP at book value with a single entry, and the exchange gain/loss entry stands alone as income or expense recognition, which is consistent with standard accrual accounting.
+
 ## Designating a single Accounts Payable/Accounts Receivable account
 The `int_quickbooks__bill_payment_double_entry` model requires a single account designated as 'Accounts Payable' per currency. Similarly, the `int_quickbooks__invoice_double_entry`, `int_quickbooks__credit_memo_double_entry`, and `int_quickbooks__payment_double_entry` models require a single account designated as 'Accounts Receivable' per currency. This aligns with QuickBooks Online requirements and accounting best practices. If you have multiple accounts designated as 'Accounts Payable' or 'Accounts Receivable' in the `account_type` field, all accounts will be brought into the join, causing data fanout. See example [join logic](https://github.com/fivetran/dbt_quickbooks/blob/main/models/double_entry_transactions/int_quickbooks__bill_payment_double_entry.sql#L57) here. 
 
