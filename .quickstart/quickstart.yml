@@ -57,6 +57,14 @@ table_variables:
     - purchase_order_linked_txn
     - purchase_order
 
+  _fivetran_quickstart_bill_tax_line:
+    - bill_tax_line_detail
+  _fivetran_quickstart_estimate_tax_line:
+    - estimate_tax_line
+  _fivetran_quickstart_credit_memo_tax_line:
+    - credit_memo_tax_line_detail
+  _fivetran_quickstart_deposit_tax_line:
+    - deposit_tax_line_detail
   _fivetran_quickstart_invoice_tax_line:
     - invoice_tax_line
   _fivetran_quickstart_journal_entry_tax_line:

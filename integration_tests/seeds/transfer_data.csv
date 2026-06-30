@@ -1,3 +1,7 @@
 id,_fivetran_deleted,_fivetran_synced,amount,created_at,from_account_id,private_note,sync_token,to_account_id,currency_id,exchange_rate,transaction_date,updated_at
-72,FALSE,2020-07-22 19:17:01,31030,2020-07-22 19:06:55,54,caa9e319eab97752f883584868007db3,0,39,USD,,2020-07-23,2020-07-22 19:06:55
-125,FALSE,2020-10-28 1:36:52,79753,2020-10-28 1:16:11,54,5cde61c2a6fa9ae48a9129690d3e1632,0,39,USD,,2020-10-28,2020-10-28 1:16:11
+1301,false,2025-03-31T10:00:00,5000,2025-03-31T10:00:00,1,Q1 cash reserve transfer,0,2,USD,1,2025-03-31,2025-03-31T10:00:00
+1302,false,2025-06-30T10:00:00,5000,2025-06-30T10:00:00,1,Q2 cash reserve transfer,0,2,USD,1,2025-06-30,2025-06-30T10:00:00
+1303,false,2025-09-30T10:00:00,8000,2025-09-30T10:00:00,1,Q3 cash reserve transfer (strong quarter),0,2,USD,1,2025-09-30,2025-09-30T10:00:00
+1304,false,2025-11-01T10:00:00,3000,2025-11-01T10:00:00,2,Riverside buildout costs - transfer back,0,1,USD,1,2025-11-01,2025-11-01T10:00:00
+1305,false,2025-12-15T10:00:00,12000,2025-12-15T10:00:00,1,Holiday revenue reserve,0,2,USD,1,2025-12-15,2025-12-15T10:00:00
+1306,false,2025-12-31T10:00:00,2000,2025-12-31T10:00:00,1,Year-end savings transfer,0,2,USD,1,2025-12-31,2025-12-31T10:00:00

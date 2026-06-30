@@ -1,3 +1,17 @@
+# dbt_quickbooks v1.9.0
+[PR #212](https://github.com/fivetran/dbt_quickbooks/pull/212) includes the following updates:
+
+## Schema/Data Change
+**5 total changes • 1 possible breaking change**
+
+| Data Model(s) | Change type | Old | New | Notes |
+| ------------- | ----------- | --- | --- | ----- |
+| `stg_quickbooks__bill_tax_line` | New model | — | — | Enabled via `using_bill_tax_line`. Surfaces tax line detail records for bills. |
+| `stg_quickbooks__credit_memo_tax_line` | New model | — | — | Enabled via `using_credit_memo_tax_line`. Surfaces tax line detail records for credit memos. |
+| `stg_quickbooks__deposit_tax_line` | New model | — | — | Enabled via `using_deposit_tax_line`. Surfaces tax line detail records for deposits. |
+| `stg_quickbooks__estimate_tax_line` | New model | — | — | Enabled via `using_estimate_tax_line`. Surfaces tax line detail records for estimates. |
+| `quickbooks__general_ledger` | Updated rows | Expense account | Tax liability account | When `using_purchase_tax_line` is enabled, purchase tax line rows now post to the tax liability account instead of the expense account. This aligns with how all other transaction types handle tax lines. ⚠️ Downstream reports filtering on `account_id` for purchase tax rows will see different values after upgrading. |
+
 # dbt_quickbooks v1.8.1
 [PR #214](https://github.com/fivetran/dbt_quickbooks/pull/214) includes the following update:
 
