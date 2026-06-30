@@ -1,3 +1,9 @@
+# dbt_quickbooks v1.8.1
+[PR #214](https://github.com/fivetran/dbt_quickbooks/pull/214) includes the following update:
+
+## Under the Hood
+- Removes unused `using_purchase` variable from `int_quickbooks__purchase_transactions`.
+
 # dbt_quickbooks v1.8.0
 [PR #208](https://github.com/fivetran/dbt_quickbooks/pull/208) includes the following updates:
 
