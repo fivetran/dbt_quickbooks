@@ -161,23 +161,23 @@ final as (
 
     -- credit to accounts receivable at the original invoice exchange rate
     select
-        transaction_id,
+        payment_join.transaction_id,
         payment_join.source_relation,
-        index,
-        transaction_date,
-        customer_id,
+        payment_join.index,
+        payment_join.transaction_date,
+        payment_join.customer_id,
         cast(null as {{ dbt.type_string() }}) as vendor_id,
-        amount,
+        payment_join.amount,
         {% if var('using_exchange_gain_loss', True) %}
         coalesce(payment_invoice_amounts.ar_converted_amount, payment_join.converted_amount) as converted_amount,
         {% else %}
-        converted_amount,
+        payment_join.converted_amount,
         {% endif %}
-        coalesce(receivable_account_id, ar_accounts.account_id) as account_id,
+        coalesce(payment_join.receivable_account_id, ar_accounts.account_id) as account_id,
         cast(null as {{ dbt.type_string() }}) as class_id,
         cast(null as {{ dbt.type_string() }}) as department_id,
-        created_at,
-        updated_at,
+        payment_join.created_at,
+        payment_join.updated_at,
         cast('credit' as {{ dbt.type_string() }}) as transaction_type,
         cast('payment' as {{ dbt.type_string() }}) as transaction_source
     from payment_join

@@ -166,23 +166,23 @@ final as (
 
     -- debit to accounts payable at the original bill exchange rate
     select
-        transaction_id,
+        bill_payment_join.transaction_id,
         bill_payment_join.source_relation,
-        index,
-        transaction_date,
+        bill_payment_join.index,
+        bill_payment_join.transaction_date,
         cast(null as {{ dbt.type_string() }}) as customer_id,
-        vendor_id,
-        amount,
+        bill_payment_join.vendor_id,
+        bill_payment_join.amount,
         {% if var('using_exchange_gain_loss', True) %}
         coalesce(bill_original_amounts.ap_converted_amount, bill_payment_join.converted_amount) as converted_amount,
         {% else %}
-        converted_amount,
+        bill_payment_join.converted_amount,
         {% endif %}
-        account_id,
+        bill_payment_join.account_id,
         cast(null as {{ dbt.type_string() }}) as class_id,
-        department_id,
-        created_at,
-        updated_at,
+        bill_payment_join.department_id,
+        bill_payment_join.created_at,
+        bill_payment_join.updated_at,
         cast('debit' as {{ dbt.type_string() }}) as transaction_type,
         cast('bill payment' as {{ dbt.type_string() }}) as transaction_source
     from bill_payment_join
