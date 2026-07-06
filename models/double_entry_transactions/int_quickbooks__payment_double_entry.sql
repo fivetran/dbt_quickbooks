@@ -5,6 +5,9 @@ Table that creates a debit record to either undeposited funds or a specified cas
 --To disable this model, set the using_payment variable within your dbt_project.yml file to False.
 {{ config(enabled=var('using_payment', True)) }}
 
+{%- set using_exchange_gain_loss = var('using_exchange_gain_loss', False) %}
+{%- set using_invoice = var('using_invoice', False) %}
+
 with payments as (
 
     select *
@@ -36,18 +39,6 @@ ar_accounts as (
         and not is_sub_account
 ),
 
-{% if var('using_exchange_gain_loss', True) %}
-exchange_gain_loss_accounts as (
-
-    select
-        account_id,
-        source_relation
-    from accounts
-
-    where account_sub_type = 'ExchangeGainOrLoss'
-),
-{% endif %}
-
 payment_join as (
 
     select
@@ -71,7 +62,19 @@ payment_join as (
     from payments
 ),
 
-{% if var('using_exchange_gain_loss', True) %}
+{% if using_exchange_gain_loss and using_invoice %}
+exchange_gain_loss_accounts as (
+
+    select
+        account_id,
+        source_relation
+    from accounts
+
+    where account_sub_type = 'ExchangeGainOrLoss'
+        and is_active
+        and not is_sub_account
+),
+
 invoices as (
 
     select *
@@ -168,7 +171,7 @@ final as (
         payment_join.customer_id,
         cast(null as {{ dbt.type_string() }}) as vendor_id,
         payment_join.amount,
-        {% if var('using_exchange_gain_loss', True) %}
+        {% if using_exchange_gain_loss and using_invoice %}
         coalesce(payment_invoice_amounts.ar_converted_amount, payment_join.converted_amount) as converted_amount,
         {% else %}
         payment_join.converted_amount,
@@ -186,7 +189,7 @@ final as (
         on ar_accounts.currency_id = payment_join.currency_id
         and ar_accounts.source_relation = payment_join.source_relation
 
-{% if var('using_exchange_gain_loss', True) %}
+{% if using_exchange_gain_loss and using_invoice %}
     left join payment_invoice_amounts
         on payment_invoice_amounts.payment_id = payment_join.transaction_id
         and payment_invoice_amounts.source_relation = payment_join.source_relation

@@ -99,7 +99,6 @@ vars:
     using_invoice_tax_line: false
     using_tax_agency: false
     using_tax_rate: false
-    using_exchange_gain_loss: true
 
 analysis-paths: ["analysis"]
 clean-targets:

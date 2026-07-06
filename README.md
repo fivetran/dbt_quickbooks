@@ -185,15 +185,15 @@ vars:
 
 **Note:** Use the same 3-letter ISO currency code (e.g., "USD", "EUR", "GBP") that appears in your QuickBooks `currency_id` field. 
 
-#### Disabling Exchange Gain/Loss Entries
+#### Enabling Exchange Gain/Loss Entries
 
-By default, the package generates exchange gain/loss entries for foreign currency bill payments and customer payments where the exchange rate differs between the original transaction and the settlement. This requires an `ExchangeGainOrLoss` account to be configured in QuickBooks.
+By default, the package does not generate exchange gain/loss entries. If your business uses multi-currency transactions and you have an `ExchangeGainOrLoss` account configured in QuickBooks, you can enable this feature to capture the currency impact when a foreign currency transaction is settled at a different exchange rate than when it was originally recorded.
 
-If your QuickBooks data does not include multi-currency transactions, or if you do not have an Exchange Gain or Loss account configured, disable this feature by setting the following variable in your `dbt_project.yml`:
+Enable this feature by setting the following variable in your `dbt_project.yml`:
 
 ```yml
 vars:
-  using_exchange_gain_loss: false
+  using_exchange_gain_loss: true
 ```
 
 #### Customize the Cash Flow Model

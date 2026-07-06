@@ -5,6 +5,8 @@ Table that creates a debit record to accounts payable and a credit record to the
 --To disable this model, set the using_bill_payment variable within your dbt_project.yml file to False.
 {{ config(enabled=var('using_bill', True)) }}
 
+{%- set using_exchange_gain_loss = var('using_exchange_gain_loss', False) %}
+
 with bill_payments as (
 
     select *
@@ -36,7 +38,7 @@ ap_accounts as (
         and not is_sub_account
 ),
 
-{% if var('using_exchange_gain_loss', True) %}
+{% if using_exchange_gain_loss %}
 exchange_gain_loss_accounts as (
 
     select
@@ -45,6 +47,8 @@ exchange_gain_loss_accounts as (
     from accounts
 
     where account_sub_type = 'ExchangeGainOrLoss'
+        and is_active
+        and not is_sub_account
 ),
 {% endif %}
 
@@ -75,7 +79,7 @@ bill_payment_join as (
         and ap_accounts.source_relation = bill_payments.source_relation
 ),
 
-{% if var('using_exchange_gain_loss', True) %}
+{% if using_exchange_gain_loss %}
 bills as (
 
     select *
@@ -173,7 +177,7 @@ final as (
         cast(null as {{ dbt.type_string() }}) as customer_id,
         bill_payment_join.vendor_id,
         bill_payment_join.amount,
-        {% if var('using_exchange_gain_loss', True) %}
+        {% if using_exchange_gain_loss %}
         coalesce(bill_original_amounts.ap_converted_amount, bill_payment_join.converted_amount) as converted_amount,
         {% else %}
         bill_payment_join.converted_amount,
@@ -187,7 +191,7 @@ final as (
         cast('bill payment' as {{ dbt.type_string() }}) as transaction_source
     from bill_payment_join
 
-{% if var('using_exchange_gain_loss', True) %}
+{% if using_exchange_gain_loss %}
     left join bill_original_amounts
         on bill_original_amounts.bill_payment_id = bill_payment_join.transaction_id
         and bill_original_amounts.source_relation = bill_payment_join.source_relation
