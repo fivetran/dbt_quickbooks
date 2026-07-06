@@ -1,2 +1,2 @@
 id,_fivetran_synced,active,created_at,description,fully_qualified_name,name,print_grouped_items,purchase_cost,sync_token,taxable,unit_price,updated_at,_fivetran_deleted
-1,2025-11-01T09:00:00,TRUE,2025-11-01T09:00:00,Whitening Kit + Electric Toothbrush Bundle,Holiday Bundle,Holiday Bundle,TRUE,45,0,FALSE,120,2025-11-01T09:00:00,FALSE
+25001,2025-04-30T09:00:00,FALSE,2025-04-30T09:00:00,Placeholder bundle — not actively used,ZorbSense Starter Bundle,ZorbSense Starter Bundle,FALSE,0,0,FALSE,0,2025-04-30T09:00:00,FALSE

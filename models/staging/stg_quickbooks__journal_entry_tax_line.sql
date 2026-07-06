@@ -1,5 +1,5 @@
---To enable this model, set the using_journal_entry_tax_line variable within your dbt_project.yml file to True.
-{{ config(enabled=var('using_journal_entry_tax_line', False)) }}
+--To enable this model, set both the quickbooks__tax_lines_enabled and using_journal_entry_tax_line variables within your dbt_project.yml file to True.
+{{ config(enabled=var('quickbooks__tax_lines_enabled', False) and var('using_journal_entry_tax_line', False)) }}
 
 with base as (
 

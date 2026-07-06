@@ -1,2 +1,2 @@
 _fivetran_synced,created_at,display_name,id,sync_token,tax_registration_number,tax_tracked_on_purchases,tax_tracked_on_sales,updated_at
-2025-01-06T09:00:00,2025-01-06T09:00:00,Illinois Department of Revenue,1,0,,TRUE,TRUE,2025-01-06T09:00:00
+2025-01-02T09:00:00,2025-01-02T09:00:00,Colorado Department of Revenue,1,0,,FALSE,FALSE,2025-01-02T09:00:00

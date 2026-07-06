@@ -5,7 +5,7 @@ This dbt package transforms data from Fivetran's Quickbooks connector into analy
 
 ## Resources
 
-- Number of materialized models¹: 109
+- Number of materialized models¹: 117
 - Connector documentation
   - [Quickbooks connector documentation](https://fivetran.com/docs/connectors/applications/quickbooks)
   - [Quickbooks ERD](https://fivetran.com/docs/connectors/applications/quickbooks#schemainformation)
@@ -135,10 +135,22 @@ vars:
   using_sales_receipt: false # disable if you don't have sales receipts in QuickBooks
   using_credit_card_payment_txn: true # enable if you want to include credit card payment transactions in your staging models
   using_purchase_order: true # enable if you want to include purchase orders in your staging
-  using_customer_type: false # disable if you don't have customer types in QuickBooks 
+  using_customer_type: false # disable if you don't have customer types in QuickBooks
+```
 
-  ## Below variables are used to enable/disable sales tax components. All sales tax components are false by default.
-  using_invoice_tax_line: true #enable if you have invoice tax lines in QuickBooks
+#### Enabling Tax Lines
+**Step 1 — Enable tax lines.** Tax line data is disabled by default to protect the accuracy of your financial reporting.  Set `quickbooks__tax_lines_enabled` to `true` in your `dbt_project.yml`. No individual tax line variable has any effect without this.
+
+```yml
+vars:
+  quickbooks__tax_lines_enabled: true
+```
+
+**Step 2 — Enable individual tax line tables.** Enable a variable for each transaction type whose tax lines you want to include:
+
+```yml
+vars:
+  using_invoice_tax_line: true # enable if you have invoice tax lines in QuickBooks
   using_journal_entry_tax_line: true # enable if you have journal entry tax lines in QuickBooks
   using_purchase_tax_line: true # enable if you have purchase tax lines in QuickBooks
   using_refund_receipt_tax_line: true # enable if you have refund receipt tax lines in QuickBooks
@@ -147,8 +159,14 @@ vars:
   using_credit_memo_tax_line: true # enable if you have credit memo tax lines in QuickBooks
   using_deposit_tax_line: true # enable if you have deposit tax lines in QuickBooks
   using_estimate_tax_line: true # enable if you have estimate tax lines in QuickBooks
-  using_tax_agency: true #enable if you have tax agencies in QuickBooks
-  using_tax_rate: true #enable if you have tax rates in QuickBooks
+```
+
+**Step 3 (optional) — Enable tax rate and agency enrichment.** Set `using_tax_rate` to enrich tax line records with rate percentages. Set `using_tax_agency` to additionally include agency details — this requires `using_tax_rate` to also be `true`.
+
+```yml
+vars:
+  using_tax_rate: true
+  using_tax_agency: true # requires using_tax_rate: true
 ```
 
 ### (Optional) Additional Configurations

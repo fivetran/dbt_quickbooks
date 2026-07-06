@@ -1,2 +1,2 @@
 _fivetran_synced,amount,index,journal_entry_id,net_amount_taxable,override_delta_amount,percent_based,tax_inclusive_amount,tax_percent,tax_rate_id
-2025-01-06T09:00:00,0,1,1101,0,,FALSE,0,0,
+2025-01-06T09:00:00,0,1,8001,0,,FALSE,0,0,

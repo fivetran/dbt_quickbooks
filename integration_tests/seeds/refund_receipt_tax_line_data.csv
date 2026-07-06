@@ -1,2 +1,2 @@
 refund_receipt_id,index,amount,net_amount_taxable,override_delta_amount,percent_based,tax_inclusive_amount,tax_percent,tax_rate_id,_fivetran_synced
-901,1,0,0,,FALSE,0,0,,2025-01-06T09:00:00
+22001,1,0,0,,FALSE,0,0,,2025-01-06T09:00:00

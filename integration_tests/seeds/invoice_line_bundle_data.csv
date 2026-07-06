@@ -1,4 +1,2 @@
 index,invoice_id,_fivetran_synced,account_id,amount,class_id,description,discount_amount,discount_rate,invoice_line_index,item_id,line_num,quantity,service_date,tax_code_id,unit_price,sales_item_item_id,sales_item_quantity,sales_item_tax_code_id,sales_item_account_id
-2,126,2025-01-06T09:00:00,21,49,,,,,1,6,,1,,,49,6,1,,21
-2,129,2025-01-06T09:00:00,21,12,,,,,1,8,,1,,,12,8,1,,21
-2,131,2025-01-06T09:00:00,21,49,,,,,1,6,,1,,,49,6,1,,21
+1,1001,2025-01-05T09:00:00,30,25,,,,,1,1,,1,,,25,1,1,,30

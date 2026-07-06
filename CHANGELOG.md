@@ -1,16 +1,23 @@
 # dbt_quickbooks v1.9.0
-[PR #212](https://github.com/fivetran/dbt_quickbooks/pull/212) includes the following updates:
+[PR #213](https://github.com/fivetran/dbt_quickbooks/pull/212) includes the following updates:
 
 ## Schema/Data Change
-**5 total changes • 1 possible breaking change**
+**9 total changes • 1 possible breaking change**
 
 | Data Model(s) | Change type | Old | New | Notes |
 | ------------- | ----------- | --- | --- | ----- |
-| `stg_quickbooks__bill_tax_line` | New model | — | — | Enabled via `using_bill_tax_line`. Surfaces tax line detail records for bills. |
-| `stg_quickbooks__credit_memo_tax_line` | New model | — | — | Enabled via `using_credit_memo_tax_line`. Surfaces tax line detail records for credit memos. |
-| `stg_quickbooks__deposit_tax_line` | New model | — | — | Enabled via `using_deposit_tax_line`. Surfaces tax line detail records for deposits. |
-| `stg_quickbooks__estimate_tax_line` | New model | — | — | Enabled via `using_estimate_tax_line`. Surfaces tax line detail records for estimates. |
-| `quickbooks__general_ledger` | Updated rows | Expense account | Tax liability account | When `using_purchase_tax_line` is enabled, purchase tax line rows now post to the tax liability account instead of the expense account. This aligns with how all other transaction types handle tax lines. ⚠️ Downstream reports filtering on `account_id` for purchase tax rows will see different values after upgrading. |
+| `quickbooks__general_ledger` | Potential new rows | No tax lines | Tax lines now available | When tax lines are enabled, new tax line rows post to the tax liability account. Row counts will increase for users enabling any of these variables. |
+| `stg_quickbooks__bill_tax_line`<br>`stg_quickbooks__bill_tax_line_tmp` | New models | — | — | Enabled via `using_bill_tax_line`. Surfaces tax line detail records for bills. |
+| `stg_quickbooks__credit_memo_tax_line`<br>`stg_quickbooks__credit_memo_tax_line_tmp` | New models | — | — | Enabled via `using_credit_memo_tax_line`. Surfaces tax line detail records for credit memos. |
+| `stg_quickbooks__deposit_tax_line`<br>`stg_quickbooks__deposit_tax_line_tmp` | New models | — | — | Enabled via `using_deposit_tax_line`. Surfaces tax line detail records for deposits. |
+| `stg_quickbooks__estimate_tax_line`<br>`stg_quickbooks__estimate_tax_line_tmp` | New models | — | — | Enabled via `using_estimate_tax_line`. Surfaces tax line detail records for estimates. |
+
+## Feature Updates
+- Introduces the `quickbooks__tax_lines_enabled` variable as a master toggle for all tax line features. Set it to `true` before enabling any individual tax line variables. Defaults to `false` to prevent unintended tax line model compilation for users who haven't configured the required source tables. 
+- Individual tax line tables will now be enabled in Quickstart if the `quickbooks__tax_lines_enabled` variable is set to true and the tables are selected in the Fivetran UI. In dbt Core, see the [Enabling Tax Lines](https://github.com/fivetran/dbt_quickbooks/tree/main#enabling-tax-lines) section of the README for details.
+
+## Under the Hood
+- Updated seed data for more complete validation testing. 
 
 # dbt_quickbooks v1.8.1
 [PR #214](https://github.com/fivetran/dbt_quickbooks/pull/214) includes the following update:

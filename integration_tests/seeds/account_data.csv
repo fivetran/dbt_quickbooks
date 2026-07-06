@@ -1,29 +1,23 @@
 id,_fivetran_synced,account_number,account_sub_type,account_type,active,balance,balance_with_sub_accounts,classification,created_at,currency_id,description,fully_qualified_name,name,parent_account_id,sub_account,sync_token,tax_code_id,updated_at,_fivetran_deleted
-1,2025-01-06T09:00:00,1000,Checking,Bank,TRUE,45000,45000,Asset,2025-01-06T09:00:00,USD,,Checking Account,Checking Account,,FALSE,0,,2025-01-06T09:00:00,FALSE
-2,2025-01-06T09:00:00,1010,Savings,Bank,TRUE,25000,25000,Asset,2025-01-06T09:00:00,USD,,Savings Account,Savings Account,,FALSE,0,,2025-01-06T09:00:00,FALSE
-3,2025-01-06T09:00:00,1100,AccountsReceivable,Accounts Receivable,TRUE,8500,8500,Asset,2025-01-06T09:00:00,USD,,Accounts Receivable,Accounts Receivable,,FALSE,0,,2025-01-06T09:00:00,FALSE
-4,2025-01-06T09:00:00,1200,Inventory,Other Current Asset,TRUE,4200,4200,Asset,2025-01-06T09:00:00,USD,,Inventory Asset,Inventory Asset,,FALSE,0,,2025-01-06T09:00:00,FALSE
-5,2025-01-06T09:00:00,1300,PrepaidExpenses,Other Current Asset,TRUE,1200,1200,Asset,2025-01-06T09:00:00,USD,,Prepaid Expenses,Prepaid Expenses,,FALSE,0,,2025-01-06T09:00:00,FALSE
-6,2025-01-06T09:00:00,1500,MachineryAndEquipment,Fixed Asset,TRUE,32000,30000,Asset,2025-01-06T09:00:00,USD,,Dental Equipment,Dental Equipment,,FALSE,0,,2025-01-06T09:00:00,FALSE
-7,2025-01-06T09:00:00,1510,AccumulatedDepreciation,Fixed Asset,TRUE,-2000,-2000,Asset,2025-01-06T09:00:00,USD,,Dental Equipment:Accumulated Depreciation,Accumulated Depreciation,6,TRUE,0,,2025-01-06T09:00:00,FALSE
-10,2025-01-06T09:00:00,2000,AccountsPayable,Accounts Payable,TRUE,6800,6800,Liability,2025-01-06T09:00:00,USD,,Accounts Payable,Accounts Payable,,FALSE,0,,2025-01-06T09:00:00,FALSE
-11,2025-01-06T09:00:00,2100,PayrollTaxPayable,Other Current Liability,TRUE,3200,3200,Liability,2025-01-06T09:00:00,USD,,Payroll Tax Liabilities,Payroll Tax Liabilities,,FALSE,0,,2025-01-06T09:00:00,FALSE
-12,2025-01-06T09:00:00,2200,SalesTaxPayable,Other Current Liability,TRUE,520,520,Liability,2025-01-06T09:00:00,USD,,Sales Tax Payable,Sales Tax Payable,,FALSE,0,,2025-01-06T09:00:00,FALSE
-15,2025-01-06T09:00:00,3000,OpeningBalanceEquity,Equity,TRUE,0,0,Equity,2025-01-06T09:00:00,USD,,Opening Balance Equity,Opening Balance Equity,,FALSE,0,,2025-01-06T09:00:00,FALSE
-16,2025-01-06T09:00:00,3100,RetainedEarnings,Equity,TRUE,62000,62000,Equity,2025-01-06T09:00:00,USD,,Retained Earnings,Retained Earnings,,FALSE,0,,2025-01-06T09:00:00,FALSE
-17,2025-01-06T09:00:00,3200,OwnersEquity,Equity,TRUE,-48000,-48000,Equity,2025-01-06T09:00:00,USD,,Owner's Draw,Owner's Draw,,FALSE,0,,2025-01-06T09:00:00,FALSE
-20,2025-01-06T09:00:00,4000,ServiceFeeIncome,Income,TRUE,185000,185000,Revenue,2025-01-06T09:00:00,USD,,Dental Services Income,Dental Services Income,,FALSE,0,,2025-01-06T09:00:00,FALSE
-21,2025-01-06T09:00:00,4100,SalesOfProductIncome,Income,TRUE,42000,42000,Revenue,2025-01-06T09:00:00,USD,,Product Sales,Product Sales,,FALSE,0,,2025-01-06T09:00:00,FALSE
-22,2025-01-06T09:00:00,4200,OtherPrimaryIncome,Income,TRUE,28000,28000,Revenue,2025-01-06T09:00:00,USD,,Insurance Reimbursements,Insurance Reimbursements,,FALSE,0,,2025-01-06T09:00:00,FALSE
-25,2025-01-06T09:00:00,5000,SuppliesMaterialsCogs,Cost of Goods Sold,TRUE,14000,14000,Expense,2025-01-06T09:00:00,USD,,Cost of Goods Sold,Cost of Goods Sold,,FALSE,0,,2025-01-06T09:00:00,FALSE
-30,2025-01-06T09:00:00,6000,SuppliesMaterials,Expense,TRUE,18000,18000,Expense,2025-01-06T09:00:00,USD,,Dental Supplies,Dental Supplies,,FALSE,0,,2025-01-06T09:00:00,FALSE
-31,2025-01-06T09:00:00,6100,Rent,Expense,TRUE,54000,54000,Expense,2025-01-06T09:00:00,USD,,Rent Expense,Rent Expense,,FALSE,0,,2025-01-06T09:00:00,FALSE
-32,2025-01-06T09:00:00,6200,Utilities,Expense,TRUE,7200,7200,Expense,2025-01-06T09:00:00,USD,,Utilities,Utilities,,FALSE,0,,2025-01-06T09:00:00,FALSE
-33,2025-01-06T09:00:00,6300,Advertising,Expense,TRUE,22000,22000,Expense,2025-01-06T09:00:00,USD,,Marketing & Advertising,Marketing & Advertising,,FALSE,0,,2025-01-06T09:00:00,FALSE
-34,2025-01-06T09:00:00,6400,ComputerAndInternetExpenses,Expense,TRUE,4200,4200,Expense,2025-01-06T09:00:00,USD,,Software & Subscriptions,Software & Subscriptions,,FALSE,0,,2025-01-06T09:00:00,FALSE
-35,2025-01-06T09:00:00,6500,ProfessionalFees,Expense,TRUE,8500,8500,Expense,2025-01-06T09:00:00,USD,,Professional Services,Professional Services,,FALSE,0,,2025-01-06T09:00:00,FALSE
-36,2025-01-06T09:00:00,6600,Payroll,Expense,TRUE,320000,320000,Expense,2025-01-06T09:00:00,USD,,Payroll Expense,Payroll Expense,,FALSE,0,,2025-01-06T09:00:00,FALSE
-37,2025-01-06T09:00:00,6700,OfficeGeneralAdministrativeExpenses,Expense,TRUE,2100,2100,Expense,2025-01-06T09:00:00,USD,,Office Supplies,Office Supplies,,FALSE,0,,2025-01-06T09:00:00,FALSE
-38,2025-01-06T09:00:00,6800,Insurance,Expense,TRUE,5400,5400,Expense,2025-01-06T09:00:00,USD,,Business Insurance,Business Insurance,,FALSE,0,,2025-01-06T09:00:00,FALSE
-39,2025-01-06T09:00:00,6900,DepreciationAmortizationExpense,Expense,TRUE,2000,2000,Expense,2025-01-06T09:00:00,USD,,Depreciation Expense,Depreciation Expense,,FALSE,0,,2025-01-06T09:00:00,FALSE
-40,2025-01-06T09:00:00,7000,ContractLabor,Expense,TRUE,15000,15000,Expense,2025-01-06T09:00:00,USD,,Contract Labor,Contract Labor,,FALSE,0,,2025-01-06T09:00:00,FALSE
+1,2025-01-02T08:00:00,1010,Checking,Bank,TRUE,0,0,Asset,2025-01-02T08:00:00,USD,,Checking Account,Checking Account,,FALSE,0,,2025-01-02T08:00:00,FALSE
+2,2025-01-02T08:00:00,1200,AccountsReceivable,Accounts Receivable,TRUE,0,0,Asset,2025-01-02T08:00:00,USD,,Accounts Receivable,Accounts Receivable,,FALSE,0,,2025-01-02T08:00:00,FALSE
+3,2025-01-02T08:00:00,1300,PrepaidExpenses,Other Current Asset,TRUE,0,0,Asset,2025-01-02T08:00:00,USD,,Prepaid Expenses,Prepaid Expenses,,FALSE,0,,2025-01-02T08:00:00,FALSE
+4,2025-01-02T08:00:00,1400,Inventory,Other Current Asset,TRUE,0,0,Asset,2025-01-02T08:00:00,USD,,ZorbSense Inventory,ZorbSense Inventory,,FALSE,0,,2025-01-02T08:00:00,FALSE
+10,2025-01-02T08:00:00,2000,AccountsPayable,Accounts Payable,TRUE,0,0,Liability,2025-01-02T08:00:00,USD,,Accounts Payable,Accounts Payable,,FALSE,0,,2025-01-02T08:00:00,FALSE
+11,2025-01-02T08:00:00,2100,CreditCard,Credit Card,TRUE,0,0,Liability,2025-01-02T08:00:00,USD,,Credit Card Payable,Credit Card Payable,,FALSE,0,,2025-01-02T08:00:00,FALSE
+12,2025-01-02T08:00:00,2200,DeferredRevenue,Other Current Liability,TRUE,0,0,Liability,2025-01-02T08:00:00,USD,,Deferred Revenue,Deferred Revenue,,FALSE,0,,2025-01-02T08:00:00,FALSE
+20,2025-01-02T08:00:00,3000,OpeningBalanceEquity,Equity,TRUE,0,0,Equity,2025-01-02T08:00:00,USD,,Paid-In Capital,Paid-In Capital,,FALSE,0,,2025-01-02T08:00:00,FALSE
+21,2025-01-02T08:00:00,3100,RetainedEarnings,Equity,TRUE,0,0,Equity,2025-01-02T08:00:00,USD,,Retained Earnings,Retained Earnings,,FALSE,0,,2025-01-02T08:00:00,FALSE
+30,2025-01-02T08:00:00,4000,ServiceFeeIncome,Income,TRUE,0,0,Revenue,2025-01-02T08:00:00,USD,,Services Revenue,Services Revenue,,FALSE,0,,2025-01-02T08:00:00,FALSE
+31,2025-01-02T08:00:00,4100,ServiceFeeIncome,Income,TRUE,0,0,Revenue,2025-01-02T08:00:00,USD,,Professional Services Revenue,Professional Services Revenue,,FALSE,0,,2025-01-02T08:00:00,FALSE
+32,2025-01-02T08:00:00,4200,SalesOfProductIncome,Income,TRUE,0,0,Revenue,2025-01-02T08:00:00,USD,,Hardware Sales Revenue,Hardware Sales Revenue,,FALSE,0,,2025-01-02T08:00:00,FALSE
+40,2025-01-02T08:00:00,5000,SuppliesMaterialsCogs,Cost of Goods Sold,TRUE,0,0,Expense,2025-01-02T08:00:00,USD,,Hosting & Infrastructure,Hosting & Infrastructure,,FALSE,0,,2025-01-02T08:00:00,FALSE
+41,2025-01-02T08:00:00,5100,SuppliesMaterialsCogs,Cost of Goods Sold,TRUE,0,0,Expense,2025-01-02T08:00:00,USD,,Third-Party API Costs,Third-Party API Costs,,FALSE,0,,2025-01-02T08:00:00,FALSE
+42,2025-01-02T08:00:00,5200,SuppliesMaterialsCogs,Cost of Goods Sold,TRUE,0,0,Expense,2025-01-02T08:00:00,USD,,Hardware Cost of Goods Sold,Hardware Cost of Goods Sold,,FALSE,0,,2025-01-02T08:00:00,FALSE
+50,2025-01-02T08:00:00,6000,OtherMiscellaneousServiceCost,Expense,TRUE,0,0,Expense,2025-01-02T08:00:00,USD,,Salaries & Wages,Salaries & Wages,,FALSE,0,,2025-01-02T08:00:00,FALSE
+51,2025-01-02T08:00:00,6100,OtherMiscellaneousServiceCost,Expense,TRUE,0,0,Expense,2025-01-02T08:00:00,USD,,Contractor Fees,Contractor Fees,,FALSE,0,,2025-01-02T08:00:00,FALSE
+52,2025-01-02T08:00:00,6200,AdvertisingPromotional,Expense,TRUE,0,0,Expense,2025-01-02T08:00:00,USD,,Sales & Marketing,Sales & Marketing,,FALSE,0,,2025-01-02T08:00:00,FALSE
+53,2025-01-02T08:00:00,6300,OtherMiscellaneousServiceCost,Expense,TRUE,0,0,Expense,2025-01-02T08:00:00,USD,,Software Subscriptions,Software Subscriptions,,FALSE,0,,2025-01-02T08:00:00,FALSE
+54,2025-01-02T08:00:00,6400,Rent,Expense,TRUE,0,0,Expense,2025-01-02T08:00:00,USD,,Office Rent & Facilities,Office Rent & Facilities,,FALSE,0,,2025-01-02T08:00:00,FALSE
+55,2025-01-02T08:00:00,6500,Entertainment,Expense,TRUE,0,0,Expense,2025-01-02T08:00:00,USD,,Travel & Entertainment,Travel & Entertainment,,FALSE,0,,2025-01-02T08:00:00,FALSE
+56,2025-01-02T08:00:00,6600,OtherMiscellaneousServiceCost,Expense,TRUE,0,0,Expense,2025-01-02T08:00:00,USD,,Recruiting & HR,Recruiting & HR,,FALSE,0,,2025-01-02T08:00:00,FALSE

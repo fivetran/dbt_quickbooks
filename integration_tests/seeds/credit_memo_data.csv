@@ -1,6 +1,4 @@
 id,_fivetran_deleted,_fivetran_synced,apply_tax_after_discount,balance,bill_email,billing_address_id,class_id,created_at,currency_id,custom_p_o_number,customer_id,customer_memo,department_id,doc_number,email_status,exchange_rate,global_tax_calculation,home_balance,home_total_amount,payment_method_id,print_status,private_note,remaining_credit,sales_term_id,shipping_address_id,sync_token,total_amount,total_tax,transaction_date,updated_at
-801,FALSE,2025-02-20T09:00:00,FALSE,0,,,,2025-02-20T09:00:00,USD,,3,,1,CM-801,NotSet,1,,0,50,,NeedToPrint,,0,,,0,50,0,2025-02-20,2025-02-20T09:00:00
-802,FALSE,2025-05-15T09:00:00,FALSE,75,,,,2025-05-15T09:00:00,USD,,7,,1,CM-802,NotSet,1,,75,75,,NeedToPrint,,75,,,0,75,0,2025-05-15,2025-05-15T09:00:00
-803,FALSE,2025-07-10T09:00:00,FALSE,0,,,,2025-07-10T09:00:00,USD,,12,,1,CM-803,NotSet,1,,0,150,,NeedToPrint,,0,,,0,150,0,2025-07-10,2025-07-10T09:00:00
-804,FALSE,2025-09-25T09:00:00,FALSE,200,,,,2025-09-25T09:00:00,USD,,1,,1,CM-804,NotSet,1,,200,200,,NeedToPrint,,200,,,0,200,0,2025-09-25,2025-09-25T09:00:00
-805,FALSE,2025-11-14T09:00:00,FALSE,0,,,,2025-11-14T09:00:00,USD,,5,,2,CM-805,NotSet,1,,0,100,,NeedToPrint,,0,,,0,100,0,2025-11-14,2025-11-14T09:00:00
+14001,false,2025-11-14T09:00:00,false,0,,,,2025-11-14T09:00:00,USD,,119,Return — ZorbSense HVAC Monitor,2,CM-14001,NotSet,1,,0,249,,NeedToPrint,,249,,,0,249,0,2025-11-14,2025-11-14T09:00:00
+14002,false,2025-11-15T09:00:00,false,0,,,,2025-11-15T09:00:00,USD,,120,Return — ZorbSense HVAC Monitor,2,CM-14002,NotSet,1,,0,249,,NeedToPrint,,249,,,0,249,0,2025-11-15,2025-11-15T09:00:00
+14003,false,2025-11-16T09:00:00,false,0,,,,2025-11-16T09:00:00,USD,,121,Return — ZorbSense HVAC Monitor,2,CM-14003,NotSet,1,,0,249,,NeedToPrint,,249,,,0,249,0,2025-11-16,2025-11-16T09:00:00

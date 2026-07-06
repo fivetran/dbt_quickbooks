@@ -31,19 +31,19 @@ vars:
     bill_payment_line: "{{ source('quickbooks', 'bill_payment_line') }}"
     bill_payment: "{{ source('quickbooks', 'bill_payment') }}"
     bill: "{{ source('quickbooks', 'bill') }}"
-    bill_tax_line: "{{ source('quickbooks','bill_tax_line_detail') }}"
+    bill_tax_line_detail: "{{ source('quickbooks','bill_tax_line_detail') }}"
     bundle_item: "{{ source('quickbooks', 'bundle_item') }}"
     bundle: "{{ source('quickbooks', 'bundle') }}"
     credit_memo_line: "{{ source('quickbooks', 'credit_memo_line') }}"
     credit_memo: "{{ source('quickbooks', 'credit_memo') }}"
-    credit_memo_tax_line: "{{ source('quickbooks','credit_memo_tax_line_detail') }}"
+    credit_memo_tax_line_detail: "{{ source('quickbooks','credit_memo_tax_line_detail') }}"
     credit_card_payment_txn: "{{ source('quickbooks', 'credit_card_payment_txn') }}"
     customer: "{{ source('quickbooks', 'customer') }}"
     customer_type: "{{ source('quickbooks', 'customer_type') }}"
     department: "{{ source('quickbooks', 'department') }}"
     deposit_line: "{{ source('quickbooks', 'deposit_line') }}"
     deposit: "{{ source('quickbooks', 'deposit') }}"
-    deposit_tax_line: "{{ source('quickbooks','deposit_tax_line_detail') }}"
+    deposit_tax_line_detail: "{{ source('quickbooks','deposit_tax_line_detail') }}"
     estimate: "{{ source('quickbooks', 'estimate') }}"
     estimate_line: "{{ source('quickbooks', 'estimate_line') }}"
     estimate_tax_line: "{{ source('quickbooks','estimate_tax_line') }}"
@@ -97,6 +97,7 @@ vars:
     using_sales_receipt: true
     using_credit_card_payment_txn: false
     using_purchase_order: false
+    quickbooks__tax_lines_enabled: false
     using_invoice_tax_line: false
     using_journal_entry_tax_line: false
     using_purchase_tax_line: false

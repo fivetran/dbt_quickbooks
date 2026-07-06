@@ -1,2 +1,2 @@
 _fivetran_synced,active,created_at,description,display_type,effective_tax_rate,id,name,rate_value,special_tax_type,sync_token,tax_agency_id,updated_at
-2025-01-06T09:00:00,TRUE,2025-01-06T09:00:00,Illinois sales tax,Percentage,0.0875,1,IL Sales Tax,0.0875,,0,1,2025-01-06T09:00:00
+2025-01-02T09:00:00,FALSE,2025-01-02T09:00:00,Placeholder tax rate — tax features disabled,Percentage,0,1,Placeholder,0,,0,1,2025-01-02T09:00:00

@@ -5,7 +5,7 @@ Table that provides the debit and credit records of a journal entry transaction.
 --To disable this model, set the using_journal_entry variable within your dbt_project.yml file to False.
 {{ config(enabled=var('using_journal_entry', True)) }}
 
-{% set using_journal_entry_tax_line = var('using_journal_entry_tax_line', False) %}
+{% set using_journal_entry_tax_line = var('quickbooks__tax_lines_enabled', False) and var('using_journal_entry_tax_line', False) %}
 {% set using_tax_rate = var('using_tax_rate', False) %}
 {% set using_tax_agency = var('using_tax_agency', False) if using_tax_rate else False %}
 

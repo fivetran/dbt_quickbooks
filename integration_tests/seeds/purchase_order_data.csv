@@ -1,2 +1,5 @@
 id,_fivetran_deleted,_fivetran_synced,class_id,created_at,currency_id,custom_customer_type,custom_p_o_number,doc_number,due_date,exchange_rate,global_tax_calculation,memo,payable_account_id,private_note,sales_term_id,shipping_address_id,status,sync_token,tax_code_id,total_amount,total_tax,transaction_date,updated_at,vendor_address_id,vendor_id
-1,FALSE,2025-01-06T09:00:00,,,USD,,,PO-001,2025-02-01,1,,,,,,,,,,500,0,2025-01-15,2025-01-15,,1
+12001,false,2025-04-15T09:00:00,,2025-04-15T09:00:00,USD,,PO-12001,PO-12001,2025-05-15,1,,ZorbSense inventory Apr restock,10,,,,Closed,0,,10520,0,2025-04-15,2025-04-15T09:00:00,40,201
+12002,false,2025-06-15T09:00:00,,2025-06-15T09:00:00,USD,,PO-12002,PO-12002,2025-07-15,1,,ZorbSense inventory Jun restock,10,,,,Closed,0,,18560,0,2025-06-15,2025-06-15T09:00:00,40,201
+12003,false,2025-08-15T09:00:00,,2025-08-15T09:00:00,USD,,PO-12003,PO-12003,2025-09-14,1,,ZorbSense inventory Aug restock + Smart Lock Kit intro,10,,,,Closed,0,,27820,0,2025-08-15,2025-08-15T09:00:00,40,201
+12004,false,2025-10-15T09:00:00,,2025-10-15T09:00:00,USD,,PO-12004,PO-12004,2025-11-14,1,,ZorbSense Q4 restock — premium pricing,10,,,,Open,0,,55000,0,2025-10-15,2025-10-15T09:00:00,40,201

@@ -51,9 +51,9 @@ vars:
     quickbooks_refund_receipt_line_identifier: "refund_receipt_line_data"
     quickbooks_refund_receipt_identifier: "refund_receipt_data"
     quickbooks_refund_receipt_tax_line_identifier: "refund_receipt_tax_line_data"
-    quickbooks_bill_tax_line_identifier: "bill_tax_line_data"
-    quickbooks_credit_memo_tax_line_identifier: "credit_memo_tax_line_data"
-    quickbooks_deposit_tax_line_identifier: "deposit_tax_line_data"
+    quickbooks_bill_tax_line_detail_identifier: "bill_tax_line_data"
+    quickbooks_credit_memo_tax_line_detail_identifier: "credit_memo_tax_line_data"
+    quickbooks_deposit_tax_line_detail_identifier: "deposit_tax_line_data"
     quickbooks_estimate_tax_line_identifier: "estimate_tax_line_data"
     quickbooks_sales_receipt_line_identifier: "sales_receipt_line_data"
     quickbooks_sales_receipt_identifier: "sales_receipt_data"
@@ -105,6 +105,10 @@ seeds:
     customer_data:
       +column_types:
         _fivetran_deleted: "{{ 'boolean' if target.type in ('snowflake', 'spark', 'databricks') else 'bool' }}"
+        website: "{{ 'varchar(100)' if target.type in ('redshift', 'postgres') else 'string' }}"
+    item_data:
+      +column_types:
+        description: "{{ 'varchar(100)' if target.type in ('redshift', 'postgres') else 'string' }}"
     deposit_data:
       +column_types:
         transaction_date: date
@@ -214,10 +218,23 @@ seeds:
     transfer_data:
       +column_types:
         transaction_date: date
+    journal_entry_line_data:
+      +column_types:
+        description: "{{ 'varchar(100)' if target.type in ('redshift', 'postgres') else 'string' }}"
+    purchase_order_line_data:
+      +column_types:
+        description: "{{ 'varchar(100)' if target.type in ('redshift', 'postgres') else 'string' }}"
+    refund_receipt_line_data:
+      +column_types:
+        description: "{{ 'varchar(100)' if target.type in ('redshift', 'postgres') else 'string' }}"
+    sales_receipt_line_data:
+      +column_types:
+        description: "{{ 'varchar(100)' if target.type in ('redshift', 'postgres') else 'string' }}"
     vendor_credit_line_data:
       +column_types:
         item_expense_billable_status: "{{ 'varchar(100)' if target.type in ('redshift', 'postgres') else 'string' }}"
         account_expense_billable_status: "{{ 'varchar(100)' if target.type in ('redshift', 'postgres') else 'string' }}"
+        description: "{{ 'varchar(100)' if target.type in ('redshift', 'postgres') else 'string' }}"
     vendor_credit_data:
       +column_types:
         transaction_date: date

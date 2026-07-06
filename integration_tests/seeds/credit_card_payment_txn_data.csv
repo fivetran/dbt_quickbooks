@@ -1,2 +1,2 @@
 id,amount,bank_account_id,credit_card_account_id,created_at,updated_at,currency_id,transaction_date,exchange_rate,_fivetran_deleted,_fivetran_synced
-1,350,1,,2025-01-15T09:00:00,2025-01-15T09:00:00,USD,2025-01-15,1,FALSE,2025-01-06T09:00:00
+26001,0,,11,2025-06-30T09:00:00,2025-06-30T09:00:00,USD,2025-06-30,1,FALSE,2025-06-30T09:00:00
