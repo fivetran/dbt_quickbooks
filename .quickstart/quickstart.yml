@@ -134,6 +134,6 @@ supported_vars:
 
   using_exchange_gain_loss:
     type: boolean
-    value: true
-    description: "When enabled, the package generates exchange gain/loss entries for foreign currency bill payments and customer payments where the exchange rate differs between the original transaction and the payment. Disable if your QuickBooks data does not include multi-currency transactions or if you do not have an Exchange Gain or Loss account configured."
+    value: false
+    description: "Enable to generate exchange gain/loss entries for foreign currency bill payments and customer payments where the exchange rate differs between the original transaction and the settlement. Requires multi-currency transactions and an Exchange Gain or Loss account configured in QuickBooks."
     display_name: "Generate Exchange Gain/Loss Entries"

@@ -187,9 +187,14 @@ vars:
 
 #### Enabling Exchange Gain/Loss Entries
 
-By default, the package does not generate exchange gain/loss entries. If your business uses multi-currency transactions and you have an `ExchangeGainOrLoss` account configured in QuickBooks, you can enable this feature to capture the currency impact when a foreign currency transaction is settled at a different exchange rate than when it was originally recorded.
+By default, the package does not generate exchange gain/loss entries. Enable this feature if both of the following apply to your QuickBooks data:
 
-Enable this feature by setting the following variable in your `dbt_project.yml`:
+- Your business records transactions in multiple currencies.
+- You have an account with a subtype of `ExchangeGainOrLoss` configured in QuickBooks.
+
+When enabled, the package adds realized gain/loss entries to your general ledger to capture the currency impact when a foreign currency transaction is settled at a different exchange rate than when it was originally recorded.
+
+To enable, add the following variable to your `dbt_project.yml`:
 
 ```yml
 vars:

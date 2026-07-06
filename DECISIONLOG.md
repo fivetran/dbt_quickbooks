@@ -88,6 +88,8 @@ An alternative considered was to credit/debit AR/AP at the payment rate and add 
 
 Using the original rate clears AR/AP at book value with a single entry, and the exchange gain/loss entry stands alone as income or expense recognition, which is consistent with standard accrual accounting.
 
+The `using_exchange_gain_loss` variable defaults to `false` because this feature requires a specific QuickBooks account configuration (a subtype of `ExchangeGainOrLoss`) and is only relevant for businesses with multi-currency transactions. Enabling it without that setup would cause model errors or produce no meaningful data. Enable it by setting `using_exchange_gain_loss: true` in your `dbt_project.yml`. See the [README](https://github.com/fivetran/dbt_quickbooks/tree/main#enabling-exchange-gainloss-entries) for details.
+
 ## Designating a single Accounts Payable/Accounts Receivable account
 The `int_quickbooks__bill_payment_double_entry` model requires a single account designated as 'Accounts Payable' per currency. Similarly, the `int_quickbooks__invoice_double_entry`, `int_quickbooks__credit_memo_double_entry`, and `int_quickbooks__payment_double_entry` models require a single account designated as 'Accounts Receivable' per currency. This aligns with QuickBooks Online requirements and accounting best practices. If you have multiple accounts designated as 'Accounts Payable' or 'Accounts Receivable' in the `account_type` field, all accounts will be brought into the join, causing data fanout. See example [join logic](https://github.com/fivetran/dbt_quickbooks/blob/main/models/double_entry_transactions/int_quickbooks__bill_payment_double_entry.sql#L57) here. 
 
