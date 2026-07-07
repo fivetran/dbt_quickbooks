@@ -139,7 +139,7 @@ vars:
 ```
 
 #### Enabling Tax Lines
-**Step 1 — Enable tax lines.** Tax line data is disabled by default to protect the accuracy of your financial reporting.  Set `quickbooks__tax_lines_enabled` to `true` in your `dbt_project.yml`. No individual tax line variable has any effect without this.
+**Step 1 — Enable tax lines.** Tax line data is disabled by default to protect the accuracy of your financial reporting. Set `quickbooks__tax_lines_enabled` to `true` in your `dbt_project.yml`. No individual tax line variable has any effect without this.
 
 ```yml
 vars:

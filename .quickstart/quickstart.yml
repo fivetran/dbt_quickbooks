@@ -148,5 +148,5 @@ supported_vars:
   quickbooks__tax_lines_enabled:
     type: boolean
     value: false
-    description: "Master toggle to enable tax line processing across all transaction types. Sync individual tax line tables once enabled to include tax line data in your models. Disabled by default."
+    description: "Toggle to enable tax lines, then sync individual tax line tables to include them in your models."
     display_name: "Enable Tax Lines"
