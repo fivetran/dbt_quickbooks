@@ -5,7 +5,7 @@ Table that creates a debit record to accounts payable and a credit record to the
 --To disable this model, set the using_bill_payment variable within your dbt_project.yml file to False.
 {{ config(enabled=var('using_bill', True)) }}
 
-{%- set using_exchange_gain_loss = var('using_exchange_gain_loss', False) %}
+{%- set using_exchange_gain_loss = var('quickbooks__exchange_gain_loss_enabled', False) %}
 
 with bill_payments as (
 

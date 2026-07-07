@@ -5,7 +5,7 @@ Table that creates a debit record to either undeposited funds or a specified cas
 --To disable this model, set the using_payment variable within your dbt_project.yml file to False.
 {{ config(enabled=var('using_payment', True)) }}
 
-{%- set using_exchange_gain_loss = var('using_exchange_gain_loss', False) %}
+{%- set using_exchange_gain_loss = var('quickbooks__exchange_gain_loss_enabled', False) %}
 {%- set using_invoice = var('using_invoice', False) %}
 
 with payments as (

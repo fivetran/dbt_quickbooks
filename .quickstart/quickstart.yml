@@ -56,20 +56,27 @@ table_variables:
     - purchase_order_line
     - purchase_order_linked_txn
     - purchase_order
-
-  _fivetran_quickstart_invoice_tax_line:
+  using_bill_tax_line:
+    - bill_tax_line_detail
+  using_estimate_tax_line:
+    - estimate_tax_line
+  using_credit_memo_tax_line:
+    - credit_memo_tax_line_detail
+  using_deposit_tax_line:
+    - deposit_tax_line_detail
+  using_invoice_tax_line:
     - invoice_tax_line
-  _fivetran_quickstart_journal_entry_tax_line:
+  using_journal_entry_tax_line:
     - journal_entry_tax_line
-  _fivetran_quickstart_purchase_tax_line:
+  using_purchase_tax_line:
     - purchase_tax_line
-  _fivetran_quickstart_refund_receipt_tax_line:
+  using_refund_receipt_tax_line:
     - refund_receipt_tax_line
-  _fivetran_quickstart_sales_receipt_tax_line:
+  using_sales_receipt_tax_line:
     - sales_receipt_tax_line
-  _fivetran_quickstart_tax_agency:
+  using_tax_agency:
     - tax_agency
-  _fivetran_quickstart_tax_rate:
+  using_tax_rate:
     - tax_rate
 
 destination_configurations:
@@ -132,8 +139,14 @@ supported_vars:
     description: "The primary reporting currency, use the same 3-letter ISO currency code (e.g., USD, EUR, GBP, CAD) that appears in your QuickBooks `currency_id` field. Relevant for organizations with multiple currencies, this field defaults to an empty string; when not set, the package applies exchange rate conversions to all transactions, regardless of currency."
     display_name: "Home Currency"
 
-  using_exchange_gain_loss:
+  quickbooks__exchange_gain_loss_enabled:
     type: boolean
     value: false
     description: "Enable to generate exchange gain/loss entries for foreign currency bill payments and customer payments where the exchange rate differs between the original transaction and the settlement. Requires multi-currency transactions and an Exchange Gain or Loss account configured in QuickBooks."
-    display_name: "Generate Exchange Gain/Loss Entries"
+    display_name: "Enable Exchange Gain/Loss Entries"
+
+  quickbooks__tax_lines_enabled:
+    type: boolean
+    value: false
+    description: "Master toggle to enable tax line processing across all transaction types. Sync individual tax line tables once enabled to include tax line data in your models. Disabled by default."
+    display_name: "Enable Tax Lines"

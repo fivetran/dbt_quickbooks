@@ -1,2 +1,47 @@
 id,_fivetran_synced,city,country,country_sub_division_code,latitude,line_1,line_2,line_3,line_4,line_5,longitude,postal_code
-3,2020-08-14 13:46:58,San Francisco,USA,CA,,f4334fdfa1c728eae375fe781e2e2d9d,54ca312abad29c6065bb0f4e0d96f7cc,,,,,90000
+1,2025-01-02T09:00:00,Denver,US,CO,,2201 N Elmfield Ave,,,,,, 80202
+2,2025-01-02T09:00:00,Denver,US,CO,,845 Winslow Blvd,,,,,, 80203
+3,2025-01-02T09:00:00,Denver,US,CO,,1100 Harton Way,,,,,, 80204
+4,2025-01-02T09:00:00,Aurora,US,CO,,3320 Lynfield Ct,,,,,, 80010
+5,2025-01-02T09:00:00,Denver,US,CO,,560 Cobalt Dr,,,,,, 80205
+6,2025-01-02T09:00:00,Denver,US,CO,,44 Stonebridge Plaza,,,,,, 80206
+7,2025-01-02T09:00:00,Littleton,US,CO,,910 Kessler Lane,,,,,, 80120
+8,2025-01-02T09:00:00,Denver,US,CO,,2780 Morrow Terr,,,,,, 80207
+9,2025-01-02T09:00:00,Englewood,US,CO,,615 Ashford Rd,,,,,, 80110
+10,2025-01-02T09:00:00,Denver,US,CO,,3900 Trenton St,,,,,, 80208
+11,2025-01-02T09:00:00,Denver,US,CO,,1255 Fairview Commons,,,,,, 80209
+12,2025-01-02T09:00:00,Thornton,US,CO,,780 Ridgecroft Dr,,,,,, 80229
+13,2025-01-02T09:00:00,Denver,US,CO,,2450 Holbrook Pkwy,,,,,, 80210
+14,2025-01-02T09:00:00,Denver,US,CO,,365 Pelham Row,,,,,, 80211
+15,2025-01-02T09:00:00,Colorado Springs,US,CO,,1800 Kelverly Springs Blvd,,,,,, 80901
+16,2025-01-02T09:00:00,Fort Collins,US,CO,,3100 Dunmoor Ave,,,,,, 80521
+17,2025-01-02T09:00:00,Denver,US,CO,,5500 Ozbal Tower Rd,,,,,, 80212
+18,2025-01-02T09:00:00,Denver,US,CO,,220 Blottwood Commons,,,,,, 80213
+19,2025-01-02T09:00:00,Denver,US,CO,,940 Calloway Real Estate Ct,,,,,, 80214
+20,2025-01-02T09:00:00,Denver,US,CO,,1720 Gentry Blvd,,,,,, 80215
+21,2025-01-02T09:00:00,Denver,US,CO,,3340 Marsden Circle,,,,,, 80216
+22,2025-01-02T09:00:00,Denver,US,CO,,640 Whitlock Lane,,,,,, 80217
+23,2025-01-02T09:00:00,Boulder,US,CO,,2110 Berwick Dr,,,,,, 80301
+24,2025-01-02T09:00:00,Denver,US,CO,,855 Caldwell Ct,,,,,, 80218
+25,2025-01-02T09:00:00,Denver,US,CO,,3400 Shelby Ave,,,,,, 80219
+26,2025-01-02T09:00:00,Denver,US,CO,,1245 Foxmoor Way,,,,,, 80220
+27,2025-01-02T09:00:00,Denver,US,CO,,490 Larkin Plaza,,,,,, 80221
+28,2025-01-02T09:00:00,Denver,US,CO,,2630 Penrose Terr,,,,,, 80222
+29,2025-01-02T09:00:00,Denver,US,CO,,1110 Thorngate Blvd,,,,,, 80223
+30,2025-01-02T09:00:00,Denver,US,CO,,3775 Westbrook Rd,,,,,, 80224
+31,2025-01-02T09:00:00,Denver,US,CO,,680 Vrinn Holdings Ave,,,,,, 80225
+32,2025-01-02T09:00:00,Denver,US,CO,,1480 Dunsley Pkwy,,,,,, 80226
+33,2025-01-02T09:00:00,Denver,US,CO,,2960 Harwick Commons,,,,,, 80227
+34,2025-01-02T09:00:00,Denver,US,CO,,725 Norgate Blvd,,,,,, 80228
+35,2025-01-02T09:00:00,Denver,US,CO,,9900 Truvell Capital Tower,,,,,, 80230
+36,2025-01-02T09:00:00,Denver,US,CO,,4444 Pinnacle Asset Way,,,,,, 80231
+37,2025-01-02T09:00:00,Chicago,US,IL,,7800 Sextant Commercial Plz,,,,,, 60601
+38,2025-01-02T09:00:00,Dallas,US,TX,,5500 Harlow Portfolio Dr,,,,,, 75201
+39,2025-01-02T09:00:00,Atlanta,US,GA,,3200 Meadow Ridge Pkwy,,,,,, 30301
+40,2025-01-02T09:00:00,Tempe,US,AZ,,1250 Veltrek Industrial Blvd,,,,,, 85281
+41,2025-01-02T09:00:00,Seattle,US,WA,,4400 Stratum Cloud Campus,,,,,, 98101
+42,2025-01-02T09:00:00,Austin,US,TX,,800 Axient API Center,,,,,, 78701
+43,2025-01-02T09:00:00,Denver,US,CO,,2100 Westmoor Tower,,,,,, 80202
+44,2025-01-02T09:00:00,Denver,US,CO,,555 Brixton Tech Hub,,,,,, 80203
+45,2025-01-02T09:00:00,Denver,US,CO,,1900 Quarrow Talent Plz,,,,,, 80204
+46,2025-01-02T09:00:00,Denver,US,CO,,3300 Duskfield Creative Blvd,,,,,, 80205

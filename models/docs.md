@@ -54,6 +54,10 @@ Table containing payment transactions bills that the business owner receives fro
 Table containing AP transactions representing a request-for-payment from a third party for goods/services rendered, received, or both.
 {% enddocs %}
 
+{% docs bill_tax_line_table %}
+Table containing line-level tax entries associated with bills.
+{% enddocs %}
+
 {% docs bundle_item_table %}
 Mapping table containing all bundle and item combinations.
 {% enddocs %}
@@ -72,6 +76,10 @@ Table containing individual records of credit memos.
 
 {% docs credit_memo_table %}
 Table containing credit memo records. A credit memo is a refund or credit of payment or part of a payment for goods or services that have been sold.
+{% enddocs %}
+
+{% docs credit_memo_tax_line_table %}
+Table containing line-level tax entries associated with credit memos.
 {% enddocs %}
 
 {% docs customer_table %}
@@ -94,12 +102,20 @@ Table containing individual line items comprising the deposit.
 Table containing records of transactions that record on or more deposits of a customer payment or a new direct deposit.
 {% enddocs %}
 
+{% docs deposit_tax_line_table %}
+Table containing line-level tax entries associated with deposits.
+{% enddocs %}
+
 {% docs estimate_line_table %}
 Table containing line item records of an estimate.
 {% enddocs %}
 
 {% docs estimate_table %}
 Table containing estimates. An estimate represents a proposal for a financial transaction from a business to a customer for goods or services proposed to be sold, including proposed pricing.
+{% enddocs %}
+
+{% docs estimate_tax_line_table %}
+Table containing line-level tax entries associated with estimates.
 {% enddocs %}
 
 {% docs invoice_line_bundle_table %}

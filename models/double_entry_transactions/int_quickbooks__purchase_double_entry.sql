@@ -1,6 +1,7 @@
 /*
 Table that creates a debit record to a specified expense account and a credit record to the payment account.
 */
+
 with purchases as (
 
     select *
@@ -13,7 +14,7 @@ purchase_lines as (
     from {{ ref('stg_quickbooks__purchase_line') }}
 ),
 
-{% if var('using_purchase_tax_line', False) %}
+{% if var('quickbooks__tax_lines_enabled', False) and var('using_purchase_tax_line', False) %}
 
 purchase_tax_lines as (
 
@@ -25,6 +26,7 @@ purchase_tax_lines as (
         tax_percent
     from {{ ref('stg_quickbooks__purchase_tax_line') }}
 ),
+
 {% endif %}
 
 items as (
@@ -72,7 +74,7 @@ purchase_join as (
         on purchase_lines.item_expense_item_id = items.item_id
         and purchase_lines.source_relation = items.source_relation
 
-    {% if var('using_purchase_tax_line', False) %}
+    {% if var('quickbooks__tax_lines_enabled', False) and var('using_purchase_tax_line', False) %}
     union all
 
     select

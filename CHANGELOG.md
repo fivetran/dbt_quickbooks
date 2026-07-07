@@ -1,14 +1,23 @@
 # dbt_quickbooks v1.9.0
-[PR #215](https://github.com/fivetran/dbt_quickbooks/pull/215) includes the following updates:
+[PR #213](https://github.com/fivetran/dbt_quickbooks/pull/213) includes the following updates:
 
 ## Schema/Data Change
-**2 total changes • 0 possible breaking changes**
+**9 total changes • 1 possible breaking change**
 
 | Data Model(s) | Change type | Old | New | Notes |
 | ------------- | ----------- | --- | --- | ----- |
-| `quickbooks__general_ledger`<br>`quickbooks__general_ledger_by_period` | New records | — | Exchange gain/loss entries | |
+| `quickbooks__general_ledger` | Potential new rows | No tax lines | Tax lines now available | When tax lines are enabled, new tax line rows post to the tax liability account. Row counts will increase for users enabling any of these variables. |
+| `stg_quickbooks__bill_tax_line`<br>`stg_quickbooks__bill_tax_line_tmp` | New models | — | — | Enabled via `using_bill_tax_line`. Surfaces tax line detail records for bills. |
+| `stg_quickbooks__credit_memo_tax_line`<br>`stg_quickbooks__credit_memo_tax_line_tmp` | New models | — | — | Enabled via `using_credit_memo_tax_line`. Surfaces tax line detail records for credit memos. |
+| `stg_quickbooks__deposit_tax_line`<br>`stg_quickbooks__deposit_tax_line_tmp` | New models | — | — | Enabled via `using_deposit_tax_line`. Surfaces tax line detail records for deposits. |
+| `stg_quickbooks__estimate_tax_line`<br>`stg_quickbooks__estimate_tax_line_tmp` | New models | — | — | Enabled via `using_estimate_tax_line`. Surfaces tax line detail records for estimates. |
 
-## Feature Update
+## Feature Updates
+### Tax Lines
+- Introduces the `quickbooks__tax_lines_enabled` variable as a master toggle for all tax line features. Set it to `true` before enabling any individual tax line variables. Defaults to `false` to prevent unintended tax line model compilation for users who haven't configured the required source tables. 
+- Individual tax line tables will now be enabled in Quickstart if the `quickbooks__tax_lines_enabled` variable is set to true and the tables are selected in the Fivetran UI. In dbt Core, see the [Enabling Tax Lines](https://github.com/fivetran/dbt_quickbooks/tree/main#enabling-tax-lines) section of the README for details.
+
+### Exchange Gain/Loss
 - Adds the ability to realize exchange gain/loss entries to `int_quickbooks__bill_payment_double_entry` and `int_quickbooks__payment_double_entry`, which populate in `quickbooks__general_ledger` and quickbooks__general_ledger_by_period`, to capture the currency impact when a foreign currency transaction is settled at a different exchange rate than when it was originally recorded. Requires an account with a subtype of `ExchangeGainOrLoss` in QuickBooks to generate entries.
 - Adds the `using_exchange_gain_loss` variable (default `false`) to opt into exchange gain/loss entry generation. Enable this if your QuickBooks data includes multi-currency transactions and you have an `ExchangeGainOrLoss` account configured. See the [README](https://github.com/fivetran/dbt_quickbooks/tree/main#enabling-exchange-gainloss-entries) for configuration details.
 
