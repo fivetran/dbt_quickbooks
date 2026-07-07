@@ -67,18 +67,18 @@ vars:
 
   # For validation testing.  
   # This below vars configuration is needed for the `general_ledger_amounts_match` macro.
-  # using_credit_card_payment_txn: true # @docs-include
-  # using_purchase_order: true # @docs-include
-  # using_invoice_tax_line: true # @docs-include 
-  # using_journal_entry_tax_line: true # @docs-include 
-  # using_purchase_tax_line: true # @docs-include 
-  # using_refund_receipt_tax_line: true # @docs-include 
-  # using_sales_receipt_tax_line: true # @docs-include
-  # using_bill_tax_line: true # @docs-include
-  # using_credit_memo_tax_line: true # @docs-include
-  # using_deposit_tax_line: true # @docs-include
-  # using_tax_agency: true # @docs-include
-  # using_tax_rate: true # @docs-include
+  using_credit_card_payment_txn: true # @docs-include
+  using_purchase_order: true # @docs-include
+  using_invoice_tax_line: true # @docs-include 
+  using_journal_entry_tax_line: true # @docs-include 
+  using_purchase_tax_line: true # @docs-include 
+  using_refund_receipt_tax_line: true # @docs-include 
+  using_sales_receipt_tax_line: true # @docs-include
+  using_bill_tax_line: true # @docs-include
+  using_credit_memo_tax_line: true # @docs-include
+  using_deposit_tax_line: true # @docs-include
+  using_tax_agency: true # @docs-include
+  using_tax_rate: true # @docs-include
 
 seeds:
   +docs:
@@ -102,13 +102,6 @@ seeds:
     credit_memo_data:
       +column_types:
         transaction_date: date
-    customer_data:
-      +column_types:
-        _fivetran_deleted: "{{ 'boolean' if target.type in ('snowflake', 'spark', 'databricks') else 'bool' }}"
-        website: "{{ 'varchar(100)' if target.type in ('redshift', 'postgres') else 'string' }}"
-    item_data:
-      +column_types:
-        description: "{{ 'varchar(100)' if target.type in ('redshift', 'postgres') else 'string' }}"
     deposit_data:
       +column_types:
         transaction_date: date
@@ -120,6 +113,16 @@ seeds:
       +column_types:
         due_date: date
         transaction_date: date
+    invoice_line_data:
+      +column_types:
+        amount: float
+        bundle_quantity: float
+        discount_discount_percent: float
+        quantity: float
+        sales_item_discount_amount: float
+        sales_item_discount_rate: float
+        sales_item_quantity: float
+        sales_item_unit_price: float
     invoice_data:
       +column_types:
         due_date: date
@@ -218,29 +221,17 @@ seeds:
     transfer_data:
       +column_types:
         transaction_date: date
-    journal_entry_line_data:
-      +column_types:
-        description: "{{ 'varchar(100)' if target.type in ('redshift', 'postgres') else 'string' }}"
-    purchase_order_line_data:
-      +column_types:
-        description: "{{ 'varchar(100)' if target.type in ('redshift', 'postgres') else 'string' }}"
-    refund_receipt_line_data:
-      +column_types:
-        description: "{{ 'varchar(100)' if target.type in ('redshift', 'postgres') else 'string' }}"
-    sales_receipt_line_data:
-      +column_types:
-        description: "{{ 'varchar(100)' if target.type in ('redshift', 'postgres') else 'string' }}"
     vendor_credit_line_data:
       +column_types:
         item_expense_billable_status: "{{ 'varchar(100)' if target.type in ('redshift', 'postgres') else 'string' }}"
         account_expense_billable_status: "{{ 'varchar(100)' if target.type in ('redshift', 'postgres') else 'string' }}"
-        description: "{{ 'varchar(100)' if target.type in ('redshift', 'postgres') else 'string' }}"
     vendor_credit_data:
       +column_types:
         transaction_date: date
     vendor_data:
       +column_types:
         id: "{{ 'int64' if target.type == 'bigquery' else 'bigint' }}"
+        web_url: "{{ 'varchar(100)' if target.type in ('redshift', 'postgres') else 'string' }}"
 
 clean-targets:
 - target
