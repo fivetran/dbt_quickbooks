@@ -190,7 +190,7 @@ vars:
 By default, the package does not generate exchange gain/loss entries. Enable this feature if both of the following apply to your QuickBooks data:
 
 - Your business records transactions in multiple currencies.
-- You have an account with a subtype of `ExchangeGainOrLoss` configured in QuickBooks.
+- You have an active account with a subtype of `ExchangeGainOrLoss` configured in QuickBooks.
 
 When enabled, the package adds realized gain/loss entries to your general ledger to capture the currency impact when a foreign currency transaction is settled at a different exchange rate than when it was originally recorded.
 

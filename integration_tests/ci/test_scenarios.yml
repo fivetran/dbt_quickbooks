@@ -44,9 +44,9 @@ test_scenarios:
       using_customer_type: false
     include_incremental: false
 
-  - name: "Exchange Gain/Loss disabled"
+  - name: "Exchange Gain/Loss enabled"
     vars:
-      using_exchange_gain_loss: false
+      using_exchange_gain_loss: true
     include_incremental: false
 
   - name: "MDLS"

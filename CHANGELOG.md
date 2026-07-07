@@ -1,5 +1,5 @@
 # dbt_quickbooks v1.9.0
-[PR #212](https://github.com/fivetran/dbt_quickbooks/pull/212) includes the following updates:
+[PR #215](https://github.com/fivetran/dbt_quickbooks/pull/215) includes the following updates:
 
 ## Schema/Data Change
 **2 total changes • 0 possible breaking changes**
@@ -9,7 +9,7 @@
 | `quickbooks__general_ledger`<br>`quickbooks__general_ledger_by_period` | New records | — | Exchange gain/loss entries | |
 
 ## Feature Update
-- Adds realized exchange gain/loss entries to `int_quickbooks__bill_payment_double_entry` and `int_quickbooks__payment_double_entry` to capture the currency impact when a foreign currency transaction is settled at a different exchange rate than when it was originally recorded. Requires an account with a subtype of `ExchangeGainOrLoss` in QuickBooks to generate entries.
+- Adds the ability to realize exchange gain/loss entries to `int_quickbooks__bill_payment_double_entry` and `int_quickbooks__payment_double_entry`, which populate in `quickbooks__general_ledger` and quickbooks__general_ledger_by_period`, to capture the currency impact when a foreign currency transaction is settled at a different exchange rate than when it was originally recorded. Requires an account with a subtype of `ExchangeGainOrLoss` in QuickBooks to generate entries.
 - Adds the `using_exchange_gain_loss` variable (default `false`) to opt into exchange gain/loss entry generation. Enable this if your QuickBooks data includes multi-currency transactions and you have an `ExchangeGainOrLoss` account configured. See the [README](https://github.com/fivetran/dbt_quickbooks/tree/main#enabling-exchange-gainloss-entries) for configuration details.
 
 # dbt_quickbooks v1.9.0-a1

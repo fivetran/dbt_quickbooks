@@ -78,9 +78,9 @@ If neither of those accounts are available, the `quickbooks__sales_tax_account_r
 This behavior pertains to the invoice, journal entry, refund receipt, and sales receipt tax line entries. (Purchase tax lines will be associated with their purchase accounts).
 
 ## Exchange Gain/Loss: Clearing AR/AP at the Original Transaction Rate
-When a foreign currency payment or bill payment is settled at a different exchange rate than the original invoice or bill, we generate exchange gain/loss entries in `int_quickbooks__payment_double_entry` and `int_quickbooks__bill_payment_double_entry`.
+When `using_exchange_gain_loss` is set to `true`, exchange gain/loss entries are generated in `int_quickbooks__payment_double_entry` and `int_quickbooks__bill_payment_double_entry` for foreign currency payments and bill payments settled at a different exchange rate than the original invoice or bill. This behavior is disabled by default.
 
-The AR credit (payment model) and AP debit (bill payment model) use the **original invoice/bill exchange rate** to compute `converted_amount`, not the payment exchange rate. The difference between the payment rate and the original rate is posted separately to the Exchange Gain or Loss account. This mirrors QuickBooks's own behavior.
+When enabled, the AR credit (payment model) and AP debit (bill payment model) use the **original invoice/bill exchange rate** to compute `converted_amount`, not the payment exchange rate. The difference between the payment rate and the original rate is posted separately to the Exchange Gain or Loss account. This mirrors QuickBooks's own behavior.
 
 An alternative considered was to credit/debit AR/AP at the payment rate and add a secondary offsetting AR/AP entry to walk back the difference. This was rejected because:
 - It produced a positive `adjusted_converted_amount` for the AR/AP offset entry, making the general ledger appear unbalanced to end users (both the gain/loss entry and its offset showed the same sign).
