@@ -32,10 +32,8 @@ id,_fivetran_synced,account_number,account_sub_type,account_type,active,balance,
 93001,2026-01-15 00:00:00,9301,ExchangeGainOrLoss,Other Income,TRUE,0,0,Revenue,2026-01-15 00:00:00,USD,Exchange gain or loss account,Exchange Gain or Loss,Exchange Gain or Loss,,FALSE,1,,2026-01-15 00:00:00,FALSE
 93002,2026-01-15 00:00:00,9302,AccountsPayable,Accounts Payable,TRUE,0,0,Liability,2026-01-15 00:00:00,EUR,EUR accounts payable account,Accounts Payable EUR,Accounts Payable EUR,,FALSE,1,,2026-01-15 00:00:00,FALSE
 1,2025-01-02T08:00:00,1010,Checking,Bank,TRUE,0,0,Asset,2025-01-02T08:00:00,USD,,Checking Account,Checking Account,,FALSE,0,,2025-01-02T08:00:00,FALSE
-2,2025-01-02T08:00:00,1200,AccountsReceivable,Accounts Receivable,TRUE,0,0,Asset,2025-01-02T08:00:00,USD,,Accounts Receivable,Accounts Receivable,,FALSE,0,,2025-01-02T08:00:00,FALSE
 3,2025-01-02T08:00:00,1300,PrepaidExpenses,Other Current Asset,TRUE,0,0,Asset,2025-01-02T08:00:00,USD,,Prepaid Expenses,Prepaid Expenses,,FALSE,0,,2025-01-02T08:00:00,FALSE
 4,2025-01-02T08:00:00,1400,Inventory,Other Current Asset,TRUE,0,0,Asset,2025-01-02T08:00:00,USD,,ZorbSense Inventory,ZorbSense Inventory,,FALSE,0,,2025-01-02T08:00:00,FALSE
-10,2025-01-02T08:00:00,2000,AccountsPayable,Accounts Payable,TRUE,0,0,Liability,2025-01-02T08:00:00,USD,,Accounts Payable,Accounts Payable,,FALSE,0,,2025-01-02T08:00:00,FALSE
 11,2025-01-02T08:00:00,2100,CreditCard,Credit Card,TRUE,0,0,Liability,2025-01-02T08:00:00,USD,,Credit Card Payable,Credit Card Payable,,FALSE,0,,2025-01-02T08:00:00,FALSE
 12,2025-01-02T08:00:00,2200,DeferredRevenue,Other Current Liability,TRUE,0,0,Liability,2025-01-02T08:00:00,USD,,Deferred Revenue,Deferred Revenue,,FALSE,0,,2025-01-02T08:00:00,FALSE
 20,2025-01-02T08:00:00,3000,OpeningBalanceEquity,Equity,TRUE,0,0,Equity,2025-01-02T08:00:00,USD,,Paid-In Capital,Paid-In Capital,,FALSE,0,,2025-01-02T08:00:00,FALSE
