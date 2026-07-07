@@ -43,13 +43,13 @@ id,_fivetran_synced,account_number,account_sub_type,account_type,active,balance,
 30,2025-01-02T08:00:00,4000,ServiceFeeIncome,Income,TRUE,0,0,Revenue,2025-01-02T08:00:00,USD,,Services Revenue,Services Revenue,,FALSE,0,,2025-01-02T08:00:00,FALSE
 31,2025-01-02T08:00:00,4100,ServiceFeeIncome,Income,TRUE,0,0,Revenue,2025-01-02T08:00:00,USD,,Professional Services Revenue,Professional Services Revenue,,FALSE,0,,2025-01-02T08:00:00,FALSE
 32,2025-01-02T08:00:00,4200,SalesOfProductIncome,Income,TRUE,0,0,Revenue,2025-01-02T08:00:00,USD,,Hardware Sales Revenue,Hardware Sales Revenue,,FALSE,0,,2025-01-02T08:00:00,FALSE
-40,2025-01-02T08:00:00,5000,SuppliesMaterialsCogs,Cost of Goods Sold,TRUE,0,0,Expense,2025-01-02T08:00:00,USD,,Hosting & Infrastructure,Hosting & Infrastructure,,FALSE,0,,2025-01-02T08:00:00,FALSE
+93003,2025-01-02T08:00:00,5000,SuppliesMaterialsCogs,Cost of Goods Sold,TRUE,0,0,Expense,2025-01-02T08:00:00,USD,,Hosting & Infrastructure,Hosting & Infrastructure,,FALSE,0,,2025-01-02T08:00:00,FALSE
 41,2025-01-02T08:00:00,5100,SuppliesMaterialsCogs,Cost of Goods Sold,TRUE,0,0,Expense,2025-01-02T08:00:00,USD,,Third-Party API Costs,Third-Party API Costs,,FALSE,0,,2025-01-02T08:00:00,FALSE
 42,2025-01-02T08:00:00,5200,SuppliesMaterialsCogs,Cost of Goods Sold,TRUE,0,0,Expense,2025-01-02T08:00:00,USD,,Hardware Cost of Goods Sold,Hardware Cost of Goods Sold,,FALSE,0,,2025-01-02T08:00:00,FALSE
 50,2025-01-02T08:00:00,6000,OtherMiscellaneousServiceCost,Expense,TRUE,0,0,Expense,2025-01-02T08:00:00,USD,,Salaries & Wages,Salaries & Wages,,FALSE,0,,2025-01-02T08:00:00,FALSE
-51,2025-01-02T08:00:00,6100,OtherMiscellaneousServiceCost,Expense,TRUE,0,0,Expense,2025-01-02T08:00:00,USD,,Contractor Fees,Contractor Fees,,FALSE,0,,2025-01-02T08:00:00,FALSE
-52,2025-01-02T08:00:00,6200,AdvertisingPromotional,Expense,TRUE,0,0,Expense,2025-01-02T08:00:00,USD,,Sales & Marketing,Sales & Marketing,,FALSE,0,,2025-01-02T08:00:00,FALSE
+93004,2025-01-02T08:00:00,6100,OtherMiscellaneousServiceCost,Expense,TRUE,0,0,Expense,2025-01-02T08:00:00,USD,,Contractor Fees,Contractor Fees,,FALSE,0,,2025-01-02T08:00:00,FALSE
+93005,2025-01-02T08:00:00,6200,AdvertisingPromotional,Expense,TRUE,0,0,Expense,2025-01-02T08:00:00,USD,,Sales & Marketing,Sales & Marketing,,FALSE,0,,2025-01-02T08:00:00,FALSE
 53,2025-01-02T08:00:00,6300,OtherMiscellaneousServiceCost,Expense,TRUE,0,0,Expense,2025-01-02T08:00:00,USD,,Software Subscriptions,Software Subscriptions,,FALSE,0,,2025-01-02T08:00:00,FALSE
-54,2025-01-02T08:00:00,6400,Rent,Expense,TRUE,0,0,Expense,2025-01-02T08:00:00,USD,,Office Rent & Facilities,Office Rent & Facilities,,FALSE,0,,2025-01-02T08:00:00,FALSE
+93006,2025-01-02T08:00:00,6400,Rent,Expense,TRUE,0,0,Expense,2025-01-02T08:00:00,USD,,Office Rent & Facilities,Office Rent & Facilities,,FALSE,0,,2025-01-02T08:00:00,FALSE
 55,2025-01-02T08:00:00,6500,Entertainment,Expense,TRUE,0,0,Expense,2025-01-02T08:00:00,USD,,Travel & Entertainment,Travel & Entertainment,,FALSE,0,,2025-01-02T08:00:00,FALSE
 56,2025-01-02T08:00:00,6600,OtherMiscellaneousServiceCost,Expense,TRUE,0,0,Expense,2025-01-02T08:00:00,USD,,Recruiting & HR,Recruiting & HR,,FALSE,0,,2025-01-02T08:00:00,FALSE
