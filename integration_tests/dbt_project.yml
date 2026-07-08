@@ -183,9 +183,6 @@ seeds:
         override_delta_amount: float
         tax_inclusive_amount: float
         tax_percent: float
-    customer_data:
-      +column_types:
-        website: "{{ 'varchar(100)' if target.type in ('redshift', 'postgres') else 'string' }}"
     deposit_tax_line_data:
       +column_types:
         amount: float
