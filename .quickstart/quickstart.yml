@@ -142,5 +142,5 @@ supported_vars:
   quickbooks__tax_lines_enabled:
     type: boolean
     value: false
-    description: "Toggle to enable tax lines, then sync individual tax line tables to include them in your models."
+    description: "Toggle to enable tax lines. Ensure individual tax line tables are syncing to include them in your models."
     display_name: "Enable Tax Lines"
