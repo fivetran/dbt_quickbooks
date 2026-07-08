@@ -2,7 +2,7 @@
 [PR #213](https://github.com/fivetran/dbt_quickbooks/pull/213) includes the following updates:
 
 ## Schema/Data Change
-**10 total changes • 1 possible breaking change**
+**12 total changes • 3 possible breaking changes**
 
 | Data Model(s) | Change type | Old | New | Notes |
 | ------------- | ----------- | --- | --- | ----- |
@@ -12,9 +12,8 @@
 | `stg_quickbooks__credit_memo_tax_line`<br>`stg_quickbooks__credit_memo_tax_line_tmp` | New models | — | — | Surfaces tax line detail records for credit memos. Enabled via `quickbooks__tax_lines_enabled: true` and `using_credit_memo_tax_line: true`. [See the README](https://github.com/fivetran/dbt_quickbooks/tree/main#enabling-tax-lines) for details. |
 | `stg_quickbooks__deposit_tax_line`<br>`stg_quickbooks__deposit_tax_line_tmp` | New models | — | — | Surfaces tax line detail records for deposits. Enabled via `quickbooks__tax_lines_enabled: true` and `using_deposit_tax_line: true`. [See the README](https://github.com/fivetran/dbt_quickbooks/tree/main#enabling-tax-lines) for details. |
 | `stg_quickbooks__estimate_tax_line`<br>`stg_quickbooks__estimate_tax_line_tmp` | New models | — | — | Surfaces tax line detail records for estimates. Enabled via `quickbooks__tax_lines_enabled: true` and `using_estimate_tax_line: true`. [See the README](https://github.com/fivetran/dbt_quickbooks/tree/main#enabling-tax-lines) for details. |
- 
-## Feature Update
-- Introduces the Enable Tax Lines variable in Quickstart as a master toggle to introduce tax lines to all customers. It defaults to `false` to prevent unintended model compilation if the required source tables are not configured. Set it to `true` and then sync the individual tax line tables for the tax transaction types you need. In dbt Core, see the [Enabling Tax Lines](https://github.com/fivetran/dbt_quickbooks/tree/main#enabling-tax-lines) section of the README for full setup instructions.
+| `int_quickbooks__purchase_double_entry` | Data change | `paid_to_account_id` = purchase line expense account; `class_id` = expense class from purchase line | `paid_to_account_id` = tax liability account; `class_id` = `null` | **Potential breaking change** for users with `using_purchase_tax_line: true`. Tax lines now correctly post to the tax liability account. `class_id` is no longer populated for tax line rows. |
+| `currency_id`, `exchange_rate`, `quantity`, `sales_item_quantity` in several header staging tables | Explicit type cast | Warehouse-native type | `string` / `float` | **Possible breaking change** for downstream consumers with type-sensitive logic built on staging models. |
 
 # dbt_quickbooks v1.8.1
 [PR #214](https://github.com/fivetran/dbt_quickbooks/pull/214) includes the following update:

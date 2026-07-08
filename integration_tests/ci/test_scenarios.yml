@@ -58,6 +58,7 @@ test_scenarios:
       quickbooks__tax_lines_enabled: true
       using_bill_tax_line: true
       using_purchase_tax_line: true
+      using_tax_agency: true
     include_incremental: false
 
   - name: "MDLS"
