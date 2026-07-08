@@ -5,12 +5,12 @@
 
 -- this test ensures the ap ar enhanced end model matches the prior version
 with prod as (
-    select {{ dbt_utils.star(from=ref('quickbooks__ap_ar_enhanced'), except=var('qb_consistency_exclude_columns', [])) }}
+    select {{ dbt_utils.star(from=ref('quickbooks__ap_ar_enhanced'), except=var('qb_consistency_exclude_columns', []) + ['customer_vendor_website']) }}
     from {{ target.schema }}_quickbooks_prod.quickbooks__ap_ar_enhanced
 ),
 
 dev as (
-    select {{ dbt_utils.star(from=ref('quickbooks__ap_ar_enhanced'), except=var('qb_consistency_exclude_columns', [])) }}
+    select {{ dbt_utils.star(from=ref('quickbooks__ap_ar_enhanced'), except=var('qb_consistency_exclude_columns', []) + ['customer_vendor_website']) }}
     from {{ target.schema }}_quickbooks_dev.quickbooks__ap_ar_enhanced
 ),
 

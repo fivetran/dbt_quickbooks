@@ -65,20 +65,21 @@ vars:
     quickbooks_vendor_credit_identifier: "vendor_credit_data"
     quickbooks_vendor_identifier: "vendor_data"
 
-  # For validation testing.  
+  # For validation testing.
   # This below vars configuration is needed for the `general_ledger_amounts_match` macro.
-  using_credit_card_payment_txn: true # @docs-include
-  using_purchase_order: true # @docs-include
-  using_invoice_tax_line: true # @docs-include 
-  using_journal_entry_tax_line: true # @docs-include 
-  using_purchase_tax_line: true # @docs-include 
-  using_refund_receipt_tax_line: true # @docs-include 
-  using_sales_receipt_tax_line: true # @docs-include
-  using_bill_tax_line: true # @docs-include
-  using_credit_memo_tax_line: true # @docs-include
-  using_deposit_tax_line: true # @docs-include
-  using_tax_agency: true # @docs-include
-  using_tax_rate: true # @docs-include
+  # using_credit_card_payment_txn: true # @docs-include
+  # using_purchase_order: true # @docs-include
+  # using_invoice_tax_line: true # @docs-include 
+  # using_journal_entry_tax_line: true # @docs-include 
+  # using_purchase_tax_line: true # @docs-include 
+  # using_refund_receipt_tax_line: true # @docs-include 
+  # using_sales_receipt_tax_line: true # @docs-include
+  # quickbooks__tax_lines_enabled: true # @docs-include
+  # using_bill_tax_line: true # @docs-include
+  # using_credit_memo_tax_line: true # @docs-include
+  # using_deposit_tax_line: true # @docs-include
+  # using_tax_agency: true # @docs-include
+  # using_tax_rate: true # @docs-include
 
 seeds:
   +docs:
@@ -103,6 +104,9 @@ seeds:
     credit_memo_data:
       +column_types:
         transaction_date: date
+    customer_data:
+      +column_types:
+        website: "{{ 'varchar(100)' if target.type in ('redshift', 'postgres') else 'string' }}"
     deposit_data:
       +column_types:
         transaction_date: date
