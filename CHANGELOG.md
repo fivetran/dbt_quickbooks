@@ -16,8 +16,6 @@
 - Introduces the Enable Tax Lines variable as a master toggle in the Quickstart variable configuration section for all tax lines. Set it to `true` before enabling any individual tax line variables. Defaults to `false` to prevent unintended tax line model compilation if you haven't configured the required source tables.
 - Individual tax line tables are now enabled in Quickstart when `quickbooks__tax_lines_enabled` is set to `true` and the tables are selected in the Fivetran UI. In dbt Core, see the [Enabling Tax Lines](https://github.com/fivetran/dbt_quickbooks/tree/main#enabling-tax-lines) section of 
 
-## Under the Hood
-- Updated seed data for more complete validation testing. 
 
 # dbt_quickbooks v1.8.1
 [PR #214](https://github.com/fivetran/dbt_quickbooks/pull/214) includes the following update:
