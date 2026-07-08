@@ -47,7 +47,7 @@ balance_sheet_end as (
 match_check as (
 
     select
-        coalesce(balance_sheet_source.period_first_day, balance_sheet_end.period_first_day) as period_first_day,
+        balance_sheet_source.period_first_day,
         balance_sheet_source.period_amount_source,
         balance_sheet_source.period_converted_amount_source,
         balance_sheet_end.period_amount_end,
@@ -59,5 +59,5 @@ match_check as (
 
 select *
 from match_check
-where abs(coalesce(period_amount_source, 0) - coalesce(period_amount_end, 0)) >= 0.01
-or abs(coalesce(period_converted_amount_source, 0) - coalesce(period_converted_amount_end, 0)) >= 0.01
+where abs(period_amount_source - period_amount_end) >= 0.01
+or abs(period_converted_amount_source - period_converted_amount_end) >= 0.01
