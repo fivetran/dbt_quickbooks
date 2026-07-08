@@ -53,6 +53,13 @@ test_scenarios:
       using_tax_rate: true
     include_incremental: false
 
+  - name: "partial tax lines enabled"
+    vars:
+      quickbooks__tax_lines_enabled: true
+      using_bill_tax_line: true
+      using_purchase_tax_line: true
+    include_incremental: false
+
   - name: "MDLS"
     vars:
       fivetran_using_source_casing: true
