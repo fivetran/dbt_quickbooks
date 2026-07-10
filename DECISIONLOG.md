@@ -75,7 +75,7 @@ If tax agencies aren't where you want your mapping to take place, we then search
 
 If neither of those accounts are available, the `quickbooks__sales_tax_account_reference` and `quickbooks__global_tax_account_reference` variables are made available to publish the account name you believe matches the tax line. [See the README for more details](https://github.com/fivetran/dbt_quickbooks?tab=readme-ov-file#configuring-account-type-names).
 
-This behavior pertains to the invoice, journal entry, refund receipt, and sales receipt tax line entries. (Purchase tax lines will be associated with their purchase accounts).
+This behavior pertains to the bill, credit memo, deposit, invoice, journal entry, purchase, refund receipt, and sales receipt tax line entries.
 
 ## Exchange Gain/Loss: Clearing AR/AP at the Original Transaction Rate
 When `using_exchange_gain_loss` is set to `true`, exchange gain/loss entries are generated in `int_quickbooks__payment_double_entry` and `int_quickbooks__bill_payment_double_entry` for foreign currency payments and bill payments settled at a different exchange rate than the original invoice or bill. This behavior is disabled by default.

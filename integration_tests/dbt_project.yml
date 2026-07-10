@@ -78,6 +78,7 @@ vars:
   # using_bill_tax_line: true # @docs-include
   # using_credit_memo_tax_line: true # @docs-include
   # using_deposit_tax_line: true # @docs-include
+  # using_estimate_tax_line: true # @docs-include
   # using_tax_agency: true # @docs-include
   # using_tax_rate: true # @docs-include
 
@@ -93,115 +94,121 @@ seeds:
         exchange_rate: float
     bill_line_data:
       +column_types:
+        amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
         item_expense_billable_status: "{{ 'varchar(100)' if target.type in ('redshift', 'postgres') else 'string' }}"
         account_expense_billable_status: "{{ 'varchar(100)' if target.type in ('redshift', 'postgres') else 'string' }}"
     bill_payment_data:
       +column_types:
         transaction_date: date
+        exchange_rate: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        total_amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
     credit_card_payment_txn_data:
       +column_types:
         transaction_date: date
+        amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        exchange_rate: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
     credit_memo_data:
       +column_types:
         transaction_date: date
+    credit_memo_line_data:
+      +column_types:
+        amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
     customer_data:
       +column_types:
         website: "{{ 'varchar(100)' if target.type in ('redshift', 'postgres') else 'string' }}"
     deposit_data:
       +column_types:
         transaction_date: date
+        exchange_rate: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        total_amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        home_total_amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
     deposit_line_data:
       +column_types:
-        deposit_account_id: "{{ 'int64' if target.type == 'bigquery' else 'bigint' }}"
-        deposit_class_id: "{{ 'int64' if target.type == 'bigquery' else 'bigint' }}"
+        deposit_account_id: "{{ 'varchar(50)' if target.type in ('redshift', 'postgres') else 'string' }}"
+        deposit_class_id: "{{ 'varchar(50)' if target.type in ('redshift', 'postgres') else 'string' }}"
     estimate_data:
       +column_types:
         due_date: date
         transaction_date: date
-    invoice_line_data:
+    estimate_line_data:
       +column_types:
-        amount: float
-        bundle_quantity: float
-        discount_discount_percent: float
-        quantity: float
-        sales_item_discount_amount: float
-        sales_item_discount_rate: float
-        sales_item_quantity: float
-        sales_item_unit_price: float
+        amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
     invoice_data:
       +column_types:
         due_date: date
         transaction_date: date
-        exchange_rate: float
+        exchange_rate: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+    invoice_line_data:
+      +column_types:
+        amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
     invoice_tax_line_data:
       +column_types:
-        amount: float
-        net_amount_taxable: float
-        override_delta_amount: float
-        tax_inclusive_amount: float
-        tax_percent: float
+        amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        net_amount_taxable: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        override_delta_amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        tax_inclusive_amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        tax_percent: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
     journal_entry_data:
       +column_types:
         transaction_date: date
-        exchange_rate: float
-        total_amount: float
+        exchange_rate: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        total_amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
     journal_entry_tax_line_data:
       +column_types:
-        amount: float
-        net_amount_taxable: float
-        override_delta_amount: float
-        tax_inclusive_amount: float
-        tax_percent: float
+        amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        net_amount_taxable: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        override_delta_amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        tax_inclusive_amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        tax_percent: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
     payment_data:
       +column_types:
         transaction_date: date
-        exchange_rate: float
+        total_amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        exchange_rate: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
     purchase_data:
       +column_types:
         credit: "{{ 'boolean' if target.type in ('snowflake', 'spark', 'databricks') else 'bool' }}"
         transaction_date: date
     purchase_line_data:
       +column_types:
+        amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
         item_expense_billable_status: "{{ 'varchar(100)' if target.type in ('redshift', 'postgres') else 'string' }}"
-        account_expense_account_id: "{{ 'int64' if target.type == 'bigquery' else 'bigint' }}"
+        account_expense_account_id: "{{ 'varchar(50)' if target.type in ('redshift', 'postgres') else 'string' }}"
     purchase_tax_line_data:
       +column_types:
-        amount: float
-        net_amount_taxable: float
-        override_delta_amount: float
-        tax_inclusive_amount: float
-        tax_percent: float
+        amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        net_amount_taxable: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        override_delta_amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        tax_inclusive_amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        tax_percent: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
     bill_tax_line_data:
       +column_types:
-        amount: float
-        net_amount_taxable: float
-        override_delta_amount: float
-        tax_inclusive_amount: float
-        tax_percent: float
+        amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        net_amount_taxable: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        override_delta_amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        tax_inclusive_amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        tax_percent: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
     credit_memo_tax_line_data:
       +column_types:
-        amount: float
-        net_amount_taxable: float
-        override_delta_amount: float
-        tax_inclusive_amount: float
-        tax_percent: float
-    customer_data:
-      +column_types:
-        website: "{{ 'varchar(100)' if target.type in ('redshift', 'postgres') else 'string' }}"
+        amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        net_amount_taxable: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        override_delta_amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        tax_inclusive_amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        tax_percent: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
     deposit_tax_line_data:
       +column_types:
-        amount: float
-        net_amount_taxable: float
-        override_delta_amount: float
-        tax_inclusive_amount: float
-        tax_percent: float
+        amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        net_amount_taxable: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        override_delta_amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        tax_inclusive_amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        tax_percent: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
     estimate_tax_line_data:
       +column_types:
-        amount: float
-        net_amount_taxable: float
-        override_delta_amount: float
-        tax_inclusive_amount: float
-        tax_percent: float
+        amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        net_amount_taxable: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        override_delta_amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        tax_inclusive_amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        tax_percent: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
     purchase_order_data:
       +column_types:
         due_date: date
@@ -209,29 +216,36 @@ seeds:
     refund_receipt_data:
       +column_types:
         transaction_date: date
-        exchange_rate: float
+    refund_receipt_line_data:
+      +column_types:
+        amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
     refund_receipt_tax_line_data:
       +column_types:
-        amount: float
-        net_amount_taxable: float
-        override_delta_amount: float
-        tax_inclusive_amount: float
-        tax_percent: float
+        amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        net_amount_taxable: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        override_delta_amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        tax_inclusive_amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        tax_percent: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
     sales_receipt_data:
       +column_types:
         transaction_date: date
+    sales_receipt_line_data:
+      +column_types:
+        amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
     sales_receipt_tax_line_data:
       +column_types:
-        amount: float
-        net_amount_taxable: float
-        override_delta_amount: float
-        tax_inclusive_amount: float
-        tax_percent: float
+        amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        net_amount_taxable: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        override_delta_amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        tax_inclusive_amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+        tax_percent: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
     transfer_data:
       +column_types:
+        amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
         transaction_date: date
     vendor_credit_line_data:
       +column_types:
+        amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
         item_expense_billable_status: "{{ 'varchar(100)' if target.type in ('redshift', 'postgres') else 'string' }}"
         account_expense_billable_status: "{{ 'varchar(100)' if target.type in ('redshift', 'postgres') else 'string' }}"
     vendor_credit_data:
