@@ -91,6 +91,7 @@ seeds:
       +column_types:
         due_date: date
         transaction_date: date
+        exchange_rate: float
     bill_line_data:
       +column_types:
         amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"

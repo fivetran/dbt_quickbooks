@@ -37,6 +37,11 @@ test_scenarios:
       using_customer_type: false
     include_incremental: false
 
+  - name: "Exchange Gain/Loss enabled"
+    vars:
+      quickbooks__exchange_gain_loss_enabled: true
+    include_incremental: false
+
   - name: "tax lines enabled"
     vars:
       quickbooks__tax_lines_enabled: true
