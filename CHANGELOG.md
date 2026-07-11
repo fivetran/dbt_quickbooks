@@ -16,10 +16,6 @@
 | `stg_quickbooks__estimate_tax_line`<br>`stg_quickbooks__estimate_tax_line_tmp` | New models (opt-in) | — | — | Enabled via `quickbooks__tax_lines_enabled: true` and `using_estimate_tax_line: true`. [See the README](https://github.com/fivetran/dbt_quickbooks/tree/main#enabling-tax-lines) for details. |
 
 ## Feature Updates
-### Tax Lines
-- Introduces the Enable Tax Lines variable as a master toggle in the Quickstart variable configuration section for all tax lines. Set it to `true` before enabling any individual tax line variables. Defaults to `false` to prevent unintended tax line model compilation if you haven't configured the required source tables.
-- Individual tax line tables are now enabled in Quickstart when `quickbooks__tax_lines_enabled` is set to `true` and the tables are selected in the Fivetran UI. In dbt Core, see the [Enabling Tax Lines](https://github.com/fivetran/dbt_quickbooks/tree/main#enabling-tax-lines) section of 
-
 ### Exchange Gain/Loss
 - Adds the ability to realize exchange gain/loss entries to `int_quickbooks__bill_payment_double_entry` and `int_quickbooks__payment_double_entry`, which populate in `quickbooks__general_ledger` and quickbooks__general_ledger_by_period`, to capture the currency impact when a foreign currency transaction is settled at a different exchange rate than when it was originally recorded. Requires an account with a subtype of `ExchangeGainOrLoss` in QuickBooks to generate entries.
 - Adds the `using_exchange_gain_loss` variable (default `false`) to opt into exchange gain/loss entry generation. Enable this if your QuickBooks data includes multi-currency transactions and you have an `ExchangeGainOrLoss` account configured. See the [README](https://github.com/fivetran/dbt_quickbooks/tree/main#enabling-exchange-gainloss-entries) for configuration details.
