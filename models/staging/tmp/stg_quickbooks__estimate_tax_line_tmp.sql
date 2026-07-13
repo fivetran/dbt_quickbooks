@@ -1,16 +1,16 @@
---To enable this model, set both the quickbooks__tax_lines_enabled and using_invoice_tax_line variables within your dbt_project.yml file to True.
-{{ config(enabled=var('quickbooks__tax_lines_enabled', False) and var('using_invoice_tax_line', False)) }}
+--To enable this model, set both the quickbooks__tax_lines_enabled and using_estimate_tax_line variables within your dbt_project.yml file to True.
+{{ config(enabled=var('quickbooks__tax_lines_enabled', False) and var('using_estimate_tax_line', False)) }}
 
 {% if var('quickbooks_union_schemas', []) | length > 0 or var('quickbooks_union_databases', []) | length > 0 %}
 
 {{
     fivetran_utils.union_data(
-        table_identifier='invoice_tax_line', 
-        database_variable='quickbooks_database', 
-        schema_variable='quickbooks_schema', 
+        table_identifier='estimate_tax_line',
+        database_variable='quickbooks_database',
+        schema_variable='quickbooks_schema',
         default_database=target.database,
         default_schema='quickbooks',
-        default_variable='invoice_tax_line',
+        default_variable='estimate_tax_line',
         union_schema_variable='quickbooks_union_schemas',
         union_database_variable='quickbooks_union_databases'
     )
@@ -22,7 +22,7 @@
     fivetran_utils.union_connections(
         connection_dictionary='quickbooks_sources',
         single_source_name='quickbooks',
-        single_table_name='invoice_tax_line'
+        single_table_name='estimate_tax_line'
     )
 }}
 

@@ -1,3 +1,39 @@
+# dbt_quickbooks v1.9.0
+[PR #213](https://github.com/fivetran/dbt_quickbooks/pull/213) includes the following updates:
+
+## Schema/Data Change
+**12 total changes • 3 possible breaking changes**
+
+| Data Model(s) | Change type | Old | New | Notes |
+| ------------- | ----------- | --- | --- | ----- |
+| All tax line models | Variable configuration (opt-in) | Individual tax line variables sufficient | `quickbooks__tax_lines_enabled: true` also required | **Possible breaking change for dbt Core users** If you previously enabled any individual tax line variables, those models will now be disabled by default. See the [Enabling Tax Lines](https://github.com/fivetran/dbt_quickbooks/tree/main#enabling-tax-lines) section of the README for configuration details.  |
+| `quickbooks__general_ledger` | Potential new rows | No tax lines | Tax lines now available (opt-in) | Tax line rows are disabled by default. Set `quickbooks__tax_lines_enabled: true` and enable individual tax line variables to post tax lines to the tax liability account. Tax lines are added only when you opt in. See the [Enabling Tax Lines](https://github.com/fivetran/dbt_quickbooks/tree/main#enabling-tax-lines) section of the README for details. |
+| `int_quickbooks__purchase_double_entry` | Data change | `paid_to_account_id` = purchase line expense account; `class_id` = expense class from purchase line | `paid_to_account_id` = tax liability account; `class_id` = `null` | **Possible breaking change** for users with `using_purchase_tax_line: true` and `quickbooks__tax_lines_enabled: true`. Tax lines now correctly post to the tax liability account. `class_id` is no longer populated for tax line rows. |
+| `currency_id`, `exchange_rate`, `quantity`, `sales_item_quantity` in several header staging tables | Data change | Warehouse-native type | Explicit data cast to string for `currency_id`, or float for remaining fields | **Possible breaking change** for downstream consumers with type-sensitive logic built on staging models. |
+| `stg_quickbooks__bill_tax_line`<br>`stg_quickbooks__bill_tax_line_tmp` | New models (opt-in) | — | — | Enabled via `quickbooks__tax_lines_enabled: true` and `using_bill_tax_line: true`. [See the README](https://github.com/fivetran/dbt_quickbooks/tree/main#enabling-tax-lines) for details. |
+| `stg_quickbooks__credit_memo_tax_line`<br>`stg_quickbooks__credit_memo_tax_line_tmp` | New models (opt-in) | — | — | Enabled via `quickbooks__tax_lines_enabled: true` and `using_credit_memo_tax_line: true`. [See the README](https://github.com/fivetran/dbt_quickbooks/tree/main#enabling-tax-lines) for details. |
+| `stg_quickbooks__deposit_tax_line`<br>`stg_quickbooks__deposit_tax_line_tmp` | New models (opt-in) | — | — | Enabled via `quickbooks__tax_lines_enabled: true` and `using_deposit_tax_line: true`. [See the README](https://github.com/fivetran/dbt_quickbooks/tree/main#enabling-tax-lines) for details. |
+| `stg_quickbooks__estimate_tax_line`<br>`stg_quickbooks__estimate_tax_line_tmp` | New models (opt-in) | — | — | Enabled via `quickbooks__tax_lines_enabled: true` and `using_estimate_tax_line: true`. [See the README](https://github.com/fivetran/dbt_quickbooks/tree/main#enabling-tax-lines) for details. |
+
+## Feature Updates
+### Exchange Gain/Loss
+- Adds the ability to realize exchange gain/loss entries to `int_quickbooks__bill_payment_double_entry` and `int_quickbooks__payment_double_entry`, which populate in `quickbooks__general_ledger` and `quickbooks__general_ledger_by_period`, to capture the currency impact when a foreign currency transaction is settled at a different exchange rate than when it was originally recorded. Requires an account with a subtype of `ExchangeGainOrLoss` in QuickBooks to generate entries.
+- Adds the `quickbooks__exchange_gain_loss_enabled` variable (default `false`) to opt into exchange gain/loss entry generation. Enable this if your QuickBooks data includes multi-currency transactions and you have an `ExchangeGainOrLoss` account configured. See the [README](https://github.com/fivetran/dbt_quickbooks/tree/main#enabling-exchange-gainloss-entries) for configuration details.
+
+# dbt_quickbooks v1.9.0-a1
+[PR #212](https://github.com/fivetran/dbt_quickbooks/pull/212) includes the following updates:
+
+## Schema/Data Change
+**2 total changes • 0 possible breaking changes**
+
+| Data Model(s) | Change type | Old | New | Notes |
+| ------------- | ----------- | --- | --- | ----- |
+| `quickbooks__general_ledger`<br>`quickbooks__general_ledger_by_period` | New records | — | Exchange gain/loss entries | |
+
+## Feature Update
+- Adds realized exchange gain/loss entries to `int_quickbooks__bill_payment_double_entry` and `int_quickbooks__payment_double_entry` to capture the currency impact when a foreign currency transaction is settled at a different exchange rate than when it was originally recorded. Requires an account with a subtype of `ExchangeGainOrLoss` in QuickBooks to generate entries.
+- Adds the `quickbooks__exchange_gain_loss_enabled` variable (default `true`) to disable exchange gain/loss entry generation for users without multi-currency transactions or an Exchange Gain or Loss account. See the [README](https://github.com/fivetran/dbt_quickbooks/tree/main#disabling-exchange-gainloss-entries) for details.
+
 # dbt_quickbooks v1.8.1
 [PR #214](https://github.com/fivetran/dbt_quickbooks/pull/214) includes the following update:
 

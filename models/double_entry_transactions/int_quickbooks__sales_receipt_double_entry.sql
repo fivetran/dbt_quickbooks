@@ -5,7 +5,7 @@ Table that creates a debit record to the specified cash account and a credit rec
 --To disable this model, set the using_sales_receipt variable within your dbt_project.yml file to False.
 {{ config(enabled=var('using_sales_receipt', True)) }}
 
-{% set using_sales_receipt_tax_line = var('using_sales_receipt_tax_line', False) %}
+{% set using_sales_receipt_tax_line = var('quickbooks__tax_lines_enabled', False) and var('using_sales_receipt_tax_line', False) %}
 {% set using_tax_rate = var('using_tax_rate', False) %}
 {% set using_tax_agency = var('using_tax_agency', False) if using_tax_rate else False %}
 

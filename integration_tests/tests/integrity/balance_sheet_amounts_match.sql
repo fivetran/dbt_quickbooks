@@ -46,14 +46,14 @@ balance_sheet_end as (
 
 match_check as (
 
-    select 
+    select
         balance_sheet_source.period_first_day,
         balance_sheet_source.period_amount_source,
         balance_sheet_source.period_converted_amount_source,
         balance_sheet_end.period_amount_end,
         balance_sheet_end.period_converted_amount_end
     from balance_sheet_source
-    full outer join balance_sheet_end 
+    full outer join balance_sheet_end
         on balance_sheet_source.period_first_day = balance_sheet_end.period_first_day
 )
 

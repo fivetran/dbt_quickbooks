@@ -75,7 +75,20 @@ If tax agencies aren't where you want your mapping to take place, we then search
 
 If neither of those accounts are available, the `quickbooks__sales_tax_account_reference` and `quickbooks__global_tax_account_reference` variables are made available to publish the account name you believe matches the tax line. [See the README for more details](https://github.com/fivetran/dbt_quickbooks?tab=readme-ov-file#configuring-account-type-names).
 
-This behavior pertains to the invoice, journal entry, refund receipt, and sales receipt tax line entries. (Purchase tax lines will be associated with their purchase accounts).
+This behavior pertains to the bill, credit memo, deposit, invoice, journal entry, purchase, refund receipt, and sales receipt tax line entries.
+
+## Exchange Gain/Loss: Clearing AR/AP at the Original Transaction Rate
+When `quickbooks__exchange_gain_loss_enabled` is set to `true`, exchange gain/loss entries are generated in `int_quickbooks__payment_double_entry` and `int_quickbooks__bill_payment_double_entry` for foreign currency payments and bill payments settled at a different exchange rate than the original invoice or bill. This behavior is disabled by default.
+
+When enabled, the AR credit (payment model) and AP debit (bill payment model) use the **original invoice/bill exchange rate** to compute `converted_amount`, not the payment exchange rate. The difference between the payment rate and the original rate is posted separately to the Exchange Gain or Loss account. This mirrors QuickBooks's own behavior.
+
+An alternative considered was to credit/debit AR/AP at the payment rate and add a secondary offsetting AR/AP entry to walk back the difference. This was rejected because:
+- It produced a positive `adjusted_converted_amount` for the AR/AP offset entry, making the general ledger appear unbalanced to end users (both the gain/loss entry and its offset showed the same sign).
+- It introduced an additional entry per transaction with no user-facing benefit.
+
+Using the original rate clears AR/AP at book value with a single entry, and the exchange gain/loss entry stands alone as income or expense recognition, which is consistent with standard accrual accounting.
+
+The `quickbooks__exchange_gain_loss_enabled` variable defaults to `false` because this feature requires a specific QuickBooks account configuration (a subtype of `ExchangeGainOrLoss`) and is only relevant for businesses with multi-currency transactions. Enabling it without that setup would cause model errors or produce no meaningful data. Enable it by setting `quickbooks__exchange_gain_loss_enabled: true` in your `dbt_project.yml`. See the [README](https://github.com/fivetran/dbt_quickbooks/tree/main#enabling-exchange-gainloss-entries) for details.
 
 ## Designating a single Accounts Payable/Accounts Receivable account
 The `int_quickbooks__bill_payment_double_entry` model requires a single account designated as 'Accounts Payable' per currency. Similarly, the `int_quickbooks__invoice_double_entry`, `int_quickbooks__credit_memo_double_entry`, and `int_quickbooks__payment_double_entry` models require a single account designated as 'Accounts Receivable' per currency. This aligns with QuickBooks Online requirements and accounting best practices. If you have multiple accounts designated as 'Accounts Payable' or 'Accounts Receivable' in the `account_type` field, all accounts will be brought into the join, causing data fanout. See example [join logic](https://github.com/fivetran/dbt_quickbooks/blob/main/models/double_entry_transactions/int_quickbooks__bill_payment_double_entry.sql#L57) here. 

@@ -213,7 +213,34 @@ sources:
           - name: updated_at
             description: Timestamp of the date which the bill was last updated. 
           - name: _fivetran_deleted
-            description: "{{ doc('_fivetran_deleted') }}" 
+            description: "{{ doc('_fivetran_deleted') }}"
+
+      - name: bill_tax_line_detail
+        identifier: "{{ var('quickbooks_bill_tax_line_detail_identifier', 'bill_tax_line_detail') }}"
+        description: "{{ doc('bill_tax_line_table') }}"
+        config:
+          enabled: "{{ var('quickbooks__tax_lines_enabled', false) and var('using_bill_tax_line', false) }}"
+        columns:
+          - name: bill_id
+            description: "{{ doc('id') }} bill associated with this tax line."
+          - name: tax_rate_id
+            description: "{{ doc('tax_rate_id') }}"
+          - name: amount
+            description: "{{ doc('tax_amount') }}"
+          - name: tax_percent
+            description: "{{ doc('tax_percent') }}"
+          - name: net_amount_taxable
+            description: "{{ doc('net_amount_taxable') }} bill line amount."
+          - name: override_delta_amount
+            description: "{{ doc('override_delta_amount') }}"
+          - name: percent_based
+            description: "{{ doc('percent_based') }}"
+          - name: tax_inclusive_amount
+            description: "{{ doc('tax_inclusive_amount') }}"
+          - name: index
+            description: "{{ doc('tax_index') }} bill."
+          - name: _fivetran_deleted
+            description: "{{ doc('_fivetran_deleted') }}"
 
       - name: bundle_item
         identifier: "{{ var('quickbooks_bundle_item_identifier', 'bundle_item') }}"
@@ -333,6 +360,33 @@ sources:
             description: Timestamp of the date which the credit memo was created.
           - name: updated_at
             description: Timestamp of the date which the credit memo was last updated.
+          - name: _fivetran_deleted
+            description: "{{ doc('_fivetran_deleted') }}"
+
+      - name: credit_memo_tax_line_detail
+        identifier: "{{ var('quickbooks_credit_memo_tax_line_detail_identifier', 'credit_memo_tax_line_detail') }}"
+        description: "{{ doc('credit_memo_tax_line_table') }}"
+        config:
+          enabled: "{{ var('quickbooks__tax_lines_enabled', false) and var('using_credit_memo_tax_line', false) }}"
+        columns:
+          - name: credit_memo_id
+            description: "{{ doc('id') }} credit memo associated with this tax line."
+          - name: tax_rate_id
+            description: "{{ doc('tax_rate_id') }}"
+          - name: amount
+            description: "{{ doc('tax_amount') }}"
+          - name: tax_percent
+            description: "{{ doc('tax_percent') }}"
+          - name: net_amount_taxable
+            description: "{{ doc('net_amount_taxable') }} credit memo line amount."
+          - name: override_delta_amount
+            description: "{{ doc('override_delta_amount') }}"
+          - name: percent_based
+            description: "{{ doc('percent_based') }}"
+          - name: tax_inclusive_amount
+            description: "{{ doc('tax_inclusive_amount') }}"
+          - name: index
+            description: "{{ doc('tax_index') }} credit memo."
           - name: _fivetran_deleted
             description: "{{ doc('_fivetran_deleted') }}"
 
@@ -463,6 +517,33 @@ sources:
           - name: _fivetran_deleted
             description: "{{ doc('_fivetran_deleted') }}"
 
+      - name: deposit_tax_line_detail
+        identifier: "{{ var('quickbooks_deposit_tax_line_detail_identifier', 'deposit_tax_line_detail') }}"
+        description: "{{ doc('deposit_tax_line_table') }}"
+        config:
+          enabled: "{{ var('quickbooks__tax_lines_enabled', false) and var('using_deposit_tax_line', false) }}"
+        columns:
+          - name: deposit_id
+            description: "{{ doc('id') }} deposit associated with this tax line."
+          - name: tax_rate_id
+            description: "{{ doc('tax_rate_id') }}"
+          - name: amount
+            description: "{{ doc('tax_amount') }}"
+          - name: tax_percent
+            description: "{{ doc('tax_percent') }}"
+          - name: net_amount_taxable
+            description: "{{ doc('net_amount_taxable') }} deposit line amount."
+          - name: override_delta_amount
+            description: "{{ doc('override_delta_amount') }}"
+          - name: percent_based
+            description: "{{ doc('percent_based') }}"
+          - name: tax_inclusive_amount
+            description: "{{ doc('tax_inclusive_amount') }}"
+          - name: index
+            description: "{{ doc('tax_index') }} deposit."
+          - name: _fivetran_deleted
+            description: "{{ doc('_fivetran_deleted') }}"
+
       - name: estimate
         identifier: "{{ var('quickbooks_estimate_identifier', 'estimate') }}"
         description: "{{ doc('estimate_table') }}"
@@ -526,6 +607,33 @@ sources:
             description: "{{ doc('account_id') }} associated with the estimate line."
           - name: amount
             description: "{{ doc('amount') }} the estimate line."
+
+      - name: estimate_tax_line
+        identifier: "{{ var('quickbooks_estimate_tax_line_identifier', 'estimate_tax_line') }}"
+        description: "{{ doc('estimate_tax_line_table') }}"
+        config:
+          enabled: "{{ var('quickbooks__tax_lines_enabled', false) and var('using_estimate_tax_line', false) }}"
+        columns:
+          - name: estimate_id
+            description: "{{ doc('id') }} estimate associated with this tax line."
+          - name: tax_rate_id
+            description: "{{ doc('tax_rate_id') }}"
+          - name: amount
+            description: "{{ doc('tax_amount') }}"
+          - name: tax_percent
+            description: "{{ doc('tax_percent') }}"
+          - name: net_amount_taxable
+            description: "{{ doc('net_amount_taxable') }} estimate line amount."
+          - name: override_delta_amount
+            description: "{{ doc('override_delta_amount') }}"
+          - name: percent_based
+            description: "{{ doc('percent_based') }}"
+          - name: tax_inclusive_amount
+            description: "{{ doc('tax_inclusive_amount') }}"
+          - name: index
+            description: "{{ doc('tax_index') }} estimate."
+          - name: _fivetran_deleted
+            description: "{{ doc('_fivetran_deleted') }}"
 
       - name: invoice_linked_txn
         identifier: "{{ var('quickbooks_invoice_linked_txn_identifier', 'invoice_linked_txn') }}"
@@ -661,7 +769,7 @@ sources:
         identifier: "{{ var('quickbooks_invoice_tax_line_identifier', 'invoice_tax_line') }}"
         description: "{{ doc('invoice_tax_line_table') }}"
         config:
-          enabled: "{{ var('using_invoice_tax_line', false) }}"
+          enabled: "{{ var('quickbooks__tax_lines_enabled', false) and var('using_invoice_tax_line', false) }}"
         columns:
           - name: invoice_id
             description: "{{ doc('id') }} invoice associated with this tax line."
@@ -789,7 +897,7 @@ sources:
         identifier: "{{ var('quickbooks_journal_entry_tax_line_identifier', 'journal_entry_tax_line') }}"
         description: "{{ doc('journal_entry_tax_line_table') }}"
         config:
-          enabled: "{{ var('using_journal_entry_tax_line', false) }}"
+          enabled: "{{ var('quickbooks__tax_lines_enabled', false) and var('using_journal_entry_tax_line', false) }}"
         columns:
           - name: journal_entry_id
             description: "{{ doc('id') }} journal entry associated with this tax line."
@@ -934,7 +1042,7 @@ sources:
         identifier: "{{ var('quickbooks_purchase_tax_line_identifier', 'purchase_tax_line') }}"
         description: "{{ doc('purchase_tax_line_table') }}"
         config:
-          enabled: "{{ var('using_purchase_tax_line', false) }}"
+          enabled: "{{ var('quickbooks__tax_lines_enabled', false) and var('using_purchase_tax_line', false) }}"
         columns:
           - name: purchase_id
             description: "{{ doc('id') }} purchase associated with this tax line."
@@ -1110,7 +1218,7 @@ sources:
         identifier: "{{ var('quickbooks_refund_receipt_tax_line_identifier', 'refund_receipt_tax_line') }}"
         description: "{{ doc('refund_receipt_tax_line_table') }}"
         config:
-          enabled: "{{ var('using_refund_receipt_tax_line', false) }}"
+          enabled: "{{ var('quickbooks__tax_lines_enabled', false) and var('using_refund_receipt_tax_line', false) }}"
         columns:
           - name: refund_receipt_id
             description: "{{ doc('id') }} refund receipt associated with this tax line."
@@ -1203,7 +1311,7 @@ sources:
         identifier: "{{ var('quickbooks_sales_receipt_tax_line_identifier', 'sales_receipt_tax_line') }}"
         description: "{{ doc('sales_receipt_tax_line_table') }}"
         config:
-          enabled: "{{ var('using_sales_receipt_tax_line', false) }}"
+          enabled: "{{ var('quickbooks__tax_lines_enabled', false) and var('using_sales_receipt_tax_line', false) }}"
         columns:
           - name: sales_receipt_id
             description: "{{ doc('id') }} sales receipt associated with this tax line."

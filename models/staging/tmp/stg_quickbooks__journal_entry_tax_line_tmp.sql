@@ -1,5 +1,5 @@
---To disable this model, set the using_journal_entry variable within your dbt_project.yml file to False.
-{{ config(enabled=var('using_journal_entry_tax_line', False)) }}
+--To enable this model, set both the quickbooks__tax_lines_enabled and using_journal_entry_tax_line variables within your dbt_project.yml file to True.
+{{ config(enabled=var('quickbooks__tax_lines_enabled', False) and var('using_journal_entry_tax_line', False)) }}
 
 {% if var('quickbooks_union_schemas', []) | length > 0 or var('quickbooks_union_databases', []) | length > 0 %}
 

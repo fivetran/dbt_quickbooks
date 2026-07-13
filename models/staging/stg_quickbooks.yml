@@ -215,6 +215,34 @@ models:
       - name: _fivetran_deleted
         description: Boolean created by Fivetran to indicate whether the record has been deleted.
 
+  - name: stg_quickbooks__bill_tax_line
+    description: Table containing all tax line detail records associated with each bill.
+    columns:
+      - name: bill_id
+        description: "{{ doc('id') }} bill associated with this tax line."
+        tests:
+          - not_null
+      - name: index
+        description: "{{ doc('tax_index') }} bill."
+        tests:
+          - not_null
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
+      - name: tax_rate_id
+        description: "{{ doc('tax_rate_id') }}"
+      - name: amount
+        description: "{{ doc('tax_amount') }}"
+      - name: tax_percent
+        description: "{{ doc('tax_percent') }}"
+      - name: net_amount_taxable
+        description: "{{ doc('net_amount_taxable') }} bill line amount."
+      - name: override_delta_amount
+        description: "{{ doc('override_delta_amount') }}"
+      - name: percent_based
+        description: "{{ doc('percent_based') }}"
+      - name: tax_inclusive_amount
+        description: "{{ doc('tax_inclusive_amount') }}"
+
   - name: stg_quickbooks__bundle_item
     description: "{{ doc('bundle_item_table') }}"  
     columns:
@@ -340,6 +368,34 @@ models:
         description: Timestamp of the date which the credit memo was last updated.
       - name: _fivetran_deleted
         description: Boolean created by Fivetran to indicate whether the record has been deleted.
+
+  - name: stg_quickbooks__credit_memo_tax_line
+    description: Table containing all tax line detail records associated with each credit memo.
+    columns:
+      - name: credit_memo_id
+        description: "{{ doc('id') }} credit memo associated with this tax line."
+        tests:
+          - not_null
+      - name: index
+        description: "{{ doc('tax_index') }} credit memo."
+        tests:
+          - not_null
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
+      - name: tax_rate_id
+        description: "{{ doc('tax_rate_id') }}"
+      - name: amount
+        description: "{{ doc('tax_amount') }}"
+      - name: tax_percent
+        description: "{{ doc('tax_percent') }}"
+      - name: net_amount_taxable
+        description: "{{ doc('net_amount_taxable') }} credit memo line amount."
+      - name: override_delta_amount
+        description: "{{ doc('override_delta_amount') }}"
+      - name: percent_based
+        description: "{{ doc('percent_based') }}"
+      - name: tax_inclusive_amount
+        description: "{{ doc('tax_inclusive_amount') }}"
 
   - name: stg_quickbooks__customer
     description: "{{ doc('customer_table') }}"
@@ -473,6 +529,34 @@ models:
       - name: _fivetran_deleted
         description: Boolean created by Fivetran to indicate whether the record has been deleted.
 
+  - name: stg_quickbooks__deposit_tax_line
+    description: Table containing all tax line detail records associated with each deposit.
+    columns:
+      - name: deposit_id
+        description: "{{ doc('id') }} deposit associated with this tax line."
+        tests:
+          - not_null
+      - name: index
+        description: "{{ doc('tax_index') }} deposit."
+        tests:
+          - not_null
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
+      - name: tax_rate_id
+        description: "{{ doc('tax_rate_id') }}"
+      - name: amount
+        description: "{{ doc('tax_amount') }}"
+      - name: tax_percent
+        description: "{{ doc('tax_percent') }}"
+      - name: net_amount_taxable
+        description: "{{ doc('net_amount_taxable') }} deposit line amount."
+      - name: override_delta_amount
+        description: "{{ doc('override_delta_amount') }}"
+      - name: percent_based
+        description: "{{ doc('percent_based') }}"
+      - name: tax_inclusive_amount
+        description: "{{ doc('tax_inclusive_amount') }}"
+
   - name: stg_quickbooks__estimate
     description: "{{ doc('estimate_table') }}"
     columns:
@@ -538,6 +622,34 @@ models:
         description: Reference to the account associated with the estimate line.
       - name: amount
         description: Monetary amount of the estimate line.
+
+  - name: stg_quickbooks__estimate_tax_line
+    description: Table containing all tax line detail records associated with each estimate.
+    columns:
+      - name: estimate_id
+        description: "{{ doc('id') }} estimate associated with this tax line."
+        tests:
+          - not_null
+      - name: index
+        description: "{{ doc('tax_index') }} estimate."
+        tests:
+          - not_null
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
+      - name: tax_rate_id
+        description: "{{ doc('tax_rate_id') }}"
+      - name: amount
+        description: "{{ doc('tax_amount') }}"
+      - name: tax_percent
+        description: "{{ doc('tax_percent') }}"
+      - name: net_amount_taxable
+        description: "{{ doc('net_amount_taxable') }} estimate line amount."
+      - name: override_delta_amount
+        description: "{{ doc('override_delta_amount') }}"
+      - name: percent_based
+        description: "{{ doc('percent_based') }}"
+      - name: tax_inclusive_amount
+        description: "{{ doc('tax_inclusive_amount') }}"
 
   - name: stg_quickbooks__invoice_linked_txn
     description: "{{ doc('invoice_linked_txn_table') }}"
