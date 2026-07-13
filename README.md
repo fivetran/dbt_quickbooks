@@ -220,7 +220,7 @@ To enable, add the following variable to your `dbt_project.yml`:
 
 ```yml
 vars:
-  using_exchange_gain_loss: true
+  quickbooks__exchange_gain_loss_enabled: true
 ```
 
 #### Customize the Cash Flow Model

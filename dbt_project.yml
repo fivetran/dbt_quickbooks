@@ -109,6 +109,7 @@ vars:
     using_estimate_tax_line: false
     using_tax_agency: false
     using_tax_rate: false
+    quickbooks__exchange_gain_loss_enabled: false
 
 analysis-paths: ["analysis"]
 clean-targets:
