@@ -75,8 +75,14 @@ bill_payment_join as (
     from bill_payments
 
     left join ap_accounts
-         on ap_accounts.account_id = bill_payments.payable_account_id
-         and ap_accounts.source_relation = bill_payments.source_relation
+         on ap_accounts.source_relation = bill_payments.source_relation
+         and (
+             ap_accounts.account_id = bill_payments.payable_account_id
+             or (
+                 bill_payments.payable_account_id is null
+                 and ap_accounts.currency_id = bill_payments.currency_id
+             )
+         )
 ),
 
 {% if using_exchange_gain_loss %}
