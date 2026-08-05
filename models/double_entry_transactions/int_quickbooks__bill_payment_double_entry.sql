@@ -6,6 +6,7 @@ Table that creates a debit record to accounts payable and a credit record to the
 {{ config(enabled=var('using_bill', True)) }}
 
 {%- set using_exchange_gain_loss = var('quickbooks__exchange_gain_loss_enabled', False) %}
+{%- set using_journal_entry = var('using_journal_entry', True) %}
 
 with bill_payments as (
 
@@ -52,6 +53,38 @@ exchange_gain_loss_accounts as (
 ),
 {% endif %}
 
+{% if using_journal_entry %}
+journal_entry_lines as (
+
+    select *
+    from {{ ref('stg_quickbooks__journal_entry_line') }}
+),
+
+je_ap_lookup as (
+
+    -- A BillPayment's payable_account_id is null when the payment is cleared against a Journal
+    -- Entry rather than a Bill. In that case, the linked Journal Entry usually still carries a
+    -- line posted directly to the correct AP account, so we resolve it here rather than
+    -- immediately falling back to the generic account_type match below.
+    select
+        bill_payment_lines.bill_payment_id,
+        bill_payment_lines.source_relation,
+        max(journal_entry_lines.account_id) as journal_entry_ap_account_id
+    from bill_payment_lines
+
+    inner join journal_entry_lines
+        on bill_payment_lines.journal_entry_id = journal_entry_lines.journal_entry_id
+        and bill_payment_lines.source_relation = journal_entry_lines.source_relation
+
+    inner join ap_accounts
+        on ap_accounts.account_id = journal_entry_lines.account_id
+        and ap_accounts.source_relation = journal_entry_lines.source_relation
+
+    where bill_payment_lines.journal_entry_id is not null
+    group by 1, 2
+),
+{% endif %}
+
 bill_payment_join as (
 
     select
@@ -67,22 +100,34 @@ bill_payment_join as (
             else bill_payments.total_amount * coalesce(bill_payments.exchange_rate, 1)
         end as converted_amount,
         coalesce(bill_payments.credit_card_account_id, bill_payments.check_bank_account_id) as payment_account_id,
-        ap_accounts.account_id,
+        coalesce(
+            matched_ap_accounts.account_id,
+            {{ 'je_ap_lookup.journal_entry_ap_account_id,' if using_journal_entry }}
+            fallback_ap_accounts.account_id
+        ) as account_id,
         bill_payments.vendor_id,
         bill_payments.department_id,
         bill_payments.created_at,
         bill_payments.updated_at
     from bill_payments
 
-    left join ap_accounts
-         on ap_accounts.source_relation = bill_payments.source_relation
-         and (
-             ap_accounts.account_id = bill_payments.payable_account_id
-             or (
-                 bill_payments.payable_account_id is null
-                 and ap_accounts.currency_id = bill_payments.currency_id
-             )
-         )
+    left join ap_accounts as matched_ap_accounts
+        on matched_ap_accounts.account_id = bill_payments.payable_account_id
+        and matched_ap_accounts.source_relation = bill_payments.source_relation
+
+    {% if using_journal_entry %}
+    left join je_ap_lookup
+        on je_ap_lookup.bill_payment_id = bill_payments.bill_payment_id
+        and je_ap_lookup.source_relation = bill_payments.source_relation
+    {% endif %}
+
+    left join ap_accounts as fallback_ap_accounts
+        on fallback_ap_accounts.currency_id = bill_payments.currency_id
+        and fallback_ap_accounts.source_relation = bill_payments.source_relation
+        and bill_payments.payable_account_id is null
+        {% if using_journal_entry %}
+        and je_ap_lookup.journal_entry_ap_account_id is null
+        {% endif %}
 ),
 
 {% if using_exchange_gain_loss %}
