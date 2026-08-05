@@ -7,6 +7,7 @@ Table that creates a debit record to either undeposited funds or a specified cas
 
 {%- set using_exchange_gain_loss = var('quickbooks__exchange_gain_loss_enabled', False) %}
 {%- set using_invoice = var('using_invoice', False) %}
+{%- set using_journal_entry = var('using_journal_entry', True) %}
 
 with payments as (
 
@@ -39,6 +40,39 @@ ar_accounts as (
         and not is_sub_account
 ),
 
+{% if using_journal_entry %}
+journal_entry_lines as (
+
+    select *
+    from {{ ref('stg_quickbooks__journal_entry_line') }}
+),
+
+je_ar_lookup as (
+
+    -- A Payment's receivable_account_id is null when the payment is cleared against a Journal
+    -- Entry rather than an Invoice (common when payment-processor payouts, e.g. Shopify or
+    -- Stripe, are synced directly as Payment objects). In that case, the linked Journal Entry
+    -- usually still carries a line posted directly to the correct AR account, so we resolve it
+    -- here rather than immediately falling back to the generic account_type match below.
+    select
+        payment_lines.payment_id,
+        payment_lines.source_relation,
+        max(journal_entry_lines.account_id) as journal_entry_ar_account_id
+    from payment_lines
+
+    inner join journal_entry_lines
+        on payment_lines.journal_entry_id = journal_entry_lines.journal_entry_id
+        and payment_lines.source_relation = journal_entry_lines.source_relation
+
+    inner join ar_accounts
+        on ar_accounts.account_id = journal_entry_lines.account_id
+        and ar_accounts.source_relation = journal_entry_lines.source_relation
+
+    where payment_lines.journal_entry_id is not null
+    group by 1, 2
+),
+{% endif %}
+
 payment_join as (
 
     select
@@ -55,11 +89,20 @@ payment_join as (
         end as converted_amount,
         payments.deposit_to_account_id,
         payments.receivable_account_id,
+        {% if using_journal_entry %}
+        je_ar_lookup.journal_entry_ar_account_id,
+        {% endif %}
         payments.customer_id,
         payments.currency_id,
         payments.created_at,
         payments.updated_at
     from payments
+
+    {% if using_journal_entry %}
+    left join je_ar_lookup
+        on je_ar_lookup.payment_id = payments.payment_id
+        and je_ar_lookup.source_relation = payments.source_relation
+    {% endif %}
 ),
 
 {% if using_exchange_gain_loss and using_invoice %}
@@ -176,7 +219,11 @@ final as (
         {% else %}
         payment_join.converted_amount,
         {% endif %}
-        coalesce(payment_join.receivable_account_id, ar_accounts.account_id) as account_id,
+        coalesce(
+            payment_join.receivable_account_id,
+            {{ 'payment_join.journal_entry_ar_account_id,' if using_journal_entry }}
+            ar_accounts.account_id
+        ) as account_id,
         cast(null as {{ dbt.type_string() }}) as class_id,
         cast(null as {{ dbt.type_string() }}) as department_id,
         payment_join.created_at,
@@ -188,6 +235,10 @@ final as (
     left join ar_accounts
         on ar_accounts.currency_id = payment_join.currency_id
         and ar_accounts.source_relation = payment_join.source_relation
+        and payment_join.receivable_account_id is null
+        {% if using_journal_entry %}
+        and payment_join.journal_entry_ar_account_id is null
+        {% endif %}
 
 {% if using_exchange_gain_loss and using_invoice %}
     left join payment_invoice_amounts
