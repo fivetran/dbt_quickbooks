@@ -1,3 +1,11 @@
+# dbt_quickbooks v1.9.2
+
+[PR #220](https://github.com/fivetran/dbt_quickbooks/pull/220) includes the following updates:
+
+## Bug Fix
+- Fixes an issue in `int_quickbooks__payment_double_entry` and `int_quickbooks__bill_payment_double_entry` where payments cleared against a Journal Entry (rather than an Invoice or Bill) could be duplicated across every Accounts Receivable or Accounts Payable account sharing the same currency. The models now first attempt to resolve the correct AR/AP account through the linked Journal Entry before falling back to the currency-based match, preventing the duplicate postings.
+
+
 # dbt_quickbooks v1.9.1
 
 [PR #221](https://github.com/fivetran/dbt_quickbooks/pull/221) includes the following updates:
