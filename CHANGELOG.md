@@ -1,3 +1,11 @@
+# dbt_quickbooks v1.9.1
+
+[PR #221](https://github.com/fivetran/dbt_quickbooks/pull/221) includes the following updates:
+
+## Feature Updates
+- Adds DuckDB as a supported destination.
+
+
 # dbt_quickbooks v1.9.0
 [PR #213](https://github.com/fivetran/dbt_quickbooks/pull/213) includes the following updates:
 
