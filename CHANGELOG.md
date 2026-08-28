@@ -8,7 +8,6 @@
 ## Contributors
 - [@bernhardF1984](https://github.com/bernhardF1984) ([PR #216](https://github.com/fivetran/dbt_quickbooks/pull/216))
 
-
 # dbt_quickbooks v1.9.1
 
 [PR #221](https://github.com/fivetran/dbt_quickbooks/pull/221) includes the following updates:
