@@ -345,6 +345,8 @@ models:
         description: "{{ doc('account_type') }} with the transaction line."
       - name: account_sub_type
         description: "{{ doc('account_sub_type') }} with the transaction line."
+      - name: currency_id
+        description: "{{ doc('currency_id') }} the account associated with the transaction line records its balance in."
       - name: financial_statement_helper
         description: Either 'balance sheet' or 'income statement' and is used to determine that financial statement the account impacts.
       - name: account_current_balance
@@ -395,6 +397,8 @@ models:
         description: "{{ doc('account_class') }} with the period balance transactions."
       - name: class_id
         description: "{{ doc('class_id') }} with the period balance transactions."
+      - name: currency_id
+        description: "{{ doc('currency_id') }} the account associated with the period balance transactions records its balance in."
       - name: financial_statement_helper
         description: Helper field identifying whether the account impacts the balance sheet or income statement.
       - name: date_year
@@ -414,7 +418,10 @@ models:
       - name: period_beginning_converted_balance
         description: Balance of the account, converted with exchange rates applied if available, as of the first date of the period. 
       - name: period_ending_converted_balance
-        description: Sum of all transaction line adjusted_balances of the account for the period, converted with exchange rates applied if available.
+        description: >
+          Sum of all transaction line adjusted_balances of the account for the period, converted with exchange rates applied if available.
+          For balance sheet accounts, if the `using_report_date_fx_conversion` variable is enabled and a matching rate exists in `stg_quickbooks__exchange_rate`,
+          this instead re-converts the native `period_ending_balance` using the exchange rate as of the period's last day, rather than summing each transaction's own transaction-date rate.
       - name: account_ordinal
         description: "{{ doc('account_ordinal') }}"
 

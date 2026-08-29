@@ -651,6 +651,30 @@ models:
       - name: tax_inclusive_amount
         description: "{{ doc('tax_inclusive_amount') }}"
 
+  - name: stg_quickbooks__exchange_rate
+    description: "{{ doc('exchange_rate_table') }}"
+    columns:
+      - name: as_of_date
+        description: "{{ doc('as_of_date') }}"
+        tests:
+          - not_null
+      - name: source_currency_code
+        description: "{{ doc('source_currency_code') }}"
+        tests:
+          - not_null
+      - name: target_currency_code
+        description: "{{ doc('target_currency_code') }}"
+        tests:
+          - not_null
+      - name: rate
+        description: "{{ doc('exchange_rate') }}"
+      - name: created_at
+        description: "{{ doc('created_at') }} for the exchange rate record."
+      - name: updated_at
+        description: Timestamp of the date which the exchange rate record was last updated.
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
+
   - name: stg_quickbooks__invoice_linked_txn
     description: "{{ doc('invoice_linked_txn_table') }}"
     columns:

@@ -54,6 +54,7 @@ adjusted_gl as (
         accounts.parent_account_name,
         accounts.account_type,
         accounts.account_sub_type,
+        accounts.currency_id,
         accounts.financial_statement_helper,
         accounts.balance as account_current_balance,
         accounts.classification as account_class,
