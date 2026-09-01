@@ -39,7 +39,7 @@ final as (
         cast(bill_id as {{ dbt.type_string() }}) as bill_id,
         deposit_id,
         expense_id,
-        journal_entry_id,
+        cast(journal_entry_id as {{ dbt.type_string() }}) as journal_entry_id,
         linked_bill_payment_id,
         vendor_credit_id,
         source_relation
