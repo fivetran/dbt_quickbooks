@@ -1,3 +1,5 @@
+{{ config(enabled=var('using_exchange_rate', True)) }}
+
 {% if var('quickbooks_union_schemas', []) | length > 0 or var('quickbooks_union_databases', []) | length > 0 %}
 
 {{

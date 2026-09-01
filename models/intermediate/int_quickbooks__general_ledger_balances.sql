@@ -1,3 +1,5 @@
+{% set report_date_fx_enabled = var('using_report_date_fx_conversion', false) and var('using_exchange_rate', true) %}
+
 with general_ledger as (
 
     select *
@@ -10,7 +12,16 @@ gl_accounting_periods as (
     from {{ ref('int_quickbooks__general_ledger_date_spine') }}
 ),
 
-{% if var('using_report_date_fx_conversion', false) %}
+{% if report_date_fx_enabled %}
+accounts as (
+
+    select
+        account_id,
+        source_relation,
+        currency_id
+    from {{ ref('int_quickbooks__account_classifications') }}
+),
+
 exchange_rate as (
 
     select *
@@ -33,14 +44,13 @@ gl_period_balance as (
         financial_statement_helper,
         account_class,
         class_id,
-        currency_id,
         cast({{ dbt.date_trunc("year", "transaction_date") }} as date) as date_year,
         cast({{ dbt.date_trunc("month", "transaction_date") }} as date) as date_month,
         sum(adjusted_amount) as period_balance,
         sum(adjusted_converted_amount) as period_converted_balance
     from general_ledger
 
-    {{ dbt_utils.group_by(15) }}
+    {{ dbt_utils.group_by(14) }}
 ),
 
 gl_cumulative_balance as (
@@ -75,7 +85,6 @@ gl_beginning_balance as (
         financial_statement_helper,
         account_class,
         class_id,
-        currency_id,
         date_year,
         date_month,
         period_balance as period_net_change,
@@ -107,7 +116,6 @@ gl_patch as (
         coalesce(gl_beginning_balance.account_sub_type, gl_accounting_periods.account_sub_type) as account_sub_type,
         coalesce(gl_beginning_balance.account_class, gl_accounting_periods.account_class) as account_class,
         coalesce(gl_beginning_balance.class_id, gl_accounting_periods.class_id) as class_id,
-        coalesce(gl_beginning_balance.currency_id, gl_accounting_periods.currency_id) as currency_id,
         coalesce(gl_beginning_balance.financial_statement_helper, gl_accounting_periods.financial_statement_helper) as financial_statement_helper,
         coalesce(gl_beginning_balance.date_year, gl_accounting_periods.date_year) as date_year,
         gl_accounting_periods.period_first_day,
@@ -179,7 +187,7 @@ gl_ending_balance as (
     from gl_value_partition
 ),
 
-{% if var('using_report_date_fx_conversion', false) %}
+{% if report_date_fx_enabled %}
 gl_rate_matches as (
 
     select
@@ -194,14 +202,18 @@ gl_rate_matches as (
         ) as rn
     from gl_ending_balance
 
+    inner join accounts
+        on accounts.account_id = gl_ending_balance.account_id
+        and accounts.source_relation = gl_ending_balance.source_relation
+
     inner join exchange_rate
-        on exchange_rate.source_currency_code = gl_ending_balance.currency_id
+        on exchange_rate.source_currency_code = accounts.currency_id
         and exchange_rate.target_currency_code = '{{ var("quickbooks__home_currency", "") }}'
         and exchange_rate.as_of_date <= gl_ending_balance.period_last_day
 
     where gl_ending_balance.financial_statement_helper = 'balance_sheet'
-        and gl_ending_balance.currency_id is not null
-        and gl_ending_balance.currency_id != '{{ var("quickbooks__home_currency", "") }}'
+        and accounts.currency_id is not null
+        and accounts.currency_id != '{{ var("quickbooks__home_currency", "") }}'
 ),
 
 gl_report_date_rate as (
@@ -234,7 +246,6 @@ final as (
         account_sub_type,
         account_class,
         class_id,
-        currency_id,
         financial_statement_helper,
         date_year,
         period_first_day,
@@ -244,12 +255,9 @@ final as (
         period_ending_balance_final as period_ending_balance,
         coalesce(period_net_converted_change, 0) as period_net_converted_change,
         period_beginning_converted_balance_final as period_beginning_converted_balance,
-        {% if var('using_report_date_fx_conversion', false) %}
+        {% if report_date_fx_enabled %}
         case
-            when financial_statement_helper = 'balance_sheet'
-                and currency_id is not null
-                and currency_id != '{{ var("quickbooks__home_currency", "") }}'
-                and report_date_rate is not null
+            when report_date_rate is not null
             then period_ending_balance_final * report_date_rate
             else period_ending_converted_balance_legacy
                 end as period_ending_converted_balance
@@ -257,7 +265,7 @@ final as (
         period_ending_converted_balance_legacy as period_ending_converted_balance
         {% endif %}
 
-    from {{ 'gl_report_date_rate' if var('using_report_date_fx_conversion', false) else 'gl_ending_balance' }}
+    from {{ 'gl_report_date_rate' if report_date_fx_enabled else 'gl_ending_balance' }}
 )
 
 select *

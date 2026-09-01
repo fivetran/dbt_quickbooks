@@ -1,3 +1,5 @@
+{{ config(enabled=var('using_exchange_rate', True)) }}
+
 with base as (
 
     select *

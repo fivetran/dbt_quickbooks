@@ -1,12 +1,11 @@
 # dbt_quickbooks v1.10.0 (--full-refresh required when enabling `using_report_date_fx_conversion`)
 
 ## Schema/Data Change
-**3 total changes • 0 possible breaking changes**
+**2 total changes • 0 possible breaking changes**
 
 | Data Model(s) | Change type | Old | New | Notes |
 | ---------- | ----------- | -------- | -------- | ----- |
-| `stg_quickbooks__exchange_rate` (new) | New model | N/A | `as_of_date`, `source_currency_code`, `target_currency_code`, `rate`, `created_at`, `updated_at` | Brings in the new `EXCHANGE_RATE` source table so historical exchange rates can be looked up by date and currency pair. |
-| `quickbooks__general_ledger`, `quickbooks__general_ledger_by_period` | New column | N/A | `currency_id` | Exposes the account's currency so downstream consumers can identify foreign-currency balance sheet accounts. |
+| `stg_quickbooks__exchange_rate` | New model | N/A | `as_of_date`, `source_currency_code`, `target_currency_code`, `rate`, `created_at`, `updated_at` | Brings in the new `EXCHANGE_RATE` source table so historical exchange rates can be looked up by date and currency pair. |
 | `quickbooks__general_ledger_by_period.converted_amount`, `quickbooks__balance_sheet.converted_amount` | Opt-in calculation change | Converted balance summed from each transaction's own transaction-date exchange rate | For balance sheet accounts, re-converts the native `period_ending_balance` using the exchange rate as of the period's last day | Opt-in via the new `using_report_date_fx_conversion` variable (default `false`); falls back to the legacy method if disabled or if no matching exchange rate is found. No existing customer is affected unless this variable is enabled. |
 
 ## Feature Update

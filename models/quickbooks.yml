@@ -345,8 +345,6 @@ models:
         description: "{{ doc('account_type') }} with the transaction line."
       - name: account_sub_type
         description: "{{ doc('account_sub_type') }} with the transaction line."
-      - name: currency_id
-        description: "{{ doc('currency_id') }} the account associated with the transaction line records its balance in."
       - name: financial_statement_helper
         description: Either 'balance sheet' or 'income statement' and is used to determine that financial statement the account impacts.
       - name: account_current_balance
@@ -397,8 +395,6 @@ models:
         description: "{{ doc('account_class') }} with the period balance transactions."
       - name: class_id
         description: "{{ doc('class_id') }} with the period balance transactions."
-      - name: currency_id
-        description: "{{ doc('currency_id') }} the account associated with the period balance transactions records its balance in."
       - name: financial_statement_helper
         description: Helper field identifying whether the account impacts the balance sheet or income statement.
       - name: date_year
