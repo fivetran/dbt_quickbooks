@@ -36,7 +36,7 @@ final as (
         cast(payment_id as {{ dbt.type_string() }}) as payment_id,
         index,
         amount,
-        journal_entry_id,
+        cast(journal_entry_id as {{ dbt.type_string() }}) as journal_entry_id,
         deposit_id,
         cast(invoice_id as {{ dbt.type_string() }}) as invoice_id,
         credit_memo_id,
