@@ -229,16 +229,19 @@ By default, balance sheet accounts held in a foreign currency are converted by s
 
 Enable this feature if you want `converted_amount` on balance sheet accounts to match QuickBooks Online's own report-date revaluation approach. This does not affect profit and loss accounts, since period activity is already correctly valued at the transaction date.
 
-To enable, add the following variable to your `dbt_project.yml`:
+**This feature requires `quickbooks__home_currency` to also be set** (see [Configuring Your Home Currency for Multicurrency Support](#configuring-your-home-currency-for-multicurrency-support) above). The exchange rate lookup matches on your home currency as the conversion target, so without it the lookup never finds a matching rate and every account silently falls back to the legacy method.
+
+To enable, add the following variables to your `dbt_project.yml`:
 
 ```yml
 vars:
   using_report_date_fx_conversion: true
+  quickbooks__home_currency: "USD"  # replace with your home currency code
 ```
 
 If a matching exchange rate isn't available for an account's currency as of the period's last day, the package falls back to the legacy transaction-date summation method for that account and period.
 
-> IMPORTANT: If you enable `using_report_date_fx_conversion`, you will need to run a `--full-refresh` for the change to take effect on historical data.
+> IMPORTANT: If you enable `using_report_date_fx_conversion`, you need to run a `--full-refresh` for the change to take effect on historical data.
 
 #### Customize the Cash Flow Model
 **IMPORTANT**: It is very likely you will need to reconfigure your `cash_flow_type` to make sure your cash flow statement matches your specific use case. Please examine the following instructions.
