@@ -25,6 +25,8 @@ table_variables:
   using_estimate:
     - estimate
     - estimate_line
+  using_exchange_rate:
+    - exchange_rate
   using_invoice:
     - invoice_linked_txn
     - invoice_line
