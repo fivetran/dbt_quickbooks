@@ -43,6 +43,17 @@ test_scenarios:
       quickbooks__exchange_gain_loss_enabled: true
     include_incremental: false
 
+  - name: "Exchange Rate disabled"
+    vars:
+      using_exchange_rate: false
+    include_incremental: false
+
+  - name: "Report-Date FX Conversion enabled"
+    vars:
+      using_report_date_fx_conversion: true
+      quickbooks__home_currency: "USD"
+    include_incremental: false
+
   - name: "Tax Lines enabled"
     vars:
       quickbooks__tax_lines_enabled: true

@@ -1,5 +1,5 @@
 name: 'quickbooks_integration_tests'
-version: '1.9.2'
+version: '1.10.0'
 
 profile: 'integration_tests'
 config-version: 2
@@ -31,6 +31,7 @@ vars:
     quickbooks_deposit_identifier: "deposit_data"
     quickbooks_estimate_identifier: "estimate_data"
     quickbooks_estimate_line_identifier: "estimate_line_data"
+    quickbooks_exchange_rate_identifier: "exchange_rate_data"
     quickbooks_invoice_identifier: "invoice_data"
     quickbooks_invoice_line_identifier: "invoice_line_data"
     quickbooks_invoice_line_bundle_identifier: "invoice_line_bundle_data"
@@ -133,6 +134,10 @@ seeds:
     estimate_line_data:
       +column_types:
         amount: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+    exchange_rate_data:
+      +column_types:
+        as_of_date: date
+        rate: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
     invoice_data:
       +column_types:
         due_date: date

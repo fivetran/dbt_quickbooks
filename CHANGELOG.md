@@ -1,3 +1,17 @@
+# dbt_quickbooks v1.10.0 (--full-refresh required when enabling `using_report_date_fx_conversion`)
+
+## Schema/Data Change
+**2 total changes • 0 possible breaking changes**
+
+| Data Model(s) | Change type | Old | New | Notes |
+| ---------- | ----------- | -------- | -------- | ----- |
+| `quickbooks__general_ledger_by_period`, `quickbooks__balance_sheet` | Opt-in calculation change for `converted_amount` fields |  Converted balance summed from each transaction's own transaction-date exchange rate | For balance sheet accounts, re-converts the native `period_ending_balance` using the exchange rate as of the period's last day | Opt-in via the new `using_report_date_fx_conversion` variable (default `false`); falls back to the legacy method if disabled or if no matching exchange rate is found. No existing customer is affected unless this variable is enabled. |
+| `stg_quickbooks__exchange_rate`, `stg_quickbooks__exchange_rate_tmp` | New model | |  | Brings in the new `EXCHANGE_RATE` source table so historical exchange rates can be looked up by date and currency pair. Consumed by `int_quickbooks__general_ledger_balances` to look up the report-date rate for the opt-in conversion described below. |
+
+## Feature Update
+### Report-Date Balance Sheet FX Conversion
+- Adds the `using_report_date_fx_conversion` variable (default `false`) to opt into revaluing foreign-currency balance sheet accounts (Bank, AR, AP, Credit Card, Equity, Fixed Asset, etc.) using the exchange rate as of the report date, matching how QuickBooks Online itself calculates balance sheet conversions. Profit and loss accounts are unaffected, since period activity is already valued at the transaction date. See the [README](https://github.com/fivetran/dbt_quickbooks/tree/main#enabling-report-date-balance-sheet-fx-conversion) for configuration details.
+
 # dbt_quickbooks v1.9.2
 
 [PR #220](https://github.com/fivetran/dbt_quickbooks/pull/220) includes the following updates:
