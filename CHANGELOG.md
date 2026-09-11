@@ -6,7 +6,7 @@
 | Data Model(s) | Change type | Old | New | Notes |
 | ---------- | ----------- | -------- | -------- | ----- |
 | `quickbooks__general_ledger_by_period`, `quickbooks__balance_sheet` | Opt-in calculation change for `converted_amount` fields |  Converted balance summed from each transaction's own transaction-date exchange rate | For balance sheet accounts, re-converts the native `period_ending_balance` using the exchange rate as of the period's last day | Opt-in via the new `using_report_date_fx_conversion` variable (default `false`); falls back to the legacy method if disabled or if no matching exchange rate is found. No existing customer is affected unless this variable is enabled. |
-| `stg_quickbooks__exchange_rate` | New model | |  | Brings in the new `EXCHANGE_RATE` source table so historical exchange rates can be looked up by date and currency pair. Consumed by `int_quickbooks__general_ledger_balances` to look up the report-date rate for the opt-in conversion described below. |
+| `stg_quickbooks__exchange_rate`, `stg_quickbooks__exchange_rate_tmp` | New model | |  | Brings in the new `EXCHANGE_RATE` source table so historical exchange rates can be looked up by date and currency pair. Consumed by `int_quickbooks__general_ledger_balances` to look up the report-date rate for the opt-in conversion described below. |
 
 ## Feature Update
 ### Report-Date Balance Sheet FX Conversion

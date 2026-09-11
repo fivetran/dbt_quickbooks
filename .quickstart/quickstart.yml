@@ -138,13 +138,13 @@ supported_vars:
   quickbooks__home_currency:
     type: string
     value: ""
-    description: "The primary reporting currency, use the same 3-letter ISO currency code (e.g., USD, EUR, GBP, CAD) that appears in your QuickBooks `currency_id` field. Relevant for organizations with multiple currencies, this field defaults to an empty string; when not set, the package applies exchange rate conversions to all transactions, regardless of currency. Required if `using_report_date_fx_conversion` is enabled."
+    description: "The primary reporting currency, use the same 3-letter ISO currency code (e.g., USD, EUR, GBP, CAD) that appears in your QuickBooks `currency_id` field. Relevant for organizations with multiple currencies, this field defaults to an empty string; when not set, the package applies exchange rate conversions to all transactions, regardless of currency. Required if 'Enable Report-Date Balance Sheet FX Conversion' is enabled."
     display_name: "Home Currency"
 
   using_report_date_fx_conversion:
     type: boolean
     value: false
-    description: "Enable to revalue foreign-currency balance sheet accounts using the exchange rate as of the report date, matching how QuickBooks Online calculates balance sheet conversions. Requires `quickbooks__home_currency` to also be set; without it, the exchange rate lookup cannot resolve and this feature has no effect."
+    description: "Enable to revalue foreign-currency balance sheet accounts using the exchange rate as of the report date, matching how QuickBooks Online calculates balance sheet conversions. Requires 'Home Currency' to also be set and the `EXCHANGE_RATE` source table to be synced."
     display_name: "Enable Report-Date Balance Sheet FX Conversion"
 
   quickbooks__exchange_gain_loss_enabled:

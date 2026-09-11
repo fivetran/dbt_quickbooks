@@ -182,7 +182,7 @@ gl_ending_balance as (
             first_value(period_ending_converted_balance_starter) over (partition by gl_converted_partition {{ fivetran_utils.partition_by_source_relation(package_name='quickbooks') }}
             order by period_last_day rows unbounded preceding)) as period_beginning_converted_balance_final,
         coalesce(period_ending_converted_balance_starter,
-            first_value(period_ending_converted_balance_starter) over (partition by gl_partition {{ fivetran_utils.partition_by_source_relation(package_name='quickbooks') }}
+            first_value(period_ending_converted_balance_starter) over (partition by gl_converted_partition {{ fivetran_utils.partition_by_source_relation(package_name='quickbooks') }}
             order by period_last_day rows unbounded preceding)) as period_ending_converted_balance_legacy
     from gl_value_partition
 ),

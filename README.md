@@ -229,7 +229,7 @@ By default, balance sheet accounts held in a foreign currency are converted by s
 
 Enable this feature if you want `converted_amount` on balance sheet accounts to match QuickBooks Online's own report-date revaluation approach. This does not affect profit and loss accounts, since period activity is already correctly valued at the transaction date.
 
-**This feature requires `quickbooks__home_currency` to also be set** (see [Configuring Your Home Currency for Multicurrency Support](#configuring-your-home-currency-for-multicurrency-support) above). The exchange rate lookup matches on your home currency as the conversion target, so without it the lookup never finds a matching rate and every account silently falls back to the legacy method.
+**This feature requires `quickbooks__home_currency` to also be set** (see [Configuring Your Home Currency for Multicurrency Support](#configuring-your-home-currency-for-multicurrency-support) above) **and the `EXCHANGE_RATE` source table to be synced** (`using_exchange_rate` enabled). The exchange rate lookup matches on your home currency as the conversion target, so without it the lookup never finds a matching rate and every account silently falls back to the legacy method.
 
 To enable, add the following variables to your `dbt_project.yml`:
 
