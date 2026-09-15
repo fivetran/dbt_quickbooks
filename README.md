@@ -125,6 +125,7 @@ vars:
   using_department: false # disable if you don't have departments in QuickBooks
   using_deposit: false # disable if you don't have deposits in QuickBooks
   using_estimate: false # disable if you don't have estimates in QuickBooks
+  using_exchange_rate: false # disable if you don't have exchange rates in QuickBooks
   using_invoice: false # disable if you don't have invoices in QuickBooks
   using_invoice_bundle: false # disable if you don't have invoice bundles in QuickBooks
   using_journal_entry: false # disable if you don't have journal entries in QuickBooks

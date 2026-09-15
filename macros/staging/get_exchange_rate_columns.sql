@@ -7,7 +7,7 @@
     {"name": "rate", "datatype": dbt.type_float()},
     {"name": "created_at", "datatype": dbt.type_timestamp()},
     {"name": "updated_at", "datatype": dbt.type_timestamp()},
-    {"name": "_fivetran_deleted", "datatype": "boolean"}
+    {"name": "_fivetran_deleted", "datatype": dbt.type_boolean()}
 ] %}
 
 {{ return(columns) }}

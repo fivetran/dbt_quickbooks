@@ -1,4 +1,4 @@
-{% set report_date_fx_enabled = var('using_report_date_fx_conversion', false) and var('using_exchange_rate', true) %}
+{% set report_date_fx_enabled = get_report_date_fx_enabled() %}
 
 with general_ledger as (
 
@@ -220,7 +220,12 @@ gl_report_date_rate as (
 
     select
         gl_ending_balance.*,
-        gl_rate_matches.report_date_rate
+        gl_rate_matches.report_date_rate,
+        case
+            when gl_rate_matches.report_date_rate is not null
+            then gl_ending_balance.period_ending_balance_final * gl_rate_matches.report_date_rate
+            else gl_ending_balance.period_ending_converted_balance_legacy
+                end as period_ending_converted_balance_final
     from gl_ending_balance
 
     left join gl_rate_matches
@@ -229,6 +234,18 @@ gl_report_date_rate as (
         and gl_rate_matches.class_id = coalesce(gl_ending_balance.class_id, '0')
         and gl_rate_matches.period_last_day = gl_ending_balance.period_last_day
         and gl_rate_matches.rn = 1
+),
+
+gl_report_date_converted as (
+
+    select
+        *,
+        coalesce(
+            lag(period_ending_converted_balance_final) over (
+                partition by account_id, coalesce(class_id, '0') {{ fivetran_utils.partition_by_source_relation(package_name='quickbooks') }}
+                order by period_last_day),
+            0) as period_beginning_converted_balance_report_date
+    from gl_report_date_rate
 ),
 {% endif %}
 
@@ -254,18 +271,15 @@ final as (
         period_beginning_balance_final as period_beginning_balance,
         period_ending_balance_final as period_ending_balance,
         coalesce(period_net_converted_change, 0) as period_net_converted_change,
-        period_beginning_converted_balance_final as period_beginning_converted_balance,
         {% if report_date_fx_enabled %}
-        case
-            when report_date_rate is not null
-            then period_ending_balance_final * report_date_rate
-            else period_ending_converted_balance_legacy
-                end as period_ending_converted_balance
+        period_beginning_converted_balance_report_date as period_beginning_converted_balance,
+        period_ending_converted_balance_final as period_ending_converted_balance
         {% else %}
+        period_beginning_converted_balance_final as period_beginning_converted_balance,
         period_ending_converted_balance_legacy as period_ending_converted_balance
         {% endif %}
 
-    from {{ 'gl_report_date_rate' if report_date_fx_enabled else 'gl_ending_balance' }}
+    from {{ 'gl_report_date_converted' if report_date_fx_enabled else 'gl_ending_balance' }}
 )
 
 select *

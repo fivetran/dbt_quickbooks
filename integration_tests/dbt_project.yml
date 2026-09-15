@@ -82,6 +82,7 @@ vars:
   # using_estimate_tax_line: true # @docs-include
   # using_tax_agency: true # @docs-include
   # using_tax_rate: true # @docs-include
+  # using_report_date_fx_conversion: true # @docs-include
 
 seeds:
   +docs:
