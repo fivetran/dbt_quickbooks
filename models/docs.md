@@ -337,6 +337,22 @@ Boolean created by Fivetran to indicate whether the record has been deleted.
 The number of home currency units it takes to equal one unit of currency specified by `currency_id`.
 {% enddocs %}
 
+{% docs exchange_rate_table %}
+Table containing historical currency exchange rates used to convert amounts between currencies.
+{% enddocs %}
+
+{% docs as_of_date %}
+The date the exchange rate was effective as of.
+{% enddocs %}
+
+{% docs source_currency_code %}
+The currency code being converted from.
+{% enddocs %}
+
+{% docs target_currency_code %}
+The currency code being converted to.
+{% enddocs %}
+
 {% docs tax_rate_id %}
 The unique ID of the tax rate applied to this line.
 {% enddocs %}

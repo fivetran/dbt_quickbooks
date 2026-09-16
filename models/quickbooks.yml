@@ -414,7 +414,10 @@ models:
       - name: period_beginning_converted_balance
         description: Balance of the account, converted with exchange rates applied if available, as of the first date of the period. 
       - name: period_ending_converted_balance
-        description: Sum of all transaction line adjusted_balances of the account for the period, converted with exchange rates applied if available.
+        description: >
+          Sum of all transaction line adjusted_balances of the account for the period, converted with exchange rates applied if available.
+          For balance sheet accounts, if the `using_report_date_fx_conversion` variable is enabled and a matching rate exists in `stg_quickbooks__exchange_rate`,
+          this instead re-converts the native `period_ending_balance` using the exchange rate as of the period's last day, rather than summing each transaction's own transaction-date rate.
       - name: account_ordinal
         description: "{{ doc('account_ordinal') }}"
 
