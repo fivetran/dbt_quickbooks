@@ -674,6 +674,8 @@ models:
         description: Timestamp of the date which the exchange rate record was last updated.
       - name: source_relation
         description: "{{ doc('source_relation') }}"
+      - name: _fivetran_deleted
+        description: "{{ doc('_fivetran_deleted') }}"
 
   - name: stg_quickbooks__invoice_linked_txn
     description: "{{ doc('invoice_linked_txn_table') }}"

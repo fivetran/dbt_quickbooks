@@ -1,11 +1,13 @@
 # dbt_quickbooks v1.10.0
 
-## Schema/Data Change
+[PR #223](https://github.com/fivetran/dbt_quickbooks/pull/223) includes the following updates:
+
+## Schema/Data Change (--full-refresh required if `using_report_date_fx_conversion` is enabled)
 **2 total changes • 0 possible breaking changes**
 
 | Data Model(s) | Change type | Old | New | Notes |
 | ---------- | ----------- | -------- | -------- | ----- |
-| `quickbooks__general_ledger_by_period`, `quickbooks__balance_sheet` | Opt-in calculation change for `converted_amount` fields |  Converted balance summed from each transaction's own transaction-date exchange rate | For balance sheet accounts, re-converts the native `period_ending_balance` using the exchange rate as of the period's last day | Opt-in via the new `using_report_date_fx_conversion` variable (default `false`); falls back to the legacy method if disabled or if no matching exchange rate is found. No existing customer is affected unless this variable is enabled. |
+| `quickbooks__general_ledger_by_period`, `quickbooks__balance_sheet` | Opt-in calculation change for `converted_amount` fields |  Converted balance summed from each transaction's own transaction-date exchange rate | For balance sheet accounts, re-converts the native `period_ending_balance` using the exchange rate as of the period's last day | Opt-in via the new `using_report_date_fx_conversion` variable (default `false`); falls back to the legacy method if disabled or if no matching exchange rate is found. No existing customer is affected unless this variable is enabled. **Requires a `--full-refresh` after enabling this variable for the change to apply to historical data.** |
 | `stg_quickbooks__exchange_rate`, `stg_quickbooks__exchange_rate_tmp` | New staging models | |  | Brings in the new `EXCHANGE_RATE` source table so historical exchange rates can be looked up by date and currency pair. Consumed by `int_quickbooks__general_ledger_balances` to look up the report-date rate for the opt-in conversion described below. |
 
 ## Feature Update
