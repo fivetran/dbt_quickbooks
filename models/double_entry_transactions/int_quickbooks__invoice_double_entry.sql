@@ -270,6 +270,7 @@ invoice_join as (
     
     left join invoice_bundles
         on invoice_bundles.invoice_id = invoice_lines.invoice_id
+        and invoice_bundles.invoice_line_index = invoice_lines.index
         and invoice_bundles.source_relation = invoice_lines.source_relation
 
     {% endif %}
