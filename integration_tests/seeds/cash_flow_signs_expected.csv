@@ -1,0 +1,16 @@
+account_id,cash_flow_period,cash_flow_type,cash_beginning_period,cash_ending_period,cash_net_period,cash_converted_beginning_period,cash_converted_ending_period,cash_converted_net_period
+96001,2024-01-01,Cash or Cash Equivalents,0,1000,1000,0,2000,2000
+96001,2024-02-01,Cash or Cash Equivalents,1000,600,-400,2000,1200,-800
+96001,2024-03-01,Cash or Cash Equivalents,600,630,30,1200,1260,60
+96002,2024-01-01,Operating,0,0,0,0,0,0
+96002,2024-02-01,Operating,0,-200,-200,0,-400,-400
+96002,2024-03-01,Operating,-200,-150,50,-400,-300,100
+96003,2024-01-01,Investing,0,0,0,0,0,0
+96003,2024-02-01,Investing,0,-300,-300,0,-600,-600
+96003,2024-03-01,Investing,-300,-280,20,-600,-560,40
+96004,2024-01-01,Operating,0,0,0,0,0,0
+96004,2024-02-01,Operating,0,100,100,0,200,200
+96004,2024-03-01,Operating,100,60,-40,200,120,-80
+96005,2024-01-01,Financing,0,1000,1000,0,2000,2000
+96005,2024-02-01,Financing,1000,1000,0,2000,2000,0
+96005,2024-03-01,Financing,1000,1000,0,2000,2000,0
