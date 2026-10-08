@@ -30,6 +30,8 @@ The corresponding entry that would result from the `int_quickbooks__invoice_doub
     - Financing: The movement of cash between a firm and its owners, investors, and creditors. Account types like long term liability and account classes like equity fall here under our logic.
     - Cash or Cash Equivalents: Line items that report value of a company's cash assets. Bank account types are assigned here. 
 
+- The cash flow statement reverses the signs of noncash Asset balances before calculating monthly changes, for both original and converted amounts. Bank accounts retain their balance-sheet signs. An increase in accounts receivable, prepaid expenses, or fixed assets therefore reduces cash flow; a decrease increases it. Liability and Equity accounts retain their balance-sheet signs.
+
 - While the default case statement logic should work for many customers with basic setups, as customization gets more advanced for your specific business, this is not likely to cover all cases. This is why we created the seed functionality to allow you flexibility to adjust the cash flow types for your own custom purposes--[you can read more about how to set it up in our README](https://github.com/fivetran/dbt_quickbooks/blob/main/README.md#customize-the-cash-flow-model).
 
 ## QuickBooks Financial Statement Ordinal Logic
