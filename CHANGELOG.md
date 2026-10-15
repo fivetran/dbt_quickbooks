@@ -1,3 +1,19 @@
+# dbt_quickbooks v1.11.0
+
+[PR #227](https://github.com/fivetran/dbt_quickbooks/pull/227) includes the following updates:
+
+## Schema/Data Change
+**3 total changes • 1 possible breaking change**
+
+| Data Model(s) | Change type | Old | New | Notes |
+| ------------- | ----------- | --- | --- | ----- |
+| `int_quickbooks__invoice_double_entry`, `quickbooks__general_ledger` **Possible breaking change** | Changed field | Bundle component `index` / `transaction_index` is the component's position within its bundle | `20000 + parent line index * 1000 + component index` | Prevents duplicate `unique_id` values. |
+| `int_quickbooks__invoice_double_entry`, `quickbooks__general_ledger` | Changed model | Bundle components join to every line on the invoice | Bundle components join only to their own parent line | Fixes duplicated component amounts and dropped lines on invoices that mix bundles and other lines ([#224](https://github.com/fivetran/dbt_quickbooks/issues/224)). |
+| `int_quickbooks__invoice_double_entry`, `quickbooks__general_ledger` | Changed model | Components repeat once per income account when a bundle's items map to several accounts | Bundle income accounts apply only when no other account is found for the line | Prevents duplicate component postings. |
+
+## Contributors
+- [@jinscoe](https://github.com/jinscoe) ([PR #225](https://github.com/fivetran/dbt_quickbooks/pull/225))
+
 # dbt_quickbooks v1.10.0
 
 [PR #223](https://github.com/fivetran/dbt_quickbooks/pull/223) includes the following updates:

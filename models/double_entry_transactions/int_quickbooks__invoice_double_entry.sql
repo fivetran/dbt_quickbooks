@@ -207,8 +207,7 @@ invoice_join as (
         invoices.invoice_id as transaction_id,
         invoices.source_relation,
         {% if var('using_invoice_bundle', True) %}
-        -- Component indexes restart under each bundle line, so key them on it, past line and tax line indexes.
-        -- Unique while component indexes stay under 1000 and line indexes under 10000, as the tax offset assumes.
+        -- Offset bundle component indexes past line (<10000) and tax line (10000+) indexes so they stay unique.
         coalesce(20000 + invoice_bundles.invoice_line_index * 1000 + invoice_bundles.index, invoice_lines.index) as index,
         invoices.transaction_date as transaction_date,
         case when invoice_lines.bundle_id is not null and invoices.total_amount = 0 then invoices.total_amount
