@@ -207,7 +207,8 @@ invoice_join as (
         invoices.invoice_id as transaction_id,
         invoices.source_relation,
         {% if var('using_invoice_bundle', True) %}
-        coalesce(invoice_bundles.index, invoice_lines.index) as index,
+        -- Offset bundle component indexes past line (<10000) and tax line (10000+) indexes so they stay unique.
+        coalesce(20000 + invoice_bundles.invoice_line_index * 1000 + invoice_bundles.index, invoice_lines.index) as index,
         invoices.transaction_date as transaction_date,
         case when invoice_lines.bundle_id is not null and invoices.total_amount = 0 then invoices.total_amount
             else coalesce(invoice_bundles.amount, invoice_lines.amount)
@@ -264,13 +265,17 @@ invoice_join as (
         and invoice_lines.source_relation = items.source_relation
 
     {% if var('using_invoice_bundle', True) %}
+    left join invoice_bundles
+        on invoice_bundles.invoice_id = invoice_lines.invoice_id
+        and invoice_bundles.invoice_line_index = invoice_lines.index
+        and invoice_bundles.source_relation = invoice_lines.source_relation
+
+    -- A bundle's items can map to several income accounts, so only fall back to them
+    -- when nothing else gives the line an account.
     left join bundle_income_accounts
         on bundle_income_accounts.bundle_id = invoice_lines.bundle_id
         and bundle_income_accounts.source_relation = invoice_lines.source_relation
-    
-    left join invoice_bundles
-        on invoice_bundles.invoice_id = invoice_lines.invoice_id
-        and invoice_bundles.source_relation = invoice_lines.source_relation
+        and coalesce(invoice_bundles.account_id, invoice_lines.account_id, invoice_lines.sales_item_account_id, items.parent_income_account_id, items.income_account_id) is null
 
     {% endif %}
 
