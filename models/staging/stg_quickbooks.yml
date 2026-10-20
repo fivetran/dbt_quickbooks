@@ -791,7 +791,7 @@ models:
       - name: exchange_rate
         description: "{{ doc('exchange_rate') }}" 
       - name: transaction_date
-        description: Date which the deposit transaction occurred.
+        description: Date which the invoice transaction occurred.
       - name: customer_id
         description: Customer reference is associated with the invoice.
       - name: billing_address_id
@@ -1155,9 +1155,9 @@ models:
       - name: item_expense_customer_id
         description: The customer id associated with the item based purchase order line.
       - name: amount
-        description: Monetary amount of the purchase.
+        description: Monetary amount of the purchase order line.
       - name: description
-        description: User defined description of the purchase line.
+        description: User defined description of the purchase order line.
       - name: item_expense_quantity
         description: The quantity of the item on the purchase order line.
       - name: item_expense_unit_price
@@ -1573,7 +1573,7 @@ models:
       - name: is_active
         description: Boolean indicating whether the vendor is active.
       - name: balance
-        description: Specifies the open balance amount or the amount unpaid by the customer.
+        description: Specifies the open balance amount or the amount still owed to the vendor.
       - name: company_name
         description: The name of the company associated with the person or organization.
       - name: created_at
