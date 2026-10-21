@@ -72,7 +72,7 @@ final as (
         lag(coalesce(period_ending_balance,0)) over (order by period_first_day {{ fivetran_utils.partition_by_source_relation(package_name='quickbooks') }}) as period_beginning_balance,
         period_ending_balance,
         period_net_converted_change,
-        lag(coalesce(period_ending_balance,0)) over (order by period_first_day {{ fivetran_utils.partition_by_source_relation(package_name='quickbooks') }}) as period_beginning_converted_balance,
+        lag(coalesce(period_ending_converted_balance,0)) over (order by period_first_day {{ fivetran_utils.partition_by_source_relation(package_name='quickbooks') }}) as period_beginning_converted_balance,
         period_ending_converted_balance
     from retained_earnings_beginning
 )
