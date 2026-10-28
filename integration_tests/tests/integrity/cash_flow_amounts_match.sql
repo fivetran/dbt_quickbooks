@@ -7,8 +7,10 @@ with balance_sheet as (
 
     select 
         calendar_date as cash_flow_period,
-        sum(amount) as period_amount_source,
-        sum(converted_amount) as period_converted_amount_source
+        sum(case when account_class = 'Asset' and account_type != 'Bank'
+            then -amount else amount end) as period_amount_source,
+        sum(case when account_class = 'Asset' and account_type != 'Bank'
+            then -converted_amount else converted_amount end) as period_converted_amount_source
     from {{ ref('quickbooks__balance_sheet') }}
     group by 1
 ),
