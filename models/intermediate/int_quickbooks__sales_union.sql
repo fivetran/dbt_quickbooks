@@ -1,4 +1,4 @@
-{{ config(enabled=fivetran_utils.enabled_vars_one_true(['using_sales_receipt','using_invoice'])) }}
+{{ config(enabled=(var('using_sales_receipt', false) or var('using_invoice', false))) }}
 
 with sales_union as (
 
@@ -7,7 +7,7 @@ with sales_union as (
     from {{ ref('int_quickbooks__sales_receipt_transactions') }}
     {% endif %}
 
-    {% if fivetran_utils.enabled_vars(['using_sales_receipt','using_invoice']) %}
+    {% if (var('using_sales_receipt', true) and var('using_invoice', true)) %}
     union all
 
     select *
