@@ -156,6 +156,8 @@ models:
         description: Status of the check which was used as payment for the bill. Only applicable if bill payment `pay_type` is of type Check.
       - name: credit_card_account_id
         description: Account id of the account which the bill is credited. Only applicable if bill payment `pay_type` is of type CreditCard.
+      - name: payable_account_id
+        description: "{{ doc('account_id') }} with the accounts payable balance that the bill payment is applied against."
       - name: exchange_rate
         description: "{{ doc('exchange_rate') }}" 
       - name: currency_id
@@ -242,6 +244,8 @@ models:
         description: "{{ doc('percent_based') }}"
       - name: tax_inclusive_amount
         description: "{{ doc('tax_inclusive_amount') }}"
+      - name: _fivetran_deleted
+        description: "{{ doc('_fivetran_deleted') }}"
 
   - name: stg_quickbooks__bundle_item
     description: "{{ doc('bundle_item_table') }}"  
@@ -396,6 +400,8 @@ models:
         description: "{{ doc('percent_based') }}"
       - name: tax_inclusive_amount
         description: "{{ doc('tax_inclusive_amount') }}"
+      - name: _fivetran_deleted
+        description: "{{ doc('_fivetran_deleted') }}"
 
   - name: stg_quickbooks__customer
     description: "{{ doc('customer_table') }}"
@@ -556,6 +562,8 @@ models:
         description: "{{ doc('percent_based') }}"
       - name: tax_inclusive_amount
         description: "{{ doc('tax_inclusive_amount') }}"
+      - name: _fivetran_deleted
+        description: "{{ doc('_fivetran_deleted') }}"
 
   - name: stg_quickbooks__estimate
     description: "{{ doc('estimate_table') }}"
@@ -650,6 +658,8 @@ models:
         description: "{{ doc('percent_based') }}"
       - name: tax_inclusive_amount
         description: "{{ doc('tax_inclusive_amount') }}"
+      - name: _fivetran_deleted
+        description: "{{ doc('_fivetran_deleted') }}"
 
   - name: stg_quickbooks__exchange_rate
     description: "{{ doc('exchange_rate_table') }}"
@@ -822,6 +832,8 @@ models:
         description: "{{ doc('tax_index') }} invoice."
         tests:
           - not_null
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: tax_rate_id
         description: "{{ doc('tax_rate_id') }}" 
       - name: amount
@@ -836,6 +848,8 @@ models:
         description: "{{ doc('percent_based') }}" 
       - name: tax_inclusive_amount
         description: "{{ doc('tax_inclusive_amount') }}"
+      - name: _fivetran_deleted
+        description: "{{ doc('_fivetran_deleted') }}"
 
   - name: stg_quickbooks__item
     description: "{{ doc('item_table') }}"
@@ -956,6 +970,8 @@ models:
         description: "{{ doc('tax_index') }} journal entry."
         tests:
           - not_null
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: tax_rate_id
         description: "{{ doc('tax_rate_id') }}" 
       - name: amount
@@ -1112,6 +1128,8 @@ models:
         description: "{{ doc('tax_index') }} purchase."
         tests:
           - not_null
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: tax_rate_id
         description: "{{ doc('tax_rate_id') }}" 
       - name: amount
@@ -1126,6 +1144,8 @@ models:
         description: "{{ doc('percent_based') }}" 
       - name: tax_inclusive_amount
         description: "{{ doc('tax_inclusive_amount') }}"
+      - name: _fivetran_deleted
+        description: "{{ doc('_fivetran_deleted') }}"
 
   - name: stg_quickbooks__purchase_order_line
     description: "{{ doc('purchase_order_line_table') }}"
@@ -1294,6 +1314,8 @@ models:
         description: "{{ doc('tax_index') }} refund receipt."
         tests:
           - not_null
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: tax_rate_id
         description: "{{ doc('tax_rate_id') }}" 
       - name: amount
@@ -1388,6 +1410,8 @@ models:
         description: "{{ doc('tax_index') }} sales receipt."
         tests:
           - not_null
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: tax_rate_id
         description: "{{ doc('tax_rate_id') }}" 
       - name: amount
@@ -1402,6 +1426,8 @@ models:
         description: "{{ doc('percent_based') }}" 
       - name: tax_inclusive_amount
         description: "{{ doc('tax_inclusive_amount') }}"
+      - name: _fivetran_deleted
+        description: "{{ doc('_fivetran_deleted') }}"
 
   - name: stg_quickbooks__tax_agency
     description: "{{ doc('tax_agency_table') }}"
@@ -1424,6 +1450,8 @@ models:
         description: Timestamp for when the tax agency was created in QuickBooks.
       - name: updated_at
         description: Timestamp for the last update of the tax agency record.
+      - name: sync_token
+        description: The versioning number used to lock a tax agency record to one app at a time.
 
   - name: stg_quickbooks__tax_rate
     description: "{{ doc('tax_rate_table') }}"
