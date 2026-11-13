@@ -15,7 +15,7 @@ This dbt package transforms data from Fivetran's Quickbooks connector into analy
   - [DAG](https://fivetran.github.io/dbt_quickbooks/#!/overview?g_v=1)
   - [Changelog](https://github.com/fivetran/dbt_quickbooks/blob/main/CHANGELOG.md)
 - dbt Core™ supported versions
-  - `>=1.3.0, <3.0.0`
+  - `>=1.10.0, <3.0.0`
 
 ## What does this dbt package do?
 This package enables you to create comprehensive financial statements, analyze accounts payable and receivable aging, and track detailed transaction histories. It creates enriched models with metrics focused on general ledger analysis, financial reporting, and cash flow management.
@@ -71,7 +71,7 @@ Include the following QuickBooks package version in your `packages.yml` file.
 ```yaml
 packages:
   - package: fivetran/quickbooks
-    version: [">=1.11.0", "<1.12.0"] # we recommend using ranges to capture non-breaking changes automatically
+    version: [">=1.12.0", "<1.13.0"] # we recommend using ranges to capture non-breaking changes automatically
 ```
 
 > All required sources and staging models are now bundled into this transformation package. Do not include `fivetran/quickbooks_source` in your `packages.yml` since this package has been deprecated.
