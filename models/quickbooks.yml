@@ -126,6 +126,14 @@ models:
 
   - name: quickbooks__ap_ar_enhanced
     description: "{{ doc('ap_ar_enhanced_table') }}"   
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - transaction_type
+              - transaction_id
+              - estimate_id
     columns:
       - name: transaction_type
         description: Set to 'bill' of the transaction is a bill and 'invoice' if the transaction is an invoice.
@@ -235,6 +243,14 @@ models:
 
   - name: quickbooks__expenses_sales_enhanced
     description: "{{ doc('expenses_sales_enhanced_table') }}" 
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - transaction_type
+              - transaction_id
+              - transaction_line_id
     columns:
       - name: transaction_source
         description: Set to 'expense' if the transaction type is an expense and 'sale' if the transaction type is a sale.
@@ -372,6 +388,14 @@ models:
 
   - name: quickbooks__general_ledger_by_period
     description: "{{ doc('general_ledger_by_period_table') }}"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - account_id
+              - class_id
+              - period_first_day
     columns:
       - name: account_id
         description: "{{ doc('account_id') }} with the period balance transactions."
@@ -423,6 +447,14 @@ models:
 
   - name: quickbooks__profit_and_loss
     description: "{{ doc('profit_and_loss_table') }}"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - account_id
+              - class_id
+              - period_first_day
     columns:
       - name: account_id
         description: "{{ doc('account_id') }} with the record."
@@ -462,6 +494,14 @@ models:
   - name: quickbooks__balance_sheet
     description: >
       Table containing all asset, liability, and equity account classes by calendar year and month enriched with account type, class, and parent information.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - account_id
+              - class_id
+              - period_first_day
     columns:
       - name: calendar_date
         description: "{{ doc('calendar_date') }}"
