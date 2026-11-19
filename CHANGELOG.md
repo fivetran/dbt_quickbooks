@@ -7,7 +7,7 @@
 - Adds `dbt_utils.unique_combination_of_columns` tests to staging and end models. If a test fails, please [open an issue](https://github.com/fivetran/dbt_quickbooks/issues/new/choose).
 
 ## Under the Hood
-- details
+- Updates yml column documentation to match model output.
 
 # dbt_quickbooks v1.11.0
 
