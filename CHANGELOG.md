@@ -7,11 +7,7 @@
 - Adds `dbt_utils.unique_combination_of_columns` tests to staging and end models. If a test fails, please [open an issue](https://github.com/fivetran/dbt_quickbooks/issues/new/choose).
 
 ## Under the Hood
-- **Staging column documentation**: Documents 14 columns that the staging models already output but that were missing from the package yml. These columns now appear in the dbt docs site and in persisted column descriptions.
-  - Adds `source_relation` to `stg_quickbooks__invoice_tax_line`, `stg_quickbooks__journal_entry_tax_line`, `stg_quickbooks__purchase_tax_line`, `stg_quickbooks__refund_receipt_tax_line`, and `stg_quickbooks__sales_receipt_tax_line`.
-  - Adds `_fivetran_deleted` to `stg_quickbooks__bill_tax_line`, `stg_quickbooks__credit_memo_tax_line`, `stg_quickbooks__deposit_tax_line`, `stg_quickbooks__estimate_tax_line`, `stg_quickbooks__invoice_tax_line`, `stg_quickbooks__purchase_tax_line`, and `stg_quickbooks__sales_receipt_tax_line`.
-  - Adds `payable_account_id` to `stg_quickbooks__bill_payment`.
-  - Adds `sync_token` to `stg_quickbooks__tax_agency`.
+- details
 
 # dbt_quickbooks v1.11.0
 
