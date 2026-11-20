@@ -197,7 +197,7 @@ models:
     columns:
       - name: account_unique_id
         description: Unique identifier of the cash flow statement account line, dependent on account_id, class_id, source_relation and calendar_date.
-        tests:
+        data_tests:
           - unique
           - not_null
       - name: source_relation
@@ -320,7 +320,7 @@ models:
         description: >
           Unique identifier of the general ledger line, dependent on `transaction_id`, `transaction_index`, 
           `account_id`, `transaction_type`, `transaction_source`, and `source_relation`. 
-        tests:
+        data_tests:
           - unique
           - not_null
       - name: source_relation
@@ -546,7 +546,7 @@ models:
     columns:
       - name: inventory_item_activity_id
         description: Surrogate primary key hashed on transaction_type, transaction_id, transaction_line_id, and source_relation.
-        tests:
+        data_tests:
           - unique
           - not_null
       - name: transaction_type
