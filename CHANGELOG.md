@@ -1,3 +1,14 @@
+# dbt_quickbooks v1.12.0
+
+[PR #237](https://github.com/fivetran/dbt_quickbooks/pull/237) includes the following updates:
+
+## Feature Update
+- **Breaking change**: Raises the minimum dbt version to 1.10.0.
+- Adds `dbt_utils.unique_combination_of_columns` tests to staging and end models. If a test fails, please [open an issue](https://github.com/fivetran/dbt_quickbooks/issues/new/choose).
+
+## Under the Hood
+- Updates yml column documentation to match model output.
+
 # dbt_quickbooks v1.11.0
 
 [PR #227](https://github.com/fivetran/dbt_quickbooks/pull/227) includes the following updates:
