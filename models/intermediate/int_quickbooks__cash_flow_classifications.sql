@@ -12,8 +12,11 @@ with cash_flow_key as (
         account_number,
         account_id,
         account_name,
-        amount as cash_ending_period,
-        converted_amount as cash_converted_ending_period,
+        -- Noncash asset increases consume cash; Bank accounts retain their cash balance signs.
+        case when account_class = 'Asset' and account_type != 'Bank'
+            then -amount else amount end as cash_ending_period,
+        case when account_class = 'Asset' and account_type != 'Bank'
+            then -converted_amount else converted_amount end as cash_converted_ending_period,
         {{ dbt_utils.generate_surrogate_key(['account_id', 'source_relation', 'calendar_date', 'class_id']) }} as account_unique_id
     from {{ ref('quickbooks__balance_sheet') }}
 ),

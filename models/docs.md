@@ -7,6 +7,7 @@ calculations are included to show if the payable/receivable has been fully paid 
 
 {% docs cash_flow_statement_table %}
 Table that provides all line items necessary to construct a cash flow statement.
+Noncash Asset balances use the inverse of their balance-sheet signs so that increases reduce cash flow and decreases increase it. Bank, Liability, and Equity balances retain their balance-sheet signs.
 {% enddocs %}
 
 {% docs expenses_sales_enhanced_table %}

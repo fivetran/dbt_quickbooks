@@ -14,3 +14,10 @@ id,_fivetran_deleted,_fivetran_synced,adjustment,created_at,currency_id,doc_numb
 395,FALSE,2020-12-10 00:02:05,FALSE,2020-12-10 00:00:00,USD,ab0e9618346d8779c343a6782e079723,1.0,,5aa72aeaa898300af7bf421fb3568a2d,0,,62405.00,4680.38,2020-12-10,2020-12-10 00:00:00
 9002,FALSE,2026-02-10 12:00:00,FALSE,2026-02-10 12:00:00,GBP,,,,,1,,1500,,2026-02-10,2026-02-10 12:00:00
 9003,FALSE,2026-02-10 12:00:00,FALSE,2026-02-10 12:00:00,GBP,,,,,1,,7000,,2026-02-10,2026-02-10 12:00:00
+96001,FALSE,2024-01-01 00:00:00,FALSE,2024-01-01 00:00:00,EUR,cash-flow-signs-96001,2,2000,Synthetic cash flow sign regression fixture,0,,1000,0,2024-01-15,2024-01-01 00:00:00
+96002,FALSE,2024-01-01 00:00:00,FALSE,2024-01-01 00:00:00,EUR,cash-flow-signs-96002,2,400,Synthetic cash flow sign regression fixture,0,,200,0,2024-02-15,2024-01-01 00:00:00
+96003,FALSE,2024-01-01 00:00:00,FALSE,2024-01-01 00:00:00,EUR,cash-flow-signs-96003,2,600,Synthetic cash flow sign regression fixture,0,,300,0,2024-02-16,2024-01-01 00:00:00
+96004,FALSE,2024-01-01 00:00:00,FALSE,2024-01-01 00:00:00,EUR,cash-flow-signs-96004,2,200,Synthetic cash flow sign regression fixture,0,,100,0,2024-02-17,2024-01-01 00:00:00
+96005,FALSE,2024-01-01 00:00:00,FALSE,2024-01-01 00:00:00,EUR,cash-flow-signs-96005,2,100,Synthetic cash flow sign regression fixture,0,,50,0,2024-03-15,2024-01-01 00:00:00
+96006,FALSE,2024-01-01 00:00:00,FALSE,2024-01-01 00:00:00,EUR,cash-flow-signs-96006,2,80,Synthetic cash flow sign regression fixture,0,,40,0,2024-03-16,2024-01-01 00:00:00
+96007,FALSE,2024-01-01 00:00:00,FALSE,2024-01-01 00:00:00,EUR,cash-flow-signs-96007,2,40,Synthetic cash flow sign regression fixture,0,,20,0,2024-03-17,2024-01-01 00:00:00
